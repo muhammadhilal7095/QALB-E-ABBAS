@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 694" width="1050" height="694">
+  <!-- Stand-in banner: replace with the original course image. -->
+  <defs>
+    <radialGradient id="a" cx="25%" cy="20%" r="50%"><stop offset="0" stop-color="#2F6BFF" stop-opacity=".55"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b" cx="80%" cy="80%" r="55%"><stop offset="0" stop-color="#9B3DFF" stop-opacity=".55"/><stop offset="1" stop-color="#9B3DFF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C8DFF"/><stop offset="1" stop-color="#B44DFF"/></linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1050" height="694" fill="#05050A"/>
+  <rect width="1050" height="694" fill="url(#a)"/><rect width="1050" height="694" fill="url(#b)"/>
+  <text x="525" y="135" text-anchor="middle" font-family="'Plus Jakarta Sans','Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="66" font-weight="800" fill="#FFFFFF" letter-spacing="4">AI VIDEO</text>
+  <text x="525" y="210" text-anchor="middle" font-family="'Plus Jakarta Sans','Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="66" font-weight="800" fill="url(#p)" letter-spacing="4">CREATOR PRO</text>
+  <g transform="translate(255 260)">
+    <rect width="540" height="320" rx="16" fill="#0E0E18" stroke="#262640" stroke-width="10"/>
+    <rect x="24" y="22" width="492" height="180" rx="10" fill="#141428"/>
+    <g fill="#1E1E38"><rect x="24" y="218" width="492" height="24" rx="6"/><rect x="24" y="250" width="492" height="24" rx="6"/></g>
+    <g fill="#4C8DFF"><rect x="40" y="222" width="150" height="16" rx="5"/><rect x="210" y="222" width="110" height="16" rx="5"/></g>
+    <g fill="#B44DFF"><rect x="90" y="254" width="200" height="16" rx="5"/><rect x="310" y="254" width="150" height="16" rx="5"/></g>
+    <rect x="260" y="212" width="4" height="70" fill="#FFFFFF"/>
+    <path d="M-50 340h640l-36 26H-14Z" fill="#20203A"/>
+  </g>
+  <circle cx="525" cy="372" r="70" fill="url(#p)" filter="url(#blur)" opacity=".9"/>
+  <circle cx="525" cy="372" r="58" fill="url(#p)"/>
+  <path d="M507 342v60l50-30Z" fill="#FFFFFF"/>
+</svg>

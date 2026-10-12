@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Book a Consultation — Qalb-E-Abbas</title>
+  <meta name="description" content="Book a personal consultation with Qalb-E-Abbas.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site-config.js" defer></script>
+  <script src="assets/js/site.js" defer></script>
+  <script>
+    /* Preselect the consultation topic from ?topic=… (journey cards, service pages). */
+    document.addEventListener("DOMContentLoaded", function () {
+      var t = new URLSearchParams(location.search).get("topic");
+      if (!t) return;
+      var sel = document.getElementById("b-topic"), svc = document.getElementById("b-service");
+      if (sel.querySelector('option[value="' + CSS.escape(t) + '"]')) { sel.value = t; return; }
+      var cats = window.SITE_CONFIG.services, map = { taxation: "company-registration", formation: "company-registration", marketing: "marketing", development: "development" };
+      var tax = /-tax-filing$/.test(t);
+      for (var i = 0; i < cats.length; i++) {
+        var hit = cats[i].items.filter(function (it) { return it[1] === t; })[0];
+        if (hit || tax) {
+          var id = tax ? "taxation" : cats[i].id;
+          sel.value = map[id] || id;
+          svc.value = hit ? hit[0] : t.replace(/-/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+          return;
+        }
+      }
+    });
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div id="header-mount" class="header-placeholder"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container page-hero__inner">
+        <ol class="breadcrumb" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Book Consultation</li></ol>
+        <h1>Book a Consultation</h1>
+        <p>Tell us a little about your situation and we'll get back to you to arrange a convenient time.</p>
+      </div>
+    </section>
+    <section class="section"><div class="container form-layout">
+      <form class="form" data-mailto-form data-subject="Consultation request" novalidate>
+        <!-- No booking backend is connected yet: submitting opens the visitor's email app with the details filled in.
+             To use a booking tool (Calendly, etc.) or a server endpoint, set the form action and remove data-mailto-form. -->
+        <div class="form__row">
+          <div class="field"><label for="b-name">Full name *</label><input id="b-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="b-email">Email *</label><input id="b-email" name="email" type="email" autocomplete="email" required></div>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="b-phone">Phone / WhatsApp</label><input id="b-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="b-country">Country</label><input id="b-country" name="country" autocomplete="country-name"></div>
+        </div>
+        <div class="form__row">
+          <div class="field"><label for="b-topic">Consultation topic *</label><select id="b-topic" name="topic" required><option value="general">General consultation</option><option value="business-support">Business & account support</option><option value="company-registration">Company registration & taxation</option><option value="marketing">SEO & social media marketing</option><option value="development">Development services</option><option value="level-1">Basic / Level 1 training</option><option value="ecommerce">E-commerce services</option><option value="automation">AI & business automation</option><option value="education">Education consultancy</option><option value="digital-business-launch">Course application: Digital Business Launch</option><option value="local-agents-flagship">Course application: Local Agents Flagship</option><option value="ai-video-creator-pro">Course application: AI Video Creator Pro</option></select></div>
+          <div class="field"><label for="b-service">Specific service (optional)</label><input id="b-service" name="service" placeholder="e.g. Amazon, UK Company Formation"></div>
+        </div>
+        <div class="field"><label for="b-time">Preferred days / times</label><input id="b-time" name="time" placeholder="e.g. Weekday evenings (UK time)"></div>
+        <div class="field"><label for="b-msg">How can we help? *</label><textarea id="b-msg" name="message" required></textarea></div>
+        <button class="btn btn--accent" type="submit">Request Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></button>
+        <p class="field__hint">Submitting opens your email app with your details filled in, addressed to contact@qalbeabbas.com.</p>
+        <p class="form__status" role="status"></p>
+      </form>
+      <aside>
+        <div class="info-card">
+          <h2>Prefer to talk directly?</h2>
+          <ul class="contact-list" style="margin-top:14px">
+            <li><a href="tel:+447862605011"><span class="icon-wrap"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg></span><span>+44 7862 605011<small>Call us</small></span></a></li>
+            <li><a href="mailto:contact@qalbeabbas.com"><span class="icon-wrap"><svg class="icon" aria-hidden="true"><use href="#i-mail"></use></svg></span><span>contact@qalbeabbas.com<small>Email us</small></span></a></li>
+          </ul>
+        </div>
+      </aside>
+    </div></section>
+  </main>
+
+  <div id="footer-mount"></div>
+</body>
+</html>

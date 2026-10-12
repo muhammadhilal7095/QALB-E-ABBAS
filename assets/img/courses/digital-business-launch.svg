@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 694" width="1050" height="694">
+  <!-- Stand-in banner: replace with the original course image. -->
+  <defs>
+    <radialGradient id="glow" cx="72%" cy="58%" r="55%"><stop offset="0" stop-color="#FF8A1F" stop-opacity=".75"/><stop offset=".45" stop-color="#B8460A" stop-opacity=".35"/><stop offset="1" stop-color="#0A0A0E" stop-opacity="0"/></radialGradient>
+    <linearGradient id="bar" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF7A00" stop-opacity=".25"/><stop offset="1" stop-color="#FFB15C"/></linearGradient>
+    <linearGradient id="scr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1B1410"/><stop offset="1" stop-color="#2A1A0E"/></linearGradient>
+  </defs>
+  <rect width="1050" height="694" fill="#0A0A0E"/>
+  <rect width="1050" height="694" fill="url(#glow)"/>
+  <g opacity=".12" stroke="#FFB15C"><path d="M0 560h1050M0 470h1050M0 380h1050"/></g>
+  <text x="70" y="150" font-family="'Plus Jakarta Sans','Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="30" font-weight="700" fill="#FF9A3C" letter-spacing="6">ENABLERS</text>
+  <text x="70" y="225" font-family="'Plus Jakarta Sans','Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="64" font-weight="800" fill="#FFFFFF">Digital Business</text>
+  <text x="70" y="300" font-family="'Plus Jakarta Sans','Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="64" font-weight="800" fill="#FF8A1F">Launchpad</text>
+  <rect x="70" y="335" width="120" height="6" rx="3" fill="#FF8A1F"/>
+  <g transform="translate(560 300)">
+    <rect x="0" y="0" width="400" height="250" rx="16" fill="url(#scr)" stroke="#3A2A1E" stroke-width="10"/>
+    <g fill="url(#bar)"><rect x="40" y="170" width="40" height="50" rx="5"/><rect x="100" y="140" width="40" height="80" rx="5"/><rect x="160" y="150" width="40" height="70" rx="5"/><rect x="220" y="110" width="40" height="110" rx="5"/><rect x="280" y="80" width="40" height="140" rx="5"/><rect x="340" y="45" width="40" height="175" rx="5"/></g>
+    <path d="M-40 270h480l-30 22H-10Z" fill="#2E241C"/>
+  </g>
+  <path d="M520 600 640 520 720 550 830 430 900 380 990 250" fill="none" stroke="#FFB15C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M955 250h35v35" fill="none" stroke="#FFB15C" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

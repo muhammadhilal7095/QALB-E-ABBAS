@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Shown only until assets/img/mentor.jpg is added. -->
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF0FB"/><stop offset="1" stop-color="#D5E0F5"/></linearGradient></defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="380" r="150" fill="#B8C7E3"/>
+  <path d="M130 1000c0-190 120-330 270-330s270 140 270 330Z" fill="#B8C7E3"/>
+  <rect x="220" y="860" width="360" height="64" rx="32" fill="#FFFFFF" opacity=".9"/>
+  <text x="400" y="901" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="26" font-weight="600" fill="#3B4A63">Mentor photo</text>
+</svg>

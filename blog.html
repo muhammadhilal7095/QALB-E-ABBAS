@@ -18,20 +18,97 @@
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="page-hero">
-      <div class="container page-hero__inner">
-        <ol class="breadcrumb" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Blog</li></ol>
-        <h1>Blog</h1>
-        <p>Educational articles, tutorials, e-commerce strategies, AI automation insights and business growth resources.</p>
+    <section class="uni-hero" aria-labelledby="pg-h1">
+      <div class="container uni-hero__grid">
+        <div class="uni-hero__text">
+          <ol class="breadcrumb breadcrumb--light" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Blog</li></ol>
+          <p class="uni-hero__badge"><span class="uni-hero__pulse" aria-hidden="true"></span>Educational articles &amp; guides</p>
+          <h1 id="pg-h1" class="uni-hero__title"><span class="uni-hero__kicker">Blog &amp; Insights</span>Practical Guides to <span class="uni-hero__hl">Grow Your Business</span></h1>
+          <p class="uni-hero__lead">Educational articles, tutorials, e-commerce strategies, AI automation insights and business growth resources — written to help you make informed decisions.</p>
+          <div class="uni-hero__actions"><a class="btn btn--accent" href="#articles">Browse Articles<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--glass" data-social="youtube" href="#"><svg class="icon" aria-hidden="true"><use href="#i-youtube"></use></svg>Watch Free Lessons</a></div>
+        </div>
+        <div class="blog-topics">
+          <p class="svh-tiles__title">Popular topics</p>
+          <ul>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Amazon FBA &amp; marketplaces</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>US LLC, UK LTD &amp; tax compliance</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-trending-up"></use></svg>E-commerce strategy</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-bot"></use></svg>AI automation insights</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-megaphone"></use></svg>Marketing &amp; business growth</li>
+          </ul>
+        </div>
       </div>
     </section>
-    <section class="section"><div class="container">
-      <div class="card-grid card-grid--3">
-        <article class="info-card"><p class="eyebrow">Amazon</p><h2>Amazon FBA vs FBM in 2026: How to Choose the Right Model &amp; Avoid Costly Operational Traps</h2><p>Compare FBA and FBM, manage storage fees, and avoid the foreign-seller UK VAT trap.</p><a class="text-link" href="blog-amazon-fba-vs-fbm.html">Read article<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></article>
-        <article class="info-card"><p class="eyebrow">Legal &amp; tax</p><h2>US Single-Member LLC vs UK LTD for Foreign Entrepreneurs</h2><p>A deep dive into US LLC pass-through tax mechanics, UK Corporate Tax, USPTO trademark requirements, and avoiding the $25,000 IRS Form 5472 penalty.</p><a class="text-link" href="blog-us-llc-vs-uk-ltd.html">Read article<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></article>
-        <article class="info-card" id="beginners-guide"><p class="eyebrow">Getting started</p><h2>The Beginner's Guide to E-commerce</h2><p>How to start in the right order: learn, prepare and check before committing to inventory.</p><a class="text-link" href="beginners-guide.html">Read the guide<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></article>
+
+    <section class="section" id="articles" aria-labelledby="articles-title">
+      <div class="container">
+        <h2 id="articles-title" class="sr-only">Articles</h2>
+        <article class="post-feature">
+          <a class="post-feature__img" href="blog-amazon-fba-vs-fbm.html" tabindex="-1" aria-hidden="true"><img src="assets/img/hero/amazon.jpg" alt="" width="1300" height="866" loading="lazy"></a>
+          <div class="post-feature__body">
+            <p class="post__meta"><span class="post__cat">Amazon</span>Featured article</p>
+            <h2 class="post-feature__title"><a href="blog-amazon-fba-vs-fbm.html">Amazon FBA vs FBM in 2026: How to Choose the Right Model &amp; Avoid Costly Operational Traps</a></h2>
+            <p>Compare FBA and FBM, manage rising storage fees, and avoid the foreign-seller UK VAT trap.</p>
+            <a class="btn btn--primary" href="blog-amazon-fba-vs-fbm.html">Read Article<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </article>
+        <div class="blog-bar">
+          <h2 class="blog-bar__title">All Articles</h2>
+          <div class="chips" role="group" aria-label="Filter articles by topic"><button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All articles</button><button type="button" class="chip" data-filter="Amazon" aria-pressed="false">Amazon</button><button type="button" class="chip" data-filter="Legal &amp; Tax" aria-pressed="false">Legal &amp; Tax</button><button type="button" class="chip" data-filter="Getting Started" aria-pressed="false">Getting Started</button></div>
+        </div>
+        <div class="post-grid" id="post-grid">
+          <article class="post" data-cat="Amazon">
+            <a class="post__img" href="blog-amazon-fba-vs-fbm.html" tabindex="-1" aria-hidden="true"><img src="assets/img/hero/amazon-800.jpg" alt="" width="800" height="533" loading="lazy"></a>
+            <div class="post__body">
+              <p class="post__meta"><span class="post__cat">Amazon</span></p>
+              <h3 class="post__title"><a href="blog-amazon-fba-vs-fbm.html">Amazon FBA vs FBM in 2026: How to Choose the Right Model &amp; Avoid Costly Operational Traps</a></h3>
+              <p>Compare FBA and FBM, manage rising storage fees, and avoid the foreign-seller UK VAT trap.</p>
+              <a class="text-link" href="blog-amazon-fba-vs-fbm.html">Read more<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+            </div>
+          </article>
+          <article class="post" data-cat="Legal &amp; Tax">
+            <a class="post__img" href="blog-us-llc-vs-uk-ltd.html" tabindex="-1" aria-hidden="true"><img src="assets/img/hero/company-800.jpg" alt="" width="800" height="533" loading="lazy"></a>
+            <div class="post__body">
+              <p class="post__meta"><span class="post__cat">Legal &amp; Tax</span></p>
+              <h3 class="post__title"><a href="blog-us-llc-vs-uk-ltd.html">US Single-Member LLC vs UK LTD for Foreign Entrepreneurs</a></h3>
+              <p>A deep dive into US LLC pass-through tax mechanics, UK Corporate Tax, and avoiding the $25,000 IRS Form 5472 penalty.</p>
+              <a class="text-link" href="blog-us-llc-vs-uk-ltd.html">Read more<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+            </div>
+          </article>
+          <article class="post" data-cat="Getting Started">
+            <a class="post__img" href="beginners-guide.html" tabindex="-1" aria-hidden="true"><img src="assets/img/hero/ebay-800.jpg" alt="" width="800" height="533" loading="lazy"></a>
+            <div class="post__body">
+              <p class="post__meta"><span class="post__cat">Getting Started</span></p>
+              <h3 class="post__title"><a href="beginners-guide.html">The Beginner's Guide to E-commerce</a></h3>
+              <p>How to start in the right order: learn, prepare and check before committing to inventory.</p>
+              <a class="text-link" href="beginners-guide.html">Read more<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+            </div>
+          </article>
+        </div>
+        <p class="blog-empty" hidden>No articles in this topic yet.</p>
       </div>
-    </div></section>
+    </section>
+    <section class="section section--soft" aria-label="Keep learning">
+      <div class="container">
+        <div class="page-cta">
+          <h2>Want guidance beyond the articles?</h2><p>Book a strategic consultation, or explore structured training through Qalb-E-Abbas University.</p>
+          <div class="btn-row"><a class="btn btn--accent" href="book-consultation.html">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div>
+        </div>
+      </div>
+    </section>
+    <script>
+      (function () {
+        var chips = document.querySelectorAll(".chip"), posts = document.querySelectorAll(".post"), empty = document.querySelector(".blog-empty");
+        chips.forEach(function (c) {
+          c.addEventListener("click", function () {
+            var f = c.getAttribute("data-filter"), shown = 0;
+            chips.forEach(function (x) { var on = x === c; x.classList.toggle("is-active", on); x.setAttribute("aria-pressed", String(on)); });
+            posts.forEach(function (p) { var ok = f === "all" || p.getAttribute("data-cat") === f.replace(/&amp;/g, "&"); p.hidden = !ok; if (ok) shown++; });
+            empty.hidden = shown > 0;
+          });
+        });
+      })();
+    </script>
   </main>
 
   <div id="footer-mount"></div>

@@ -18,82 +18,119 @@
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="page-hero">
-      <div class="container page-hero__inner">
-        <ol class="breadcrumb" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Team</li></ol>
-        <h1>Our Team</h1>
-        <p>Meet the people behind Qalb-E-Abbas — experts in e-commerce, education, finance, operations and IT.</p>
+    <section class="uni-hero" aria-labelledby="team-h1">
+      <div class="container uni-hero__grid">
+        <div class="uni-hero__text">
+          <ol class="breadcrumb breadcrumb--light" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li aria-current="page">Team</li></ol>
+          <p class="uni-hero__badge"><span class="uni-hero__pulse" aria-hidden="true"></span>Based in Oldham, Manchester, UK</p>
+          <h1 id="team-h1" class="uni-hero__title"><span class="uni-hero__kicker">Our Team</span>Meet the <span class="uni-hero__hl">Experts</span> Behind Qalb-E-Abbas</h1>
+          <p class="uni-hero__lead">Meet the people behind Qalb-E-Abbas — experts in e-commerce, education, finance, operations and IT, working together to help you build your business in the right order.</p>
+          <div class="uni-hero__actions">
+            <a class="btn btn--accent" href="#team">Meet the Team<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+            <a class="btn btn--glass" href="book-consultation.html">Book a Consultation</a>
+          </div>
+          <ul class="uni-hero__stats team-stats">
+            <li><strong>7</strong><span>Team members</span></li>
+            <li><strong>5</strong><span>Areas of expertise</span></li>
+            <li><strong>1:1</strong><span>Personal guidance</span></li>
+          </ul>
+        </div>
+        <div class="team-faces" aria-hidden="true"><img src="assets/img/team/qalb-e-abbas.jpg" alt="" width="800" height="800"><img src="assets/img/team/mohsin-abbas.jpg" alt="" width="800" height="800"><img src="assets/img/team/amir-abbas.jpg" alt="" width="800" height="800"><img src="assets/img/team/ali-hassan-sira.jpg" alt="" width="800" height="800"><img src="assets/img/team/wajeeha.jpg" alt="" width="800" height="800"><img src="assets/img/team/muhammad-sohaib.jpg" alt="" width="800" height="800"><img src="assets/img/team/ahsan-abbas.jpg" alt="" width="800" height="800"></div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="team" aria-labelledby="founder-name">
       <div class="container">
-        <!-- Team profiles: photos live in assets/img/team/ (square, 800×800). -->
-        <article class="tm tm--featured" id="qalb-e-abbas">
-          <div class="tm__photo"><img src="assets/img/team/qalb-e-abbas.jpg" alt="Portrait of Ch. Qalb-E-Abbas" width="800" height="800" loading="eager" decoding="async"></div>
-          <div class="tm__body">
-            <h2 class="tm__name">Ch. Qalb-E-Abbas</h2>
-            <p class="tm__role">Founder &amp; CEO</p>
-            <p class="tm__bio">Founder of multiple international brands, mentor and educator. Through the free Qalb-E-Abbas University YouTube channel he helps beginners learn e-commerce and build valuable business assets.</p>
+        <article class="founder" id="qalb-e-abbas">
+          <div class="founder__photo">
+            <img src="assets/img/team/qalb-e-abbas.jpg" alt="Portrait of Ch. Qalb-E-Abbas" width="800" height="800" decoding="async">
+            <span class="founder__badge"><svg class="icon" aria-hidden="true"><use href="#i-star"></use></svg>Founder</span>
+          </div>
+          <div class="founder__body">
+            <p class="eyebrow">Founder &amp; CEO</p>
+            <h2 id="founder-name" class="founder__name">Ch. Qalb-E-Abbas</h2>
+            <ul class="founder__chips"><li>Founder of Multiple International Brands</li><li>Mentor &amp; Educator</li><li>Qalb-E-Abbas University</li></ul>
+            <p>I help beginners understand e-commerce, learn how to get started, overcome their initial challenges, and receive guidance throughout their learning journey. Through my YouTube channel, Qalb-E-Abbas University, I provide a free learning platform to help aspiring entrepreneurs build their knowledge and confidence.</p>
+            <blockquote class="founder__quote"><svg class="icon" aria-hidden="true"><use href="#i-quote"></use></svg><p>My mission is simple: to help more people in Pakistan build valuable business assets, develop entrepreneurial skills, and contribute to a stronger Pakistani economy.</p></blockquote>
+            <div class="founder__actions">
+              <a class="btn btn--primary" href="book-consultation.html">Book a Consultation</a>
+              <a class="btn btn--outline" href="university.html">Explore the University</a>
+            </div>
           </div>
         </article>
-        <div class="team-grid">
-        <article class="tm" id="ahsan-abbas">
-          <div class="tm__photo"><img src="assets/img/team/ahsan-abbas.jpg" alt="Portrait of Ch. Ahsan Abbas" width="800" height="800" loading="lazy" decoding="async"></div>
-          <div class="tm__body">
-            <h2 class="tm__name">Ch. Ahsan Abbas</h2>
-            <!-- TODO: job title not supplied -->
-            
-          </div>
-        </article>
-        <article class="tm" id="mohsin-abbas">
-          <div class="tm__photo"><img src="assets/img/team/mohsin-abbas.jpg" alt="Portrait of Ch. Mohsin Abbas" width="800" height="800" loading="lazy" decoding="async"></div>
-          <div class="tm__body">
-            <h2 class="tm__name">Ch. Mohsin Abbas</h2>
-            <p class="tm__role">Study Education Consultant — Malta, Europe</p>
-            <ul class="tm__facts"><li>MSc Mathematics</li></ul>
-          </div>
-        </article>
-        <article class="tm" id="amir-abbas">
-          <div class="tm__photo"><img src="assets/img/team/amir-abbas.jpg" alt="Portrait of Ch. Amir Abbas" width="800" height="800" loading="lazy" decoding="async"></div>
-          <div class="tm__body">
-            <h2 class="tm__name">Ch. Amir Abbas</h2>
-            <p class="tm__role">Finance &amp; Risk Management</p>
-            <ul class="tm__facts"><li>B.Com</li><li>Finance and Risk Management Officer at Rawal Group</li><li>5 years' experience in crypto trading</li><li>Trainer of many successful students in trading</li></ul>
-          </div>
-        </article>
-        <article class="tm" id="ali-hassan-sira">
-          <div class="tm__photo"><img src="assets/img/team/ali-hassan-sira.jpg" alt="Portrait of Ali Hassan Sira" width="800" height="800" loading="lazy" decoding="async"></div>
-          <div class="tm__body">
-            <h2 class="tm__name">Ali Hassan Sira</h2>
-            <p class="tm__role">Operational Manager</p>
-            <ul class="tm__facts"><li>Operations, customer care and support services</li></ul>
-          </div>
-        </article>
-        <article class="tm" id="wajeeha">
-          <div class="tm__photo"><img src="assets/img/team/wajeeha.jpg" alt="Portrait of Wajeeha" width="800" height="800" loading="lazy" decoding="async"></div>
-          <div class="tm__body">
-            <h2 class="tm__name">Wajeeha</h2>
-            <p class="tm__role">E-commerce Expert</p>
-            
-          </div>
-        </article>
-        <article class="tm" id="muhammad-sohaib">
-          <div class="tm__photo"><img src="assets/img/team/muhammad-sohaib.jpg" alt="Portrait of Muhammad Sohaib" width="800" height="800" loading="lazy" decoding="async"></div>
-          <div class="tm__body">
-            <h2 class="tm__name">Muhammad Sohaib</h2>
-            <p class="tm__role">IT Consultant</p>
-            
-          </div>
-        </article>
+
+        <header class="section-head" style="margin-top:clamp(56px,7vw,88px)">
+          <p class="eyebrow">The team</p>
+          <h2 class="section-title">Our Experts &amp; Consultants</h2>
+          <p class="section-sub">Specialists across education, finance, operations, e-commerce and IT.</p>
+        </header>
+        <div class="tm2-grid">
+          <article class="tm2" id="ahsan-abbas">
+            <div class="tm2__photo"><img src="assets/img/team/ahsan-abbas.jpg" alt="Portrait of Ch. Ahsan Abbas" width="800" height="800" loading="lazy" decoding="async"></div>
+            <div class="tm2__body">
+              <h3 class="tm2__name">Ch. Ahsan Abbas</h3>
+              <!-- TODO: job title not supplied -->
+              
+            </div>
+          </article>
+          <article class="tm2" id="mohsin-abbas">
+            <div class="tm2__photo"><img src="assets/img/team/mohsin-abbas.jpg" alt="Portrait of Ch. Mohsin Abbas" width="800" height="800" loading="lazy" decoding="async"><span class="tm2__dept">Education</span></div>
+            <div class="tm2__body">
+              <h3 class="tm2__name">Ch. Mohsin Abbas</h3>
+              <p class="tm2__role">Study Education Consultant — Malta, Europe</p>
+              <ul class="tm2__facts"><li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>MSc Mathematics</span></li></ul>
+            </div>
+          </article>
+          <article class="tm2" id="amir-abbas">
+            <div class="tm2__photo"><img src="assets/img/team/amir-abbas.jpg" alt="Portrait of Ch. Amir Abbas" width="800" height="800" loading="lazy" decoding="async"><span class="tm2__dept">Finance</span></div>
+            <div class="tm2__body">
+              <h3 class="tm2__name">Ch. Amir Abbas</h3>
+              <p class="tm2__role">Finance &amp; Risk Management</p>
+              <ul class="tm2__facts"><li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>B.Com</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>Finance and Risk Management Officer at Rawal Group</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>5 years' experience in crypto trading</span></li><li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>Trainer of many successful students in trading</span></li></ul>
+            </div>
+          </article>
+          <article class="tm2" id="ali-hassan-sira">
+            <div class="tm2__photo"><img src="assets/img/team/ali-hassan-sira.jpg" alt="Portrait of Ali Hassan Sira" width="800" height="800" loading="lazy" decoding="async"><span class="tm2__dept">Operations</span></div>
+            <div class="tm2__body">
+              <h3 class="tm2__name">Ali Hassan Sira</h3>
+              <p class="tm2__role">Operational Manager</p>
+              <ul class="tm2__facts"><li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg><span>Operations, customer care and support services</span></li></ul>
+            </div>
+          </article>
+          <article class="tm2" id="wajeeha">
+            <div class="tm2__photo"><img src="assets/img/team/wajeeha.jpg" alt="Portrait of Wajeeha" width="800" height="800" loading="lazy" decoding="async"><span class="tm2__dept">E-commerce</span></div>
+            <div class="tm2__body">
+              <h3 class="tm2__name">Wajeeha</h3>
+              <p class="tm2__role">E-commerce Expert</p>
+              
+            </div>
+          </article>
+          <article class="tm2" id="muhammad-sohaib">
+            <div class="tm2__photo"><img src="assets/img/team/muhammad-sohaib.jpg" alt="Portrait of Muhammad Sohaib" width="800" height="800" loading="lazy" decoding="async"><span class="tm2__dept">IT</span></div>
+            <div class="tm2__body">
+              <h3 class="tm2__name">Muhammad Sohaib</h3>
+              <p class="tm2__role">IT Consultant</p>
+              
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="section section--soft"><div class="container process-cta" style="margin-top:0">
-      <p>Want to talk to one of our experts? Book a personal consultation.</p>
-      <a class="btn btn--accent" href="book-consultation.html">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-    </div></section>
+    <section class="section section--soft" aria-labelledby="exp-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">What we cover</p>
+          <h2 id="exp-title" class="section-title">Areas of Expertise</h2>
+        </header>
+        <ul class="exp"><li><a href="services.html#ecommerce"><span class="exp__icon"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg></span><span><b>E-commerce</b><small>Marketplace and store expertise</small></span><svg class="icon exp__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></li><li><a href="services.html#education"><span class="exp__icon"><svg class="icon" aria-hidden="true"><use href="#i-graduation"></use></svg></span><span><b>Education</b><small>Study guidance in Malta, Europe</small></span><svg class="icon exp__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></li><li><a href="taxation.html"><span class="exp__icon"><svg class="icon" aria-hidden="true"><use href="#i-chart"></use></svg></span><span><b>Finance &amp; Risk</b><small>Finance and risk management</small></span><svg class="icon exp__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></li><li><a href="contact.html#support"><span class="exp__icon"><svg class="icon" aria-hidden="true"><use href="#i-headset"></use></svg></span><span><b>Operations</b><small>Customer care and support</small></span><svg class="icon exp__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></li><li><a href="services.html#development"><span class="exp__icon"><svg class="icon" aria-hidden="true"><use href="#i-code"></use></svg></span><span><b>IT</b><small>Technology and IT consulting</small></span><svg class="icon exp__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a></li></ul>
+        <div class="page-cta">
+          <h2>Want to talk to one of our experts?</h2>
+          <p>Book a personal consultation and we'll connect you with the right specialist.</p>
+          <div class="btn-row"><a class="btn btn--accent" href="book-consultation.html">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <div id="footer-mount"></div>

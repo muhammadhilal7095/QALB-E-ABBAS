@@ -97,35 +97,35 @@ window.SITE_CONFIG = {
     {
       id: "automation", title: "AI & Business Automation", icon: "bot",
       items: [
-        ["Facebook Automation", "facebook-automation"], ["TikTok Automation", "tiktok-automation"],
-        ["WhatsApp Automation", "whatsapp-automation"], ["Instagram Automation", "instagram-automation"]
+        ["Facebook Automation", "facebook-automation", "facebook-automation.html"], ["TikTok Automation", "tiktok-automation", "tiktok-automation.html"],
+        ["WhatsApp Automation", "whatsapp-automation", "whatsapp-automation.html"], ["Instagram Automation", "instagram-automation", "instagram-automation.html"]
       ]
     },
     {
       id: "development", title: "Web & Software Development", icon: "code",
       items: [
-        ["Shopify Development", "shopify-development", "shopify-development.html"], ["Website Development", "website-development"],
-        ["CRM Development", "crm-development"], ["App Development", "app-development"]
+        ["Shopify Development", "shopify-development", "shopify-development.html"], ["Website Development", "website-development", "website-development.html"],
+        ["CRM Development", "crm-development", "crm-development.html"], ["App Development", "app-development", "app-development.html"]
       ]
     },
     {
       id: "marketing", title: "Marketing & Business Growth", icon: "megaphone",
       items: [
-        ["Influencer Marketing", "influencer-marketing"], ["Social Media Marketing", "social-media-marketing", "digital-marketing.html"],
-        ["Digital Marketing", "digital-marketing", "digital-marketing.html"], ["Email Marketing", "email-marketing"],
-        ["SEO", "seo", "digital-marketing.html#seo"], ["Affiliate Marketing", "affiliate-marketing"]
+        ["Influencer Marketing", "influencer-marketing", "influencer-marketing.html"], ["Social Media Marketing", "social-media-marketing", "social-media-marketing.html"],
+        ["Digital Marketing", "digital-marketing", "digital-marketing.html"], ["Email Marketing", "email-marketing", "email-marketing.html"],
+        ["SEO", "seo", "seo.html"], ["Affiliate Marketing", "affiliate-marketing", "affiliate-marketing.html"]
       ]
     },
     {
       id: "formation", title: "Company Formation & Business Setup", icon: "building",
       items: [
         ["UK Company Formation", "uk-company-formation", "uk-ltd-formation.html"], ["USA Company Formation", "usa-company-formation", "us-llc-formation.html"],
-        ["UAE Company Formation", "uae-company-formation"], ["Malta Company Formation", "malta-company-formation"]
+        ["UAE Company Formation", "uae-company-formation", "uae-company-formation.html"], ["Malta Company Formation", "malta-company-formation", "malta-company-formation.html"]
       ]
     },
     {
       id: "education", title: "Education Consultancy", icon: "graduation",
-      items: [["Education Consultancy", "education-consultancy"]]
+      items: [["Education Consultancy", "education-consultancy", "education-consultancy.html"]]
     }
   ],
 

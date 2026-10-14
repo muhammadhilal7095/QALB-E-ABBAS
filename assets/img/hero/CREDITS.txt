@@ -1,15 +1,15 @@
 Hero slider background photos — all CC0 (public domain dedication); no attribution required.
-Found via Openverse (openverse.org). Replace any file with your own photo using the same name
-(<name>.jpg ~1300–1600px wide, plus <name>-800.jpg for phones).
+Sourced via Openverse (openverse.org). Replace any file with your own photo using the same name
+(<name>.jpg, plus <name>-800.jpg for phones).
 
-amazon.jpg     rawpixel (CC0)    Warehouse aisle with shipping boxes
-ebay.jpg       rawpixel (CC0)    Laptop on a desk
-tiktok.jpg     rawpixel (CC0)    Smartphone filming
-walmart.jpg    rawpixel (CC0)    Warehouse shelving
-etsy.jpg       rawpixel (CC0)    Handmade pottery
-shopify.jpg    rawpixel (CC0)    Credit card and laptop
-company.jpg    rawpixel (CC0)    London skyline at night
-tax.jpg        rawpixel (CC0)    Calculator and pen
-marketing.jpg  rawpixel (CC0)    Analytics dashboard on laptop
-education.jpg  Wikimedia Commons (CC0)  Building in Independence Square, Valletta, Malta
-growth.jpg     rawpixel (CC0)    Business meeting
+amazon.jpg     StockSnap (CC0)   Packing at a workbench   https://cdn.stocksnap.io/img-thumbs/960w/ERNYCFWP8I.jpg
+ebay.jpg       StockSnap (CC0)   Laptop on a desk   https://cdn.stocksnap.io/img-thumbs/960w/DWLWL9USBG.jpg
+tiktok.jpg     StockSnap (CC0)   Hands holding a smartphone   https://cdn.stocksnap.io/img-thumbs/960w/DLITZEAVJJ.jpg
+walmart.jpg    StockSnap (CC0)   Shopper with bags   https://cdn.stocksnap.io/img-thumbs/960w/E1WZHWID6J.jpg
+etsy.jpg       StockSnap (CC0)   Hands shaping pottery   https://cdn.stocksnap.io/img-thumbs/960w/UO4VC2M9HP.jpg
+shopify.jpg    StockSnap (CC0)   Paying by card at a laptop   https://cdn.stocksnap.io/img-thumbs/960w/DIHXDJ07WY.jpg
+company.jpg    StockSnap (CC0)   Big Ben, London, at night   https://cdn.stocksnap.io/img-thumbs/960w/P3IB71W6GW.jpg
+tax.jpg        StockSnap (CC0)   Calculator in hand   https://cdn.stocksnap.io/img-thumbs/960w/4O9OAU2YJL.jpg
+marketing.jpg  StockSnap (CC0)   Analytics on a desktop screen   https://cdn.stocksnap.io/img-thumbs/960w/959IURDRGJ.jpg
+growth.jpg     StockSnap (CC0)   Business meeting   https://cdn.stocksnap.io/img-thumbs/960w/SSKSJIBMMP.jpg
+education.jpg  Wikimedia Commons (CC0)   Building in Independence Square, Valletta, Malta

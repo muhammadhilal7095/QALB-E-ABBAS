@@ -62,8 +62,12 @@
          replace them with the original artwork (same file names, or update src).
          "Apply Now" URLs are configured in assets/js/site-config.js (links.apply…). -->
     <section class="uni-courses" id="courses" aria-labelledby="courses-title">
-      <h2 id="courses-title" class="sr-only">Our courses</h2>
-      <div class="uni-courses__inner">
+            <div class="uni-courses__inner">
+        <header class="section-head uni-courses__head">
+          <p class="eyebrow">Flagship programmes</p>
+          <h2 id="courses-title" class="section-title">Choose Your Programme</h2>
+          <p class="section-sub">Step-by-step courses with real-life training — available online and on campus.</p>
+        </header>
         <div class="course-grid">
           <article class="course" id="digital-business-launch" aria-labelledby="digital-business-launch-title">
             <img class="course__img" src="assets/img/courses/digital-business-launch.svg" alt="Enablers Digital Business Launchpad banner with a laptop and rising growth graph" width="1050" height="694" fetchpriority="high" decoding="async">
@@ -120,17 +124,75 @@
       </div>
     </section>
     <section class="section" id="curriculum" aria-labelledby="curriculum-title">
-      <div class="container narrow">
+      <div class="container">
         <header class="section-head">
           <p class="eyebrow">What you'll learn</p>
           <h2 id="curriculum-title" class="section-title">University Curriculum Modules</h2>
+          <p class="section-sub">Four modules that take you from foundations to legal compliance, Amazon mastery and direct-to-consumer growth.</p>
         </header>
-        <ul class="bullets">
-          <li><strong>Module 1: E-Commerce Foundations &amp; Progression Mapping:</strong> Learn the exact order to launch channels (eBay → Etsy → TikTok Shop → Walmart → Shopify → Amazon) to preserve capital and minimize operational risk.</li>
-          <li><strong>Module 2: US &amp; UK Corporate Entity Legal Compliance:</strong> Mastering US LLC pass-through tax rules, IRS Form 5472 documentation, UK LTD setup, and HMRC Day-1 VAT mandates for non-residents.</li>
-          <li><strong>Module 3: Amazon FBA &amp; Private Label Mastery:</strong> Product research frameworks, factory negotiations, FBA prep requirements, Amazon Brand Registry, and advanced PPC bidding strategies.</li>
-          <li><strong>Module 4: Direct-to-Consumer Shopify &amp; Digital Marketing:</strong> Custom Shopify store builds, CRO fundamentals, Meta Advantage+ ads, Google Shopping campaigns, and automated retention flows.</li>
-        </ul>
+        <ol class="mods">
+          <li class="mod">
+            <div class="mod__top"><span class="mod__icon"><svg class="icon" aria-hidden="true"><use href="#i-compass"></use></svg></span><span class="mod__num">Module 01</span></div>
+            <h3>E-Commerce Foundations &amp; Progression Mapping</h3>
+            <p>Learn the exact order to launch channels to preserve capital and minimize operational risk.</p><ol class="path"><li>eBay</li><li>Etsy</li><li>TikTok Shop</li><li>Walmart</li><li>Shopify</li><li>Amazon</li></ol>
+          </li>
+          <li class="mod">
+            <div class="mod__top"><span class="mod__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg></span><span class="mod__num">Module 02</span></div>
+            <h3>US &amp; UK Corporate Entity Legal Compliance</h3>
+            <p>Mastering US LLC pass-through tax rules, IRS Form 5472 documentation, UK LTD setup, and HMRC Day-1 VAT mandates for non-residents.</p>
+          </li>
+          <li class="mod">
+            <div class="mod__top"><span class="mod__icon"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg></span><span class="mod__num">Module 03</span></div>
+            <h3>Amazon FBA &amp; Private Label Mastery</h3>
+            <p>Product research frameworks, factory negotiations, FBA prep requirements, Amazon Brand Registry, and advanced PPC bidding strategies.</p>
+          </li>
+          <li class="mod">
+            <div class="mod__top"><span class="mod__icon"><svg class="icon" aria-hidden="true"><use href="#i-megaphone"></use></svg></span><span class="mod__num">Module 04</span></div>
+            <h3>Direct-to-Consumer Shopify &amp; Digital Marketing</h3>
+            <p>Custom Shopify store builds, CRO fundamentals, Meta Advantage+ ads, Google Shopping campaigns, and automated retention flows.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section section--soft" aria-labelledby="paths-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Two ways to learn</p>
+          <h2 id="paths-title" class="section-title">Start Free or Learn One-to-One</h2>
+        </header>
+        <div class="paths">
+          <article class="lpath">
+            <span class="lpath__icon lpath__icon--red"><svg class="icon" aria-hidden="true"><use href="#i-youtube"></use></svg></span>
+            <p class="lpath__tag">Free</p>
+            <h3>Start Learning for Free</h3>
+            <p>Learn e-commerce fundamentals through the Qalb-E-Abbas University YouTube channel. Watch free lessons and learn from practical discussions.</p>
+            <a class="btn btn--outline btn--youtube" data-social="youtube" href="#"><svg class="icon" aria-hidden="true"><use href="#i-youtube"></use></svg>Watch Free Lessons</a>
+          </article>
+          <article class="lpath lpath--dark">
+            <span class="lpath__icon"><svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg></span>
+            <p class="lpath__tag">Structured mentorship</p>
+            <h3>Build Your Foundations</h3>
+            <p>Develop your foundations through live, one-to-one Level 1 classes scheduled around your availability.</p>
+            <ul class="lpath__facts"><li><svg class="icon" aria-hidden="true"><use href="#i-video"></use></svg>24 live classes</li><li><svg class="icon" aria-hidden="true"><use href="#i-clock"></use></svg>1 hour per class</li><li><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>5 days per week</li></ul>
+            <a class="btn btn--accent" href="index.html#level-1">Explore the Basic Level<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="mentor-strip-title">
+      <div class="container">
+        <article class="founder founder--compact">
+          <div class="founder__photo"><img src="assets/img/team/qalb-e-abbas.jpg" alt="Portrait of Ch. Qalb-E-Abbas" width="800" height="800" loading="lazy" decoding="async"></div>
+          <div class="founder__body">
+            <p class="eyebrow">Learn from the founder</p>
+            <h2 id="mentor-strip-title" class="founder__name">Ch. Qalb-E-Abbas</h2>
+            <p class="founder__role">Founder of Multiple International Brands · Mentor &amp; Educator</p>
+            <blockquote class="founder__quote"><svg class="icon" aria-hidden="true"><use href="#i-quote"></use></svg><p>My mission is simple: to help more people in Pakistan build valuable business assets, develop entrepreneurial skills, and contribute to a stronger Pakistani economy.</p></blockquote>
+            <div class="founder__actions"><a class="btn btn--outline" href="team.html">Meet the Team</a></div>
+          </div>
+        </article>
         <div class="page-cta">
           <h2>Ready to start learning?</h2>
           <p>Talk to us about the right programme for you.</p>

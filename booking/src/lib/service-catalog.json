@@ -1,0 +1,215 @@
+{
+  "_note": "Single source of truth for service prices. The booking app charges from this file (prices sent by the browser are ignored) and scripts/build-pricing.mjs generates the price sections on the website from it. After editing, run: npm run pricing:build. price = whole currency units; null = price on request (shown as 'Get a quote', not sold online). unit = 'each' (qty 1) or a label such as 'per product' (quantity can be changed in the cart).",
+  "pages": {
+    "amazon": {
+      "file": "amazon-fba.html",
+      "after": "plans",
+      "title": "Amazon Service Pricing",
+      "sub": "Fixed prices for each Amazon service. Add what you need to your cart and pay securely online.",
+      "topic": "amazon",
+      "currency": "USD",
+      "groups": [
+        { "title": "Account services", "items": [
+          { "sku": "amazon-account-creation", "name": "Account Creation", "price": 100 },
+          { "sku": "amazon-account-review", "name": "Account Review", "price": 100 },
+          { "sku": "amazon-account-reactivation", "name": "Account Reactivation", "price": 500 }
+        ]},
+        { "title": "Growth services", "items": [
+          { "sku": "amazon-growth-strategy", "name": "Amazon Growth Strategy", "price": 150 },
+          { "sku": "amazon-ppc", "name": "Amazon PPC", "price": 100, "unit": "per product" },
+          { "sku": "amazon-seo", "name": "Amazon SEO", "price": 250 }
+        ]}
+      ],
+      "quarters": { "skuPrefix": "amazon-products", "label": "Amazon High-Demand Products", "price": 50 }
+    },
+    "ebay": {
+      "file": "ebay.html",
+      "title": "eBay Service Pricing",
+      "sub": "Fixed prices for each eBay service. Add what you need to your cart and pay securely online.",
+      "topic": "ebay",
+      "currency": "USD",
+      "groups": [
+        { "title": "Account services", "items": [
+          { "sku": "ebay-account-creation", "name": "Account Creation", "price": 100 },
+          { "sku": "ebay-account-review", "name": "Account Review", "price": 100 },
+          { "sku": "ebay-account-reactivation", "name": "Account Reactivation", "price": 400 },
+          { "sku": "ebay-mc999", "name": "MC999 Restriction Appeal", "price": 300 },
+          { "sku": "ebay-mc011", "name": "MC011 Restriction Appeal", "price": 200 }
+        ]},
+        { "title": "Growth services", "items": [
+          { "sku": "ebay-growth-strategy", "name": "eBay Growth Strategy", "price": 100 },
+          { "sku": "ebay-marketing-strategy", "name": "eBay Marketing Strategy", "price": 100 },
+          { "sku": "ebay-seo-audit", "name": "eBay SEO Audit", "price": 200 }
+        ]}
+      ],
+      "quarters": { "skuPrefix": "ebay-products", "label": "eBay High-Demand Products", "price": 50 }
+    },
+    "tiktok": {
+      "file": "tiktok-shop.html",
+      "title": "TikTok Shop Service Pricing",
+      "sub": "Fixed prices for each TikTok Shop service. Add what you need to your cart and pay securely online.",
+      "topic": "tiktok-shop",
+      "currency": "USD",
+      "groups": [
+        { "title": "Account services", "items": [
+          { "sku": "tiktok-account-creation", "name": "Account Creation", "price": 100 },
+          { "sku": "tiktok-account-review", "name": "Account Review", "price": 100 },
+          { "sku": "tiktok-account-reactivation", "name": "Account Reactivation", "price": 300 }
+        ]},
+        { "title": "Growth services", "items": [
+          { "sku": "tiktok-growth-strategy", "name": "TikTok Shop Growth Strategy", "price": 100 },
+          { "sku": "tiktok-seo-audit", "name": "TikTok Shop SEO Audit", "price": 150 }
+        ]}
+      ],
+      "quarters": { "skuPrefix": "tiktok-products", "label": "TikTok Shop High-Demand Products", "price": 50 }
+    },
+    "walmart": {
+      "file": "walmart.html",
+      "title": "Walmart Service Pricing",
+      "sub": "Fixed prices for each Walmart service. Add what you need to your cart and pay securely online.",
+      "topic": "walmart",
+      "currency": "USD",
+      "groups": [
+        { "title": "Account services", "items": [
+          { "sku": "walmart-account-creation", "name": "Account Creation", "price": 100 },
+          { "sku": "walmart-account-review", "name": "Account Review", "price": 100 },
+          { "sku": "walmart-account-reactivation", "name": "Account Reactivation", "price": 300 }
+        ]},
+        { "title": "Growth services", "items": [
+          { "sku": "walmart-growth-strategy", "name": "Walmart Growth Strategy", "price": 100 },
+          { "sku": "walmart-ppc", "name": "Walmart PPC", "price": 100 },
+          { "sku": "walmart-seo", "name": "Walmart SEO", "price": 150 }
+        ]}
+      ],
+      "quarters": { "skuPrefix": "walmart-products", "label": "Walmart High-Demand Products", "price": 50 }
+    },
+    "etsy": {
+      "file": "etsy.html",
+      "title": "Etsy Service Pricing",
+      "sub": "Etsy services are quoted to your shop. Product research is a fixed price and can be paid online.",
+      "topic": "etsy",
+      "currency": "USD",
+      "groups": [
+        { "title": "Account services", "items": [
+          { "sku": "etsy-account-creation", "name": "Account Creation", "price": null },
+          { "sku": "etsy-account-review", "name": "Account Review", "price": null },
+          { "sku": "etsy-account-reactivation", "name": "Account Reactivation", "price": null }
+        ]},
+        { "title": "Growth services", "items": [
+          { "sku": "etsy-growth-strategy", "name": "Etsy Growth Strategy", "price": null },
+          { "sku": "etsy-seo", "name": "Etsy SEO", "price": null }
+        ]}
+      ],
+      "quarters": { "skuPrefix": "etsy-products", "label": "Etsy High-Demand Products", "price": 50 }
+    },
+    "shopify": {
+      "file": "shopify-development.html",
+      "title": "Shopify Service Pricing",
+      "sub": "Store builds and product research at fixed prices. Growth and SEO work is quoted to your store.",
+      "topic": "shopify",
+      "currency": "USD",
+      "groups": [
+        { "title": "Store services", "items": [
+          { "sku": "shopify-website-development", "name": "Shopify Website Development", "price": 250 },
+          { "sku": "shopify-growth-strategy", "name": "Shopify Growth Strategy", "price": null },
+          { "sku": "shopify-seo", "name": "Shopify SEO", "price": null }
+        ]}
+      ],
+      "quarters": { "skuPrefix": "shopify-products", "label": "Shopify High-Demand Products", "price": 50 }
+    },
+    "us-llc": {
+      "file": "us-llc-formation.html",
+      "mode": "plans",
+      "topic": "usa-company-formation",
+      "currency": "USD",
+      "groups": [
+        { "title": "Packages", "items": [
+          { "sku": "us-llc-basic", "name": "USA LLC — Basic Plan", "price": 550, "note": "State fee extra" },
+          { "sku": "us-llc-advanced", "name": "USA LLC — Advanced Plan", "price": 650 }
+        ]}
+      ]
+    },
+    "uk-ltd": {
+      "file": "uk-ltd-formation.html",
+      "mode": "plans",
+      "topic": "uk-company-formation",
+      "currency": "GBP",
+      "groups": [
+        { "title": "Packages", "items": [
+          { "sku": "uk-ltd-basic", "name": "UK LTD — Basic Plan", "price": 350 },
+          { "sku": "uk-ltd-advanced", "name": "UK LTD — Advanced Plan", "price": 500 }
+        ]}
+      ]
+    },
+    "taxation": {
+      "file": "taxation.html",
+      "title": "Tax Filing Pricing",
+      "sub": "One simple payment — we prepare and file everything for you.",
+      "topic": "taxation",
+      "groups": [
+        { "title": "United States", "currency": "USD", "items": [
+          { "sku": "tax-usa", "name": "USA Tax Filing", "price": 200, "note": "+ state fee + taxes", "desc": "IRS Form 5472 and pro-forma Form 1120 for non-resident single-member LLCs." }
+        ]},
+        { "title": "United Kingdom", "currency": "GBP", "items": [
+          { "sku": "tax-uk", "name": "UK Tax Filing", "price": 220, "note": "+ taxes · one year", "desc": "Corporation Tax return and filing for one year." },
+          { "sku": "tax-uk-accounting", "name": "Complete Accounting Package", "price": 180, "unit": "per year", "fixedQty": true, "note": "Without VAT · just £18.33/month", "desc": "Annual accounts preparation and filing, Corporation Tax return, full Companies House and HMRC compliance, and ongoing support all year." }
+        ]}
+      ]
+    },
+    "trademark": {
+      "file": "trademark-registration.html",
+      "title": "Trademark Registration Pricing",
+      "sub": "Protect your brand in the US or UK with a fixed professional fee.",
+      "topic": "trademark-registration",
+      "groups": [
+        { "title": "United States", "currency": "USD", "items": [
+          { "sku": "trademark-usa", "name": "USA Trademark Registration", "price": 799, "note": "+ state fee" }
+        ]},
+        { "title": "United Kingdom", "currency": "GBP", "items": [
+          { "sku": "trademark-uk", "name": "UK Trademark Registration", "price": 350 }
+        ]}
+      ]
+    },
+    "digital-marketing": {
+      "file": "digital-marketing.html",
+      "title": "Digital Marketing Pricing",
+      "sub": "Monthly ad management. Advertising spend is paid directly to the platform and is not included.",
+      "topic": "digital-marketing",
+      "currency": "USD",
+      "groups": [
+        { "title": "Monthly ad management", "items": [
+          { "sku": "dm-meta-ads", "name": "Meta Ads (Facebook & Instagram)", "price": 150, "unit": "per month" },
+          { "sku": "dm-tiktok-ads", "name": "TikTok Ads", "price": 150, "unit": "per month" },
+          { "sku": "dm-google-ads", "name": "Google Ads", "price": 250, "unit": "per month" }
+        ]}
+      ]
+    },
+    "seo": {
+      "file": "seo.html",
+      "title": "SEO Pricing",
+      "sub": "Starting prices. We confirm the final scope after a quick look at your website.",
+      "topic": "seo",
+      "currency": "USD",
+      "groups": [
+        { "title": "SEO services", "items": [
+          { "sku": "seo-on-page", "name": "On-Page SEO", "price": 500, "from": true, "fixedQty": true },
+          { "sku": "seo-off-page", "name": "Off-Page SEO", "price": 500, "from": true, "fixedQty": true },
+          { "sku": "seo-technical", "name": "Technical SEO", "price": 500, "from": true, "fixedQty": true }
+        ]}
+      ]
+    },
+    "education": {
+      "file": "education-consultancy.html",
+      "title": "Education Consultancy Pricing",
+      "sub": "Our processing fee for Malta university applications.",
+      "topic": "education-consultancy",
+      "currency": "EUR",
+      "groups": [
+        { "title": "Malta universities", "items": [
+          { "sku": "edu-malta-processing", "name": "Malta University Application Processing", "price": 1500, "note": "University fees are separate and depend on the university", "desc": "Course and university selection, admission application, documentation and visa guidance." }
+        ]}
+      ]
+    }
+  },
+  "consultation": { "price": 30, "currency": "USD", "pages": ["amazon", "ebay", "tiktok", "walmart", "etsy", "shopify"] }
+}

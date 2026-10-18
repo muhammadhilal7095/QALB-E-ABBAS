@@ -9,20 +9,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="page-hero">
+    <section class="page-hero page-hero--photo">
+      <img class="phero__bg" src="assets/img/cards/uk-tax.jpg" alt="" fetchpriority="high" decoding="async">
       <div class="container page-hero__inner">
         <ol class="breadcrumb" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li aria-current="page">Trademark Registration</li></ol>
         <h1>US &amp; UK Trademark Registration Services: Secure Your IP Assets &amp; Lock Down Brand Registry</h1>
         
+      <div class="page-hero__actions"><a class="btn btn--accent" href="book-consultation.html?topic=trademark-registration">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--glass" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div>
       </div>
     </section>
     <section class="section">
@@ -31,7 +34,46 @@
 <p>Qalb-E-Abbas provides complete end-to-end trademark registration services in both the US and UK. We perform comprehensive conflict searches, draft precise class descriptions, and manage filings directly through accredited state bar attorneys.</p>
 <h2>Trademark Pricing &amp; Jurisdiction Breakdown</h2>
 <div class="table-wrap" role="region" tabindex="0" aria-label="Trademark fees table"><table class="data-table"><caption>Trademark fees</caption><thead><tr><th scope="col">Region / Jurisdiction</th><th scope="col">Primary Authority</th><th scope="col">Requirements &amp; Attorney Rules</th><th scope="col">Fixed Filing Fee</th></tr></thead><tbody><tr><th scope="row">United States</th><td>USPTO</td><td>Mandatory US-licensed state bar attorney (37 CFR § 2.11)</td><td class="price">$799 + State/Class Fee</td></tr><tr><th scope="row">United Kingdom</th><td>UKIPO</td><td>Direct UKIPO application &amp; classification filing</td><td class="price">£350 + Official Fees</td></tr></tbody></table></div><p class="table-hint">Swipe the table sideways to see all columns.</p>
-<div class="page-cta"><h2>Ready to get started?</h2><p>Book a strategic consultation and build your business in the right order.</p><div class="btn-row"><a class="btn btn--accent" href="book-consultation.html?topic=company-registration">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div></div>
+      </div>
+    </section>
+      <!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->
+    <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Pricing</p>
+          <h2 id="pricing-title" class="section-title">Trademark Registration Pricing</h2>
+          <p class="section-sub">Protect your brand in the US or UK with a fixed professional fee.</p>
+        </header>
+        <div class="pr-group">
+          <h3 class="pr-group__title">United States</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">USA Trademark Registration</h4>
+              <p class="pr-item__price">$799</p>
+              <p class="pr-item__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>+ state fee</p>
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="trademark-usa" data-name="USA Trademark Registration" data-price="799" data-currency="USD" data-note="+ state fee"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
+        </div>
+        <div class="pr-group">
+          <h3 class="pr-group__title">United Kingdom</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">UK Trademark Registration</h4>
+              <p class="pr-item__price">£350</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="trademark-uk" data-name="UK Trademark Registration" data-price="350" data-currency="GBP"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
+        </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a></p>
+      </div>
+    </section>
+    <!-- PRICING:END -->
+
+    <section class="section" aria-label="Get started">
+      <div class="container">
+        <div class="page-cta"><h2>Ready to get started?</h2><p>Book a strategic consultation and build your business in the right order.</p><div class="btn-row"><a class="btn btn--accent" href="book-consultation.html?topic=company-registration">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div></div>
       </div>
     </section>
   </main>

@@ -1,0 +1,539 @@
+// Qalb-E-Abbas — Online Meeting Booking & Payment System
+// All timestamps are stored in UTC (timestamptz) and converted for display.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN // full access incl. settings, refunds, team
+  STAFF // manage meetings & clients
+  CLIENT
+}
+
+enum TokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+enum PaymentRequirement {
+  FULL
+  DEPOSIT
+  NONE
+}
+
+enum BookingStatus {
+  HELD // slot temporarily reserved during checkout
+  PENDING_PAYMENT // awaiting bank transfer / manual payment
+  PENDING_APPROVAL // paid, awaiting admin approval (manual approval mode)
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  REJECTED
+  EXPIRED // checkout abandoned / hold timed out
+}
+
+enum PaymentStatus {
+  UNPAID
+  PENDING
+  PAID
+  PARTIALLY_PAID
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentGateway {
+  STRIPE
+  BANK_TRANSFER
+  MOCK // development only
+}
+
+enum TxStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum ChangeRequest {
+  NONE
+  RESCHEDULE
+  CANCEL
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  name            String
+  role            Role      @default(CLIENT)
+  emailVerifiedAt DateTime?
+  active          Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  client           Client?
+  sessions         Session[]
+  tokens           AuthToken[]
+  assignedServices MeetingService[] @relation("ServiceAssignee")
+  assignedBookings Booking[]        @relation("BookingAssignee")
+  notes            InternalNote[]
+  auditLogs        AuditLog[]
+  refunds          Refund[]
+}
+
+model Session {
+  id        String   @id // sha256 of the cookie token
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model AuthToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      TokenType
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Client {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String
+  phone          String?
+  company        String?
+  website        String?
+  country        String?
+  timezone       String?
+  userId         String?   @unique
+  user           User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  bookings       Booking[]
+}
+
+model MeetingService {
+  id                    String             @id @default(cuid())
+  slug                  String             @unique
+  name                  String
+  description           String
+  durationMin           Int
+  priceCents            Int
+  currency              String             @default("GBP")
+  active                Boolean            @default(true)
+  isCustom              Boolean            @default(false)
+  sortOrder             Int                @default(0)
+  paymentRequirement    PaymentRequirement @default(FULL)
+  depositPercent        Int                @default(50)
+  cancelNoticeHours     Int                @default(24)
+  rescheduleNoticeHours Int                @default(24)
+  policyNote            String?
+  assignedToId          String?
+  assignedTo            User?              @relation("ServiceAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  bookings              Booking[]
+  coupons               Coupon[]
+}
+
+/// Weekly working hours, in the business time zone. Several rows per weekday are allowed.
+model WorkingHours {
+  id          String @id @default(cuid())
+  weekday     Int // 0 = Sunday … 6 = Saturday
+  startMinute Int // minutes after midnight
+  endMinute   Int
+}
+
+/// Daily breaks; weekday null = every day.
+model BreakTime {
+  id          String  @id @default(cuid())
+  weekday     Int?
+  startMinute Int
+  endMinute   Int
+  label       String?
+}
+
+/// Holidays / leave (closed) or custom hours for a specific business date.
+model DateOverride {
+  id          String  @id @default(cuid())
+  date        String  @unique // YYYY-MM-DD in business time zone
+  closed      Boolean @default(true)
+  startMinute Int?
+  endMinute   Int?
+  note        String?
+}
+
+/// Emergency blocks of specific time ranges.
+model BlockedSlot {
+  id        String   @id @default(cuid())
+  startAt   DateTime
+  endAt     DateTime
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@index([startAt, endAt])
+}
+
+model Coupon {
+  id             String          @id @default(cuid())
+  code           String          @unique
+  percentOff     Int?
+  amountOffCents Int?
+  active         Boolean         @default(true)
+  maxRedemptions Int?
+  redemptions    Int             @default(0)
+  validFrom      DateTime?
+  validTo        DateTime?
+  serviceId      String?
+  service        MeetingService? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  createdAt      DateTime        @default(now())
+  bookings       Booking[]
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  reference       String        @unique
+  manageToken     String        @unique // secret for guest access links
+  serviceId       String
+  service         MeetingService @relation(fields: [serviceId], references: [id])
+  clientId        String
+  client          Client        @relation(fields: [clientId], references: [id])
+
+  // Meeting purpose
+  title           String
+  purpose         String
+  description     String
+  questions       String?
+  expectedOutcome String?
+  notes           String?
+
+  // Time
+  startAt         DateTime
+  endAt           DateTime
+  blockStart      DateTime // startAt
+  blockEnd        DateTime // endAt + buffer — used by the overlap constraint
+  durationMin     Int
+  clientTimezone  String
+  holdExpiresAt   DateTime?
+
+  status          BookingStatus @default(HELD)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  changeRequest   ChangeRequest @default(NONE)
+  changeMessage   String?
+
+  // Pricing snapshot (calculated on the server)
+  currency        String
+  priceCents      Int
+  discountCents   Int           @default(0)
+  taxCents        Int           @default(0)
+  totalCents      Int
+  dueNowCents     Int // deposit or full amount
+  paidCents       Int           @default(0)
+  refundedCents   Int           @default(0)
+  couponId        String?
+  coupon          Coupon?       @relation(fields: [couponId], references: [id], onDelete: SetNull)
+
+  // Contact snapshot
+  clientName      String
+  clientEmail     String
+  clientPhone     String
+  company         String?
+  website         String?
+  country         String
+  commMethod      String
+  platformPref    String
+  additionalInfo  String?
+
+  assignedToId    String?
+  assignedTo      User?         @relation("BookingAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  remindersSent   Int[]         @default([])
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  confirmedAt     DateTime?
+  cancelledAt     DateTime?
+  completedAt     DateTime?
+
+  payments        Payment[]
+  events          BookingEvent[]
+  notes_          InternalNote[]
+  meetingLink     MeetingLink?
+  attachments     Attachment[]
+  notifications   Notification[]
+
+  @@index([startAt])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([clientId])
+}
+
+model BookingEvent {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  type      String
+  message   String
+  actorId   String?
+  data      Json?
+  createdAt DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+model Payment {
+  id               String         @id @default(cuid())
+  reference        String         @unique
+  bookingId        String
+  booking          Booking        @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  gateway          PaymentGateway
+  status           TxStatus       @default(PENDING)
+  amountCents      Int
+  currency         String
+  refundedCents    Int            @default(0)
+  gatewaySessionId String?        @unique
+  gatewayPaymentId String?        @unique
+  idempotencyKey   String         @unique
+  failureReason    String?
+  paidAt           DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  refunds          Refund[]
+
+  @@index([status])
+}
+
+model Refund {
+  id              String   @id @default(cuid())
+  paymentId       String
+  payment         Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  amountCents     Int
+  reason          String?
+  status          String   @default("SUCCEEDED")
+  gatewayRefundId String?  @unique
+  createdById     String?
+  createdBy       User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+}
+
+/// Processed gateway webhook events — guarantees idempotent processing.
+model WebhookEvent {
+  id          String   @id // gateway event id
+  gateway     String
+  type        String
+  processedAt DateTime @default(now())
+}
+
+model MeetingLink {
+  id           String   @id @default(cuid())
+  bookingId    String   @unique
+  booking      Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  platform     String // GOOGLE_MEET | ZOOM | TEAMS | CUSTOM | PHONE | IN_PERSON
+  url          String?
+  instructions String?
+  updatedAt    DateTime @updatedAt
+}
+
+model InternalNote {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model Attachment {
+  id         String   @id @default(cuid())
+  bookingId  String?
+  booking    Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  draftToken String // links uploads made before the booking exists
+  filename   String
+  mime       String
+  size       Int
+  storedName String   @unique
+  createdAt  DateTime @default(now())
+
+  @@index([draftToken])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  channel   String   @default("EMAIL")
+  template  String
+  to        String
+  subject   String
+  body      String
+  status    String // SENT | FAILED | LOGGED (no provider configured)
+  error     String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  data      Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model RateLimit {
+  key         String   @id
+  count       Int
+  windowStart DateTime
+}
+
+/// Single-row system settings (id = 1).
+model Setting {
+  id                 Int      @id @default(1)
+  businessName       String   @default("Qalb-E-Abbas")
+  logoUrl            String?
+  timezone           String   @default("Europe/London")
+  currency           String   @default("GBP")
+  slotStepMin        Int      @default(15)
+  bufferMin          Int      @default(15)
+  minNoticeHours     Int      @default(12)
+  maxDaysAhead       Int      @default(60)
+  maxPerDay          Int      @default(8)
+  holdMinutes        Int      @default(30)
+  bankHoldHours      Int      @default(48)
+  taxRatePercent     Float    @default(0)
+  taxLabel           String   @default("VAT")
+  allowGuestBooking  Boolean  @default(true)
+  manualApproval     Boolean  @default(false)
+  stripeEnabled      Boolean  @default(true)
+  bankEnabled        Boolean  @default(false)
+  bankInstructions   String   @default("")
+  reminderHours      Int[]    @default([24, 1])
+  senderName         String   @default("Qalb-E-Abbas")
+  adminNotifyEmail   String   @default("contact@qalbeabbas.com")
+  emailFooter        String   @default("Qalb-E-Abbas · Oldham, Manchester, United Kingdom · +44 7862 605011")
+  emailTemplates     Json     @default("{}")
+  cancellationPolicy String   @default("")
+  refundPolicy       String   @default("")
+  updatedAt          DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Service orders — fixed-price services bought from the website cart
+// (prices come from src/lib/service-catalog.json, never from the browser).
+// ---------------------------------------------------------------------------
+
+enum OrderStatus {
+  PENDING_PAYMENT // created, waiting for card payment or bank transfer
+  PAID
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+model Order {
+  id            String         @id @default(cuid())
+  reference     String         @unique
+  accessToken   String         @unique // lets the client view/pay the order without an account
+  clientName    String
+  clientEmail   String
+  clientPhone   String?
+  notes         String?
+  currency      String
+  totalCents    Int
+  paidCents     Int            @default(0)
+  status        OrderStatus    @default(PENDING_PAYMENT)
+  paidAt        DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  items         OrderItem[]
+  payments      OrderPayment[]
+
+  @@index([status])
+  @@index([clientEmail])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id         String @id @default(cuid())
+  orderId    String
+  order      Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  sku        String
+  name       String
+  unitCents  Int
+  quantity   Int
+  lineCents  Int
+  unitLabel  String?
+  note       String?
+}
+
+model OrderPayment {
+  id               String         @id @default(cuid())
+  reference        String         @unique
+  orderId          String
+  order            Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  gateway          PaymentGateway
+  status           TxStatus       @default(PENDING)
+  amountCents      Int
+  currency         String
+  gatewaySessionId String?        @unique
+  gatewayPaymentId String?        @unique
+  idempotencyKey   String         @unique
+  failureReason    String?
+  paidAt           DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// Seller Readiness Assessment submissions from the website (assessment.html).
+// ---------------------------------------------------------------------------
+model Assessment {
+  id             String   @id @default(cuid())
+  reference      String   @unique
+  firstName      String
+  lastName       String
+  email          String
+  phone          String?
+  ageGroup       String?
+  gender         String?
+  marketingOptIn Boolean  @default(false)
+  country        String?
+  path           String // adaptive path, e.g. "Product Validation"
+  level          String // overall readiness level
+  score          Int // 0–100
+  scores         Json // per-area scores
+  blockers       Json // top blockers shown to the client
+  answers        Json // question id → { question, answer }
+  createdAt      DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([email])
+}

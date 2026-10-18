@@ -13,3 +13,10 @@ tax.jpg        StockSnap (CC0)   Calculator in hand   https://cdn.stocksnap.io/i
 marketing.jpg  StockSnap (CC0)   Analytics on a desktop screen   https://cdn.stocksnap.io/img-thumbs/960w/959IURDRGJ.jpg
 growth.jpg     StockSnap (CC0)   Business meeting   https://cdn.stocksnap.io/img-thumbs/960w/SSKSJIBMMP.jpg
 education.jpg  Wikimedia Commons (CC0)   Building in Independence Square, Valletta, Malta
+amazon-seller.jpg  StockSnap (CC0)   Seller packing a parcel   https://cdn.stocksnap.io/img-thumbs/960w/WP1KHDXGOY.jpg
+ebay-parcel.jpg    StockSnap (CC0)   Shipping box with item label   https://cdn.stocksnap.io/img-thumbs/960w/USP4WCYPBW.jpg
+shopify-store.jpg  StockSnap (CC0)   Online store on a laptop, card payment   https://cdn.stocksnap.io/img-thumbs/960w/RZWM4T2UAD.jpg
+uae.jpg            StockSnap (CC0)   Dubai marina, aerial   https://cdn.stocksnap.io/img-thumbs/960w/UBUUWLEQXU.jpg
+web-dev.jpg        StockSnap (CC0)   HTML code on screen   https://cdn.stocksnap.io/img-thumbs/960w/CWYK8CLC61.jpg
+app-dev.jpg        StockSnap (CC0)   Laptop code and phone   https://cdn.stocksnap.io/img-thumbs/960w/FSPLFPQBCZ.jpg
+crm-dev.jpg        StockSnap (CC0)   Coding on a laptop   https://cdn.stocksnap.io/img-thumbs/960w/DZ1EFM9PIK.jpg

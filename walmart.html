@@ -9,9 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -89,41 +90,76 @@
     </section>
 
     <!-- PRICING -->
-    <section class="section" id="pricing" aria-labelledby="pricing-title">
+    <!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->
+    <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
       <div class="container">
         <header class="section-head">
           <p class="eyebrow">Pricing</p>
-          <h2 id="pricing-title" class="section-title">Walmart Service Rate Card</h2>
-          <p class="section-sub">Clear, fixed prices for each service. Not sure what you need? Book a consultation and we'll recommend the right starting point.</p>
+          <h2 id="pricing-title" class="section-title">Walmart Service Pricing</h2>
+          <p class="section-sub">Fixed prices for each Walmart service. Add what you need to your cart and pay securely online.</p>
         </header>
-        <div class="price-grid price-grid--4">
-          <article class="price">
-            <h3 class="price__name">Walmart Account Approval &amp; Creation</h3>
-            <p class="price__amount">$100</p>
-            <p class="price__scope">Application filing, tax setup, store verification</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=walmart">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">Walmart Account Reactivation</h3>
-            <p class="price__amount">$300</p>
-            <p class="price__scope">Performance plan of action, ODR suspension removal</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=walmart">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">Walmart PPC Campaign Management</h3>
-            <p class="price__amount">$100</p>
-            <p class="price__scope">Sponsored products setup &amp; bid optimization</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=walmart">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">Walmart SEO &amp; Listing Optimization</h3>
-            <p class="price__amount">$150</p>
-            <p class="price__scope">LQS audit &amp; keyword optimization (20 products)</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=walmart">Get Started</a>
-          </article>
+        <div class="pr-group">
+          <h3 class="pr-group__title">Account services</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Creation</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="walmart-account-creation" data-name="Account Creation" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Review</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="walmart-account-review" data-name="Account Review" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Reactivation</h4>
+              <p class="pr-item__price">$300</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="walmart-account-reactivation" data-name="Account Reactivation" data-price="300" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
         </div>
+        <div class="pr-group">
+          <h3 class="pr-group__title">Growth services</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">Walmart Growth Strategy</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="walmart-growth-strategy" data-name="Walmart Growth Strategy" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Walmart PPC</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="walmart-ppc" data-name="Walmart PPC" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Walmart SEO</h4>
+              <p class="pr-item__price">$150</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="walmart-seo" data-name="Walmart SEO" data-price="150" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
+        </div>
+        <div class="pr-quarters">
+          <div class="pr-quarters__text">
+            <span class="pr-quarters__icon"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg></span>
+            <div><h3>Walmart High-Demand Products</h3><p>A researched list of 20 high-demand products for each quarter of the year — $50 per quarter.</p></div>
+          </div>
+          <div class="pr-quarters__list"><div class="pr-q"><span class="pr-q__name">Q1</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="walmart-products-q1" data-name="Walmart High-Demand Products — Q1 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q1 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q2</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="walmart-products-q2" data-name="Walmart High-Demand Products — Q2 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q2 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q3</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="walmart-products-q3" data-name="Walmart High-Demand Products — Q3 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q3 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q4</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="walmart-products-q4" data-name="Walmart High-Demand Products — Q4 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q4 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div></div>
+        </div>
+        <div class="pr-consult">
+          <span class="pr-consult__icon"><svg class="icon" aria-hidden="true"><use href="#i-headset"></use></svg></span>
+          <p><strong>Not sure where to start?</strong><span>Book a 1:1 consultation with our team for $30.</span></p>
+          <a class="btn btn--accent" href="book-consultation.html?topic=walmart">Book a Consultation<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+        </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a></p>
       </div>
     </section>
+    <!-- PRICING:END -->
 
     <!-- HELP + CTA -->
     <section class="section section--soft" aria-label="Get started">

@@ -9,22 +9,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="uni-hero" aria-labelledby="pg-h1">
+    <section class="uni-hero uni-hero--service" aria-labelledby="pg-h1">
+      <img class="phero__bg" src="assets/img/hero/marketing.jpg" srcset="assets/img/hero/marketing-800.jpg 800w, assets/img/hero/marketing.jpg 960w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
       <div class="container uni-hero__grid">
         <div class="uni-hero__text">
           <ol class="breadcrumb breadcrumb--light" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li aria-current="page">SEO</li></ol>
           <p class="uni-hero__badge"><span class="uni-hero__pulse" aria-hidden="true"></span>Marketing &amp; Business Growth</p>
           <h1 id="pg-h1" class="uni-hero__title"><span class="uni-hero__kicker">Professional SEO Services</span>Rank Higher on Google. <span class="uni-hero__hl">Attract More Visitors.</span> Grow Your Business.</h1>
-          <p class="uni-hero__lead">Improve your website's visibility and attract potential customers with professional Search Engine Optimization (SEO) services. We help businesses improve search engine rankings, increase organic traffic, and build a strong online presence through strategic, data-driven SEO solutions.</p><p class="uni-hero__lead" style="margin-top:14px">From keyword research and on-page optimization to technical SEO and content strategy, we optimize your website to help search engines understand your content and users find your products and services.</p>
+          <p class="uni-hero__lead">Improve your website's visibility and attract potential customers with professional Search Engine Optimization (SEO) services. We help businesses improve search engine rankings, increase organic traffic, and build a strong online presence through strategic, data-driven SEO solutions.</p>
           <div class="uni-hero__actions"><a class="btn btn--accent" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call Now</a><a class="btn btn--glass" href="book-consultation.html?topic=seo">Get Free Consultation</a></div>
           <p class="svcx-hero__call" style="color:rgba(255,255,255,.7)"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg><a href="tel:+447862605011" style="color:#fff">+44 7862 605011</a></p>
         </div>
@@ -41,7 +43,7 @@
         <div>
           <p class="eyebrow">Overview</p>
           <h2 id="what-title" class="section-title">What Is SEO?</h2>
-          <p class="svcx-p">Search Engine Optimization (SEO) is the process of improving a website's visibility in organic search engine results. It involves optimizing website content, technical performance, site structure, and other relevant factors to help search engines understand your website and connect it with relevant searches.</p><p class="svcx-p" style="margin-top:16px">A well-planned SEO strategy can help attract qualified visitors, build credibility, and create long-term opportunities for business growth.</p>
+          <p class="svcx-p">Search Engine Optimization (SEO) is the process of improving a website's visibility in organic search engine results. It involves optimizing website content, technical performance, site structure, and other relevant factors to help search engines understand your website and connect it with relevant searches.</p><p class="svcx-p" style="margin-top:16px">A well-planned SEO strategy can help attract qualified visitors, build credibility, and create long-term opportunities for business growth.</p><p class="svcx-p" style="margin-top:16px">From keyword research and on-page optimization to technical SEO and content strategy, we optimize your website to help search engines understand your content and users find your products and services.</p>
           
         </div>
         <aside class="why">
@@ -152,22 +154,41 @@
         <ol class="tl"><li class="tl__item"><span class="tl__num">01</span><div><h3>Website Audit</h3><p>Analyze your website's current SEO performance and identify issues.</p></div></li><li class="tl__item"><span class="tl__num">02</span><div><h3>Keyword Research</h3><p>Find relevant keywords aligned with your products, services, and audience.</p></div></li><li class="tl__item"><span class="tl__num">03</span><div><h3>Strategy Development</h3><p>Create a prioritized SEO roadmap based on your goals and opportunities.</p></div></li><li class="tl__item"><span class="tl__num">04</span><div><h3>Implementation</h3><p>Improve technical SEO, page content, site structure, and other relevant elements.</p></div></li><li class="tl__item"><span class="tl__num">05</span><div><h3>Performance Monitoring</h3><p>Track search visibility, organic traffic, and important website metrics.</p></div></li><li class="tl__item"><span class="tl__num">06</span><div><h3>Continuous Optimization</h3><p>Refine your strategy based on results, search trends, and changing business needs.</p></div></li></ol>
       </div>
     </section>
-    <section class="section section--soft svcx" id="pricing" aria-labelledby="pricing-title" style="--sx:#1F55E0;--sx-light:#8EA6FF;--sx-ink:#fff;--sx-deep:#1F55E0">
+    <!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->
+    <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
       <div class="container">
         <header class="section-head">
           <p class="eyebrow">Pricing</p>
           <h2 id="pricing-title" class="section-title">SEO Pricing</h2>
+          <p class="section-sub">Starting prices. We confirm the final scope after a quick look at your website.</p>
         </header>
-        <div class="price-grid price-grid--1">
-          <article class="price">
-            <h3 class="price__name">Full SEO Service</h3>
-            <p class="price__amount">From $500 / Month</p>
-            <p class="price__scope">On-page, off-page and technical: full technical site audit, link building, content optimization</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=seo">Get Started</a>
-          </article>
+        <div class="pr-group">
+          <h3 class="pr-group__title">SEO services</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">On-Page SEO</h4>
+              <p class="pr-item__price"><span class="pr-item__from">From</span>$500</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="seo-on-page" data-name="On-Page SEO" data-price="500" data-currency="USD" data-note="Starting price"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Off-Page SEO</h4>
+              <p class="pr-item__price"><span class="pr-item__from">From</span>$500</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="seo-off-page" data-name="Off-Page SEO" data-price="500" data-currency="USD" data-note="Starting price"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Technical SEO</h4>
+              <p class="pr-item__price"><span class="pr-item__from">From</span>$500</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="seo-technical" data-name="Technical SEO" data-price="500" data-currency="USD" data-note="Starting price"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
         </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a></p>
       </div>
     </section>
+    <!-- PRICING:END -->
 
     <section class="section" aria-label="Get started">
       <div class="container">

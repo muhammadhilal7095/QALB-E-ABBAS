@@ -9,27 +9,37 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4"></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
   <script>
-    /* Preselect the consultation topic from ?topic=… (journey cards, service pages). */
+    /* Paid consultations go to the online booking system; course applications
+       and Level 1 enquiries stay on the form below. Topic → meeting type slug. */
+    (function () {
+      var t = new URLSearchParams(location.search).get("topic") || "";
+      if (/^(level-1|digital-business-launch|local-agents-flagship|ai-video-creator-pro)$/.test(t)) return;
+      var map = {
+        amazon: "ecommerce", ebay: "ecommerce", walmart: "ecommerce", etsy: "ecommerce", "tiktok-shop": "ecommerce", shopify: "ecommerce", ecommerce: "ecommerce",
+        "website-development": "website-development", "shopify-development": "website-development", development: "website-development",
+        "app-development": "app-development", "crm-development": "app-development",
+        "whatsapp-automation": "ai-automation", "instagram-automation": "ai-automation", "facebook-automation": "ai-automation", "tiktok-automation": "ai-automation", automation: "ai-automation",
+        marketing: "digital-marketing", "digital-marketing": "digital-marketing", "social-media-marketing": "digital-marketing", "influencer-marketing": "digital-marketing", "email-marketing": "digital-marketing", "affiliate-marketing": "digital-marketing",
+        seo: "seo",
+        "uk-company-formation": "business-registration", "usa-company-formation": "business-registration", "malta-company-formation": "business-registration", "uae-company-formation": "business-registration", "company-registration": "business-registration", "trademark-registration": "business-registration",
+        taxation: "tax", "uk-tax-filing": "tax", "usa-tax-filing": "tax", "malta-tax-filing": "tax",
+        "business-support": "general-business", general: "general-business",
+        "education-consultancy": "custom", education: "custom"
+      };
+      var app = String(window.SITE_CONFIG.links.bookingApp || "").replace(/\/$/, "");
+      if (!app) return;
+      location.replace(app + (map[t] ? "/book/" + map[t] : "/#services"));
+    })();
+    /* Preselect the enquiry topic from ?topic=… */
     document.addEventListener("DOMContentLoaded", function () {
       var t = new URLSearchParams(location.search).get("topic");
-      if (!t) return;
-      var sel = document.getElementById("b-topic"), svc = document.getElementById("b-service");
-      if (sel.querySelector('option[value="' + CSS.escape(t) + '"]')) { sel.value = t; return; }
-      var cats = window.SITE_CONFIG.services, map = { taxation: "company-registration", formation: "company-registration", marketing: "marketing", development: "development" };
-      var tax = /-tax-filing$/.test(t);
-      for (var i = 0; i < cats.length; i++) {
-        var hit = cats[i].items.filter(function (it) { return it[1] === t; })[0];
-        if (hit || tax) {
-          var id = tax ? "taxation" : cats[i].id;
-          sel.value = map[id] || id;
-          svc.value = hit ? hit[0] : t.replace(/-/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
-          return;
-        }
-      }
+      var sel = document.getElementById("b-topic");
+      if (t && sel && sel.querySelector('option[value="' + CSS.escape(t) + '"]')) sel.value = t;
     });
   </script>
 </head>

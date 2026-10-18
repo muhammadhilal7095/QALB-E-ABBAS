@@ -9,9 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -83,41 +84,70 @@
     </section>
 
     <!-- PRICING -->
-    <section class="section" id="pricing" aria-labelledby="pricing-title">
+    <!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->
+    <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
       <div class="container">
         <header class="section-head">
           <p class="eyebrow">Pricing</p>
           <h2 id="pricing-title" class="section-title">Etsy Service Pricing</h2>
-          <p class="section-sub">Clear, fixed prices for each service. Not sure what you need? Book a consultation and we'll recommend the right starting point.</p>
+          <p class="section-sub">Etsy services are quoted to your shop. Product research is a fixed price and can be paid online.</p>
         </header>
-        <div class="price-grid price-grid--4">
-          <article class="price">
-            <h3 class="price__name">Etsy Store Setup &amp; Design</h3>
-            <p class="price__amount price__amount--text">Included in Package</p>
-            <p class="price__scope">Shop banner, policy setup, first listings configuration</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=etsy">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">Etsy Account Reactivation Appeal</h3>
-            <p class="price__amount price__amount--text">Custom Consultation</p>
-            <p class="price__scope">Identity verification &amp; policy compliance appeal</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=etsy">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">Etsy High-Demand Product Research</h3>
-            <p class="price__amount">$50 / Quarter</p>
-            <p class="price__scope">20 curated low-competition niche product opportunities</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=etsy">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">1-on-1 Consultation Session</h3>
-            <p class="price__amount">$30</p>
-            <p class="price__scope">Strategic review of shop metrics &amp; growth plan</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=etsy">Get Started</a>
-          </article>
+        <div class="pr-group">
+          <h3 class="pr-group__title">Account services</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Creation</h4>
+              <p class="pr-item__price pr-item__price--quote">Price on request</p>
+              
+              <div class="pr-item__action"><a class="btn btn--outline btn--sm" href="book-consultation.html?topic=etsy">Get a quote</a></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Review</h4>
+              <p class="pr-item__price pr-item__price--quote">Price on request</p>
+              
+              <div class="pr-item__action"><a class="btn btn--outline btn--sm" href="book-consultation.html?topic=etsy">Get a quote</a></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Reactivation</h4>
+              <p class="pr-item__price pr-item__price--quote">Price on request</p>
+              
+              <div class="pr-item__action"><a class="btn btn--outline btn--sm" href="book-consultation.html?topic=etsy">Get a quote</a></div>
+            </article>
+          </div>
         </div>
+        <div class="pr-group">
+          <h3 class="pr-group__title">Growth services</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">Etsy Growth Strategy</h4>
+              <p class="pr-item__price pr-item__price--quote">Price on request</p>
+              
+              <div class="pr-item__action"><a class="btn btn--outline btn--sm" href="book-consultation.html?topic=etsy">Get a quote</a></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Etsy SEO</h4>
+              <p class="pr-item__price pr-item__price--quote">Price on request</p>
+              
+              <div class="pr-item__action"><a class="btn btn--outline btn--sm" href="book-consultation.html?topic=etsy">Get a quote</a></div>
+            </article>
+          </div>
+        </div>
+        <div class="pr-quarters">
+          <div class="pr-quarters__text">
+            <span class="pr-quarters__icon"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg></span>
+            <div><h3>Etsy High-Demand Products</h3><p>A researched list of 20 high-demand products for each quarter of the year — $50 per quarter.</p></div>
+          </div>
+          <div class="pr-quarters__list"><div class="pr-q"><span class="pr-q__name">Q1</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="etsy-products-q1" data-name="Etsy High-Demand Products — Q1 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q1 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q2</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="etsy-products-q2" data-name="Etsy High-Demand Products — Q2 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q2 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q3</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="etsy-products-q3" data-name="Etsy High-Demand Products — Q3 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q3 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q4</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="etsy-products-q4" data-name="Etsy High-Demand Products — Q4 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q4 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div></div>
+        </div>
+        <div class="pr-consult">
+          <span class="pr-consult__icon"><svg class="icon" aria-hidden="true"><use href="#i-headset"></use></svg></span>
+          <p><strong>Not sure where to start?</strong><span>Book a 1:1 consultation with our team for $30.</span></p>
+          <a class="btn btn--accent" href="book-consultation.html?topic=etsy">Book a Consultation<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+        </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a></p>
       </div>
     </section>
+    <!-- PRICING:END -->
 
     <!-- HELP + CTA -->
     <section class="section section--soft" aria-label="Get started">

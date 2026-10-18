@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply bg-white text-body antialiased; font-family: Inter, system-ui, sans-serif; }
+  h1, h2, h3, h4 { @apply font-display text-ink; }
+  :focus-visible { outline: 3px solid #1F55E0; outline-offset: 2px; border-radius: 6px; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+  .btn { @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60; }
+  .btn-gold { @apply btn bg-gold text-navy hover:bg-gold-dark; }
+  .btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark; }
+  .btn-outline { @apply btn border border-brand/40 text-brand hover:border-brand hover:bg-brand-tint; }
+  .btn-ghost { @apply btn border border-line bg-white text-ink hover:bg-soft; }
+  .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+  .btn-sm { @apply min-h-[36px] px-3.5 text-xs; }
+  .card { @apply rounded-2xl border border-line bg-white shadow-card; }
+  .label { @apply mb-1.5 block text-sm font-semibold text-ink; }
+  .input { @apply block w-full rounded-xl border border-[#D5DCE7] bg-white px-3.5 py-2.5 text-[15px] text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-brand/15; }
+  .hint { @apply mt-1 text-xs text-muted; }
+  .err { @apply mt-1 text-xs font-medium text-red-600; }
+  .eyebrow { @apply text-xs font-bold uppercase tracking-[0.12em] text-brand; }
+  .table-x { @apply w-full border-collapse text-sm; }
+  .table-x th { @apply whitespace-nowrap border-b border-line bg-soft px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-muted; }
+  .table-x td { @apply border-b border-line px-3 py-2.5 align-top text-ink; }
+}
+
+@media print { .no-print { display: none !important; } body { background: #fff; } }

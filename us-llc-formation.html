@@ -9,22 +9,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="uni-hero" aria-labelledby="pg-h1">
+    <section class="uni-hero uni-hero--service" aria-labelledby="pg-h1">
+      <img class="phero__bg" src="assets/img/cards/us-formation.jpg" alt="" fetchpriority="high" decoding="async">
       <div class="container uni-hero__grid">
         <div class="uni-hero__text">
           <ol class="breadcrumb breadcrumb--light" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li aria-current="page">US LLC Formation</li></ol>
           <p class="uni-hero__badge"><span class="uni-hero__pulse" aria-hidden="true"></span>Company Formation · United States</p>
           <h1 id="pg-h1" class="uni-hero__title"><span class="uni-hero__kicker">US LLC Formation Services</span>Complete Non-Resident Corporate Setup &amp; <span class="uni-hero__hl">IRS Tax Compliance</span></h1>
-          <p class="uni-hero__lead">Establishing a US Limited Liability Company (LLC) is the gold standard for global entrepreneurs seeking to sell on Amazon US, access US payment gateways (Stripe, PayPal), and build credibility with American suppliers.</p><p class="uni-hero__lead" style="margin-top:14px">Our legal and corporate tax team manages your US LLC creation from start to finish — official state filings, compliant virtual business addresses with mail scanning, EIN procurement, US business bank account setup support, and annual IRS tax compliance.</p>
+          <p class="uni-hero__lead">Establishing a US Limited Liability Company (LLC) is the gold standard for global entrepreneurs seeking to sell on Amazon US, access US payment gateways (Stripe, PayPal), and build credibility with American suppliers.</p>
           <div class="uni-hero__actions"><a class="btn btn--accent" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call Now</a><a class="btn btn--glass" href="book-consultation.html?topic=usa-company-formation">Get Free Consultation</a></div>
           <p class="svcx-hero__call" style="color:rgba(255,255,255,.7)"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg><a href="tel:+447862605011" style="color:#fff">+44 7862 605011</a></p>
         </div>
@@ -42,7 +44,7 @@
           <p class="eyebrow">Overview</p>
           <h2 id="what-title" class="section-title">0% Federal Tax Doesn't Mean Zero Filing</h2>
           <p class="svcx-p">For non-US residents, simply forming an LLC with a cheap online agent without understanding IRS tax obligations leads to severe legal consequences. Single-member US LLCs owned by foreign residents operate as pass-through entities, meaning you owe 0% US federal income tax if you have no US physical presence or Effectively Connected Income (ECI).</p><p class="svcx-p" style="margin-top:16px">Foreign owners of US LLCs often fall into the trap of assuming 0% tax means zero tax filing. We prepare and file your annual Form 5472 and Form 1120 documentation to guarantee complete IRS compliance and protect your entity against automated financial fines.</p>
-          <div class="alert-box"><span class="alert-box__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg></span><div><p class="alert-box__title">The $25,000 IRS Form 5472 Penalty</p><p>Foreign-owned US LLCs are legally mandated to submit IRS Form 5472 along with Form 1120 pro-forma annually. Missing or late filings trigger an automated $25,000 penalty per year from the IRS.</p></div></div>
+          <div class="alert-box"><span class="alert-box__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg></span><div><p class="alert-box__title">The $25,000 IRS Form 5472 Penalty</p><p>Foreign-owned US LLCs are legally mandated to submit IRS Form 5472 along with Form 1120 pro-forma annually. Missing or late filings trigger an automated $25,000 penalty per year from the IRS.</p><p class="svcx-p" style="margin-top:16px">Our legal and corporate tax team manages your US LLC creation from start to finish — official state filings, compliant virtual business addresses with mail scanning, EIN procurement, US business bank account setup support, and annual IRS tax compliance.</p></div></div>
           
         </div>
         <aside class="why">
@@ -120,16 +122,17 @@
             <p class="plan__price">$550</p>
             
             <ul class="plan__list"><li><span class="plan__k">Articles of Organization Filing</span><span class="plan__v">Included (State Fee Extra)</span></li><li><span class="plan__k">Registered Agent (1 Year)</span><span class="plan__v">Included</span></li><li><span class="plan__k">US Address w/ Mail Scan &amp; Forwarding</span><span class="plan__v">Virtual Address</span></li><li><span class="plan__k">IRS EIN Procurement</span><span class="plan__v">Included</span></li><li><span class="plan__k">US Business Bank Signup Support</span><span class="plan__v">Mercury / Relay Guide</span></li><li><span class="plan__k">IRS Form 5472 &amp; 1120 Tax Filing</span><span class="plan__v">Optional Add-on</span></li></ul>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=usa-company-formation">Get Started</a>
+            <button type="button" class="btn btn--outline btn--block" data-add-to-cart data-sku="us-llc-basic" data-name="USA LLC — Basic Plan" data-price="550" data-currency="USD" data-note="State fee extra"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to Cart</button>
           </article>
           <article class="plan plan--featured">
             <h3 class="plan__name">Advanced Corporate &amp; Tax Package</h3>
             <p class="plan__price">$650</p>
             
             <ul class="plan__list"><li><span class="plan__k">Articles of Organization Filing</span><span class="plan__v">Included (State Fee Included)</span></li><li><span class="plan__k">Registered Agent (1 Year)</span><span class="plan__v">Included</span></li><li><span class="plan__k">US Address w/ Mail Scan &amp; Forwarding</span><span class="plan__v">Commercial Suite w/ Mail Forwarding</span></li><li><span class="plan__k">IRS EIN Procurement</span><span class="plan__v">Fast-Track Expedited EIN</span></li><li><span class="plan__k">US Business Bank Signup Support</span><span class="plan__v">Full Direct Account Setup Assistance</span></li><li><span class="plan__k">IRS Form 5472 &amp; 1120 Tax Filing</span><span class="plan__v">Included (1 Year Full Compliance)</span></li></ul>
-            <a class="btn btn--accent btn--block" href="book-consultation.html?topic=usa-company-formation">Get Started</a>
+            <button type="button" class="btn btn--accent btn--block" data-add-to-cart data-sku="us-llc-advanced" data-name="USA LLC — Advanced Plan" data-price="650" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to Cart</button>
           </article>
         </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a> · <a href="book-consultation.html?topic=usa-company-formation">Questions? Book a consultation</a></p>
       </div>
     </section>
     <section class="section section--soft" aria-labelledby="faq-title">

@@ -126,19 +126,29 @@
   }
 
   function megaHTML() {
+    function mark(m) {
+      if (!m) return '<span class="mega__mark">' + icon("arrow-right") + "</span>";
+      if (m.indexOf("icon:") === 0) return '<span class="mega__mark">' + icon(m.slice(5)) + "</span>";
+      var flag = m.indexOf("flag-") === 0;
+      return '<span class="mega__mark' + (flag ? " mega__mark--flag" : "") + '"><img src="assets/img/platforms/' + esc(m) + '.svg" alt="" width="18" height="18" loading="lazy"></span>';
+    }
     var cols = CFG.services.map(function (cat) {
       var links = cat.items.map(function (it) {
-        return '<li><a class="mega__link" href="' + esc(it[2] || "services.html#" + it[1]) + '">' + esc(it[0]) + "</a></li>";
+        return '<li><a class="mega__link" href="' + esc(it[2] || "services.html#" + it[1]) + '">' + mark(it[3]) +
+          '<span class="mega__label">' + esc(it[0]) + "</span>" + icon("arrow-right", "mega__go") + "</a></li>";
       }).join("");
       return '<div class="mega__col">' +
-        '<a class="mega__heading" href="services.html#' + cat.id + '"><span class="mega__icon">' + icon(cat.icon) + "</span>" + esc(cat.title) + "</a>" +
+        '<a class="mega__heading" href="services.html#' + cat.id + '"><span class="mega__icon">' + icon(cat.icon) + "</span>" +
+        '<span class="mega__titles"><span class="mega__title">' + esc(cat.title) + "</span>" +
+        (cat.desc ? '<span class="mega__desc">' + esc(cat.desc) + "</span>" : "") + "</span></a>" +
         '<ul class="mega__list">' + links + "</ul></div>";
     }).join("");
     return '<div class="mega" id="mega-menu" role="region" aria-label="Services">' +
       '<div class="mega__panel"><div class="mega__grid">' + cols + "</div>" +
-      '<div class="mega__foot"><p>Not sure which service fits? <strong>Talk it through with an expert.</strong></p>' +
-      '<div class="mega__foot-actions"><a class="text-link" href="' + esc(CFG.links.services) + '">View all services ' + icon("arrow-right") + "</a>" +
-      '<a class="btn btn--primary btn--sm" href="' + esc(CFG.links.book) + '">Book Consultation</a></div></div>' +
+      '<div class="mega__foot"><div class="mega__foot-text"><span class="mega__foot-icon">' + icon("headset") + "</span>" +
+      '<p><strong>Not sure which service fits?</strong><span>Talk it through with an expert in a free consultation.</span></p></div>' +
+      '<div class="mega__foot-actions"><a class="btn btn--outline btn--sm" href="' + esc(CFG.links.services) + '">View all services</a>' +
+      '<a class="btn btn--primary btn--sm" href="' + esc(CFG.links.book) + '">Book Consultation' + icon("arrow-right", "btn__arrow") + "</a></div></div>" +
       "</div></div>";
   }
 
@@ -188,7 +198,10 @@
       '<div class="container header__bar">' +
       logoHTML("header__logo") +
       '<nav class="header__nav" aria-label="Main"><ul class="nav__list">' + items + "</ul></nav>" +
+      '<div class="header__actions">' +
+      '<a class="header__cart" href="cart.html" aria-label="Your cart" data-cart-link>' + icon("cart") + '<span class="header__cart-count" data-cart-count hidden></span></a>' +
       '<a class="btn btn--accent header__cta" href="' + esc(CFG.links.book) + '">Book Consultation' + icon("arrow-right", "btn__arrow") + "</a>" +
+      "</div>" +
       '<button type="button" class="hamburger" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Open menu">' +
       '<span class="hamburger__box" aria-hidden="true"><span class="hamburger__line"></span></span></button>' +
       "</div></header>";

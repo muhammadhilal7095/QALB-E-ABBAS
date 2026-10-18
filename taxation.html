@@ -9,20 +9,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="page-hero">
+    <section class="page-hero page-hero--photo">
+      <img class="phero__bg" src="assets/img/hero/tax.jpg" srcset="assets/img/hero/tax-800.jpg 800w, assets/img/hero/tax.jpg 960w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
       <div class="container page-hero__inner">
         <ol class="breadcrumb" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li aria-current="page">Taxation</li></ol>
         <h1>US &amp; UK Corporate Tax Services: Protect Your Global Business from Costly Legal Penalties</h1>
         
+      <div class="page-hero__actions"><a class="btn btn--accent" href="book-consultation.html?topic=taxation">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--glass" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div>
       </div>
     </section>
     <section class="section">
@@ -30,12 +33,57 @@
 <p class="lead-p">Managing cross-border tax compliance across multiple jurisdictions is one of the most complex aspects of running an international e-commerce business. Failing to file required documentation with the IRS in the United States or HMRC in the United Kingdom can lead to automatic $25,000 penalties, account freezes, and asset seizures. Qalb-E-Abbas offers specialized tax, accounting, and annual filing solutions tailored specifically for foreign-owned businesses.</p>
 <p>Our dedicated accounting packages cover annual accounts preparation, Corporation Tax submissions, sales tax tracking, and year-round compliance support.</p>
 <h2>Fixed-Rate Tax &amp; Accounting Packages</h2>
-<h3>Complete UK Accounting Package — £180 / Year</h3>
+<h3 id="uk-tax">Complete UK Accounting Package — £180 / Year</h3>
 <p>Just <strong>£18.33/month</strong> for complete peace of mind! This annual package covers:</p>
 <ul class="bullets bullets--check"><li>Annual Accounts preparation &amp; submission to Companies House.</li><li>Corporation Tax Return filing with HMRC.</li><li>Full ongoing compliance management throughout the year.</li></ul>
-<h3>US Non-Resident LLC Tax Filing — $200 + State Fees</h3>
+<h3 id="us-tax">US Non-Resident LLC Tax Filing — $200 + State Fees</h3>
 <p>Complete preparation and submission of mandatory <strong>IRS Form 5472 and Form 1120 pro-forma</strong> for single-member LLCs to guarantee protection against automated penalties.</p>
-<div class="page-cta"><h2>Ready to get started?</h2><p>Book a strategic consultation and build your business in the right order.</p><div class="btn-row"><a class="btn btn--accent" href="book-consultation.html?topic=company-registration">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div></div>
+      </div>
+    </section>
+      <!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->
+    <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Pricing</p>
+          <h2 id="pricing-title" class="section-title">Tax Filing Pricing</h2>
+          <p class="section-sub">One simple payment — we prepare and file everything for you.</p>
+        </header>
+        <div class="pr-group">
+          <h3 class="pr-group__title">United States</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">USA Tax Filing</h4>
+              <p class="pr-item__price">$200</p>
+              <p class="pr-item__desc">IRS Form 5472 and pro-forma Form 1120 for non-resident single-member LLCs.</p><p class="pr-item__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>+ state fee + taxes</p>
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="tax-usa" data-name="USA Tax Filing" data-price="200" data-currency="USD" data-note="+ state fee + taxes"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
+        </div>
+        <div class="pr-group">
+          <h3 class="pr-group__title">United Kingdom</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">UK Tax Filing</h4>
+              <p class="pr-item__price">£220</p>
+              <p class="pr-item__desc">Corporation Tax return and filing for one year.</p><p class="pr-item__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>+ taxes · one year</p>
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="tax-uk" data-name="UK Tax Filing" data-price="220" data-currency="GBP" data-note="+ taxes · one year"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Complete Accounting Package</h4>
+              <p class="pr-item__price">£180<span class="pr-item__unit">per year</span></p>
+              <p class="pr-item__desc">Annual accounts preparation and filing, Corporation Tax return, full Companies House and HMRC compliance, and ongoing support all year.</p><p class="pr-item__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>Without VAT · just £18.33/month</p>
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="tax-uk-accounting" data-name="Complete Accounting Package" data-price="180" data-currency="GBP" data-unit="per year" data-note="Without VAT · just £18.33/month"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
+        </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a></p>
+      </div>
+    </section>
+    <!-- PRICING:END -->
+
+    <section class="section" aria-label="Get started">
+      <div class="container">
+        <div class="page-cta"><h2>Ready to get started?</h2><p>Book a strategic consultation and build your business in the right order.</p><div class="btn-row"><a class="btn btn--accent" href="book-consultation.html?topic=company-registration">Book Consultation<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call UK +44 7862 605011</a></div></div>
       </div>
     </section>
   </main>

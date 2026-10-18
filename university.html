@@ -9,15 +9,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="header-mount" class="header-placeholder"></div>
 
-  <main id="main">
+  <main id="main" class="uni-page">
     <section class="uni-hero" aria-labelledby="uni-h1">
       <div class="container uni-hero__grid">
         <div class="uni-hero__text">
@@ -25,9 +26,9 @@
           <p class="uni-hero__badge"><span class="uni-hero__pulse" aria-hidden="true"></span>Enrolment open · Online &amp; On Campus</p>
           <h1 id="uni-h1" class="uni-hero__title">
             <span class="uni-hero__kicker">Qalb-E-Abbas University<span class="sr-only">:</span></span>
-            Practical <span class="nowrap">E-Commerce</span> &amp; <span class="uni-hero__hl nowrap">Life-Changing</span> Training &amp; Mentorship Programs
+            Practical <span class="nowrap">E-Commerce</span> Training &amp; <span class="uni-hero__hl">Mentorship Programmes</span>
           </h1>
-          <p class="uni-hero__lead">Building a successful online business requires real-world execution knowledge, not outdated theoretical video courses. Qalb-E-Abbas University was created to give aspiring entrepreneurs, store owners, and freelancers direct access to battle-tested e-commerce methodologies. Taught by active agency specialists operating across the UK, US, and global markets, our training programs guide you through every stage of business development—from product validation and corporate formation to ad scale and international logistics.</p>
+          <p class="uni-hero__lead">Real-world execution knowledge — not outdated theory. Learn directly from active agency specialists across the UK, US and global markets, with step-by-step programmes that take you from product validation and company formation to advertising and international logistics.</p>
           <div class="uni-hero__actions">
             <a class="btn btn--accent" href="#courses">View Courses<svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
             <a class="btn btn--glass" data-social="youtube" href="#"><svg class="icon" aria-hidden="true"><use href="#i-youtube"></use></svg>Watch Free Lessons</a>
@@ -58,6 +59,18 @@
       </div>
     </section>
 
+
+    <!-- ================= WHY LEARN WITH US ================= -->
+    <section class="uni-why" aria-label="Why learn with Qalb-E-Abbas University">
+      <div class="container">
+        <ul class="uni-why__grid">
+          <li><span class="uni-why__icon"><svg class="icon" aria-hidden="true"><use href="#i-step"></use></svg></span><div><h3>Step-by-step path</h3><p>A structured order of learning, so you never skip the foundations.</p></div></li>
+          <li><span class="uni-why__icon"><svg class="icon" aria-hidden="true"><use href="#i-training"></use></svg></span><div><h3>Real-life training</h3><p>Live account setups, real case studies and current platform policies.</p></div></li>
+          <li><span class="uni-why__icon"><svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg></span><div><h3>One-to-one mentorship</h3><p>Level 1 classes scheduled around your availability.</p></div></li>
+          <li><span class="uni-why__icon"><svg class="icon" aria-hidden="true"><use href="#i-globe"></use></svg></span><div><h3>Online &amp; on campus</h3><p>Join from anywhere, taught by UK and US specialists.</p></div></li>
+        </ul>
+      </div>
+    </section>
     <!-- Course cards. Banner images in assets/img/courses/ are stand-ins:
          replace them with the original artwork (same file names, or update src).
          "Apply Now" URLs are configured in assets/js/site-config.js (links.apply…). -->
@@ -97,7 +110,7 @@
               </ul>
               <hr class="course__divider">
               <ul class="course__row course__row--info">
-                <li><svg class="icon course__ic course__ic--purple" aria-hidden="true"><use href="#i-clock"></use></svg><span><span class="sr-only">Duration: </span>3 months</span></li>
+                <li><svg class="icon course__ic course__ic--purple" aria-hidden="true"><use href="#i-clock"></use></svg><span><span class="sr-only">Duration: </span>3 Months</span></li>
                 <li><svg class="icon course__ic course__ic--purple" aria-hidden="true"><use href="#i-signal"></use></svg><span><span class="sr-only">Learning mode: </span>Online &amp; On Campus</span></li>
               </ul>
               <a class="course__btn" data-link="applyLocalAgentsFlagship" href="#" aria-label="Apply Now for Local Agents Flagship">Apply Now</a>
@@ -114,7 +127,7 @@
               </ul>
               <hr class="course__divider">
               <ul class="course__row course__row--info">
-                <li><svg class="icon course__ic course__ic--purple" aria-hidden="true"><use href="#i-clock"></use></svg><span><span class="sr-only">Duration: </span>1 Months</span></li>
+                <li><svg class="icon course__ic course__ic--purple" aria-hidden="true"><use href="#i-clock"></use></svg><span><span class="sr-only">Duration: </span>1 Month</span></li>
                 <li><svg class="icon course__ic course__ic--purple" aria-hidden="true"><use href="#i-signal"></use></svg><span><span class="sr-only">Learning mode: </span>Online &amp; On Campus</span></li>
               </ul>
               <a class="course__btn" data-link="applyAiVideoCreatorPro" href="#" aria-label="Apply Now for AI Video Creator Pro">Apply Now</a>

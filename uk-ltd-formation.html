@@ -9,22 +9,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="uni-hero" aria-labelledby="pg-h1">
+    <section class="uni-hero uni-hero--service" aria-labelledby="pg-h1">
+      <img class="phero__bg" src="assets/img/hero/company.jpg" srcset="assets/img/hero/company-800.jpg 800w, assets/img/hero/company.jpg 960w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
       <div class="container uni-hero__grid">
         <div class="uni-hero__text">
           <ol class="breadcrumb breadcrumb--light" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li aria-current="page">UK LTD Formation</li></ol>
           <p class="uni-hero__badge"><span class="uni-hero__pulse" aria-hidden="true"></span>Company Formation · United Kingdom</p>
           <h1 id="pg-h1" class="uni-hero__title"><span class="uni-hero__kicker">UK LTD Formation Services</span>Complete Company Setup &amp; <span class="uni-hero__hl">HMRC Tax Compliance</span> for Foreign Founders</h1>
-          <p class="uni-hero__lead">Establishing a UK Limited company provides foreign entrepreneurs with direct access to European payment processors, trusted banking infrastructure, and global marketplaces.</p><p class="uni-hero__lead" style="margin-top:14px">Qalb-E-Abbas provides a seamless UK incorporation package. We handle Companies House filings, unique suite business addresses with mail forwarding, HMRC ID verification support, UK business banking assistance, and complete ongoing annual accounting.</p>
+          <p class="uni-hero__lead">Establishing a UK Limited company provides foreign entrepreneurs with direct access to European payment processors, trusted banking infrastructure, and global marketplaces.</p>
           <div class="uni-hero__actions"><a class="btn btn--accent" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call Now</a><a class="btn btn--glass" href="book-consultation.html?topic=uk-company-formation">Get Free Consultation</a></div>
           <p class="svcx-hero__call" style="color:rgba(255,255,255,.7)"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg><a href="tel:+447862605011" style="color:#fff">+44 7862 605011</a></p>
         </div>
@@ -42,7 +44,7 @@
           <p class="eyebrow">Overview</p>
           <h2 id="what-title" class="section-title">Operate Your UK LTD with Full Compliance</h2>
           <p class="svcx-p">Operating a UK LTD requires strict adherence to Companies House regulations and HMRC tax mandates. Our team takes care of the setup and the ongoing compliance, so your company stays in good standing from day one.</p>
-          <div class="alert-box"><span class="alert-box__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg></span><div><p class="alert-box__title">The Day-1 UK VAT Mandate</p><p>A major operational risk for non-resident sellers storing inventory in UK warehouses (such as Amazon FBA) is missing the Day-1 UK VAT Mandate. Foreign businesses storing inventory inside the UK do not qualify for the £90,000 domestic registration threshold and must register for VAT immediately.</p></div></div>
+          <div class="alert-box"><span class="alert-box__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg></span><div><p class="alert-box__title">The Day-1 UK VAT Mandate</p><p>A major operational risk for non-resident sellers storing inventory in UK warehouses (such as Amazon FBA) is missing the Day-1 UK VAT Mandate. Foreign businesses storing inventory inside the UK do not qualify for the £90,000 domestic registration threshold and must register for VAT immediately.</p><p class="svcx-p" style="margin-top:16px">Qalb-E-Abbas provides a seamless UK incorporation package. We handle Companies House filings, unique suite business addresses with mail forwarding, HMRC ID verification support, UK business banking assistance, and complete ongoing annual accounting.</p></div></div>
           
         </div>
         <aside class="why">
@@ -120,16 +122,17 @@
             <p class="plan__price">£350</p>
             
             <ul class="plan__list"><li><span class="plan__k">Companies House Registration</span><span class="plan__v">Included</span></li><li><span class="plan__k">Registered Office &amp; Business Address</span><span class="plan__v">London / Unique Suite Address</span></li><li><span class="plan__k">HMRC Verification Assistance</span><span class="plan__v">Included</span></li><li><span class="plan__k">UK Business Banking Setup Support</span><span class="plan__v">Guided Signup</span></li><li><span class="plan__k">Day-1 UK VAT Registration</span><span class="plan__v">Optional Add-on</span></li></ul>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=uk-company-formation">Get Started</a>
+            <button type="button" class="btn btn--outline btn--block" data-add-to-cart data-sku="uk-ltd-basic" data-name="UK LTD — Basic Plan" data-price="350" data-currency="GBP"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to Cart</button>
           </article>
           <article class="plan plan--featured">
             <h3 class="plan__name">Advanced UK LTD Plan</h3>
             <p class="plan__price">£500</p>
             
             <ul class="plan__list"><li><span class="plan__k">Companies House Registration</span><span class="plan__v">Included</span></li><li><span class="plan__k">Registered Office &amp; Business Address</span><span class="plan__v">London / Unique Suite w/ Mail Forwarding</span></li><li><span class="plan__k">HMRC Verification Assistance</span><span class="plan__v">Included</span></li><li><span class="plan__k">UK Business Banking Setup Support</span><span class="plan__v">Dedicated Bank Setup Support</span></li><li><span class="plan__k">Day-1 UK VAT Registration</span><span class="plan__v">Included for FBA Sellers</span></li></ul>
-            <a class="btn btn--accent btn--block" href="book-consultation.html?topic=uk-company-formation">Get Started</a>
+            <button type="button" class="btn btn--accent btn--block" data-add-to-cart data-sku="uk-ltd-advanced" data-name="UK LTD — Advanced Plan" data-price="500" data-currency="GBP"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to Cart</button>
           </article>
         </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a> · <a href="book-consultation.html?topic=uk-company-formation">Questions? Book a consultation</a></p>
       </div>
     </section>
     <section class="section section--soft" aria-labelledby="faq-title">

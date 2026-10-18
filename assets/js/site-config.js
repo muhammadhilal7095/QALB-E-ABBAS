@@ -31,6 +31,11 @@ window.SITE_CONFIG = {
     about: "about.html",
     contact: "contact.html",
     blog: "blog.html",
+    // Online booking & payment system (the Next.js app in /booking).
+    // Change to the live booking URL when deployed, e.g. "https://book.qalbeabbas.com".
+    bookingApp: "http://localhost:3000",
+    // Header / menu "Book Consultation" button. book-consultation.html forwards
+    // each ?topic= to the matching meeting type in the booking app.
     book: "book-consultation.html",
     university: "university.html",
     level1: "index.html#level-1",
@@ -88,44 +93,44 @@ window.SITE_CONFIG = {
      services.html until dedicated service pages exist. */
   services: [
     {
-      id: "ecommerce", title: "E-commerce Services", icon: "cart",
+      id: "ecommerce", title: "E-commerce Services", icon: "cart", desc: "Launch and scale on the world's top marketplaces.",
       items: [
-        ["Amazon", "amazon", "amazon-fba.html"], ["TikTok Shop", "tiktok-shop", "tiktok-shop.html"], ["eBay", "ebay", "ebay.html"],
-        ["Walmart", "walmart", "walmart.html"], ["Etsy", "etsy", "etsy.html"], ["Shopify", "shopify", "shopify-development.html"]
+        ["Amazon", "amazon", "amazon-fba.html", "amazon"], ["TikTok Shop", "tiktok-shop", "tiktok-shop.html", "tiktok"], ["eBay", "ebay", "ebay.html", "ebay"],
+        ["Walmart", "walmart", "walmart.html", "walmart"], ["Etsy", "etsy", "etsy.html", "etsy"], ["Shopify", "shopify", "shopify-development.html", "shopify"]
       ]
     },
     {
-      id: "automation", title: "AI & Business Automation", icon: "bot",
+      id: "automation", title: "AI & Business Automation", icon: "bot", desc: "Chatbots and workflows that save hours every week.",
       items: [
-        ["Facebook Automation", "facebook-automation", "facebook-automation.html"], ["TikTok Automation", "tiktok-automation", "tiktok-automation.html"],
-        ["WhatsApp Automation", "whatsapp-automation", "whatsapp-automation.html"], ["Instagram Automation", "instagram-automation", "instagram-automation.html"]
+        ["Facebook", "facebook-automation", "facebook-automation.html", "facebook"], ["TikTok", "tiktok-automation", "tiktok-automation.html", "tiktok"],
+        ["WhatsApp", "whatsapp-automation", "whatsapp-automation.html", "whatsapp"], ["Instagram", "instagram-automation", "instagram-automation.html", "instagram"]
       ]
     },
     {
-      id: "development", title: "Web & Software Development", icon: "code",
+      id: "development", title: "Web & Software Development", icon: "code", desc: "Websites, stores, apps and CRMs built to convert.",
       items: [
-        ["Shopify Development", "shopify-development", "shopify-development.html"], ["Website Development", "website-development", "website-development.html"],
-        ["CRM Development", "crm-development", "crm-development.html"], ["App Development", "app-development", "app-development.html"]
+        ["Shopify", "shopify-development", "shopify-development.html", "shopify"], ["Websites", "website-development", "website-development.html", "icon:monitor"],
+        ["CRM Systems", "crm-development", "crm-development.html", "icon:users"], ["Mobile Apps", "app-development", "app-development.html", "icon:smartphone"]
       ]
     },
     {
-      id: "marketing", title: "Marketing & Business Growth", icon: "megaphone",
+      id: "marketing", title: "Marketing & Business Growth", icon: "megaphone", desc: "Paid ads, SEO and campaigns that drive sales.",
       items: [
-        ["Influencer Marketing", "influencer-marketing", "influencer-marketing.html"], ["Social Media Marketing", "social-media-marketing", "social-media-marketing.html"],
-        ["Digital Marketing", "digital-marketing", "digital-marketing.html"], ["Email Marketing", "email-marketing", "email-marketing.html"],
-        ["SEO", "seo", "seo.html"], ["Affiliate Marketing", "affiliate-marketing", "affiliate-marketing.html"]
+        ["Influencers", "influencer-marketing", "influencer-marketing.html", "instagram"], ["Social Media", "social-media-marketing", "social-media-marketing.html", "meta"],
+        ["Paid Ads", "digital-marketing", "digital-marketing.html", "googleads"], ["Email", "email-marketing", "email-marketing.html", "mailchimp"],
+        ["SEO", "seo", "seo.html", "google"], ["Affiliates", "affiliate-marketing", "affiliate-marketing.html", "affiliate"]
       ]
     },
     {
-      id: "formation", title: "Company Formation & Business Setup", icon: "building",
+      id: "formation", title: "Company Formation & Business Setup", icon: "building", desc: "Register your company and stay compliant.",
       items: [
-        ["UK Company Formation", "uk-company-formation", "uk-ltd-formation.html"], ["USA Company Formation", "usa-company-formation", "us-llc-formation.html"],
-        ["UAE Company Formation", "uae-company-formation", "uae-company-formation.html"], ["Malta Company Formation", "malta-company-formation", "malta-company-formation.html"]
+        ["UK", "uk-company-formation", "uk-ltd-formation.html", "flag-uk"], ["USA", "usa-company-formation", "us-llc-formation.html", "flag-us"],
+        ["UAE", "uae-company-formation", "uae-company-formation.html", "flag-ae"], ["Malta", "malta-company-formation", "malta-company-formation.html", "flag-mt"]
       ]
     },
     {
-      id: "education", title: "Education Consultancy", icon: "graduation",
-      items: [["Education Consultancy", "education-consultancy", "education-consultancy.html"]]
+      id: "education", title: "Education Consultancy", icon: "graduation", desc: "Study in Malta: admissions, visas and pre-departure support.",
+      items: [["Study in Malta", "education-consultancy", "education-consultancy.html", "icon:graduation"]]
     }
   ],
 

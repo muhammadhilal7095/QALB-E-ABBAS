@@ -9,9 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -20,7 +21,7 @@
   <main id="main" class="svcx" style="--sx:#3B82F6;--sx-light:#8CB8FF;--sx-ink:#FFFFFF;--sx-deep:#1D5BD8">
     <!-- HERO -->
     <section class="svcx-hero" aria-labelledby="svc-h1">
-      <img class="svcx-hero__bg" src="assets/img/hero/ebay.jpg" srcset="assets/img/hero/ebay-800.jpg 800w, assets/img/hero/ebay.jpg 960w" sizes="100vw" alt="" fetchpriority="high">
+      <img class="svcx-hero__bg" src="assets/img/hero/ebay-parcel.jpg" srcset="assets/img/hero/ebay-parcel-800.jpg 800w, assets/img/hero/ebay-parcel.jpg 960w" sizes="100vw" alt="" fetchpriority="high">
       <div class="container svcx-hero__grid">
         <div class="svcx-hero__text">
           <ol class="breadcrumb breadcrumb--light" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li aria-current="page">eBay</li></ol>
@@ -89,47 +90,88 @@
     </section>
 
     <!-- PRICING -->
-    <section class="section" id="pricing" aria-labelledby="pricing-title">
+    <!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->
+    <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
       <div class="container">
         <header class="section-head">
           <p class="eyebrow">Pricing</p>
-          <h2 id="pricing-title" class="section-title">eBay Service Deliverables &amp; Pricing</h2>
-          <p class="section-sub">Clear, fixed prices for each service. Not sure what you need? Book a consultation and we'll recommend the right starting point.</p>
+          <h2 id="pricing-title" class="section-title">eBay Service Pricing</h2>
+          <p class="section-sub">Fixed prices for each eBay service. Add what you need to your cart and pay securely online.</p>
         </header>
-        <div class="price-grid price-grid--5">
-          <article class="price">
-            <h3 class="price__name">eBay Account Creation</h3>
-            <p class="price__amount">$100</p>
-            <p class="price__scope">Complete business account configuration, payment gateway setup</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=ebay">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">eBay Account Review &amp; Audit</h3>
-            <p class="price__amount">$100</p>
-            <p class="price__scope">Store health check, listing quality score, policy audit</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=ebay">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">Account Reactivation (MC011 / MC999)</h3>
-            <p class="price__amount">$200 – $300</p>
-            <p class="price__scope">Full restriction appeal, invoice verification, policy compliance</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=ebay">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">eBay SEO Audit &amp; Optimization</h3>
-            <p class="price__amount">$200</p>
-            <p class="price__scope">20 high-demand products optimized with item specifics</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=ebay">Get Started</a>
-          </article>
-          <article class="price">
-            <h3 class="price__name">Quarterly Growth Campaign (Q1–Q4)</h3>
-            <p class="price__amount">$50 / Quarter</p>
-            <p class="price__scope">Ongoing promotion management, seasonal inventory pushes</p>
-            <a class="btn btn--outline btn--block" href="book-consultation.html?topic=ebay">Get Started</a>
-          </article>
+        <div class="pr-group">
+          <h3 class="pr-group__title">Account services</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Creation</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-account-creation" data-name="Account Creation" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Review</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-account-review" data-name="Account Review" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">Account Reactivation</h4>
+              <p class="pr-item__price">$400</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-account-reactivation" data-name="Account Reactivation" data-price="400" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">MC999 Restriction Appeal</h4>
+              <p class="pr-item__price">$300</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-mc999" data-name="MC999 Restriction Appeal" data-price="300" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">MC011 Restriction Appeal</h4>
+              <p class="pr-item__price">$200</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-mc011" data-name="MC011 Restriction Appeal" data-price="200" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
         </div>
+        <div class="pr-group">
+          <h3 class="pr-group__title">Growth services</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">eBay Growth Strategy</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-growth-strategy" data-name="eBay Growth Strategy" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">eBay Marketing Strategy</h4>
+              <p class="pr-item__price">$100</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-marketing-strategy" data-name="eBay Marketing Strategy" data-price="100" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+            <article class="pr-item">
+              <h4 class="pr-item__name">eBay SEO Audit</h4>
+              <p class="pr-item__price">$200</p>
+              
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="ebay-seo-audit" data-name="eBay SEO Audit" data-price="200" data-currency="USD"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
+        </div>
+        <div class="pr-quarters">
+          <div class="pr-quarters__text">
+            <span class="pr-quarters__icon"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg></span>
+            <div><h3>eBay High-Demand Products</h3><p>A researched list of 20 high-demand products for each quarter of the year — $50 per quarter.</p></div>
+          </div>
+          <div class="pr-quarters__list"><div class="pr-q"><span class="pr-q__name">Q1</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="ebay-products-q1" data-name="eBay High-Demand Products — Q1 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q1 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q2</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="ebay-products-q2" data-name="eBay High-Demand Products — Q2 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q2 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q3</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="ebay-products-q3" data-name="eBay High-Demand Products — Q3 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q3 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div><div class="pr-q"><span class="pr-q__name">Q4</span><span class="pr-q__price">$50</span><button type="button" class="pr-q__add" data-add-to-cart data-sku="ebay-products-q4" data-name="eBay High-Demand Products — Q4 (20 products)" data-price="50" data-currency="USD" aria-label="Add Q4 product research to cart"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg><span>Add</span></button></div></div>
+        </div>
+        <div class="pr-consult">
+          <span class="pr-consult__icon"><svg class="icon" aria-hidden="true"><use href="#i-headset"></use></svg></span>
+          <p><strong>Not sure where to start?</strong><span>Book a 1:1 consultation with our team for $30.</span></p>
+          <a class="btn btn--accent" href="book-consultation.html?topic=ebay">Book a Consultation<svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+        </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a></p>
       </div>
     </section>
+    <!-- PRICING:END -->
 
     <!-- HELP + CTA -->
     <section class="section section--soft" aria-label="Get started">

@@ -1,0 +1,8 @@
+.pgdata/
+node_modules/
+.next/
+.env
+.env.local
+uploads/
+*.log
+*.tsbuildinfo

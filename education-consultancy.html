@@ -9,22 +9,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/site-config.js" defer></script>
-  <script src="assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=29">
+  <script src="assets/js/site-config.js?v=4" defer></script>
+  <script src="assets/js/site.js?v=3" defer></script>
+  <script src="assets/js/cart.js?v=1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main">
-    <section class="uni-hero" aria-labelledby="pg-h1">
+    <section class="uni-hero uni-hero--service" aria-labelledby="pg-h1">
+      <img class="phero__bg" src="assets/img/hero/education.jpg" srcset="assets/img/hero/education-800.jpg 800w, assets/img/hero/education.jpg 1600w" sizes="100vw" alt="" fetchpriority="high" decoding="async">
       <div class="container uni-hero__grid">
         <div class="uni-hero__text">
           <ol class="breadcrumb breadcrumb--light" aria-label="Breadcrumb"><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li aria-current="page">Education Consultancy</li></ol>
           <p class="uni-hero__badge"><span class="uni-hero__pulse" aria-hidden="true"></span>Study in Malta, Europe</p>
           <h1 id="pg-h1" class="uni-hero__title"><span class="uni-hero__kicker">Education Consultancy in Malta</span>Your Study Abroad Journey <span class="uni-hero__hl">Starts Here!</span></h1>
-          <p class="uni-hero__lead">Turn your dream of studying in Malta into a reality with professional education consultancy services. We help international students explore educational opportunities, choose suitable courses, apply to educational institutions, and prepare their applications for studying in Malta.</p><p class="uni-hero__lead" style="margin-top:14px">From course selection and university admissions to document preparation and student visa guidance, our team supports you throughout your study abroad journey.</p>
+          <p class="uni-hero__lead">Turn your dream of studying in Malta into a reality with professional education consultancy services. We help international students explore educational opportunities, choose suitable courses, apply to educational institutions, and prepare their applications for studying in Malta.</p>
           <div class="uni-hero__actions"><a class="btn btn--accent" href="tel:+447862605011"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>Call Now</a><a class="btn btn--glass" href="book-consultation.html?topic=education-consultancy">Get Free Consultation</a></div>
           <p class="svcx-hero__call" style="color:rgba(255,255,255,.7)"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg><a href="tel:+447862605011" style="color:#fff">+44 7862 605011</a></p>
         </div>
@@ -42,7 +44,7 @@
           <p class="eyebrow">Overview</p>
           <h2 id="what-title" class="section-title">Why Study in Malta?</h2>
           <p class="svcx-p">Malta offers international students opportunities to pursue education in a European environment, develop practical skills, and experience a diverse international community.</p><ul class="bullets bullets--check" style="margin-top:18px"><li>Explore educational opportunities in Europe.</li><li>Choose from a range of academic and professional courses.</li><li>Study in an English-speaking environment at suitable institutions.</li><li>Gain international educational experience.</li><li>Develop skills for future academic and career opportunities.</li><li>Experience Malta's culture and student lifestyle.</li></ul>
-          <p class="policy-note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg><span>Eligibility depends on the institution, course requirements, academic qualifications, and applicable immigration rules.</span></p>
+          <p class="policy-note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg><span>Eligibility depends on the institution, course requirements, academic qualifications, and applicable immigration rules.</span></p><p class="svcx-p" style="margin-top:16px">From course selection and university admissions to document preparation and student visa guidance, our team supports you throughout your study abroad journey.</p>
         </div>
         <aside class="why">
           <h3>Why Choose Our Education Consultancy?</h3>
@@ -132,6 +134,30 @@
         <ol class="tl"><li class="tl__item"><span class="tl__num">01</span><div><h3>Free Initial Consultation</h3><p>Discuss your academic background, interests, and future goals.</p></div></li><li class="tl__item"><span class="tl__num">02</span><div><h3>Course &amp; Institution Selection</h3><p>Explore suitable programs and educational institutions.</p></div></li><li class="tl__item"><span class="tl__num">03</span><div><h3>Application Preparation</h3><p>Organize your documents and prepare your admission application.</p></div></li><li class="tl__item"><span class="tl__num">04</span><div><h3>Admission Support</h3><p>Receive guidance throughout the institution's application and offer process.</p></div></li><li class="tl__item"><span class="tl__num">05</span><div><h3>Student Visa Preparation</h3><p>Understand the applicable visa requirements and prepare supporting documentation.</p></div></li><li class="tl__item"><span class="tl__num">06</span><div><h3>Pre-Departure Guidance</h3><p>Prepare for travel and your transition to student life in Malta.</p></div></li></ol>
       </div>
     </section>
+
+    <!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->
+    <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Pricing</p>
+          <h2 id="pricing-title" class="section-title">Education Consultancy Pricing</h2>
+          <p class="section-sub">Our processing fee for Malta university applications.</p>
+        </header>
+        <div class="pr-group">
+          <h3 class="pr-group__title">Malta universities</h3>
+          <div class="pr-grid">
+            <article class="pr-item">
+              <h4 class="pr-item__name">Malta University Application Processing</h4>
+              <p class="pr-item__price">€1,500</p>
+              <p class="pr-item__desc">Course and university selection, admission application, documentation and visa guidance.</p><p class="pr-item__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg>University fees are separate and depend on the university</p>
+              <div class="pr-item__action"><button type="button" class="btn btn--primary btn--sm pr-add" data-add-to-cart data-sku="edu-malta-processing" data-name="Malta University Application Processing" data-price="1500" data-currency="EUR" data-note="University fees are separate and depend on the university"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>Add to cart</button></div>
+            </article>
+          </div>
+        </div>
+        <p class="pr-secure"><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Secure checkout · Pay by card or bank transfer · <a href="cart.html">View your cart</a></p>
+      </div>
+    </section>
+    <!-- PRICING:END -->
 
     <section class="section" aria-label="Get started">
       <div class="container">

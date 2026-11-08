@@ -1,0 +1,54 @@
+# Deploys the website to Hostinger whenever main is pushed to GitHub.
+#
+# One-time setup (GitHub → repository → Settings → Secrets and variables → Actions):
+#   Secrets:   FTP_SERVER     e.g. ftp.qalbeabbas.com   (hPanel → Files → FTP Accounts)
+#              FTP_USERNAME   e.g. u123456789.qalbeabbas.com
+#              FTP_PASSWORD   the FTP account password
+#   Variable:  FTP_SERVER_DIR the website folder on the server, ending in "/" (default: public_html/)
+#
+# Only the website is uploaded (HTML pages, /assets, sitemap, robots, .htaccess). The booking app,
+# docs and tooling stay on GitHub. After the first upload only changed files are sent.
+name: Deploy website to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: hostinger-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+    steps:
+      - name: Check Hostinger FTP details are set
+        if: env.FTP_SERVER == ''
+        run: echo "::warning::FTP_SERVER, FTP_USERNAME and FTP_PASSWORD secrets are not set yet — skipping the Hostinger upload. See .github/workflows/deploy-hostinger.yml."
+
+      - name: Get the code
+        if: env.FTP_SERVER != ''
+        uses: actions/checkout@v4
+
+      - name: Upload the website to Hostinger (FTPS)
+        if: env.FTP_SERVER != ''
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          server-dir: ${{ vars.FTP_SERVER_DIR || 'public_html/' }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            booking/**
+            docs/**
+            .work/**
+            **/.DS_Store
+            **/*.md
+            serve.py

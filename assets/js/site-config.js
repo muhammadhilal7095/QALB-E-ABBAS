@@ -107,28 +107,6 @@ window.SITE_CONFIG = {
       ]
     },
     {
-      id: "automation", title: "AI & Business Automation", icon: "bot", desc: "Chatbots and workflows that save hours every week.",
-      items: [
-        ["Facebook", "facebook-automation", "/facebook-automation", "facebook"], ["TikTok", "tiktok-automation", "/tiktok-automation", "tiktok"],
-        ["WhatsApp", "whatsapp-automation", "/whatsapp-automation", "whatsapp"], ["Instagram", "instagram-automation", "/instagram-automation", "instagram"]
-      ]
-    },
-    {
-      id: "development", title: "Web & Software Development", icon: "code", desc: "Websites, stores, apps and CRMs built to convert.",
-      items: [
-        ["Shopify Stores", "shopify-development", "/shopify-development", "icon:code"], ["Websites", "website-development", "/website-development", "icon:monitor"],
-        ["CRM Systems", "crm-development", "/crm-development", "icon:users"], ["Mobile Apps", "app-development", "/app-development", "icon:smartphone"]
-      ]
-    },
-    {
-      id: "marketing", title: "Marketing & Business Growth", icon: "megaphone", desc: "Paid ads, SEO and campaigns that drive sales.",
-      items: [
-        ["Influencers", "influencer-marketing", "/influencer-marketing", "instagram"], ["Social Media", "social-media-marketing", "/social-media-marketing", "meta"],
-        ["Paid Ads", "digital-marketing", "/digital-marketing", "googleads"], ["Email", "email-marketing", "/email-marketing", "mailchimp"],
-        ["SEO", "seo", "/seo", "google"], ["Affiliates", "affiliate-marketing", "/affiliate-marketing", "affiliate"]
-      ]
-    },
-    {
       id: "formation", title: "Company Formation", icon: "building", desc: "Register your company and stay compliant.",
       items: [
         ["UK", "uk-company-formation", "/uk-ltd-formation", "flag-uk"], ["USA", "usa-company-formation", "/us-llc-formation", "flag-us"],
@@ -142,6 +120,28 @@ window.SITE_CONFIG = {
     {
       id: "real-estate", title: "Real Estate", icon: "building", desc: "Buy, sell, rent and invest in property in Pakistan.",
       items: [["Pakistan Property", "real-estate", "/real-estate", "flag-pk"]]
+    },
+    {
+      id: "marketing", title: "Marketing & Business Growth", icon: "megaphone", desc: "Paid ads, SEO and campaigns that drive sales.",
+      items: [
+        ["Influencers", "influencer-marketing", "/influencer-marketing", "instagram"], ["Social Media", "social-media-marketing", "/social-media-marketing", "meta"],
+        ["Paid Ads", "digital-marketing", "/digital-marketing", "googleads"], ["Email", "email-marketing", "/email-marketing", "mailchimp"],
+        ["SEO", "seo", "/seo", "google"], ["Affiliates", "affiliate-marketing", "/affiliate-marketing", "affiliate"]
+      ]
+    },
+    {
+      id: "automation", title: "AI & Business Automation", icon: "bot", desc: "Chatbots and workflows that save hours every week.",
+      items: [
+        ["Facebook", "facebook-automation", "/facebook-automation", "facebook"], ["TikTok", "tiktok-automation", "/tiktok-automation", "tiktok"],
+        ["WhatsApp", "whatsapp-automation", "/whatsapp-automation", "whatsapp"], ["Instagram", "instagram-automation", "/instagram-automation", "instagram"]
+      ]
+    },
+    {
+      id: "development", title: "Web & Software Development", icon: "code", desc: "Websites, stores, apps and CRMs built to convert.",
+      items: [
+        ["Shopify Stores", "shopify-development", "/shopify-development", "icon:code"], ["Websites", "website-development", "/website-development", "icon:monitor"],
+        ["CRM Systems", "crm-development", "/crm-development", "icon:users"], ["Mobile Apps", "app-development", "/app-development", "icon:smartphone"]
+      ]
     }
   ],
 

@@ -1,0 +1,6 @@
+# The website deploy contains only the static site. The booking/payment app (booking/) is
+# deployed separately as its own Vercel project — see booking/docs/DEPLOYMENT.md.
+booking/
+.work/
+*.log
+.DS_Store

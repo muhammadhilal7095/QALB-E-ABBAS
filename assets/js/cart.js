@@ -59,7 +59,7 @@
       if (!found.multi) return "exists";
       found.qty = Math.min(MAX_QTY, found.qty + 1);
     } else {
-      list.push({ sku: d.sku, name: d.name, price: Number(d.price), currency: d.currency, unit: d.unit || "", note: d.note || "", multi: !!d.multi, qty: 1 });
+      list.push({ sku: d.sku, name: d.name, price: Number(d.price), currency: d.currency, unit: d.unit || "", note: d.note || "", multi: !!d.multi, qty: 1, group: d.group || "" });
     }
     save(list);
     return "added";
@@ -85,13 +85,17 @@
     if (!btn) return;
     e.preventDefault();
     var d = btn.dataset;
-    var result = addItem({ sku: d.sku, name: d.name, price: d.price, currency: d.currency, unit: d.unit, note: d.note, multi: d.multi === "1" });
-    toast(icon("check-circle") + "<span><strong>" + esc(d.name) + "</strong> " +
+    // Linked items (e.g. US LLC package + its state filing fee): a new choice replaces the old pair.
+    if (d.group) save(load().filter(function (i) { return i.group !== d.group; }));
+    var result = addItem({ sku: d.sku, name: d.name, price: d.price, currency: d.currency, unit: d.unit, note: d.note, multi: d.multi === "1", group: d.group });
+    if (d.withSku) addItem({ sku: d.withSku, name: d.withName, price: d.withPrice, currency: d.withCurrency, note: d.withNote, group: d.group });
+    if (d.group) result = "added";
+    toast(icon("check-circle") + "<span><strong>" + esc(d.name) + (d.withSku ? " + " + esc(d.withName.replace("US LLC state filing fee — ", "")) + " state fee" : "") + "</strong> " +
       (result === "exists" ? "is already in your cart." : "added to your cart.") +
-      '</span><a href="cart.html">View cart</a>');
+      '</span><a href="/cart">View cart</a>');
     if (!btn.dataset.label) btn.dataset.label = btn.innerHTML;
     btn.classList.add("is-added");
-    btn.innerHTML = icon("check") + "<span>" + (btn.classList.contains("pr-q__add") ? "Added" : "Added to cart") + "</span>";
+    btn.innerHTML = icon("check") + "<span>" + ((btn.classList.contains("pr-q__add") || btn.classList.contains("pr-rq__add") || btn.classList.contains("rq-card__add")) ? "Added" : "Added to cart") + "</span>";
     clearTimeout(btn._t);
     btn._t = setTimeout(function () { btn.classList.remove("is-added"); btn.innerHTML = btn.dataset.label; }, 2200);
   });
@@ -109,8 +113,7 @@
   var formState = { name: "", email: "", phone: "", notes: "", gateway: "", terms: false };
   var GATEWAY_LABEL = {
     STRIPE: ["Card payment", "Visa, Mastercard, Amex, Apple Pay & Google Pay — processed securely by Stripe."],
-    BANK_TRANSFER: ["Bank transfer", "We'll email our bank details. Work starts once the transfer arrives."],
-    MOCK: ["Test payment", "Development only — no real money is taken."]
+    TEST: ["Test payment", "Development only — no real money is taken."]
   };
 
   function groups(list) {
@@ -125,7 +128,7 @@
     if (!list.length) {
       app.innerHTML = '<div class="cart-empty">' + icon("cart") +
         "<h2>Your cart is empty</h2><p>Browse our services and add what you need — prices are shown on each service page.</p>" +
-        '<a class="btn btn--primary" href="services.html">Browse services</a></div>';
+        '<a class="btn btn--primary" href="/services">Browse services</a></div>';
       return;
     }
     var byCur = groups(list);
@@ -155,6 +158,9 @@
         '<p class="cart-group__total"><span>Subtotal</span><strong>' + money(total, cur) + "</strong></p></div>";
     }).join("");
 
+    var cancelled = /[?&]cancelled=1/.test(location.search)
+      ? '<div class="cart-notice cart-notice--warn">' + icon("info") + "<p>Your payment was cancelled — nothing was charged. Your services are still in your cart.</p></div>"
+      : "";
     var multiNote = currencies.length > 1
       ? '<div class="cart-notice">' + icon("info") + "<p>Your cart has services priced in different currencies (" + currencies.join(", ") +
         "). Each currency is paid separately — choose which one to pay for now. The rest stay in your cart.</p></div>"
@@ -173,7 +179,7 @@
     if (gateways === null) gw = '<p class="cart-muted">Loading payment options…</p>';
     else if (!gateways.length) gw = '<div class="cart-notice cart-notice--warn">' + icon("info") + "<p>" +
       (gatewayError ? "We couldn't reach our secure checkout just now. Please try again in a moment, or " : "Online payment isn't available right now. Please ") +
-      '<a href="contact.html">contact us</a> to complete your order.</p></div>';
+      '<a href="/contact">contact us</a> to complete your order.</p></div>';
     else {
       if (gateways.indexOf(formState.gateway) < 0) formState.gateway = gateways[0];
       gw = '<div class="cart-options">' + gateways.map(function (g) {
@@ -184,7 +190,7 @@
 
     app.innerHTML =
       '<div class="cart-layout">' +
-        '<div class="cart-panel"><div class="cart-panel__head"><h2>Your services</h2><button type="button" class="cart-clear" data-clear>Clear cart</button></div>' + multiNote + itemsHtml +
+        '<div class="cart-panel"><div class="cart-panel__head"><h2>Your services</h2><button type="button" class="cart-clear" data-clear>Clear cart</button></div>' + cancelled + multiNote + itemsHtml +
         '<p class="cart-hint">' + icon("info") + "Government, state and university fees noted on a service are paid separately and are not included.</p></div>" +
         '<form class="cart-panel cart-checkout" novalidate>' +
           "<h2>Checkout</h2>" + curPick +
@@ -192,8 +198,8 @@
           '<div class="cart-field"><label for="c-email">Email *</label><input id="c-email" name="email" type="email" autocomplete="email" required value="' + esc(formState.email) + '"></div>' +
           '<div class="cart-field"><label for="c-phone">Phone / WhatsApp</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" value="' + esc(formState.phone) + '"></div>' +
           '<div class="cart-field"><label for="c-notes">Anything we should know?</label><textarea id="c-notes" name="notes" rows="3" placeholder="Store link, account details, deadlines…">' + esc(formState.notes) + "</textarea></div>" +
-          '<fieldset class="cart-field"><legend>Payment method</legend>' + gw + "</fieldset>" +
-          '<label class="cart-terms"><input type="checkbox" name="terms"' + (formState.terms ? " checked" : "") + '> <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>' +
+          '<fieldset class="cart-field"><legend>Payment</legend>' + gw + "</fieldset>" +
+          '<label class="cart-terms"><input type="checkbox" name="terms"' + (formState.terms ? " checked" : "") + '> <span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>' +
           '<div class="cart-pay"><p><span>Total to pay</span><strong>' + money(payTotal, chosenCurrency) + "</strong></p>" +
           '<button type="submit" class="btn btn--accent btn--block"' + (busy || !gateways || !gateways.length ? " disabled" : "") + ">" +
             (busy ? "Please wait…" : icon("shield") + "Continue to secure payment") + "</button></div>" +
@@ -216,7 +222,7 @@
 
   function loadGateways() {
     if (!API) { gateways = []; render(); return; }
-    fetch(API + "/api/orders/options", { headers: { Accept: "application/json" } })
+    fetch(API + "/api/checkout/options", { headers: { Accept: "application/json" } })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (j) { gateways = Array.isArray(j.gateways) ? j.gateways : []; })
       .catch(function () { gateways = []; gatewayError = true; })
@@ -229,7 +235,13 @@
       if (!t) return;
       var form = app.querySelector("form"); if (form) readForm(form);
       var list = load();
-      if (t.dataset.remove) { save(list.filter(function (i) { return i.sku !== t.dataset.remove; })); render(); }
+      if (t.dataset.remove) {
+        // Removing one of a linked pair (US LLC package / state fee) removes both.
+        var gone = list.filter(function (i) { return i.sku === t.dataset.remove; })[0];
+        var grp = gone && gone.group;
+        save(list.filter(function (i) { return i.sku !== t.dataset.remove && !(grp && i.group === grp); }));
+        render();
+      }
       else if (t.dataset.qty) {
         list.forEach(function (i) { if (i.sku === t.dataset.sku) i.qty = Math.max(1, Math.min(MAX_QTY, i.qty + Number(t.dataset.qty))); });
         save(list); render();
@@ -251,13 +263,17 @@
       if (!formState.terms) return showError(form, "Please accept the Terms & Conditions to continue.");
       var payItems = load().filter(function (i) { return i.currency === chosenCurrency; });
       busy = true; render();
-      fetch(API + "/api/orders", {
+      fetch(API + "/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          items: payItems.map(function (i) { return { sku: i.sku, quantity: i.multi ? i.qty : 1 }; }),
-          customer: { name: formState.name, email: formState.email, phone: formState.phone || null, notes: formState.notes || null },
-          gateway: formState.gateway, acceptTerms: true
+          submission: {
+            kind: "order",
+            items: payItems.map(function (i) { return { sku: i.sku, quantity: i.multi ? i.qty : 1 }; }),
+            customer: { name: formState.name, email: formState.email, phone: formState.phone || null },
+            notes: formState.notes || null
+          },
+          acceptTerms: true
         })
       })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })

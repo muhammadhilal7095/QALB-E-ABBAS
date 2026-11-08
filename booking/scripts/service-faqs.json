@@ -1,0 +1,1218 @@
+{
+ "_readme": "FAQs for every service page (10 each). Edit here, then run `npm run faqs:build` from the booking folder, then `npm run schema:build`. Answers are plain text.",
+ "amazon-fba": {
+  "title": "Amazon Frequently Asked Questions",
+  "faqs": [
+   [
+    "What is the difference between Amazon FBA and FBM?",
+    "With FBA, Amazon stores, packs and ships your orders and handles customer service, and your listings get Prime. With FBM you store and ship orders yourself. Most new private label sellers start with FBA."
+   ],
+   [
+    "Can I sell on Amazon if I live outside the US or UK?",
+    "Yes. Many sellers from Pakistan, the UAE and elsewhere sell on Amazon US and UK. You'll need valid ID, a matching address and a bank or payout account; a US LLC or UK LTD often makes approval and banking easier."
+   ],
+   [
+    "How much money do I need to start on Amazon?",
+    "It depends on your product, but plan for samples, your first inventory order, shipping, Amazon fees, PPC and a reserve for reorders. Our free Amazon assessment helps you check whether your budget is safe."
+   ],
+   [
+    "How long does Amazon account verification take?",
+    "Usually a few days to a few weeks. Matching, current documents are the biggest factor — we prepare and check them with you before you apply."
+   ],
+   [
+    "What does the Q1–Q4 product research include?",
+    "Each quarter we research 20 high-demand products for that season, with demand, competition, estimated margins and supplier options, so you can choose a product with evidence."
+   ],
+   [
+    "What is Amazon Brand Registry and why does it matter?",
+    "Brand Registry gives a trademark owner more control over their listings, access to A+ Content, Sponsored Brands ads and a Storefront, and tools to report copycats and hijackers. You need a registered or pending trademark to enrol."
+   ],
+   [
+    "Do foreign sellers need a US attorney for Amazon Brand Registry?",
+    "A US trademark application from a foreign applicant must be filed by a US-licensed attorney. Once your trademark is filed you can apply for Amazon Brand Registry."
+   ],
+   [
+    "How long until my Amazon product becomes profitable?",
+    "It varies with the product, price and competition. Most launches need a few months of PPC, reviews and reorders before ranking settles. We plan your launch budget so you know what to expect before you order stock."
+   ],
+   [
+    "My Amazon account is suspended — can you help?",
+    "Yes. We review the suspension notice and your account health, then write a clear plan of action with the right supporting documents to appeal."
+   ],
+   [
+    "How do I pay for your Amazon services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "ebay": {
+  "title": "eBay Frequently Asked Questions",
+  "faqs": [
+   [
+    "What are eBay MC011 and MC999 restrictions?",
+    "They are account restrictions eBay applies when it has concerns about verification, sourcing or policy. MC011 often relates to selling practices or dropshipping; MC999 usually needs identity and supplier verification. We prepare the right evidence and appeal."
+   ],
+   [
+    "Can I open an eBay seller account from Pakistan or another country?",
+    "Yes, but eBay checks that your ID, address, phone and bank details match. We help you prepare documents and the right business setup so verification succeeds."
+   ],
+   [
+    "Is dropshipping allowed on eBay?",
+    "Buying from another retailer (like Amazon) and having it shipped to your eBay buyer isn't allowed and often leads to MC011 restrictions. Wholesale dropshipping from a supplier is allowed if you meet eBay's delivery standards."
+   ],
+   [
+    "What are eBay selling limits?",
+    "New accounts have limits on how many items and how much value you can list each month. Limits increase as you build good sales history and feedback."
+   ],
+   [
+    "How does eBay SEO (Cassini) work?",
+    "eBay's search engine ranks listings on relevance, complete item specifics, price, shipping and seller performance. Our SEO audit fixes titles, item specifics and categories."
+   ],
+   [
+    "What is included in the eBay marketing strategy?",
+    "A plan for Promoted Listings, markdown sales, volume pricing and store promotions, with a budget and the products to push first."
+   ],
+   [
+    "What is eBay Top Rated Seller status?",
+    "It rewards sellers with low defect rates, on-time shipping with tracking and enough sales history. Qualifying listings can get a fee discount and a badge that builds buyer trust. Our account review shows what to improve to reach it."
+   ],
+   [
+    "Can I sell on eBay UK and eBay US from one account?",
+    "Yes, eBay lets you list on its other sites, but each market has its own fees, delivery expectations and VAT or sales tax rules. We help you choose where to start and how to ship there."
+   ],
+   [
+    "How long does an eBay reactivation take?",
+    "It varies with the reason for suspension. Once the appeal and documents are ready we submit them quickly and follow up until eBay responds."
+   ],
+   [
+    "How do I pay for your eBay services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "etsy": {
+  "title": "Etsy Frequently Asked Questions",
+  "faqs": [
+   [
+    "What can I sell on Etsy?",
+    "Items you make or design yourself, vintage items over 20 years old, craft supplies, and digital downloads. Reselling mass-produced items is not allowed."
+   ],
+   [
+    "Can I open an Etsy shop from Pakistan or another country?",
+    "Etsy supports sellers in many countries, but payouts and verification depend on your country. We help you open and verify a shop with the right payment setup."
+   ],
+   [
+    "How does Etsy SEO work?",
+    "Etsy ranks listings on how well titles, tags and attributes match a search, plus listing quality, reviews and shop performance. Our Etsy SEO service rewrites titles and tags for the searches buyers make."
+   ],
+   [
+    "Can I sell print-on-demand products on Etsy?",
+    "Yes, as long as the designs are your own and you list your production partner on the listing, as Etsy requires. We help you set this up correctly so the shop stays compliant."
+   ],
+   [
+    "How long does it take to get the first sale on Etsy?",
+    "It varies by product and niche. Strong photos, accurate tags, competitive pricing and a small Etsy Ads budget usually bring the first sales sooner for a new shop."
+   ],
+   [
+    "Why is my Etsy payment account on reserve?",
+    "Etsy may hold part of your payouts for new shops or after a spike in orders or cases. Good delivery, tracking and customer service help reserves be released."
+   ],
+   [
+    "How do Etsy Ads work?",
+    "Etsy Ads promote your listings in Etsy search for a daily budget. We set a budget and choose which listings to promote so spend turns into sales."
+   ],
+   [
+    "What is Etsy Star Seller?",
+    "A badge for shops that reply to messages quickly, ship on time with tracking and get great reviews. It builds trust with buyers."
+   ],
+   [
+    "My Etsy shop was suspended — can you help?",
+    "Yes. We review the reason and prepare an appeal with evidence that your products and processes follow Etsy's rules."
+   ],
+   [
+    "How do I pay for your Etsy services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "shopify-development": {
+  "title": "Shopify Frequently Asked Questions",
+  "faqs": [
+   [
+    "How long does it take to build a Shopify store?",
+    "A standard store takes about 1–2 weeks once we have your products, logo and content. Larger catalogs or custom designs take longer."
+   ],
+   [
+    "What does the $250 Shopify website development include?",
+    "Theme setup and design, homepage and product pages, collections, payments, shipping settings, essential apps and a mobile-friendly checkout."
+   ],
+   [
+    "Do I need a company to open a Shopify store?",
+    "Not always, but a registered business and a business bank account make payments, payouts and ad accounts much easier — especially for Shopify Payments."
+   ],
+   [
+    "Which payment methods can my store accept?",
+    "Shopify Payments is available in many countries; where it isn't, you can use PayPal and other supported payment providers. We set up the options that work for your country and business."
+   ],
+   [
+    "What do Meta ads management services include?",
+    "Ad handling and campaign setup, marketing strategy, post boosting, and content management for Facebook and Instagram, with monthly reporting. The $150 / month fee does not include your ad spend."
+   ],
+   [
+    "Is ad spend included in the monthly ads price?",
+    "No. The monthly fee covers our management. Your ad budget is paid directly to Meta, TikTok or Google."
+   ],
+   [
+    "Which ads should I start with — Meta, TikTok or Google?",
+    "For new, visual or impulse products start with Meta or TikTok. If people already search for your product, start with Google Search and Shopping. We recommend the right mix for your budget."
+   ],
+   [
+    "Can you help my store rank on Google?",
+    "Yes. Our Shopify SEO service covers technical SEO, page speed, product and collection pages, and content to help your store rank."
+   ],
+   [
+    "Do you provide support after the store goes live?",
+    "Yes. After launch we can help with updates, new products, apps and speed fixes, and our growth, SEO and ads services help you turn visitors into sales."
+   ],
+   [
+    "How do I pay for your Shopify services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "tiktok-shop": {
+  "title": "TikTok Shop Frequently Asked Questions",
+  "faqs": [
+   [
+    "Who can open a TikTok Shop account?",
+    "TikTok Shop is built for sellers registered in the selling country. For TikTok Shop UK or US you'll usually need a UK or US business, local address, bank account and fast local delivery. We help you set this up."
+   ],
+   [
+    "Do I need lots of followers to sell on TikTok Shop?",
+    "No. Products can sell through the Shop tab, search and creator affiliate videos even when your own account is new. Regular posting and good creators help you grow faster."
+   ],
+   [
+    "How does TikTok LIVE selling work?",
+    "You go live from your TikTok Shop account and pin products to the stream; viewers buy without leaving the LIVE. Planned shows with offers, demos and a good host sell the most."
+   ],
+   [
+    "What are TikTok creator affiliates?",
+    "Creators promote your products in their videos and LIVEs and earn a commission on sales. We find creators who suit your products, send samples and manage the programme."
+   ],
+   [
+    "Why was my TikTok Shop product rejected?",
+    "Common reasons are restricted categories, missing certificates, poor images or misleading claims. We review the reason and fix the listing or documents."
+   ],
+   [
+    "How fast do I need to ship TikTok Shop orders?",
+    "TikTok Shop has strict shipping deadlines, usually 1–3 working days to dispatch. Shipping from abroad rarely meets this, so we plan a local 3PL or Fulfilled by TikTok."
+   ],
+   [
+    "What is Fulfilled by TikTok?",
+    "TikTok's own fulfilment service in some markets, including the UK and US. It stores, packs and ships your orders so you meet delivery deadlines. We check whether your products qualify and help you set it up."
+   ],
+   [
+    "What is shop health and violation points?",
+    "TikTok tracks late shipments, cancellations, returns and policy breaks. Too many violation points can restrict or deactivate your shop. Our account review shows you what to fix."
+   ],
+   [
+    "Can you reactivate a deactivated TikTok Shop?",
+    "Often, yes. We review the deactivation reason and prepare an appeal with a clear corrective action plan."
+   ],
+   [
+    "How do I pay for your TikTok Shop services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "walmart": {
+  "title": "Walmart Frequently Asked Questions",
+  "faqs": [
+   [
+    "Who can sell on Walmart Marketplace?",
+    "Walmart approves registered businesses — usually with a US company and EIN, a marketplace sales history and products with valid GS1 barcodes. We help you prepare a strong application."
+   ],
+   [
+    "Can I sell on Walmart from outside the US?",
+    "International sellers can apply in many cases, but a US LLC, US bank account and US fulfilment (WFS or a 3PL) make approval and selling much easier."
+   ],
+   [
+    "How long does Walmart approval take?",
+    "Usually a few days to a few weeks after you submit a complete application. Applications with a US company, EIN, marketplace history and valid GS1 barcodes tend to be approved faster."
+   ],
+   [
+    "Do I need GS1 barcodes for Walmart?",
+    "Yes. Walmart checks that your UPC/GTIN barcodes are registered with GS1. Barcodes bought from resellers are often rejected."
+   ],
+   [
+    "What is Walmart Fulfillment Services (WFS)?",
+    "WFS stores your products in Walmart's warehouses and ships orders with fast delivery, which improves your listings' visibility. We set up and manage WFS inbound shipments."
+   ],
+   [
+    "What is the Walmart Listing Quality score?",
+    "It shows how complete and competitive your listings are — content, images, price, shipping speed and reviews. A higher score helps visibility and your chance of winning the Buy Box. Our Walmart SEO service improves it."
+   ],
+   [
+    "How does Walmart advertising work?",
+    "Walmart Sponsored Search shows your products at the top of search results. We set up and optimise campaigns so ad spend turns into profitable sales."
+   ],
+   [
+    "What is Walmart live streaming / live shopping?",
+    "Walmart runs live shopping events where brands demo products to shoppers in real time. We help you plan the event, prepare content and get stock ready."
+   ],
+   [
+    "My Walmart account is suspended — can you help?",
+    "Yes. We review the reason, fix performance or policy issues and prepare an appeal to restore your account."
+   ],
+   [
+    "How do I pay for your Walmart services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "uk-ltd-formation": {
+  "title": "UK Company Formation FAQs",
+  "faqs": [
+   [
+    "Can a non-UK resident form a UK limited company?",
+    "Yes. Directors and shareholders can live anywhere in the world. You need a UK registered office address, at least one director and must complete Companies House identity verification — we help with each step."
+   ],
+   [
+    "How long does UK company registration take?",
+    "Once your details and identity verification are ready, Companies House usually registers the company within a few working days. We prepare everything in advance so the application isn't delayed."
+   ],
+   [
+    "Can I use my home address abroad as the registered office?",
+    "No. A UK company's registered office must be in the UK. Both our Basic and Advanced plans include a UK registered office and business address."
+   ],
+   [
+    "What is the difference between the Basic and Advanced plans?",
+    "Both include Companies House registration, company documents, a registered office address and HMRC ID verification assistance. The Advanced plan adds mail forwarding, a business email and domain for one year, and dedicated help until your business bank account is open."
+   ],
+   [
+    "Can I open a UK business bank account as a non-resident?",
+    "It is possible, but traditional high-street banks often require UK residence. Many overseas founders use regulated online business accounts. We guide you through the options and the application."
+   ],
+   [
+    "Do I need to register for UK VAT?",
+    "UK-based businesses must register once taxable turnover goes over £90,000. Overseas businesses selling goods stored in the UK must register from the first sale. Our VAT & Tax Filing plan covers this."
+   ],
+   [
+    "Why is storing inventory in UK FBA warehouses risky for non-resident sellers?",
+    "Foreign entities storing inventory inside UK Amazon FBA or 3PL warehouses are legally required to register for UK VAT from Day 1. The £90,000 domestic UK turnover threshold applies exclusively to UK-established businesses. Selling without Day-1 VAT compliance results in account freezes, inventory seizures, and severe HMRC back-taxes."
+   ],
+   [
+    "How much Corporation Tax will my UK company pay?",
+    "Corporation Tax is 19% on profits up to £50,000 and 25% on profits over £250,000, with marginal relief in between. Rates can change, so we confirm the current rates when we prepare your return."
+   ],
+   [
+    "What do I need to file every year?",
+    "Each year the company files a confirmation statement and annual accounts with Companies House, and a Corporation Tax return with HMRC. Late filing brings automatic penalties."
+   ],
+   [
+    "What does the annual accounting package include?",
+    "Our Complete UK Accounting Package (£180 / year — just £18.33/month) covers annual accounts preparation and submission to Companies House, Corporation Tax Return filing with HMRC, and full ongoing compliance management throughout the year."
+   ]
+  ]
+ },
+ "us-llc-formation": {
+  "title": "US LLC FAQs",
+  "faqs": [
+   [
+    "Can a non-US resident form a US LLC?",
+    "Yes. You don't need US citizenship, residence or a visa. You need a registered agent and an address in the state where you form the LLC — both are included in our packages."
+   ],
+   [
+    "Which state should I form my LLC in?",
+    "Wyoming, Delaware and New Mexico are popular with non-residents because of low fees and simple compliance. The best choice depends on where you sell and your plans, so we recommend a state during your consultation."
+   ],
+   [
+    "Do I need an SSN or ITIN to get an EIN?",
+    "No. Non-residents without an SSN or ITIN can get an EIN by applying to the IRS with Form SS-4. We prepare and submit it for you."
+   ],
+   [
+    "How long does US LLC formation take?",
+    "State filing usually takes from a few days to a couple of weeks, depending on the state. The EIN follows after that; the Advanced package includes fast-track EIN procurement."
+   ],
+   [
+    "Can I open a US bank account without visiting the US?",
+    "Several US banks and fintech providers, such as Mercury and Relay, accept non-resident LLC owners remotely, subject to their own checks. We help you prepare a strong application; approval is decided by the bank."
+   ],
+   [
+    "What is the difference between the Basic and Advanced packages?",
+    "Basic ($550) covers state filing, a registered agent for one year, a virtual US address, EIN procurement and bank signup guidance. Advanced ($650) adds a commercial suite address, expedited EIN, full bank setup assistance and one year of IRS Form 5472 & 1120 filing. Your state's filing fee is added on top of either package — choose your state on this page to see the exact total."
+   ],
+   [
+    "Do non-US residents pay federal taxes on US LLC income?",
+    "Single-member US LLCs owned by foreign residents pay 0% US federal income tax provided they have no physical presence (employees, physical offices) or Effectively Connected Income (ECI) in the US. However, filing IRS Form 5472 is mandatory."
+   ],
+   [
+    "What is the penalty for late filing of IRS Form 5472?",
+    "The IRS levies an automated penalty of $25,000 for each tax year that Form 5472 is filed late or incorrectly."
+   ],
+   [
+    "What yearly fees does a US LLC have?",
+    "Most states charge an annual report fee or franchise tax, and you need to renew your registered agent each year. The amount depends on the state — we tell you exactly what applies before you form."
+   ],
+   [
+    "Can I register a US trademark myself if I live outside the United States?",
+    "No. Under USPTO mandate 37 CFR § 2.11, foreign-domiciled individuals and entities are legally required to be represented by a US-licensed attorney admitted to a state bar. Self-represented foreign applications are automatically rejected."
+   ]
+  ]
+ },
+ "malta-company-formation": {
+  "title": "Malta Company Formation FAQs",
+  "faqs": [
+   [
+    "Why set up a company in Malta?",
+    "Malta is an EU member state with English as an official language, giving access to the EU single market, a well-regulated business environment and a tax system that can be efficient for international owners."
+   ],
+   [
+    "Do I need to live in Malta to set up a company there?",
+    "Requirements depend on the company structure and business activity. We review your situation during your consultation and explain what applies to you."
+   ],
+   [
+    "Which type of company is most common in Malta?",
+    "Most founders choose a private limited liability company (Ltd). It separates your personal assets from the business and suits trading, e-commerce and services companies."
+   ],
+   [
+    "What is the minimum share capital?",
+    "A Maltese private limited company needs a minimum share capital of €1,165, and at least 20% of it must be paid up when the company is registered."
+   ],
+   [
+    "How long does it take to register a Malta company?",
+    "Once documents, due diligence and the share capital deposit are complete, registration with the Malta Business Registry is usually quick. Opening the bank account often takes longer, so we start that process early."
+   ],
+   [
+    "Do I need a registered office in Malta?",
+    "Yes. Every Maltese company must have a registered office address in Malta. We guide you on suitable options."
+   ],
+   [
+    "How is a Malta company taxed?",
+    "The headline corporate tax rate is 35%, but Malta's tax refund system can significantly reduce the overall tax for shareholders on distributed profits. Whether you qualify depends on your situation, so we explain it during your consultation."
+   ],
+   [
+    "Do I need to register for VAT in Malta?",
+    "It depends on your business activity and turnover, and on whether you sell to other EU countries. We check what applies and guide you through registration if you need it."
+   ],
+   [
+    "What ongoing compliance does a Malta company have?",
+    "Each year the company files an annual return with the Malta Business Registry, prepares audited financial statements and submits a tax return. We help you stay on top of every deadline."
+   ],
+   [
+    "Can you help with tax after the company is registered?",
+    "Yes. We offer business tax filing and compliance support in Malta as part of our Taxation Services."
+   ]
+  ]
+ },
+ "uae-company-formation": {
+  "title": "UAE Company Formation FAQs",
+  "faqs": [
+   [
+    "Can foreigners own 100% of a UAE company?",
+    "Yes. Free zone companies allow full foreign ownership, and since 2021 most mainland business activities can also be 100% foreign-owned."
+   ],
+   [
+    "Should I choose mainland or free zone?",
+    "It depends on your business activity, where your customers are, and how you plan to operate. We compare both options for your specific case during your consultation."
+   ],
+   [
+    "Can a free zone company sell to customers in mainland UAE?",
+    "Free zone companies mainly trade within their free zone and internationally. Selling directly to the mainland market usually needs a local distributor or extra permits, which is why choosing the right setup matters."
+   ],
+   [
+    "Do I need to visit the UAE to set up a company?",
+    "Many setups can be started remotely. If you want a UAE residence visa, you will need to enter the UAE for the medical test and Emirates ID biometrics."
+   ],
+   [
+    "How long does UAE company formation take?",
+    "Free zone companies can often be licensed within days to a couple of weeks once documents are ready. Mainland setups can take longer depending on the approvals your activity needs."
+   ],
+   [
+    "What documents do I need?",
+    "Usually a passport copy, a passport photo, proof of address and details of your business activity. Some authorities and banks also ask for a CV or bank reference — we give you a checklist for your case."
+   ],
+   [
+    "Is there corporate tax in the UAE?",
+    "Yes. Since June 2023 corporate tax is 9% on taxable profits above AED 375,000. Qualifying free zone income can be taxed at 0% if the conditions are met."
+   ],
+   [
+    "Do I need to register for VAT in the UAE?",
+    "VAT is 5%. Registration is mandatory once taxable supplies exceed AED 375,000 in 12 months, and voluntary from AED 187,500. We guide you through registration when needed."
+   ],
+   [
+    "Can I get a UAE residence visa through my company?",
+    "Yes, most licences allow investor or partner visas. The number of visas depends on the licence and office space you choose."
+   ],
+   [
+    "Can you help with banking after the company is set up?",
+    "Yes. We guide you through preparing your corporate bank account application."
+   ]
+  ]
+ },
+ "taxation": {
+  "title": "Tax Filing Frequently Asked Questions",
+  "faqs": [
+   [
+    "Does my foreign-owned US LLC need to file taxes?",
+    "Yes. A single-member US LLC owned by a non-resident must file IRS Form 5472 with a pro forma Form 1120 every year — even if it made no sales."
+   ],
+   [
+    "When is the US Form 5472 deadline?",
+    "For LLCs using the calendar year it is due by 15 April. You can get a six-month extension to 15 October by filing Form 7004 on time."
+   ],
+   [
+    "What happens if I don't file Form 5472?",
+    "The IRS can charge a $25,000 penalty for each year the form is filed late, incorrectly or not at all, so filing on time is essential."
+   ],
+   [
+    "What does “+ state fees” mean on the US tax filing price?",
+    "Our $200 fee covers preparing and filing your federal forms. Annual reports or franchise taxes charged by your LLC's state are paid to the state and depend on where the LLC is registered."
+   ],
+   [
+    "What does the Complete UK Accounting Package include?",
+    "For £180 a year we prepare and submit your annual accounts to Companies House and your Corporation Tax return (CT600) to HMRC, with compliance support throughout the year."
+   ],
+   [
+    "When are UK accounts and Corporation Tax due?",
+    "Annual accounts are due at Companies House 9 months after your financial year end. Corporation Tax is usually payable 9 months and 1 day after the year end, and the tax return is due within 12 months."
+   ],
+   [
+    "My company had no income — do I still need to file?",
+    "Yes. A US LLC still files Form 5472 and pro forma 1120, and a UK company still files annual accounts and a confirmation statement with Companies House, even when it has not traded."
+   ],
+   [
+    "What records do I need to send you?",
+    "Bank statements, marketplace or payment platform sales reports, invoices and receipts for expenses, and copies of any previous filings. We send you a simple checklist."
+   ],
+   [
+    "Can you help with late or missed filings?",
+    "Yes. We can prepare catch-up filings for past years. Penalties may already apply, so acting quickly is the best way to limit them."
+   ],
+   [
+    "How do I pay for your tax services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "trademark-registration": {
+  "title": "Trademark Registration FAQs",
+  "faqs": [
+   [
+    "Why should I register a trademark?",
+    "A registered trademark gives you legal ownership of your brand name or logo, helps you stop copycats, and is needed to join Amazon Brand Registry."
+   ],
+   [
+    "Does a UK trademark protect my brand in the US?",
+    "No. Trademarks are territorial, so a UK trademark only protects you in the UK and a US trademark only in the US. If you sell in both countries, you need both."
+   ],
+   [
+    "Do I need a US attorney to file a US trademark?",
+    "Yes, if you live outside the US. USPTO rules require foreign-domiciled applicants to be represented by a US-licensed attorney. Our US service is filed through accredited US attorneys."
+   ],
+   [
+    "How long does US trademark registration take?",
+    "It usually takes around a year or more, depending on USPTO examination times and whether the examiner raises any objections."
+   ],
+   [
+    "How long does UK trademark registration take?",
+    "If there are no objections or oppositions, a UK trademark is usually registered in about four months from filing."
+   ],
+   [
+    "Can I join Amazon Brand Registry before my trademark is registered?",
+    "In many marketplaces, including the US and UK, Amazon accepts a pending trademark application, so you can usually apply once your application is filed."
+   ],
+   [
+    "What are trademark classes?",
+    "Goods and services are grouped into 45 classes, and official fees are charged per class. We help you choose the right classes and write precise descriptions so your brand is properly covered."
+   ],
+   [
+    "Can my trademark application be refused?",
+    "Yes — usually if it is too similar to an existing mark or simply describes the product. We run a conflict search before filing to reduce this risk."
+   ],
+   [
+    "How long does a trademark last?",
+    "Both US and UK trademarks last 10 years and can be renewed. In the US you also need to file a declaration of use between the fifth and sixth year."
+   ],
+   [
+    "How do I pay for trademark registration?",
+    "Add the service you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "seo": {
+  "title": "SEO Frequently Asked Questions",
+  "faqs": [
+   [
+    "How long does SEO take to show results?",
+    "Most websites start to see movement within 3–6 months. Competitive keywords and new websites can take longer, which is why we track progress from the start."
+   ],
+   [
+    "Can you guarantee first-page rankings on Google?",
+    "No one can honestly guarantee rankings, because Google controls its results. We use proven methods that improve your visibility and report the results clearly."
+   ],
+   [
+    "What is the difference between on-page, off-page and technical SEO?",
+    "On-page SEO improves your content, titles and keywords. Off-page SEO builds your site's authority with quality links and mentions. Technical SEO fixes speed, indexing and site structure so Google can crawl you properly."
+   ],
+   [
+    "Do you offer local SEO?",
+    "Yes. We optimise your Google Business Profile, local pages and listings so you appear in local and map searches."
+   ],
+   [
+    "Do you work with Shopify and WordPress websites?",
+    "Yes. We optimise Shopify, WordPress and custom websites, including product and collection pages for online stores."
+   ],
+   [
+    "Which access will you need?",
+    "Usually access to your website's admin, Google Search Console and Google Analytics. Everything stays in your name and you can remove our access at any time."
+   ],
+   [
+    "Are your SEO methods safe?",
+    "Yes. We follow Google's guidelines and never use spam links or tricks that can lead to penalties."
+   ],
+   [
+    "Is SEO a one-time job or ongoing?",
+    "Our On-Page, Off-Page and Technical SEO packages are fixed-price projects. Search keeps changing, so many clients continue with ongoing optimisation afterwards."
+   ],
+   [
+    "How do you report progress?",
+    "You get clear reports showing rankings, traffic and the work we've completed, with the next steps we recommend."
+   ],
+   [
+    "How do I pay for your SEO services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "digital-marketing": {
+  "title": "Digital Marketing Frequently Asked Questions",
+  "faqs": [
+   [
+    "Which advertising platform is best for my business?",
+    "It depends on your product and customers. Meta and TikTok are great for visual and impulse products, while Google captures people already searching. We recommend the right mix for your goals and budget."
+   ],
+   [
+    "Is ad spend included in the monthly price?",
+    "No. The monthly fee covers our management. Your ad budget is paid directly to Meta, TikTok or Google."
+   ],
+   [
+    "How much should I spend on ads?",
+    "Start with a test budget you are comfortable with. Once we see which ads and audiences work, we scale the budget behind the winners."
+   ],
+   [
+    "How soon will I see results?",
+    "Ads start delivering as soon as they're approved, but it usually takes 2–4 weeks of testing and optimisation to find the best-performing campaigns."
+   ],
+   [
+    "Do you create the ad creatives?",
+    "Yes. Creative development is part of our process — we plan ad images, videos and copy that suit each platform."
+   ],
+   [
+    "Will I own my ad accounts?",
+    "Yes. Ad accounts and business managers stay in your name, and we work through the access you give us."
+   ],
+   [
+    "Do you set up conversion tracking?",
+    "Yes. We set up the Meta Pixel and Conversions API, TikTok Pixel and Google tags so every sale and lead is measured."
+   ],
+   [
+    "Can you run ads for my Shopify or e-commerce store?",
+    "Yes. E-commerce advertising, retargeting and catalogue ads are a core part of our service."
+   ],
+   [
+    "How do you report results?",
+    "You receive regular reports with spend, sales or leads, cost per result and what we are changing next."
+   ],
+   [
+    "How do I pay for your marketing services?",
+    "Add the services you need to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "education-consultancy": {
+  "title": "Study in Malta FAQs",
+  "faqs": [
+   [
+    "Why study in Malta?",
+    "Malta is an English-speaking EU country with recognised qualifications, a safe environment and a wide range of bachelor's, master's, diploma and English language courses."
+   ],
+   [
+    "Who can apply through Qalb-E-Abbas?",
+    "Students who have completed the qualifications needed for their chosen level — for example, college or intermediate for a bachelor's degree, or a bachelor's degree for a master's."
+   ],
+   [
+    "Do I need IELTS to study in Malta?",
+    "Most institutions ask for proof of English, such as IELTS. Some accept alternatives or offer English language courses first. We check the requirement for each course you apply to."
+   ],
+   [
+    "What documents will I need?",
+    "Usually your passport, academic certificates and transcripts, proof of English, a CV, a statement of purpose and proof of funds. We give you a checklist for your chosen course."
+   ],
+   [
+    "When are the main intakes?",
+    "Most programmes start in September or October, and some also start in February. Applying early gives more time for admission and visa processing."
+   ],
+   [
+    "Can you guarantee admission or a student visa?",
+    "No. Admission is decided by the institution and visas by the Maltese authorities. We make sure your application is complete and well prepared to give you the best chance."
+   ],
+   [
+    "Can I work while studying in Malta?",
+    "Non-EU students may be able to work limited part-time hours with the right permit. The rules can change, so we explain the current conditions during your consultation."
+   ],
+   [
+    "What does the application processing fee cover?",
+    "Our support with course and institution selection, application preparation, admission follow-up and student visa preparation. Tuition, visa and other third-party fees are paid separately."
+   ],
+   [
+    "Do you help with scholarships?",
+    "Yes. We share scholarship and funding information that matches your profile and course."
+   ],
+   [
+    "How do I pay for the education consultancy service?",
+    "Add the service to your cart on this page and pay securely by card. You'll get an email confirmation and our team contacts you within one working day."
+   ]
+  ]
+ },
+ "facebook-automation": {
+  "title": "Facebook Automation FAQs",
+  "faqs": [
+   [
+    "What can a Facebook page automation bot do?",
+    "It replies to Messenger messages instantly, answers common questions, shares product and service details, collects leads and follows up with customers — all from your Facebook page."
+   ],
+   [
+    "Is Facebook automation allowed by Meta?",
+    "Yes. We build on Meta's official Messenger tools and follow its messaging policies, so your page stays safe."
+   ],
+   [
+    "Will the bot reply 24/7?",
+    "Yes. Customers get an instant answer at any time, even outside business hours."
+   ],
+   [
+    "Can a real person take over the conversation?",
+    "Yes. The bot can hand the chat to your team when a customer needs personal help or is ready to buy."
+   ],
+   [
+    "Can it reply to comments on my posts?",
+    "Yes. It can reply to comments automatically and send a private message to people who comment, turning comments into conversations."
+   ],
+   [
+    "What is Meta's 24-hour messaging window?",
+    "Businesses can freely reply to a customer within 24 hours of their last message. After that, only limited message types are allowed. We design your flows to work within these rules."
+   ],
+   [
+    "Can the bot collect leads and send them to my team?",
+    "Yes. It can collect names, phone numbers and emails and send them to your email, Google Sheets or CRM."
+   ],
+   [
+    "Can the bot reply in Urdu or other languages?",
+    "Yes. Conversation flows can be written in English, Urdu or any language your customers use."
+   ],
+   [
+    "What do I need to get started?",
+    "A Facebook page and admin access, plus the questions customers usually ask. We handle the setup, testing and launch."
+   ],
+   [
+    "How do I order Facebook automation?",
+    "Book a $50 consultation. We review your page and goals, then send you a clear quote and timeline."
+   ]
+  ]
+ },
+ "instagram-automation": {
+  "title": "Instagram Automation FAQs",
+  "faqs": [
+   [
+    "What can Instagram automation do?",
+    "It replies to DMs instantly, sends messages when people comment a keyword, answers common questions, shares product links and collects leads."
+   ],
+   [
+    "Do I need an Instagram business account?",
+    "Yes. Automation works with Instagram professional accounts (Business or Creator). We help you switch if needed."
+   ],
+   [
+    "Is Instagram automation safe for my account?",
+    "Yes. We use Meta's official messaging tools and never use fake likes, follows or spam bots that put accounts at risk."
+   ],
+   [
+    "Can it send a DM when someone comments on my post?",
+    "Yes. For example, when someone comments “PRICE”, they automatically receive a DM with the price and a link."
+   ],
+   [
+    "Can it reply to story replies and mentions?",
+    "Yes. Story replies and mentions can trigger automatic, personalised responses."
+   ],
+   [
+    "Can my team take over a conversation?",
+    "Yes. The bot hands the chat to a team member whenever a customer needs personal help."
+   ],
+   [
+    "Can it collect customer emails and phone numbers?",
+    "Yes. Leads can be sent to your email, Google Sheets or CRM so your team can follow up."
+   ],
+   [
+    "Can it work together with Facebook automation?",
+    "Yes. We can set up Instagram and Facebook automation together so customers get consistent answers on both."
+   ],
+   [
+    "How long does setup take?",
+    "Simple automations take a few days. Larger flows with integrations take longer — we confirm the timeline before we start."
+   ],
+   [
+    "How do I order Instagram automation?",
+    "Book a $50 consultation. We review your account and goals, then send you a clear quote and timeline."
+   ]
+  ]
+ },
+ "whatsapp-automation": {
+  "title": "WhatsApp Automation FAQs",
+  "faqs": [
+   [
+    "What is WhatsApp automation?",
+    "A chatbot connected to your WhatsApp business number that replies instantly, answers questions, shares product details, books appointments and sends order updates."
+   ],
+   [
+    "What is the difference between the WhatsApp Business app and the WhatsApp Business Platform?",
+    "The free app suits small teams replying by hand. The WhatsApp Business Platform (API) supports chatbots, multiple team members, integrations and automated notifications — this is what we use for automation."
+   ],
+   [
+    "Do I need a new phone number?",
+    "You can use a new number or, in many cases, connect your existing business number. We check the best option for you before setup."
+   ],
+   [
+    "Does WhatsApp charge for messages?",
+    "Meta charges for some message types, mainly business-initiated messages such as promotions and notifications. Prices depend on the country and message type, and we explain them before you launch."
+   ],
+   [
+    "Can I send promotional broadcasts?",
+    "Yes, to customers who have agreed to receive messages, using templates approved by WhatsApp. This keeps your number in good standing."
+   ],
+   [
+    "Can customers book appointments on WhatsApp?",
+    "Yes. The bot can show available times, confirm bookings and send reminders."
+   ],
+   [
+    "Can it send order confirmations and delivery updates?",
+    "Yes. We can connect your store or system so customers get automatic order and delivery messages."
+   ],
+   [
+    "Can my team take over the chat?",
+    "Yes. Conversations can be handed to a team member at any time."
+   ],
+   [
+    "Can it connect to my website, CRM or Shopify store?",
+    "Yes. We integrate WhatsApp with your website, CRM, Google Sheets or store so leads and orders flow automatically."
+   ],
+   [
+    "How do I order WhatsApp automation?",
+    "Book a $50 consultation. We review your business and goals, then send you a clear quote and timeline."
+   ]
+  ]
+ },
+ "tiktok-automation": {
+  "title": "TikTok Automation FAQs",
+  "faqs": [
+   [
+    "What is TikTok automation?",
+    "Using TikTok's business tools and approved integrations to reply to messages, manage comments, schedule content and capture leads automatically."
+   ],
+   [
+    "Is TikTok automation safe for my account?",
+    "Yes. We only use TikTok's official tools and approved integrations — never follow, like or view bots that break TikTok's rules."
+   ],
+   [
+    "Can it auto-reply to TikTok messages?",
+    "Yes. TikTok business accounts support welcome messages, keyword replies and suggested questions, which we set up for your business."
+   ],
+   [
+    "Can you schedule my TikTok videos?",
+    "Yes. We plan and schedule your content so you post consistently, even when you're busy."
+   ],
+   [
+    "Can it help me manage comments?",
+    "Yes. We set up comment filters and a routine for replying, so questions get answered and spam is hidden."
+   ],
+   [
+    "Do I need a TikTok business account?",
+    "Yes. A TikTok business account unlocks messaging tools, analytics and scheduling. We help you set it up."
+   ],
+   [
+    "Can leads from TikTok go to my CRM?",
+    "Yes. Leads from TikTok lead forms and messages can be sent to your email, Google Sheets or CRM."
+   ],
+   [
+    "Does it work with TikTok Shop?",
+    "Automation can support your TikTok Shop customer service. For selling, see our TikTok Shop growth services."
+   ],
+   [
+    "How do you track performance?",
+    "We monitor replies, leads, engagement and video performance, and report what's working."
+   ],
+   [
+    "How do I order TikTok automation?",
+    "Book a $50 consultation. We review your account and goals, then send you a clear quote and timeline."
+   ]
+  ]
+ },
+ "app-development": {
+  "title": "App Development FAQs",
+  "faqs": [
+   [
+    "How long does it take to build an app?",
+    "A simple app can take a few weeks, while feature-rich apps take several months. We give you a timeline after the discovery and planning stage."
+   ],
+   [
+    "How much does an app cost?",
+    "It depends on features, design and platforms. After discussing your idea we send a clear quote with a breakdown of what's included."
+   ],
+   [
+    "Should I build for Android, iOS or both?",
+    "Most businesses need both. Cross-platform development builds one app for Android and iOS, saving time and cost."
+   ],
+   [
+    "Will you publish my app on Google Play and the App Store?",
+    "Yes. We prepare the store listings and handle submission. The developer accounts are set up in your name."
+   ],
+   [
+    "Who owns the app?",
+    "Your app, store accounts and content are set up in your name, and ownership and handover are confirmed in writing before work starts."
+   ],
+   [
+    "Can you add payments, logins and notifications?",
+    "Yes. We can add secure payments, user accounts, push notifications, booking, chat and other features your business needs."
+   ],
+   [
+    "Do you design the app as well?",
+    "Yes. UI/UX design is part of our process, so you see and approve the screens before development starts."
+   ],
+   [
+    "Can you improve or redesign my existing app?",
+    "Yes. We redesign, fix and add features to existing apps."
+   ],
+   [
+    "Do you provide support after launch?",
+    "Yes. We offer maintenance for updates, bug fixes, new features and compatibility with new Android and iOS versions."
+   ],
+   [
+    "How do I start my app project?",
+    "Book a $50 consultation. We discuss your idea, then send you a clear quote and timeline."
+   ]
+  ]
+ },
+ "crm-development": {
+  "title": "CRM Development FAQs",
+  "faqs": [
+   [
+    "Why choose a custom CRM over ready-made software?",
+    "A custom CRM is built around how your business works, with only the features you need, no per-user subscription limits and room to grow."
+   ],
+   [
+    "How long does it take to build a CRM?",
+    "A focused CRM can be ready in a few weeks; larger systems with many integrations take longer. We confirm the timeline after requirement analysis."
+   ],
+   [
+    "Can the CRM connect to my website, WhatsApp and email?",
+    "Yes. We integrate website forms, WhatsApp, email and other tools so leads arrive in the CRM automatically."
+   ],
+   [
+    "Can I control what each staff member sees?",
+    "Yes. Role-based access lets you decide who can view, edit or export data."
+   ],
+   [
+    "Can I access the CRM from anywhere?",
+    "Yes. We build cloud-based CRMs that work in the browser on desktop, tablet and phone."
+   ],
+   [
+    "Can you move my existing data into the new CRM?",
+    "Yes. We import your customers, leads and history from spreadsheets or your current system."
+   ],
+   [
+    "Is my data secure?",
+    "We use secure hosting, encrypted connections, user permissions and regular backups to protect your data."
+   ],
+   [
+    "Can the CRM automate follow-ups and tasks?",
+    "Yes. Workflow automation can assign leads, send reminders and follow-up messages, and update deal stages."
+   ],
+   [
+    "Do you provide training and support?",
+    "Yes. We train your team and provide maintenance and improvements after launch."
+   ],
+   [
+    "How do I start my CRM project?",
+    "Book a $50 consultation. We discuss your processes, then send you a clear quote and timeline."
+   ]
+  ]
+ },
+ "website-development": {
+  "title": "Website Development FAQs",
+  "faqs": [
+   [
+    "How long does it take to build a website?",
+    "A business website usually takes 1–3 weeks. E-commerce and custom websites take longer depending on pages and features."
+   ],
+   [
+    "Which platform will you use?",
+    "We recommend WordPress, Shopify or a custom build depending on your goals, budget and how you want to manage the site."
+   ],
+   [
+    "Will my website work on mobile phones?",
+    "Yes. Every website we build is fully responsive and tested on phones, tablets and desktops."
+   ],
+   [
+    "Is the website SEO-friendly?",
+    "Yes. We build with clean structure, fast loading, meta tags and mobile optimisation so your site is ready for search engines."
+   ],
+   [
+    "Do you help with domain and hosting?",
+    "Yes. We help you choose and set up your domain, hosting and business email, all registered in your name."
+   ],
+   [
+    "Can I update the website myself?",
+    "Yes. We build on easy-to-use systems and show you how to edit text, images and products."
+   ],
+   [
+    "Can you redesign my existing website?",
+    "Yes. We redesign outdated websites to improve their look, speed and results."
+   ],
+   [
+    "Can you add online payments or booking?",
+    "Yes. We can add payment gateways, booking and appointment systems, memberships and other features."
+   ],
+   [
+    "Do you offer maintenance after launch?",
+    "Yes. We provide ongoing support for updates, backups, security and changes."
+   ],
+   [
+    "How do I start my website project?",
+    "Book a $50 consultation. We discuss your requirements, then send you a clear quote and timeline."
+   ]
+  ]
+ },
+ "email-marketing": {
+  "title": "Email Marketing FAQs",
+  "faqs": [
+   [
+    "Which email platforms do you work with?",
+    "We work with popular platforms such as Mailchimp, Klaviyo, Brevo and Shopify Email, and recommend the best fit for your business."
+   ],
+   [
+    "Do you buy or rent email lists?",
+    "No. We only email people who have agreed to hear from you. This protects your sender reputation and keeps you compliant with privacy laws such as GDPR."
+   ],
+   [
+    "How often should I send emails?",
+    "Most businesses do well with one to four emails a month, plus automated emails triggered by customer actions. We plan a schedule that suits your audience."
+   ],
+   [
+    "Which automated emails do you set up?",
+    "Common flows include welcome emails, abandoned cart reminders, post-purchase follow-ups, review requests and win-back emails."
+   ],
+   [
+    "How do you stop emails going to spam?",
+    "We set up domain authentication (SPF, DKIM and DMARC), clean your list and write emails that inbox providers trust."
+   ],
+   [
+    "Can you help me grow my email list?",
+    "Yes. We create sign-up forms, pop-ups and lead magnets that turn website visitors into subscribers."
+   ],
+   [
+    "Do you design the email templates?",
+    "Yes. We design branded, mobile-friendly templates that match your website."
+   ],
+   [
+    "How do you measure results?",
+    "We track opens, clicks, conversions and revenue, and report what is working and what we will improve next."
+   ],
+   [
+    "Is email marketing still effective?",
+    "Yes. Email is a channel you own, and it is one of the most cost-effective ways to bring customers back and increase repeat sales."
+   ],
+   [
+    "How do I start email marketing?",
+    "Book a $50 consultation. We review your goals and audience, then send you a clear quote and plan."
+   ]
+  ]
+ },
+ "social-media-marketing": {
+  "title": "Social Media Marketing FAQs",
+  "faqs": [
+   [
+    "Which social media platforms do you manage?",
+    "Facebook, Instagram, TikTok, YouTube and LinkedIn. We focus on the platforms where your customers spend time."
+   ],
+   [
+    "Do you create the content?",
+    "Yes. We design posts, write captions and plan reels and short videos that fit your brand."
+   ],
+   [
+    "How often will you post?",
+    "It depends on your plan and platforms. We agree a content calendar with you in advance."
+   ],
+   [
+    "Do I approve content before it's posted?",
+    "Yes. You review the content calendar and posts before they go live."
+   ],
+   [
+    "Is paid advertising included?",
+    "Social media management covers organic content and engagement. Paid ads are available through our Digital Marketing service, and ad spend is paid separately."
+   ],
+   [
+    "Will you reply to comments and messages?",
+    "Yes. Community management, including replying to comments and messages, can be part of your plan."
+   ],
+   [
+    "How long does it take to see growth?",
+    "Most accounts see better engagement within the first few months of consistent, quality posting."
+   ],
+   [
+    "Do you guarantee followers?",
+    "No. We never buy followers or use fake engagement. We grow real audiences that can become customers."
+   ],
+   [
+    "How do you report results?",
+    "You receive regular reports on reach, engagement, followers and website clicks, with recommendations."
+   ],
+   [
+    "How do I start social media marketing?",
+    "Book a $50 consultation. We review your brand and goals, then send you a clear quote and plan."
+   ]
+  ]
+ },
+ "affiliate-marketing": {
+  "title": "Affiliate Marketing FAQs",
+  "faqs": [
+   [
+    "How does affiliate marketing work?",
+    "Partners such as bloggers, creators and websites promote your products with a unique link and earn a commission only when they bring a sale or lead."
+   ],
+   [
+    "Is affiliate marketing suitable for small businesses?",
+    "Yes. Because you pay for results, it is a low-risk way for small businesses and new brands to reach new customers."
+   ],
+   [
+    "How do you find affiliate partners?",
+    "We research and contact bloggers, creators, review sites and niche websites whose audiences match your customers."
+   ],
+   [
+    "How much commission should I offer?",
+    "It depends on your margins and industry. We recommend a commission that attracts good partners while keeping your sales profitable."
+   ],
+   [
+    "How are affiliate sales tracked?",
+    "Each partner gets tracking links or codes, and the affiliate platform records clicks, sales and commissions automatically."
+   ],
+   [
+    "Which affiliate platform will you use?",
+    "We set up a platform that suits your website — for example a Shopify or WordPress affiliate app, or an affiliate network."
+   ],
+   [
+    "How do you prevent fake or fraudulent sales?",
+    "We set clear partner rules, monitor traffic and sales quality, and approve commissions only for valid orders."
+   ],
+   [
+    "Can you build an affiliate website for me?",
+    "Yes. If you want to earn as an affiliate, we build SEO-friendly affiliate websites and content."
+   ],
+   [
+    "How long does it take to see results?",
+    "Programmes usually take a few months to build a strong group of active partners. Results then grow as partners create content."
+   ],
+   [
+    "How do I start affiliate marketing?",
+    "Book a $50 consultation. We review your business and goals, then send you a clear quote and plan."
+   ]
+  ]
+ },
+ "influencer-marketing": {
+  "title": "Influencer Marketing FAQs",
+  "faqs": [
+   [
+    "How do you choose the right influencers?",
+    "We look at audience location, interests, engagement quality and past content — not just follower numbers — to find creators who fit your brand."
+   ],
+   [
+    "Should I work with micro or large influencers?",
+    "Micro-influencers often have more trusted, engaged audiences at a lower cost, while larger influencers bring wider reach. Many campaigns use a mix."
+   ],
+   [
+    "Which platforms do you cover?",
+    "TikTok, Instagram, YouTube and Facebook."
+   ],
+   [
+    "Are influencer fees included in your price?",
+    "No. Our fee covers strategy, outreach and campaign management. Influencer fees or free products are agreed separately with each creator."
+   ],
+   [
+    "Can I use the influencer's content in my ads?",
+    "Yes, if usage rights are agreed. We include content rights in the agreement so you can reuse posts and UGC in your ads."
+   ],
+   [
+    "How do you measure campaign results?",
+    "We use tracking links, discount codes and platform data to measure reach, engagement, clicks and sales."
+   ],
+   [
+    "Do influencer posts need to be labelled as ads?",
+    "Yes. Paid or gifted posts must be clearly labelled, for example with #ad. We make sure every campaign follows the advertising rules."
+   ],
+   [
+    "Can you run product gifting campaigns?",
+    "Yes. We send products to suitable creators for honest reviews and content."
+   ],
+   [
+    "How long does a campaign take?",
+    "Most campaigns take a few weeks from planning and creator selection to content going live."
+   ],
+   [
+    "How do I start an influencer campaign?",
+    "Book a $50 consultation. We review your brand, goals and budget, then send you a clear quote and plan."
+   ]
+  ]
+ },
+ "real-estate": {
+  "title": "Real Estate in Pakistan — FAQs",
+  "faqs": [
+   [
+    "Can overseas Pakistanis buy property in Pakistan?",
+    "Yes. Overseas Pakistanis can buy, sell and rent property in Pakistan. Many buy remotely with video tours and an attested power of attorney given to a trusted representative. We coordinate the process and keep you updated."
+   ],
+   [
+    "Which cities do you cover?",
+    "We support property searches and transactions in major cities such as Lahore, Islamabad, Rawalpindi and Karachi. Tell us your preferred city or housing society and we'll confirm how we can help."
+   ],
+   [
+    "How do I check that a property's documents are genuine?",
+    "Ownership should be confirmed against official land records and property documents such as the fard, registry and intiqal (mutation), plus the society's allotment or transfer letters. We arrange these checks with an independent lawyer before you pay anything."
+   ],
+   [
+    "How can I check if a housing society is approved?",
+    "Housing society approval and NOC status can be checked with the relevant development authority for that area. We verify the society's status as part of our due diligence before you buy."
+   ],
+   [
+    "What taxes apply when buying or selling property?",
+    "Buyers and sellers usually pay stamp duty, registration or transfer fees and FBR withholding taxes. Withholding tax rates are higher for non-filers, so your FBR filer status matters. Rates change, so we explain the current costs before you commit."
+   ],
+   [
+    "Can I buy property in Pakistan without travelling?",
+    "Often, yes. With an attested power of attorney, a trusted representative can complete steps on your behalf. We provide video tours, document copies and regular updates throughout the process."
+   ],
+   [
+    "Do you help with selling my property?",
+    "Yes. We help with pricing guidance, professional photos, online listings and social media promotion to reach serious buyers, then support you through the agreement and transfer."
+   ],
+   [
+    "Do you offer rental and property management?",
+    "Yes. We can help find tenants, prepare tenancy agreements, collect rent and coordinate maintenance — useful if you live abroad or don't have time to manage the property yourself."
+   ],
+   [
+    "Are you a law firm?",
+    "No. We provide property guidance and coordination. Legal checks, agreements and transfers should be completed with an independent, qualified lawyer, and we work alongside your lawyer."
+   ],
+   [
+    "How much do your real estate services cost?",
+    "Our service fee depends on what you need and is agreed in writing before any work starts. Email us for pricing or book a $50 property consultation to discuss your plans."
+   ]
+  ]
+ }
+}

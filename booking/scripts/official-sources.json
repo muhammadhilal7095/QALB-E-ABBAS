@@ -1,0 +1,39 @@
+{
+  "_readme": "Official, trustworthy external sources shown on service pages (\"Official sources\" box) and used by build-links.mjs. Keys are page file names without .html. Run `npm run links:build` from the booking folder after editing.",
+  "amazon-fba": [
+    ["Amazon — Fulfillment by Amazon (FBA)", "https://sell.amazon.com/fulfillment-by-amazon"],
+    ["GOV.UK — VAT for overseas businesses selling through online marketplaces", "https://www.gov.uk/guidance/vat-overseas-businesses-using-an-online-marketplace-to-sell-goods-in-the-uk"]
+  ],
+  "us-llc-formation": [
+    ["IRS — About Form 5472", "https://www.irs.gov/forms-pubs/about-form-5472"],
+    ["IRS — Get an Employer Identification Number (EIN)", "https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number"]
+  ],
+  "uk-ltd-formation": [
+    ["GOV.UK — Set up a limited company", "https://www.gov.uk/limited-company-formation"],
+    ["Companies House", "https://www.gov.uk/government/organisations/companies-house"],
+    ["GOV.UK — Register for VAT", "https://www.gov.uk/register-for-vat"]
+  ],
+  "taxation": [
+    ["IRS — About Form 5472", "https://www.irs.gov/forms-pubs/about-form-5472"],
+    ["GOV.UK — Corporation Tax", "https://www.gov.uk/corporation-tax"],
+    ["GOV.UK — VAT registration", "https://www.gov.uk/vat-registration"]
+  ],
+  "trademark-registration": [
+    ["USPTO — Trademarks", "https://www.uspto.gov/trademarks"],
+    ["USPTO — Do I need an attorney?", "https://www.uspto.gov/trademarks/basics/do-i-need-attorney"],
+    ["GOV.UK — Register a trade mark", "https://www.gov.uk/how-to-register-a-trade-mark"]
+  ],
+  "malta-company-formation": [
+    ["Malta Business Registry", "https://mbr.mt"]
+  ],
+  "uae-company-formation": [
+    ["UAE Government — Business information and services", "https://u.ae/en/information-and-services/business"]
+  ],
+  "real-estate": [
+    ["Federal Board of Revenue (FBR), Pakistan", "https://www.fbr.gov.pk"]
+  ],
+  "education-consultancy": [
+    ["University of Malta", "https://www.um.edu.mt"],
+    ["Identity Malta (visas and residence)", "https://identitymalta.com"]
+  ]
+}

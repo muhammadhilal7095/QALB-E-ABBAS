@@ -45,7 +45,7 @@
   Carousel.prototype.setup = function () {
     var self = this;
     this.slides.forEach(function (s, i) {
-      s.setAttribute("role", "group");
+      if (s.tagName !== "ARTICLE") s.setAttribute("role", "group"); // <article> already has its own role
       s.setAttribute("aria-roledescription", "slide");
       s.setAttribute("aria-label", (i + 1) + " of " + self.n);
     });

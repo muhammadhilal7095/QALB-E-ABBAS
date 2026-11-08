@@ -1,0 +1,13 @@
+Etsy page photos — free under the Unsplash License (unsplash.com; free commercial use, no attribution required),
+except where marked Rawpixel CC0. Resized for the web: <name>.jpg = 1280px (1024px for the Rawpixel ones),
+<name>-800.jpg = phones, <name>-1920.jpg = full-width banner.
+
+et-maker          https://unsplash.com/photos/TywjkDHf0Ps   Person doing handcrafts at a workbench
+et-mugs           https://unsplash.com/photos/CipURjPCXOo   Two handmade ceramic mugs
+et-mug            https://unsplash.com/photos/sLXRjF-btew   Hand-painted ceramic mug
+et-candles        https://unsplash.com/photos/clw6dHJYusQ   Beeswax candles and packaging
+et-laptop         https://unsplash.com/photos/1N49Cn7P0Fg   Woman using a laptop
+et-analytics      https://unsplash.com/photos/JKUTrJ4vK00   Analytics on a laptop
+et-seller-parcel  https://unsplash.com/photos/k63Or81F8-M   Seller checking a parcel
+et-seller-desk    https://unsplash.com/photos/BkwzVF6mHdc   Seller working at a desk
+et-packing        https://unsplash.com/photos/uqZXLOd4F8E   Preparing a box for shipping

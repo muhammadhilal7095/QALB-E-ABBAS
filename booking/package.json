@@ -2,26 +2,23 @@
   "name": "qalb-booking",
   "version": "1.0.0",
   "private": true,
-  "description": "Qalb-E-Abbas online meeting booking & payment system",
+  "description": "Qalb-E-Abbas secure payments: booking form and cart checkout via Stripe, with email notifications",
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start -p 3000",
-    "db:local": "node scripts/local-db.mjs",
-    "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy",
-    "db:seed": "tsx prisma/seed.ts",
-    "worker": "tsx scripts/worker.ts",
     "test": "vitest run",
     "pricing:build": "node scripts/build-pricing.mjs",
-    "lint": "next lint"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "lint": "next lint",
+    "schema:build": "node scripts/build-schema.mjs",
+    "faqs:build": "node scripts/build-faqs.mjs",
+    "seo:build": "node scripts/build-seo.mjs",
+    "links:build": "node scripts/build-links.mjs",
+    "images:build": "node scripts/build-images.mjs",
+    "assets:build": "node scripts/build-assets.mjs",
+    "site:build": "npm run pricing:build && npm run faqs:build && npm run links:build && npm run images:build && npm run seo:build && npm run schema:build && npm run assets:build"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
-    "bcryptjs": "^2.4.3",
     "next": "^15.5.28",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -29,24 +26,17 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.6.1",
-    "embedded-postgres": "^18.4.0-beta.17",
     "postcss": "^8.5.30",
-    "prisma": "^6.19.3",
     "tailwindcss": "^3.4.19",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^3.2.7"
   },
   "allowScripts": {
-    "@embedded-postgres/darwin-x64@18.4.0-beta.17": true,
-    "@prisma/client@6.19.3": true,
-    "@prisma/engines@6.19.3": true,
-    "esbuild@0.28.2": true,
-    "prisma@6.19.3": true
+    "esbuild@0.28.2": true
   }
 }

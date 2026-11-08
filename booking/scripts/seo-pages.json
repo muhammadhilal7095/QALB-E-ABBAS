@@ -1,0 +1,234 @@
+{
+  "_readme": "Title (aim for 50-60 characters) and meta description (aim for 140-160) for every page. Edit here, then run `npm run seo:build` and `npm run schema:build` from the booking folder. Set \"noindex\": true to keep a page out of Google and the sitemap (placeholders, cart).",
+  "_site": {
+    "_note": "Paste the Google Search Console HTML-tag verification code here (content=\"…\" value only), then run npm run seo:build.",
+    "googleSiteVerification": ""
+  },
+  "index": {
+    "title": "E-commerce Growth Services & Company Formation | Qalb-E-Abbas",
+    "description": "Amazon FBA, eBay, TikTok Shop, Walmart, Etsy and Shopify services, UK LTD and US LLC formation for non-residents, tax filing, digital marketing and online courses.",
+    "priority": "1.0"
+  },
+  "services": {
+    "title": "Our Services: E-commerce, Marketing & Formation | Qalb-E-Abbas",
+    "description": "Amazon, eBay, TikTok Shop, Walmart, Etsy and Shopify services, digital marketing, automation, web development, company formation and tax filing in one place.",
+    "priority": "0.9"
+  },
+  "amazon-fba": {
+    "title": "Amazon FBA Services & Account Management | Qalb-E-Abbas",
+    "description": "Amazon FBA and private label services: seller account setup, product research, listing optimisation, PPC management, Brand Registry and account reinstatement.",
+    "priority": "0.9"
+  },
+  "ebay": {
+    "title": "eBay Account Management & Store Growth Services | Qalb-E-Abbas",
+    "description": "eBay seller services: account setup, MC011 & MC999 appeals, account reinstatement, Cassini SEO, item specifics and Promoted Listings for eBay UK, US and EU.",
+    "priority": "0.9"
+  },
+  "tiktok-shop": {
+    "title": "TikTok Shop Management Services UK & US | Qalb-E-Abbas",
+    "description": "TikTok Shop setup and management for UK & US sellers: account approval, listing SEO, shoppable videos, creator affiliates, LIVE selling and ads.",
+    "priority": "0.9"
+  },
+  "walmart": {
+    "title": "Walmart Marketplace Seller Services & WFS | Qalb-E-Abbas",
+    "description": "Walmart Marketplace seller services: application and approval, Listing Quality optimisation, WFS setup, Sponsored Search ads and Buy Box strategy for US sellers.",
+    "priority": "0.9"
+  },
+  "etsy": {
+    "title": "Etsy Shop Management & Etsy SEO Services | Qalb-E-Abbas",
+    "description": "Etsy shop setup, Etsy SEO and tags, listing photos, Etsy Ads and Star Seller support for handmade, vintage and print-on-demand sellers in the UK and US.",
+    "priority": "0.9"
+  },
+  "shopify-development": {
+    "title": "Shopify Store Development, SEO & Ads | Qalb-E-Abbas",
+    "description": "Custom Shopify store development, Shopify SEO, conversion optimisation and Meta, TikTok and Google Ads management to build and grow your own brand.",
+    "priority": "0.9"
+  },
+  "uk-ltd-formation": {
+    "title": "UK Company Formation for Non-Residents | UK LTD from £350",
+    "description": "Form a UK limited company from anywhere: Companies House registration, registered office, HMRC ID verification, business bank support and VAT & tax filing.",
+    "priority": "0.9"
+  },
+  "us-llc-formation": {
+    "title": "US LLC Formation for Non-Residents – EIN & Bank Account",
+    "description": "Form a US LLC from anywhere: state filing, registered agent, US address, EIN without an SSN, US bank account support and IRS Form 5472 compliance.",
+    "priority": "0.9"
+  },
+  "malta-company-formation": {
+    "title": "Malta Company Formation for Non-Residents | Qalb-E-Abbas",
+    "description": "Set up a Malta limited company for EU access: structure planning, document preparation, Malta Business Registry registration, banking, VAT and tax guidance.",
+    "priority": "0.8"
+  },
+  "uae-company-formation": {
+    "title": "UAE Company Formation – Mainland & Free Zone | Qalb-E-Abbas",
+    "description": "Start a business in Dubai and the UAE: mainland or free zone setup, trade licence, documents, residence visa guidance, corporate bank account and VAT registration.",
+    "priority": "0.8"
+  },
+  "taxation": {
+    "title": "Tax Filing for Non-Residents: US Form 5472 & UK Accounts",
+    "description": "Fixed-price tax services: US Form 5472 and 1120 filing for foreign-owned LLCs, UK annual accounts, Corporation Tax returns and VAT compliance.",
+    "priority": "0.8"
+  },
+  "trademark-registration": {
+    "title": "Trademark Registration UK & US (UKIPO, USPTO) | Qalb-E-Abbas",
+    "description": "Register your trademark in the UK (UKIPO) or US (USPTO) with conflict searches, class selection and US attorney filing — ready for Amazon Brand Registry.",
+    "priority": "0.8"
+  },
+  "digital-marketing": {
+    "title": "Digital Marketing & PPC Services – Meta, TikTok, Google Ads",
+    "description": "Paid advertising management for Meta (Facebook & Instagram), TikTok and Google Ads — campaign setup, creatives, conversion tracking and monthly reporting.",
+    "priority": "0.8"
+  },
+  "seo": {
+    "title": "SEO Services UK – Rank Higher on Google | Qalb-E-Abbas",
+    "description": "Professional SEO services: technical SEO, on-page and off-page SEO, local SEO, Shopify and WordPress SEO and keyword research to grow organic traffic.",
+    "priority": "0.8"
+  },
+  "social-media-marketing": {
+    "title": "Social Media Marketing & Management Services | Qalb-E-Abbas",
+    "description": "Social media management for Facebook, Instagram, TikTok, YouTube and LinkedIn — content creation, reels, community management and monthly reporting.",
+    "priority": "0.8"
+  },
+  "email-marketing": {
+    "title": "Email Marketing Services & Automation | Qalb-E-Abbas",
+    "description": "Email marketing services: campaign management, Klaviyo and Mailchimp automation, abandoned cart flows, newsletter design and deliverability optimisation.",
+    "priority": "0.7"
+  },
+  "influencer-marketing": {
+    "title": "Influencer Marketing Services for Brands | Qalb-E-Abbas",
+    "description": "Find and manage the right TikTok, Instagram and YouTube influencers — outreach, product seeding, UGC content and campaign reporting that drives sales.",
+    "priority": "0.7"
+  },
+  "affiliate-marketing": {
+    "title": "Affiliate Marketing Services & Program Setup | Qalb-E-Abbas",
+    "description": "Launch and grow an affiliate program that pays only for results: partner recruitment, tracking, commission strategy and campaign management for brands and stores.",
+    "priority": "0.7"
+  },
+  "facebook-automation": {
+    "title": "Facebook Messenger Chatbot & Page Automation | Qalb-E-Abbas",
+    "description": "Automate your Facebook page with a Messenger chatbot: instant replies, comment-to-DM, lead capture and 24/7 customer support built on Meta's official tools.",
+    "priority": "0.7"
+  },
+  "instagram-automation": {
+    "title": "Instagram DM Automation & Chatbot Services | Qalb-E-Abbas",
+    "description": "Instagram DM automation: auto-replies, comment-to-DM keyword triggers, story reply responses and lead capture using Meta's official messaging tools.",
+    "priority": "0.7"
+  },
+  "whatsapp-automation": {
+    "title": "WhatsApp Business API Automation & Chatbot | Qalb-E-Abbas",
+    "description": "WhatsApp Business automation: chatbots, instant replies, appointment booking, order notifications and CRM integration on the official WhatsApp Business Platform.",
+    "priority": "0.7"
+  },
+  "tiktok-automation": {
+    "title": "TikTok Automation Services for Business | Qalb-E-Abbas",
+    "description": "TikTok business automation: auto-replies, comment management, content scheduling and lead capture using TikTok's official tools — safe for your account.",
+    "priority": "0.7"
+  },
+  "website-development": {
+    "title": "Website Design & Development Services | Qalb-E-Abbas",
+    "description": "Professional website design and development: business websites, e-commerce stores, WordPress, Shopify, landing pages and booking sites — fast and SEO-ready.",
+    "priority": "0.7"
+  },
+  "app-development": {
+    "title": "Mobile App Development Services – Android & iOS | Qalb-E-Abbas",
+    "description": "Custom Android, iOS and cross-platform app development for startups and businesses — UI/UX design, e-commerce apps, booking apps, launch and ongoing support.",
+    "priority": "0.7"
+  },
+  "crm-development": {
+    "title": "Custom CRM Development Services | Qalb-E-Abbas",
+    "description": "Custom CRM software development: lead management, sales pipelines, workflow automation, dashboards and integrations with your website, WhatsApp and email.",
+    "priority": "0.7"
+  },
+  "education-consultancy": {
+    "title": "Study in Malta | Education Consultancy & Admissions Support",
+    "description": "Study in Malta with expert guidance on course selection, university admissions, student visa preparation, scholarships and pre-departure support.",
+    "priority": "0.7"
+  },
+  "university": {
+    "title": "Online E-commerce Courses | Qalb-E-Abbas University",
+    "description": "Live online e-commerce courses for Amazon FBA, eBay, TikTok Shop, Walmart, Etsy, Shopify and Meta, TikTok & Google Ads, with one-to-one mentorship.",
+    "priority": "0.8"
+  },
+  "about": {
+    "title": "About Qalb-E-Abbas | E-commerce Experts in Manchester, UK",
+    "description": "Meet Qalb-E-Abbas, an Oldham, Manchester business services and education company helping entrepreneurs worldwide with e-commerce, company formation and training.",
+    "priority": "0.6"
+  },
+  "team": {
+    "title": "Our Team | E-commerce, Tax & Marketing Experts | Qalb-E-Abbas",
+    "description": "Meet the Qalb-E-Abbas team of e-commerce, company formation, tax, marketing and education specialists, led by founder and CEO Ch. Qalb-E-Abbas.",
+    "priority": "0.6"
+  },
+  "contact": {
+    "title": "Contact Qalb-E-Abbas | E-commerce & Business Support, UK",
+    "description": "Contact Qalb-E-Abbas in Oldham, Manchester about e-commerce, company formation, tax and marketing services. Email us or book a consultation online.",
+    "priority": "0.6"
+  },
+  "book-consultation": {
+    "title": "Book a Business Consultation – $50 | Qalb-E-Abbas",
+    "description": "Book a 30-minute consultation with Qalb-E-Abbas experts on Amazon, eBay, Shopify, company formation, tax or marketing. Choose a time and pay securely online.",
+    "priority": "0.7"
+  },
+  "assessment": {
+    "title": "Free E-commerce & Business Readiness Assessment | Qalb-E-Abbas",
+    "description": "Take a free 2–10 minute assessment for Amazon, eBay, TikTok Shop, Shopify, company formation, tax or marketing and get an instant, personalised readiness result.",
+    "priority": "0.7"
+  },
+  "blog": {
+    "title": "E-commerce, Amazon & Company Formation Blog | Qalb-E-Abbas",
+    "description": "Practical guides on Amazon FBA, eBay, TikTok Shop, US LLC and UK LTD formation, tax compliance and digital marketing for online sellers and founders.",
+    "priority": "0.6"
+  },
+  "beginners-guide": {
+    "title": "Beginner's Guide to E-commerce: How to Start Selling Online",
+    "description": "A step-by-step beginner's guide to starting e-commerce: how online selling works, choosing a marketplace and product, company setup and budgeting.",
+    "priority": "0.6"
+  },
+  "blog-amazon-fba-vs-fbm": {
+    "title": "Amazon FBA vs FBM 2026: Avoid Storage Fees & Suspensions",
+    "description": "Amazon FBA vs FBM in 2026: compare fees, storage limits, Prime eligibility and suspension risks to choose the right fulfilment model for your brand.",
+    "type": "article",
+    "priority": "0.6"
+  },
+  "blog-us-llc-vs-uk-ltd": {
+    "title": "US LLC vs UK LTD for Non-Residents | IRS Form 5472 Guide",
+    "description": "US LLC vs UK LTD for foreign founders: tax treatment, IRS Form 5472, UK VAT, banking and compliance compared, so you can choose the right company.",
+    "type": "article",
+    "priority": "0.6"
+  },
+  "cart": {
+    "title": "Your Cart — Review Services & Pay Securely | Qalb-E-Abbas",
+    "description": "Review the services in your cart, update quantities and pay securely by card. You'll receive an email confirmation with your order reference.",
+    "noindex": true
+  },
+  "finance": {
+    "title": "Finance & Payments Information | Qalb-E-Abbas",
+    "description": "Finance information for Qalb-E-Abbas clients: how payments work, invoices, refunds and how to contact our team with billing and finance questions.",
+    "noindex": true
+  },
+  "privacy": {
+    "title": "Privacy Policy — How We Protect Your Data | Qalb-E-Abbas",
+    "description": "How Qalb-E-Abbas collects, uses, stores and protects your personal information, your rights under UK GDPR, and how to contact us about your data.",
+    "noindex": true
+  },
+  "terms": {
+    "title": "Terms and Conditions of Service | Qalb-E-Abbas",
+    "description": "The terms and conditions for using the Qalb-E-Abbas website and services, including bookings, payments, consultations, refunds and your responsibilities.",
+    "noindex": true
+  },
+  "disclaimer": {
+    "title": "Website Disclaimer — Information & Advice | Qalb-E-Abbas",
+    "description": "Important information about the content on the Qalb-E-Abbas website: general guidance only, not legal, tax or financial advice, and how to get advice for you.",
+    "noindex": true
+  },
+  "real-estate": {
+    "title": "Real Estate Services in Pakistan | Buy, Sell & Invest",
+    "description": "Property services in Pakistan: buying and selling support, title and document verification, transfer guidance, rental management and help for overseas Pakistanis.",
+    "priority": "0.8"
+  },
+  "404": {
+    "title": "Page Not Found (404) | Qalb-E-Abbas",
+    "description": "Sorry, the page you were looking for can't be found. It may have moved — try our homepage, services, US LLC and Amazon FBA pages or contact our team for help.",
+    "noindex": true
+  }
+}

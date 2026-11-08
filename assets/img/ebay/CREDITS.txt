@@ -1,0 +1,15 @@
+eBay page photos — from Unsplash (unsplash.com), free under the Unsplash License
+(free commercial use, no attribution required). Downloaded at full resolution and resized:
+<name>.jpg = 1280px, <name>-800.jpg = phones, <name>-1920.jpg = full-width banner.
+
+eb-seller-parcel  https://unsplash.com/photos/k63Or81F8-M   Seller checking a parcel with phone near laptop and boxes
+eb-collectibles   https://unsplash.com/photos/V4VKYmIwFUA   Shelves of vintage items and collectibles
+eb-sneakers       https://unsplash.com/photos/uIWfpSURyeM   White sneakers in a box
+eb-seller-desk    https://unsplash.com/photos/BkwzVF6mHdc   Seller working at a desk with a laptop
+eb-laptop         https://unsplash.com/photos/1N49Cn7P0Fg   Woman using a laptop
+eb-seller-phone   https://unsplash.com/photos/e7DxwVzL0hk   Seller on the phone in a clothing store
+eb-products       https://unsplash.com/photos/Nm5MnMNxAK4   Product flat lay (watch, phone, box)
+eb-flatlay        https://unsplash.com/photos/_GA41qytzy4   Product flat lay on grey
+eb-analytics      https://unsplash.com/photos/JKUTrJ4vK00   Performance analytics on a laptop
+eb-packing        https://unsplash.com/photos/uqZXLOd4F8E   Preparing a box in a warehouse
+eb-website       https://unsplash.com/photos/lxpLpl_3ykw   eBay website open on a laptop (Oberon Copeland)

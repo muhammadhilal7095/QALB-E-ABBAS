@@ -25,34 +25,34 @@ window.SITE_CONFIG = {
 
   /* Internal page destinations. */
   links: {
-    home: "index.html",
-    services: "services.html",
-    team: "team.html",
-    about: "about.html",
-    contact: "contact.html",
-    blog: "blog.html",
+    home: "/",
+    services: "/services",
+    team: "/team",
+    about: "/about",
+    contact: "/contact",
+    blog: "/blog",
     // Online booking & payment system (the Next.js app in /booking).
     // Change to the live booking URL when deployed, e.g. "https://book.qalbeabbas.com".
     bookingApp: "http://localhost:3000",
     // Header / menu "Book Consultation" button. book-consultation.html forwards
     // each ?topic= to the matching meeting type in the booking app.
-    book: "book-consultation.html",
-    university: "university.html",
-    level1: "index.html#level-1",
-    mentorship: "index.html#level-1",
-    assessment: "assessment.html",
-    beginnersGuide: "beginners-guide.html",
-    support: "contact.html#support",
-    finance: "finance.html",
-    privacy: "privacy.html",
-    terms: "terms.html",
-    disclaimer: "disclaimer.html",
+    book: "/book-consultation",
+    university: "/university",
+    level1: "/#level-1",
+    mentorship: "/#level-1",
+    assessment: "/assessment",
+    beginnersGuide: "/beginners-guide",
+    support: "/contact#support",
+    finance: "/finance",
+    privacy: "/privacy",
+    terms: "/terms",
+    disclaimer: "/disclaimer",
 
     // "Apply Now" destinations for the University course cards.
     // Replace with each course's real application form URL when available.
-    applyDigitalBusinessLaunch: "book-consultation.html?topic=digital-business-launch",
-    applyLocalAgentsFlagship: "book-consultation.html?topic=local-agents-flagship",
-    applyAiVideoCreatorPro: "book-consultation.html?topic=ai-video-creator-pro"
+    applyDigitalBusinessLaunch: "/book-consultation?topic=digital-business-launch",
+    applyLocalAgentsFlagship: "/book-consultation?topic=local-agents-flagship",
+    applyAiVideoCreatorPro: "/book-consultation?topic=ai-video-creator-pro"
   },
 
   /* Official social profiles — NOT supplied yet. Paste the real URLs here. */
@@ -67,12 +67,19 @@ window.SITE_CONFIG = {
     whatsapp: ""   // e.g. https://wa.me/<number> once confirmed
   },
 
+  /* Analytics. Paste your Google Analytics 4 Measurement ID (e.g. "G-ABC123XYZ") to turn it on.
+     Visitors are asked for consent first (UK GDPR); analytics only loads after they accept. */
+  analytics: {
+    ga4Id: ""
+  },
+
   contact: {
     location: "Oldham, Manchester, United Kingdom",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=Oldham%2C%20Manchester%2C%20United%20Kingdom",
-    phoneDisplay: "+44 7862 605011",
-    phoneHref: "tel:+447862605011",
-    // USA phone number — not supplied yet. Fill both to show it in the footer.
+    // Phone numbers are not shown on the website (visitors book a consultation instead).
+    // Fill these only if you want a phone number in the footer again.
+    phoneDisplay: "",
+    phoneHref: "",
     phoneUSDisplay: "",
     phoneUSHref: "",       // e.g. "tel:+1XXXXXXXXXX"
     email: "contact@qalbeabbas.com"
@@ -80,13 +87,13 @@ window.SITE_CONFIG = {
 
   /* Main navigation (same data drives desktop nav and the mobile drawer). */
   nav: [
-    { label: "Home", link: "home", match: ["index.html", ""] },
-    { label: "Services", link: "services", match: ["services.html"], mega: true },
-    { label: "Qalb-E-Abbas University", link: "university", match: ["university.html"] },
-    { label: "Team", link: "team", match: ["team.html"] },
-    { label: "About Us", link: "about", match: ["about.html"] },
-    { label: "Contact Us", link: "contact", match: ["contact.html"] },
-    { label: "Blog", link: "blog", match: ["blog.html", "beginners-guide.html"] }
+    { label: "Home", link: "home", match: ["/", ""] },
+    { label: "Services", link: "services", match: ["/services"], mega: true },
+    { label: "Qalb-E-Abbas University", short: "University", link: "university", match: ["/university"], highlight: { icon: "graduation", tag: "Courses", promo: "Learn Amazon & e-commerce", sub: "Amazon & e-commerce courses with live mentorship" } },
+    { label: "Team", link: "team", match: ["/team"] },
+    { label: "About Us", link: "about", match: ["/about"] },
+    { label: "Contact Us", link: "contact", match: ["/contact"] },
+    { label: "Blog", link: "blog", match: ["/blog", "/beginners-guide"] }
   ],
 
   /* Services mega menu / mobile accordion. href values point at sections of
@@ -95,61 +102,66 @@ window.SITE_CONFIG = {
     {
       id: "ecommerce", title: "E-commerce Services", icon: "cart", desc: "Launch and scale on the world's top marketplaces.",
       items: [
-        ["Amazon", "amazon", "amazon-fba.html", "amazon"], ["TikTok Shop", "tiktok-shop", "tiktok-shop.html", "tiktok"], ["eBay", "ebay", "ebay.html", "ebay"],
-        ["Walmart", "walmart", "walmart.html", "walmart"], ["Etsy", "etsy", "etsy.html", "etsy"], ["Shopify", "shopify", "shopify-development.html", "shopify"]
+        ["Amazon", "amazon", "/amazon-fba", "amazon"], ["TikTok Shop", "tiktok-shop", "/tiktok-shop", "tiktok"], ["eBay", "ebay", "/ebay", "ebay"],
+        ["Walmart", "walmart", "/walmart", "walmart"], ["Etsy", "etsy", "/etsy", "etsy"], ["Shopify", "shopify", "/shopify-development", "shopify"]
       ]
     },
     {
       id: "automation", title: "AI & Business Automation", icon: "bot", desc: "Chatbots and workflows that save hours every week.",
       items: [
-        ["Facebook", "facebook-automation", "facebook-automation.html", "facebook"], ["TikTok", "tiktok-automation", "tiktok-automation.html", "tiktok"],
-        ["WhatsApp", "whatsapp-automation", "whatsapp-automation.html", "whatsapp"], ["Instagram", "instagram-automation", "instagram-automation.html", "instagram"]
+        ["Facebook", "facebook-automation", "/facebook-automation", "facebook"], ["TikTok", "tiktok-automation", "/tiktok-automation", "tiktok"],
+        ["WhatsApp", "whatsapp-automation", "/whatsapp-automation", "whatsapp"], ["Instagram", "instagram-automation", "/instagram-automation", "instagram"]
       ]
     },
     {
       id: "development", title: "Web & Software Development", icon: "code", desc: "Websites, stores, apps and CRMs built to convert.",
       items: [
-        ["Shopify", "shopify-development", "shopify-development.html", "shopify"], ["Websites", "website-development", "website-development.html", "icon:monitor"],
-        ["CRM Systems", "crm-development", "crm-development.html", "icon:users"], ["Mobile Apps", "app-development", "app-development.html", "icon:smartphone"]
+        ["Shopify Stores", "shopify-development", "/shopify-development", "icon:code"], ["Websites", "website-development", "/website-development", "icon:monitor"],
+        ["CRM Systems", "crm-development", "/crm-development", "icon:users"], ["Mobile Apps", "app-development", "/app-development", "icon:smartphone"]
       ]
     },
     {
       id: "marketing", title: "Marketing & Business Growth", icon: "megaphone", desc: "Paid ads, SEO and campaigns that drive sales.",
       items: [
-        ["Influencers", "influencer-marketing", "influencer-marketing.html", "instagram"], ["Social Media", "social-media-marketing", "social-media-marketing.html", "meta"],
-        ["Paid Ads", "digital-marketing", "digital-marketing.html", "googleads"], ["Email", "email-marketing", "email-marketing.html", "mailchimp"],
-        ["SEO", "seo", "seo.html", "google"], ["Affiliates", "affiliate-marketing", "affiliate-marketing.html", "affiliate"]
+        ["Influencers", "influencer-marketing", "/influencer-marketing", "instagram"], ["Social Media", "social-media-marketing", "/social-media-marketing", "meta"],
+        ["Paid Ads", "digital-marketing", "/digital-marketing", "googleads"], ["Email", "email-marketing", "/email-marketing", "mailchimp"],
+        ["SEO", "seo", "/seo", "google"], ["Affiliates", "affiliate-marketing", "/affiliate-marketing", "affiliate"]
       ]
     },
     {
-      id: "formation", title: "Company Formation & Business Setup", icon: "building", desc: "Register your company and stay compliant.",
+      id: "formation", title: "Company Formation", icon: "building", desc: "Register your company and stay compliant.",
       items: [
-        ["UK", "uk-company-formation", "uk-ltd-formation.html", "flag-uk"], ["USA", "usa-company-formation", "us-llc-formation.html", "flag-us"],
-        ["UAE", "uae-company-formation", "uae-company-formation.html", "flag-ae"], ["Malta", "malta-company-formation", "malta-company-formation.html", "flag-mt"]
+        ["UK", "uk-company-formation", "/uk-ltd-formation", "flag-uk"], ["USA", "usa-company-formation", "/us-llc-formation", "flag-us"],
+        ["UAE", "uae-company-formation", "/uae-company-formation", "flag-ae"], ["Malta", "malta-company-formation", "/malta-company-formation", "flag-mt"]
       ]
     },
     {
       id: "education", title: "Education Consultancy", icon: "graduation", desc: "Study in Malta: admissions, visas and pre-departure support.",
-      items: [["Study in Malta", "education-consultancy", "education-consultancy.html", "icon:graduation"]]
+      items: [["Study in Malta", "education-consultancy", "/education-consultancy", "icon:graduation"]]
+    },
+    {
+      id: "real-estate", title: "Real Estate", icon: "building", desc: "Buy, sell, rent and invest in property in Pakistan.",
+      items: [["Pakistan Property", "real-estate", "/real-estate", "flag-pk"]]
     }
   ],
 
   footer: {
     description: "Empowering entrepreneurs through e-commerce education, mentorship, business consultancy, and digital growth solutions.",
     commitment: "Practical learning first — so you can make informed decisions and grow your business with confidence.",
-    quickLinks: [
-      ["Home", "home"], ["Services", "services"], ["Qalb-E-Abbas University", "university"],
-      ["About Us", "about"], ["Contact Us", "contact"], ["Blog", "blog"]
-    ],
+    // "Services" column
     serviceLinks: [
-      ["E-commerce Services", "services.html#ecommerce"],
-      ["AI & Business Automation", "services.html#automation"],
-      ["Web & Software Development", "services.html#development"],
-      ["Digital Marketing", "digital-marketing.html"],
-      ["Company Formation", "services.html#formation"],
-      ["Taxation Services", "taxation.html"],
-      ["Education Consultancy", "services.html#education"],
-      ["Support", "support"], ["Team", "team"], ["Finance", "finance"]
+      ["E-commerce Services", "/services#ecommerce"],
+      ["Digital Marketing", "/digital-marketing"],
+      ["AI & Business Automation", "/services#automation"],
+      ["Web & Software Development", "/services#development"],
+      ["Company Formation", "/services#formation"],
+      ["Taxation Services", "/taxation"],
+      ["Education Consultancy", "/services#education"]
+    ],
+    // "Company" column
+    quickLinks: [
+      ["About Us", "about"], ["Our Team", "team"], ["Qalb-E-Abbas University", "university"],
+      ["Blog", "blog"], ["Contact Us", "contact"], ["Support", "support"], ["Finance", "finance"]
     ],
     legal: [["Privacy Policy", "privacy"], ["Terms and Conditions", "terms"], ["Disclaimer", "disclaimer"]]
   }

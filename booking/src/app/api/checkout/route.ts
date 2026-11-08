@@ -1,18 +1,19 @@
 import { z } from "zod";
-import { prisma } from "@/lib/db";
-import { startCheckout } from "@/lib/payments";
-import { fail, handle, ok, parseJson, rateLimit } from "@/lib/http";
-import { clientIp, getCurrentUser } from "@/lib/auth";
+import { availableGateways, startPayment, submissionSchema } from "@/lib/checkout";
+import { handle, ok, parseJson, rateLimit } from "@/lib/http";
+import { preflight, withCors } from "@/lib/cors";
 
-const schema = z.object({ reference: z.string(), token: z.string().optional(), gateway: z.enum(["STRIPE", "BANK_TRANSFER", "MOCK"]) });
-
-/** POST /api/checkout — starts payment for a held booking; returns the redirect URL. */
-export const POST = handle(async (req: Request) => {
-  await rateLimit(`checkout:${await clientIp()}`, 20, 600);
-  const body = await parseJson(req, schema);
-  const b = await prisma.booking.findUnique({ where: { reference: body.reference }, include: { client: true } });
-  const user = await getCurrentUser();
-  if (!b || !((body.token && body.token === b.manageToken) || (user && b.client.userId === user.id))) return fail("Booking not found.", 404);
-  const { redirectUrl } = await startCheckout(b, body.gateway);
-  return ok({ redirectUrl });
+const schema = z.object({
+  submission: submissionSchema,
+  acceptTerms: z.literal(true, { errorMap: () => ({ message: "Please accept the terms to continue" }) }),
 });
+
+export const OPTIONS = (req: Request) => preflight(req);
+
+/** POST /api/checkout — booking form or cart → secure payment page. */
+export const POST = async (req: Request) => withCors(req, await handle(async () => {
+  rateLimit(req, "checkout", 15, 600);
+  const body = await parseJson(req, schema);
+  const gateway = availableGateways()[0];
+  return ok(await startPayment(body.submission, gateway ?? "STRIPE"));
+})());

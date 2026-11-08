@@ -29,4 +29,3 @@
   .table-x td { @apply border-b border-line px-3 py-2.5 align-top text-ink; }
 }
 
-@media print { .no-print { display: none !important; } body { background: #fff; } }

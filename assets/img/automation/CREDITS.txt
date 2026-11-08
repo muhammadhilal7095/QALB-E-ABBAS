@@ -1,0 +1,23 @@
+Automation page photos (Facebook, Instagram, WhatsApp, TikTok automation) — free under the Unsplash License
+(unsplash.com/license; free commercial use, no attribution required). Cropped to 3:2 and resized for the web:
+<name>.jpg = 1280px, <name>-800.jpg = phones, <name>-1920.jpg = full-width banner.
+App logos shown on phone screens belong to their owners (Meta, TikTok, etc.) and appear only in editorial context.
+
+au-fb-logo        https://unsplash.com/photos/qBi594aKD5s   Anton Be        Hand holding a phone showing the Facebook logo
+au-fb-app         https://unsplash.com/photos/Uo2ZXh4XOLY   Joshua Hoehne   Facebook app open on a smartphone
+au-wa-chats       https://unsplash.com/photos/juIcqUyhmu0   Amanz           WhatsApp chats on an Android phone
+au-wa-icon        https://unsplash.com/photos/z3jCMSm4Rrc   lonely blue     WhatsApp icon on a phone home screen
+au-ig-icon        https://unsplash.com/photos/fmqhTMu4IVU   Brett Jordan    Instagram app icon on a phone screen
+au-ig-stories     https://unsplash.com/photos/GPJwAHd8maE   Swello          Instagram story on a smartphone
+au-ig-analytics   https://unsplash.com/photos/4lKFi3KqnD8   Swello          Social media analytics on a phone
+au-ig-feed        https://unsplash.com/photos/7ljc7nkjNcc   Swello          Social media feed on a phone
+au-social-phone   https://unsplash.com/photos/6fc2LXMaIzM   Swello          Phone with social media apps
+au-social-apps    https://unsplash.com/photos/Tk9m_HP4rgQ   Adem AY         Social media app icons on a phone
+au-social-folder  https://unsplash.com/photos/ZMlcuVf2URA   dlxmedia.hu     "Social Media" app folder on a phone
+au-social-icons   https://unsplash.com/photos/YE7D_kwm2VU   Dave Adamson    Instagram, Threads and Facebook icons
+au-tt-ringlight   https://unsplash.com/photos/VIQKDL6-TpU   siddharth vyas  Creator filming with a ring light
+au-tt-selfie      https://unsplash.com/photos/UhSZEG0iLFY   Aaron Weiss     Recording a TikTok on a phone
+au-support        https://unsplash.com/photos/LSOIjuBiIuQ   Vagaro          Support agent with a headset at a laptop
+au-phone-dark     https://unsplash.com/photos/ZTmwFhkK418   Julio Lopez     Woman holding a phone
+
+Also reused from other folders: ebay/eb-*, tiktok/tts-*, shopify/sh-* (see their CREDITS.txt).

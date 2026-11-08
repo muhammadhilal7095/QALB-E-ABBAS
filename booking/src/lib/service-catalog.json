@@ -9,18 +9,118 @@
       "topic": "amazon",
       "currency": "USD",
       "groups": [
-        { "title": "Account services", "items": [
-          { "sku": "amazon-account-creation", "name": "Account Creation", "price": 100 },
-          { "sku": "amazon-account-review", "name": "Account Review", "price": 100 },
-          { "sku": "amazon-account-reactivation", "name": "Account Reactivation", "price": 500 }
-        ]},
-        { "title": "Growth services", "items": [
-          { "sku": "amazon-growth-strategy", "name": "Amazon Growth Strategy", "price": 150 },
-          { "sku": "amazon-ppc", "name": "Amazon PPC", "price": 100, "unit": "per product" },
-          { "sku": "amazon-seo", "name": "Amazon SEO", "price": 250 }
-        ]}
+        {
+          "title": "Account services",
+          "items": [
+            {
+              "sku": "amazon-account-creation",
+              "name": "Account Creation",
+              "price": 100,
+              "desc": "Seller Central account set up and verified with matching documents.",
+              "icon": "store",
+              "includes": [
+                "Seller Central registration for the US, UK or EU marketplace",
+                "Document check before you apply — ID, address and bank details must match",
+                "Guidance through identity verification and the video call",
+                "Tax interview and key account settings completed correctly"
+              ],
+              "bestFor": "New sellers opening their first Amazon account"
+            },
+            {
+              "sku": "amazon-account-review",
+              "name": "Account Review",
+              "price": 100,
+              "desc": "Account health, listings and policy risks checked, with a fix list.",
+              "icon": "file-check",
+              "includes": [
+                "Account Health dashboard and policy warnings reviewed",
+                "Listings checked for suppressed or at-risk ASINs",
+                "Inventory, storage and fees checked for waste",
+                "A written fix list, in priority order"
+              ],
+              "bestFor": "Sellers who want to find problems before Amazon does"
+            },
+            {
+              "sku": "amazon-account-reactivation",
+              "name": "Account Reactivation",
+              "price": 500,
+              "desc": "Suspension analysis and a plan of action written to get you reinstated.",
+              "icon": "shield",
+              "includes": [
+                "Suspension notice and root cause analysed",
+                "Plan of Action written in the format Amazon expects",
+                "Supporting documents prepared (invoices, IDs, policies)",
+                "Appeal submitted, with follow-up until Amazon responds"
+              ],
+              "bestFor": "Suspended or deactivated seller accounts",
+              "note": "Amazon makes the final decision — we prepare the strongest possible appeal."
+            }
+          ],
+          "desc": "Open, check or restore your Amazon seller account — one-time fixed fees."
+        },
+        {
+          "title": "Growth services",
+          "items": [
+            {
+              "sku": "amazon-growth-strategy",
+              "name": "Amazon Growth Strategy",
+              "price": 150,
+              "desc": "A 90-day plan for products, pricing, PPC and inventory.",
+              "icon": "trending-up",
+              "includes": [
+                "Review of your products, pricing and margins",
+                "Listing and PPC priorities for each product",
+                "Inventory and reorder plan to avoid stock-outs",
+                "A 90-day action plan with clear monthly targets"
+              ],
+              "bestFor": "Sellers who want a clear plan for the next 3 months"
+            },
+            {
+              "sku": "amazon-ppc",
+              "name": "Amazon PPC",
+              "price": 100,
+              "unit": "per product",
+              "desc": "Sponsored Products campaigns built and optimised for one product.",
+              "icon": "target",
+              "includes": [
+                "Keyword research for the product",
+                "Auto, exact, phrase and broad campaign structure",
+                "Negative keywords to cut wasted ad spend",
+                "Bid optimisation and a performance report"
+              ],
+              "bestFor": "Launching or scaling a single product",
+              "note": "Ad spend is paid to Amazon separately."
+            },
+            {
+              "sku": "amazon-seo",
+              "name": "Amazon SEO",
+              "price": 250,
+              "desc": "Keyword research and full listing optimisation to rank higher.",
+              "icon": "search",
+              "includes": [
+                "Keyword research from real Amazon search data",
+                "Title, bullet points and description rewritten",
+                "Backend search terms filled in",
+                "Image and A+ Content recommendations"
+              ],
+              "bestFor": "Listings with low traffic or low conversion"
+            }
+          ],
+          "desc": "Grow sales on an account that's already live — research, ads and listings."
+        }
       ],
-      "quarters": { "skuPrefix": "amazon-products", "label": "Amazon High-Demand Products", "price": 50 }
+      "quarters": {
+        "skuPrefix": "amazon-products",
+        "label": "Amazon High-Demand Products",
+        "price": 50,
+        "includes": [
+          "20 products chosen for that season",
+          "Demand and competition data for each",
+          "Estimated selling price, Amazon fees and margin",
+          "Supplier options so you can request samples"
+        ]
+      },
+      "hideFooter": true
     },
     "ebay": {
       "file": "ebay.html",
@@ -29,20 +129,145 @@
       "topic": "ebay",
       "currency": "USD",
       "groups": [
-        { "title": "Account services", "items": [
-          { "sku": "ebay-account-creation", "name": "Account Creation", "price": 100 },
-          { "sku": "ebay-account-review", "name": "Account Review", "price": 100 },
-          { "sku": "ebay-account-reactivation", "name": "Account Reactivation", "price": 400 },
-          { "sku": "ebay-mc999", "name": "MC999 Restriction Appeal", "price": 300 },
-          { "sku": "ebay-mc011", "name": "MC011 Restriction Appeal", "price": 200 }
-        ]},
-        { "title": "Growth services", "items": [
-          { "sku": "ebay-growth-strategy", "name": "eBay Growth Strategy", "price": 100 },
-          { "sku": "ebay-marketing-strategy", "name": "eBay Marketing Strategy", "price": 100 },
-          { "sku": "ebay-seo-audit", "name": "eBay SEO Audit", "price": 200 }
-        ]}
+        {
+          "title": "Account services",
+          "items": [
+            {
+              "sku": "ebay-account-creation",
+              "name": "Account Creation",
+              "price": 100,
+              "desc": "eBay business account set up and verified, with payouts connected.",
+              "icon": "store",
+              "includes": [
+                "eBay business account registration (US, UK or EU)",
+                "Identity, address and bank details checked to match",
+                "Managed payments payouts connected",
+                "Store settings and policies set up correctly"
+              ],
+              "bestFor": "New sellers opening an eBay business account"
+            },
+            {
+              "sku": "ebay-account-review",
+              "name": "Account Review",
+              "price": 100,
+              "desc": "Store health, listing quality and policy audit with clear fixes.",
+              "icon": "file-check",
+              "includes": [
+                "Seller dashboard and service metrics reviewed",
+                "Listing quality and policy risks checked",
+                "Selling limits and defect rate analysed",
+                "A written fix list, in priority order"
+              ],
+              "bestFor": "Sellers who want to find problems before eBay does"
+            },
+            {
+              "sku": "ebay-account-reactivation",
+              "name": "Account Reactivation",
+              "price": 500,
+              "desc": "Suspended account appeal with the right documents and evidence.",
+              "icon": "shield",
+              "includes": [
+                "Suspension reason and account history analysed",
+                "Appeal written with a clear corrective plan",
+                "Supporting documents prepared",
+                "Appeal submitted, with follow-up until eBay responds"
+              ],
+              "bestFor": "Suspended eBay seller accounts",
+              "note": "eBay makes the final decision — we prepare the strongest possible appeal."
+            },
+            {
+              "sku": "ebay-mc999",
+              "name": "MC999 Restriction Appeal",
+              "price": 600,
+              "desc": "Full MC999 restriction appeal: invoices, verification and compliance plan.",
+              "icon": "shield",
+              "includes": [
+                "MC999 notice and verification requests reviewed",
+                "Supplier invoices and identity documents prepared",
+                "Compliance plan written for eBay",
+                "Appeal submitted and followed up"
+              ],
+              "bestFor": "Accounts with an MC999 restriction",
+              "note": "eBay makes the final decision — we prepare the strongest possible appeal."
+            },
+            {
+              "sku": "ebay-mc011",
+              "name": "MC011 Restriction Appeal",
+              "price": 200,
+              "desc": "MC011 suspension appeal with supplier evidence and policy fixes.",
+              "icon": "shield",
+              "includes": [
+                "MC011 reason and selling practices reviewed",
+                "Supplier evidence prepared (no retail arbitrage)",
+                "Policy fixes to listings and sourcing",
+                "Appeal submitted and followed up"
+              ],
+              "bestFor": "Accounts restricted for selling practices or dropshipping",
+              "note": "eBay makes the final decision — we prepare the strongest possible appeal."
+            }
+          ],
+          "desc": "Open, check or restore your eBay seller account — one-time fixed fees."
+        },
+        {
+          "title": "Growth services",
+          "items": [
+            {
+              "sku": "ebay-growth-strategy",
+              "name": "eBay Growth Strategy",
+              "price": 100,
+              "desc": "Product, pricing and listing plan to grow steady eBay sales.",
+              "icon": "trending-up",
+              "includes": [
+                "Products, pricing and competition reviewed",
+                "Listing and category priorities",
+                "Sourcing and restock plan",
+                "A clear 90-day growth plan"
+              ],
+              "bestFor": "Sellers ready to grow steady eBay sales"
+            },
+            {
+              "sku": "ebay-marketing-strategy",
+              "name": "eBay Marketing Strategy",
+              "price": 150,
+              "desc": "Promoted Listings, markdown sales and store promotions planned for you.",
+              "icon": "chart",
+              "includes": [
+                "Promoted Listings General and Priority plan",
+                "Markdown sales and volume pricing",
+                "Store promotions and offers",
+                "Budget and products to push first"
+              ],
+              "bestFor": "Stores that want more traffic and sales"
+            },
+            {
+              "sku": "ebay-seo-audit",
+              "name": "eBay SEO Audit",
+              "price": 200,
+              "desc": "Cassini SEO audit: titles, item specifics and categories fixed.",
+              "icon": "search",
+              "includes": [
+                "Titles rewritten with high-intent keywords",
+                "Item specifics completed",
+                "Categories and condition checked",
+                "Photo and description recommendations"
+              ],
+              "bestFor": "Listings with low views or low conversion"
+            }
+          ],
+          "desc": "Grow sales on a live eBay store — strategy, promotions and search."
+        }
       ],
-      "quarters": { "skuPrefix": "ebay-products", "label": "eBay High-Demand Products", "price": 50 }
+      "quarters": {
+        "skuPrefix": "ebay-products",
+        "label": "eBay High-Demand Products",
+        "price": 50,
+        "includes": [
+          "20 products chosen for that season",
+          "Demand and sell-through data for each",
+          "Estimated selling price, eBay fees and margin",
+          "Supplier options so you can request samples"
+        ]
+      }
     },
     "tiktok": {
       "file": "tiktok-shop.html",
@@ -51,17 +276,101 @@
       "topic": "tiktok-shop",
       "currency": "USD",
       "groups": [
-        { "title": "Account services", "items": [
-          { "sku": "tiktok-account-creation", "name": "Account Creation", "price": 100 },
-          { "sku": "tiktok-account-review", "name": "Account Review", "price": 100 },
-          { "sku": "tiktok-account-reactivation", "name": "Account Reactivation", "price": 300 }
-        ]},
-        { "title": "Growth services", "items": [
-          { "sku": "tiktok-growth-strategy", "name": "TikTok Shop Growth Strategy", "price": 100 },
-          { "sku": "tiktok-seo-audit", "name": "TikTok Shop SEO Audit", "price": 150 }
-        ]}
+        {
+          "title": "Account services",
+          "items": [
+            {
+              "sku": "tiktok-account-creation",
+              "name": "Account Creation",
+              "price": 100,
+              "desc": "TikTok Shop seller account created and approved in the UK or US.",
+              "icon": "store",
+              "includes": [
+                "TikTok Shop Seller Center registration for the UK or US",
+                "Business, identity and tax verification prepared",
+                "Warehouse, return address and payout account set up",
+                "First products uploaded to pass product review"
+              ],
+              "bestFor": "New sellers opening their first TikTok Shop"
+            },
+            {
+              "sku": "tiktok-account-review",
+              "name": "Account Review",
+              "price": 100,
+              "desc": "Shop health, product approvals and violation points checked.",
+              "icon": "file-check",
+              "includes": [
+                "Shop health score and violation points reviewed",
+                "Rejected or restricted products checked",
+                "Dispatch, cancellation and return rates analysed",
+                "A written fix list, in priority order"
+              ],
+              "bestFor": "Shops with warnings, low scores or stalled sales"
+            },
+            {
+              "sku": "tiktok-account-reactivation",
+              "name": "Account Reactivation",
+              "price": 300,
+              "desc": "Deactivated shop appeal with a clear corrective action plan.",
+              "icon": "shield",
+              "includes": [
+                "Deactivation or restriction reason analysed",
+                "Corrective action plan written for TikTok",
+                "Supporting documents prepared",
+                "Appeal submitted, with follow-up until TikTok responds"
+              ],
+              "bestFor": "Deactivated or restricted TikTok Shops",
+              "note": "TikTok makes the final decision — we prepare the strongest possible appeal."
+            }
+          ],
+          "desc": "Open, check or restore your TikTok Shop seller account — one-time fixed fees."
+        },
+        {
+          "title": "Growth services",
+          "items": [
+            {
+              "sku": "tiktok-growth-strategy",
+              "name": "TikTok Shop Growth Strategy",
+              "price": 100,
+              "desc": "Creator affiliates, LIVE selling and video content plan to grow sales.",
+              "icon": "trending-up",
+              "includes": [
+                "Product and pricing review for TikTok buyers",
+                "Shoppable video content plan and posting schedule",
+                "Creator affiliate and commission plan",
+                "LIVE selling schedule with offers"
+              ],
+              "bestFor": "Shops ready to grow beyond the first sales"
+            },
+            {
+              "sku": "tiktok-seo-audit",
+              "name": "TikTok Shop SEO Audit",
+              "price": 150,
+              "desc": "Product titles, keywords and listings optimised for TikTok search.",
+              "icon": "search",
+              "includes": [
+                "Keyword research for TikTok Search and the Shop tab",
+                "Product titles and attributes rewritten",
+                "Main images and detail pages checked",
+                "Category and listing quality fixes"
+              ],
+              "bestFor": "Listings with low views or low conversion"
+            }
+          ],
+          "desc": "Grow sales on a live TikTok Shop — strategy, search and content."
+        }
       ],
-      "quarters": { "skuPrefix": "tiktok-products", "label": "TikTok Shop High-Demand Products", "price": 50 }
+      "quarters": {
+        "skuPrefix": "tiktok-products",
+        "label": "TikTok Shop High-Demand Products",
+        "price": 50,
+        "includes": [
+          "20 products chosen for that season",
+          "Trend, demand and competition data",
+          "Estimated selling price, TikTok Shop fees and margin",
+          "Supplier options and creator-friendly angles"
+        ]
+      }
     },
     "walmart": {
       "file": "walmart.html",
@@ -70,52 +379,316 @@
       "topic": "walmart",
       "currency": "USD",
       "groups": [
-        { "title": "Account services", "items": [
-          { "sku": "walmart-account-creation", "name": "Account Creation", "price": 100 },
-          { "sku": "walmart-account-review", "name": "Account Review", "price": 100 },
-          { "sku": "walmart-account-reactivation", "name": "Account Reactivation", "price": 300 }
-        ]},
-        { "title": "Growth services", "items": [
-          { "sku": "walmart-growth-strategy", "name": "Walmart Growth Strategy", "price": 100 },
-          { "sku": "walmart-ppc", "name": "Walmart PPC", "price": 100 },
-          { "sku": "walmart-seo", "name": "Walmart SEO", "price": 150 }
-        ]}
+        {
+          "title": "Account services",
+          "items": [
+            {
+              "sku": "walmart-account-creation",
+              "name": "Account Creation",
+              "price": 100,
+              "desc": "Walmart Marketplace application prepared and approved.",
+              "icon": "file-check",
+              "includes": [
+                "Walmart Marketplace application prepared",
+                "Business, tax and sales-history details checked",
+                "GS1 barcodes and catalogue readiness reviewed",
+                "Onboarding and Seller Center setup after approval"
+              ],
+              "bestFor": "Sellers applying to Walmart Marketplace"
+            },
+            {
+              "sku": "walmart-account-review",
+              "name": "Account Review",
+              "price": 100,
+              "desc": "Seller performance standards and listing quality reviewed.",
+              "icon": "search",
+              "includes": [
+                "Seller performance standards reviewed",
+                "Listing Quality score and content checked",
+                "Pricing, shipping and WFS opportunities",
+                "A written fix list, in priority order"
+              ],
+              "bestFor": "Live Walmart sellers with stalled sales"
+            },
+            {
+              "sku": "walmart-account-reactivation",
+              "name": "Account Reactivation",
+              "price": 300,
+              "desc": "Suspension appeal and action plan to restore your account.",
+              "icon": "shield",
+              "includes": [
+                "Suspension reason and performance analysed",
+                "Plan of action written for Walmart",
+                "Supporting documents prepared",
+                "Appeal submitted, with follow-up"
+              ],
+              "bestFor": "Suspended Walmart seller accounts",
+              "note": "Walmart makes the final decision — we prepare the strongest possible appeal."
+            }
+          ],
+          "desc": "Get approved, check or restore your Walmart seller account — one-time fixed fees."
+        },
+        {
+          "title": "Growth services",
+          "items": [
+            {
+              "sku": "walmart-growth-strategy",
+              "name": "Walmart Growth Strategy",
+              "price": 100,
+              "desc": "Catalog, pricing and WFS plan to grow on Walmart.",
+              "icon": "trending-up",
+              "includes": ["Catalogue and pricing review", "Buy Box and repricing plan", "WFS and inventory plan", "A clear 90-day growth plan"],
+              "bestFor": "Sellers ready to grow on Walmart"
+            },
+            {
+              "sku": "walmart-ppc",
+              "name": "Walmart PPC",
+              "price": 100,
+              "desc": "Walmart Sponsored Search campaigns set up and optimised.",
+              "icon": "target",
+              "includes": ["Sponsored Products campaign setup", "Keyword and bid strategy", "Negative keywords to cut waste", "Performance report and next steps"],
+              "bestFor": "Products ready to scale with ads",
+              "note": "Ad spend is paid to Walmart separately."
+            },
+            {
+              "sku": "walmart-seo",
+              "name": "Walmart SEO",
+              "price": 150,
+              "desc": "Listing quality score and content optimised to rank on Walmart.",
+              "icon": "search",
+              "includes": [
+                "Titles and descriptions rewritten",
+                "All key attributes completed",
+                "Images and rich content checked",
+                "Listing Quality score improvements"
+              ],
+              "bestFor": "Listings with low views or low Listing Quality"
+            }
+          ],
+          "desc": "Grow sales on Walmart.com — strategy, ads and listing quality."
+        }
       ],
-      "quarters": { "skuPrefix": "walmart-products", "label": "Walmart High-Demand Products", "price": 50 }
+      "quarters": {
+        "skuPrefix": "walmart-products",
+        "label": "Walmart High-Demand Products",
+        "price": 50,
+        "includes": [
+          "20 products chosen for that season",
+          "Demand and competition data for each",
+          "Estimated selling price, Walmart fees and margin",
+          "Supplier options so you can request samples"
+        ]
+      }
     },
     "etsy": {
       "file": "etsy.html",
       "title": "Etsy Service Pricing",
-      "sub": "Etsy services are quoted to your shop. Product research is a fixed price and can be paid online.",
+      "sub": "Fixed prices for each Etsy service. Add what you need to your cart and pay securely online.",
       "topic": "etsy",
       "currency": "USD",
       "groups": [
-        { "title": "Account services", "items": [
-          { "sku": "etsy-account-creation", "name": "Account Creation", "price": null },
-          { "sku": "etsy-account-review", "name": "Account Review", "price": null },
-          { "sku": "etsy-account-reactivation", "name": "Account Reactivation", "price": null }
-        ]},
-        { "title": "Growth services", "items": [
-          { "sku": "etsy-growth-strategy", "name": "Etsy Growth Strategy", "price": null },
-          { "sku": "etsy-seo", "name": "Etsy SEO", "price": null }
-        ]}
+        {
+          "title": "Account services",
+          "items": [
+            {
+              "sku": "etsy-account-creation",
+              "name": "Account Creation",
+              "price": 100,
+              "desc": "Etsy shop opened, verified and set up with policies and payments.",
+              "icon": "store",
+              "includes": [
+                "Shop name, branding and shop policies",
+                "Etsy Payments and identity verification",
+                "Shipping profiles and processing times",
+                "First listings set up correctly"
+              ],
+              "bestFor": "New sellers opening an Etsy shop"
+            },
+            {
+              "sku": "etsy-account-review",
+              "name": "Account Review",
+              "price": 100,
+              "desc": "Shop health, listings and Star Seller standards checked.",
+              "icon": "file-check",
+              "includes": [
+                "Shop health and Star Seller standards reviewed",
+                "Listings, photos and tags checked",
+                "Pricing and shipping compared to competitors",
+                "A written fix list, in priority order"
+              ],
+              "bestFor": "Shops with low views or slow sales"
+            },
+            {
+              "sku": "etsy-account-reactivation",
+              "name": "Account Reactivation",
+              "price": 300,
+              "desc": "Suspended shop appeal with evidence and a compliance plan.",
+              "icon": "shield",
+              "includes": [
+                "Suspension reason analysed",
+                "Compliance plan written for Etsy",
+                "Evidence and documents prepared",
+                "Appeal submitted, with follow-up"
+              ],
+              "bestFor": "Suspended Etsy shops",
+              "note": "Etsy makes the final decision — we prepare the strongest possible appeal."
+            }
+          ],
+          "desc": "Open, check or restore your Etsy shop — one-time fixed fees."
+        },
+        {
+          "title": "Growth services",
+          "items": [
+            {
+              "sku": "etsy-growth-strategy",
+              "name": "Etsy Growth Strategy",
+              "price": 100,
+              "desc": "Product, pricing and Etsy Ads plan to grow your shop.",
+              "icon": "trending-up",
+              "includes": ["Product and niche review", "Pricing and bundle strategy", "Etsy Ads budget plan", "A clear 90-day growth plan"],
+              "bestFor": "Shops ready to grow beyond the first sales"
+            },
+            {
+              "sku": "etsy-seo",
+              "name": "Etsy SEO",
+              "price": 150,
+              "desc": "Titles, tags and attributes optimised for Etsy search.",
+              "icon": "search",
+              "includes": [
+                "Long-tail keyword research",
+                "Titles rewritten for Etsy search",
+                "All 13 tags and attributes completed",
+                "Photo and description recommendations"
+              ],
+              "bestFor": "Listings that don't show up in Etsy search"
+            }
+          ],
+          "desc": "Grow sales on your Etsy shop — strategy and Etsy SEO."
+        }
       ],
-      "quarters": { "skuPrefix": "etsy-products", "label": "Etsy High-Demand Products", "price": 50 }
+      "quarters": {
+        "skuPrefix": "etsy-products",
+        "label": "Etsy High-Demand Products",
+        "price": 50,
+        "includes": [
+          "20 products chosen for that season",
+          "Demand and competition data for each",
+          "Estimated selling price, Etsy fees and margin",
+          "Supplier and production partner options"
+        ]
+      }
     },
     "shopify": {
       "file": "shopify-development.html",
       "title": "Shopify Service Pricing",
-      "sub": "Store builds and product research at fixed prices. Growth and SEO work is quoted to your store.",
+      "sub": "Fixed prices for your Shopify store build, growth, SEO and advertising.",
       "topic": "shopify",
       "currency": "USD",
       "groups": [
-        { "title": "Store services", "items": [
-          { "sku": "shopify-website-development", "name": "Shopify Website Development", "price": 250 },
-          { "sku": "shopify-growth-strategy", "name": "Shopify Growth Strategy", "price": null },
-          { "sku": "shopify-seo", "name": "Shopify SEO", "price": null }
-        ]}
+        {
+          "title": "Store services",
+          "items": [
+            {
+              "sku": "shopify-website-development",
+              "name": "Shopify Website Development",
+              "price": 250,
+              "desc": "A complete Shopify store: theme, products, payments and checkout.",
+              "icon": "monitor",
+              "includes": [
+                "Theme setup and brand styling",
+                "Homepage, product and collection pages",
+                "Payments, shipping and policy pages",
+                "Essential apps and mobile-friendly checkout"
+              ],
+              "bestFor": "New brands launching a Shopify store"
+            },
+            {
+              "sku": "shopify-growth-strategy",
+              "name": "Shopify Growth Strategy",
+              "price": 150,
+              "desc": "Offer, conversion and retention plan to grow store revenue.",
+              "icon": "trending-up",
+              "includes": ["Offer and pricing review", "Conversion and checkout improvements", "Upsell, bundle and email plan", "A clear 90-day growth plan"],
+              "bestFor": "Stores with traffic that doesn't convert"
+            },
+            {
+              "sku": "shopify-seo",
+              "name": "Shopify SEO",
+              "price": 250,
+              "desc": "Technical, on-page and product SEO to rank your store on Google.",
+              "icon": "search",
+              "includes": [
+                "Technical SEO and site speed",
+                "Product and collection pages optimised",
+                "Keyword research and meta tags",
+                "Content plan to rank on Google"
+              ],
+              "bestFor": "Stores that want free traffic from Google"
+            }
+          ],
+          "desc": "Build and grow your Shopify store — one-time fixed fees."
+        },
+        {
+          "title": "Advertising",
+          "items": [
+            {
+              "sku": "shopify-meta-ads",
+              "name": "Meta Ads (Facebook & Instagram)",
+              "price": 150,
+              "unit": "per month",
+              "desc": "Ad handling, marketing, post boosting and content management for your store.",
+              "icon": "target",
+              "includes": [
+                "Facebook and Instagram campaign setup",
+                "Audiences, creatives and post boosting",
+                "Meta Pixel and Conversions API",
+                "Monthly performance report"
+              ],
+              "bestFor": "Visual and impulse-buy products",
+              "note": "Ad spend is paid to Meta separately."
+            },
+            {
+              "sku": "shopify-tiktok-ads",
+              "name": "TikTok Ads",
+              "price": 150,
+              "unit": "per month",
+              "desc": "Spark Ads and short-video campaigns that drive traffic to your store.",
+              "icon": "video",
+              "includes": ["TikTok Ads and Spark Ads setup", "Short-video creative guidance", "TikTok Pixel tracking", "Monthly performance report"],
+              "bestFor": "Products that sell with short video",
+              "note": "Ad spend is paid to TikTok separately."
+            },
+            {
+              "sku": "shopify-google-ads",
+              "name": "Google Ads",
+              "price": 250,
+              "unit": "per month",
+              "desc": "Search, Shopping and Performance Max campaigns for buyers ready to purchase.",
+              "icon": "chart",
+              "includes": [
+                "Search, Shopping and Performance Max",
+                "Google Merchant Center feed",
+                "Conversion tracking with Google tags",
+                "Monthly performance report"
+              ],
+              "bestFor": "Products people already search for",
+              "note": "Ad spend is paid to Google separately."
+            }
+          ],
+          "desc": "Monthly ad management for your Shopify store."
+        }
       ],
-      "quarters": { "skuPrefix": "shopify-products", "label": "Shopify High-Demand Products", "price": 50 }
+      "quarters": {
+        "skuPrefix": "shopify-products",
+        "label": "Shopify High-Demand Products",
+        "price": 50,
+        "includes": [
+          "20 products chosen for that season",
+          "Demand and competition data for each",
+          "Estimated selling price, costs and margin",
+          "Supplier options so you can request samples"
+        ]
+      }
     },
     "us-llc": {
       "file": "us-llc-formation.html",
@@ -123,10 +696,13 @@
       "topic": "usa-company-formation",
       "currency": "USD",
       "groups": [
-        { "title": "Packages", "items": [
-          { "sku": "us-llc-basic", "name": "USA LLC — Basic Plan", "price": 550, "note": "State fee extra" },
-          { "sku": "us-llc-advanced", "name": "USA LLC — Advanced Plan", "price": 650 }
-        ]}
+        {
+          "title": "Packages",
+          "items": [
+            { "sku": "us-llc-basic", "name": "USA LLC — Basic Plan", "price": 550, "note": "Plus your state's filing fee" },
+            { "sku": "us-llc-advanced", "name": "USA LLC — Advanced Plan", "price": 650, "note": "Plus your state's filing fee" }
+          ]
+        }
       ]
     },
     "uk-ltd": {
@@ -135,10 +711,13 @@
       "topic": "uk-company-formation",
       "currency": "GBP",
       "groups": [
-        { "title": "Packages", "items": [
-          { "sku": "uk-ltd-basic", "name": "UK LTD — Basic Plan", "price": 350 },
-          { "sku": "uk-ltd-advanced", "name": "UK LTD — Advanced Plan", "price": 500 }
-        ]}
+        {
+          "title": "Packages",
+          "items": [
+            { "sku": "uk-ltd-basic", "name": "UK LTD — Basic Plan", "price": 350 },
+            { "sku": "uk-ltd-advanced", "name": "UK LTD — Advanced Plan", "price": 500 }
+          ]
+        }
       ]
     },
     "taxation": {
@@ -147,13 +726,41 @@
       "sub": "One simple payment — we prepare and file everything for you.",
       "topic": "taxation",
       "groups": [
-        { "title": "United States", "currency": "USD", "items": [
-          { "sku": "tax-usa", "name": "USA Tax Filing", "price": 200, "note": "+ state fee + taxes", "desc": "IRS Form 5472 and pro-forma Form 1120 for non-resident single-member LLCs." }
-        ]},
-        { "title": "United Kingdom", "currency": "GBP", "items": [
-          { "sku": "tax-uk", "name": "UK Tax Filing", "price": 220, "note": "+ taxes · one year", "desc": "Corporation Tax return and filing for one year." },
-          { "sku": "tax-uk-accounting", "name": "Complete Accounting Package", "price": 180, "unit": "per year", "fixedQty": true, "note": "Without VAT · just £18.33/month", "desc": "Annual accounts preparation and filing, Corporation Tax return, full Companies House and HMRC compliance, and ongoing support all year." }
-        ]}
+        {
+          "title": "United States",
+          "currency": "USD",
+          "items": [
+            {
+              "sku": "tax-usa",
+              "name": "USA Tax Filing",
+              "price": 200,
+              "note": "+ state fee + taxes",
+              "desc": "IRS Form 5472 and pro-forma Form 1120 for non-resident single-member LLCs."
+            }
+          ]
+        },
+        {
+          "title": "United Kingdom",
+          "currency": "GBP",
+          "items": [
+            {
+              "sku": "tax-uk",
+              "name": "UK Tax Filing",
+              "price": 220,
+              "note": "+ taxes · one year",
+              "desc": "Corporation Tax return and filing for one year."
+            },
+            {
+              "sku": "tax-uk-accounting",
+              "name": "Complete Accounting Package",
+              "price": 180,
+              "unit": "per year",
+              "fixedQty": true,
+              "note": "Without VAT · just £18.33/month",
+              "desc": "Annual accounts preparation and filing, Corporation Tax return, full Companies House and HMRC compliance, and ongoing support all year."
+            }
+          ]
+        }
       ]
     },
     "trademark": {
@@ -162,12 +769,14 @@
       "sub": "Protect your brand in the US or UK with a fixed professional fee.",
       "topic": "trademark-registration",
       "groups": [
-        { "title": "United States", "currency": "USD", "items": [
-          { "sku": "trademark-usa", "name": "USA Trademark Registration", "price": 799, "note": "+ state fee" }
-        ]},
-        { "title": "United Kingdom", "currency": "GBP", "items": [
-          { "sku": "trademark-uk", "name": "UK Trademark Registration", "price": 350 }
-        ]}
+        {
+          "title": "United States",
+          "currency": "USD",
+          "items": [
+            { "sku": "trademark-usa", "name": "USA Trademark Registration", "price": 799, "note": "+ state fee" }
+          ]
+        },
+        { "title": "United Kingdom", "currency": "GBP", "items": [{"sku": "trademark-uk", "name": "UK Trademark Registration", "price": 350}] }
       ]
     },
     "digital-marketing": {
@@ -177,11 +786,20 @@
       "topic": "digital-marketing",
       "currency": "USD",
       "groups": [
-        { "title": "Monthly ad management", "items": [
-          { "sku": "dm-meta-ads", "name": "Meta Ads (Facebook & Instagram)", "price": 150, "unit": "per month" },
-          { "sku": "dm-tiktok-ads", "name": "TikTok Ads", "price": 150, "unit": "per month" },
-          { "sku": "dm-google-ads", "name": "Google Ads", "price": 250, "unit": "per month" }
-        ]}
+        {
+          "title": "Monthly ad management",
+          "items": [
+            {
+              "sku": "dm-meta-ads",
+              "name": "Meta Ads (Facebook & Instagram)",
+              "price": 150,
+              "unit": "per month",
+              "desc": "Ad handling, marketing, post boosting and content management on Facebook & Instagram."
+            },
+            { "sku": "dm-tiktok-ads", "name": "TikTok Ads", "price": 150, "unit": "per month" },
+            { "sku": "dm-google-ads", "name": "Google Ads", "price": 250, "unit": "per month" }
+          ]
+        }
       ]
     },
     "seo": {
@@ -191,11 +809,14 @@
       "topic": "seo",
       "currency": "USD",
       "groups": [
-        { "title": "SEO services", "items": [
-          { "sku": "seo-on-page", "name": "On-Page SEO", "price": 500, "from": true, "fixedQty": true },
-          { "sku": "seo-off-page", "name": "Off-Page SEO", "price": 500, "from": true, "fixedQty": true },
-          { "sku": "seo-technical", "name": "Technical SEO", "price": 500, "from": true, "fixedQty": true }
-        ]}
+        {
+          "title": "SEO services",
+          "items": [
+            { "sku": "seo-on-page", "name": "On-Page SEO", "price": 500, "from": true, "fixedQty": true },
+            { "sku": "seo-off-page", "name": "Off-Page SEO", "price": 500, "from": true, "fixedQty": true },
+            { "sku": "seo-technical", "name": "Technical SEO", "price": 500, "from": true, "fixedQty": true }
+          ]
+        }
       ]
     },
     "education": {
@@ -205,11 +826,221 @@
       "topic": "education-consultancy",
       "currency": "EUR",
       "groups": [
-        { "title": "Malta universities", "items": [
-          { "sku": "edu-malta-processing", "name": "Malta University Application Processing", "price": 1500, "note": "University fees are separate and depend on the university", "desc": "Course and university selection, admission application, documentation and visa guidance." }
-        ]}
+        {
+          "title": "Malta universities",
+          "items": [
+            {
+              "sku": "edu-malta-processing",
+              "name": "Malta University Application Processing",
+              "price": 1500,
+              "note": "University fees are separate and depend on the university",
+              "desc": "Course and university selection, admission application, documentation and visa guidance."
+            }
+          ]
+        }
       ]
     }
   },
-  "consultation": { "price": 30, "currency": "USD", "pages": ["amazon", "ebay", "tiktok", "walmart", "etsy", "shopify"] }
+  "consultation": { "price": 50, "currency": "USD", "pages": ["amazon", "ebay", "tiktok", "walmart", "etsy", "shopify"] },
+  "consultations": {
+    "_note": "Paid consultation types for the Book a Consultation form. price = whole currency units. topics = ?topic= values from the website that preselect this type.",
+    "types": [
+      {
+        "slug": "ecommerce",
+        "name": "E-commerce Consultation",
+        "minutes": 60,
+        "price": 50,
+        "currency": "USD",
+        "desc": "Amazon, eBay, TikTok Shop, Walmart, Etsy or Shopify — plan your e-commerce business in the right order.",
+        "topics": ["amazon", "ebay", "walmart", "etsy", "tiktok-shop", "shopify", "ecommerce", "business-support"]
+      },
+      {
+        "slug": "website-development",
+        "name": "Website Development Consultation",
+        "minutes": 30,
+        "price": 50,
+        "currency": "USD",
+        "desc": "Business site, e-commerce store, WordPress, Shopify or a custom platform — get a clear plan and quote.",
+        "topics": ["website-development", "shopify-development", "development"]
+      },
+      {
+        "slug": "app-development",
+        "name": "App & CRM Development Consultation",
+        "minutes": 30,
+        "price": 50,
+        "currency": "USD",
+        "desc": "Android, iOS, web app or CRM — features, technology options and next steps.",
+        "topics": ["app-development", "crm-development"]
+      },
+      {
+        "slug": "ai-automation",
+        "name": "AI Automation Consultation",
+        "minutes": 30,
+        "price": 50,
+        "currency": "USD",
+        "desc": "Facebook, Instagram, TikTok and WhatsApp automation — bots and workflows that save time.",
+        "topics": ["whatsapp-automation", "instagram-automation", "facebook-automation", "tiktok-automation", "automation"]
+      },
+      {
+        "slug": "digital-marketing",
+        "name": "Digital Marketing Consultation",
+        "minutes": 45,
+        "price": 50,
+        "currency": "USD",
+        "desc": "A practical plan for Meta, TikTok, Google and YouTube advertising, social media and email.",
+        "topics": ["marketing", "digital-marketing", "social-media-marketing", "influencer-marketing", "email-marketing", "affiliate-marketing"]
+      },
+      {
+        "slug": "seo",
+        "name": "SEO Consultation",
+        "minutes": 45,
+        "price": 50,
+        "currency": "USD",
+        "desc": "An expert view of your website's search visibility and a prioritised SEO roadmap.",
+        "topics": ["seo"]
+      },
+      {
+        "slug": "business-registration",
+        "name": "Company Registration Consultation",
+        "minutes": 30,
+        "price": 50,
+        "currency": "USD",
+        "desc": "UK LTD, US LLC, Malta or UAE company formation and trademarks — structure, documents and compliance.",
+        "topics": [
+          "uk-company-formation",
+          "usa-company-formation",
+          "malta-company-formation",
+          "uae-company-formation",
+          "company-registration",
+          "trademark-registration"
+        ]
+      },
+      {
+        "slug": "tax",
+        "name": "Tax Consultation",
+        "minutes": 30,
+        "price": 50,
+        "currency": "USD",
+        "desc": "US and UK corporate tax, IRS Form 5472, HMRC and VAT questions, plus Malta tax filing.",
+        "topics": ["taxation", "uk-tax-filing", "usa-tax-filing", "malta-tax-filing"]
+      },
+      {
+        "slug": "university",
+        "name": "University Programme Consultation",
+        "minutes": 30,
+        "price": 50,
+        "currency": "USD",
+        "desc": "Level 1 training and our flagship programmes — find the right course and how to enrol.",
+        "topics": ["level-1", "digital-business-launch", "local-agents-flagship", "ai-video-creator-pro", "university"]
+      },
+      {
+        "slug": "education",
+        "name": "Education Consultation (Malta)",
+        "minutes": 30,
+        "price": 50,
+        "currency": "USD",
+        "desc": "Studying in Malta — courses, universities, admissions and visa guidance.",
+        "topics": ["education-consultancy", "education"]
+      },
+      {
+        "slug": "general-business",
+        "name": "General Business Consultation",
+        "minutes": 60,
+        "price": 50,
+        "currency": "USD",
+        "desc": "A strategic conversation about your business, challenges and growth plans.",
+        "topics": ["general", "real-estate", "growth"]
+      }
+    ]
+  },
+  "quarterContent": {
+    "Q1": "January–March: New-year demand, spring launches and fresh trends.",
+    "Q2": "April–June: Summer, outdoor and Prime Day–ready products.",
+    "Q3": "July–September: Back-to-school and early holiday stock planning.",
+    "Q4": "October–December: Black Friday, Cyber Monday and gift products."
+  },
+  "availability": {
+    "_note": "When consultations can be booked. days: 1=Mon … 7=Sun. Times are in the timezone below; the last start time is `end` minus the meeting length.",
+    "timezone": "Europe/London",
+    "days": [1, 2, 3, 4, 5],
+    "start": "10:00",
+    "end": "18:00",
+    "slotMinutes": 30,
+    "minNoticeHours": 24
+  },
+  "usStateFees": {
+    "_readme": "State filing fees for US LLC formation (USD), added on top of the Basic/Advanced package. Checked against two 2026 fee tables (howtoincorporateforfree.com Oct 2026, fileforms.com Jul 2026); confirm on the state's official site if a fee changes. Each becomes a cart item 'us-state-fee-<code>'. Run `npm run pricing:build` after editing.",
+    "checked": "2026-11",
+    "packages": ["us-llc-basic", "us-llc-advanced"],
+    "default": "WY",
+    "popular": ["WY", "DE", "NM", "FL", "TX"],
+    "states": [
+      { "code": "AL", "name": "Alabama", "fee": 200 },
+      { "code": "AK", "name": "Alaska", "fee": 250 },
+      {
+        "code": "AZ",
+        "name": "Arizona",
+        "fee": 50,
+        "note": "Arizona may require publishing a notice of formation, depending on the county of your statutory agent."
+      },
+      { "code": "AR", "name": "Arkansas", "fee": 45 },
+      { "code": "CA", "name": "California", "fee": 70, "note": "California charges an $800 minimum annual franchise tax from the first year." },
+      { "code": "CO", "name": "Colorado", "fee": 50 },
+      { "code": "CT", "name": "Connecticut", "fee": 120 },
+      { "code": "DE", "name": "Delaware", "fee": 110, "note": "Delaware charges a $300 annual LLC tax." },
+      { "code": "DC", "name": "Washington DC", "fee": 99 },
+      { "code": "FL", "name": "Florida", "fee": 125, "note": "Includes the $25 registered agent designation fee." },
+      { "code": "GA", "name": "Georgia", "fee": 100 },
+      { "code": "HI", "name": "Hawaii", "fee": 50 },
+      { "code": "ID", "name": "Idaho", "fee": 100 },
+      { "code": "IL", "name": "Illinois", "fee": 150 },
+      { "code": "IN", "name": "Indiana", "fee": 85 },
+      { "code": "IA", "name": "Iowa", "fee": 50 },
+      { "code": "KS", "name": "Kansas", "fee": 85 },
+      { "code": "KY", "name": "Kentucky", "fee": 40 },
+      { "code": "LA", "name": "Louisiana", "fee": 125 },
+      { "code": "ME", "name": "Maine", "fee": 175 },
+      { "code": "MD", "name": "Maryland", "fee": 100 },
+      { "code": "MA", "name": "Massachusetts", "fee": 500, "note": "Massachusetts also charges a $500 annual report fee." },
+      { "code": "MI", "name": "Michigan", "fee": 50 },
+      { "code": "MN", "name": "Minnesota", "fee": 155 },
+      { "code": "MS", "name": "Mississippi", "fee": 50 },
+      { "code": "MO", "name": "Missouri", "fee": 50 },
+      { "code": "MT", "name": "Montana", "fee": 35 },
+      { "code": "NE", "name": "Nebraska", "fee": 100, "note": "Nebraska requires publishing a notice of organization (newspaper cost extra)." },
+      {
+        "code": "NV",
+        "name": "Nevada",
+        "fee": 425,
+        "note": "Includes the $75 articles fee, $150 initial list and $200 state business licence required at formation."
+      },
+      { "code": "NH", "name": "New Hampshire", "fee": 100 },
+      { "code": "NJ", "name": "New Jersey", "fee": 125 },
+      { "code": "NM", "name": "New Mexico", "fee": 50, "note": "No annual report is required in New Mexico." },
+      {
+        "code": "NY",
+        "name": "New York",
+        "fee": 200,
+        "note": "New York requires newspaper publication within 120 days (newspaper costs plus a $50 certificate, charged separately)."
+      },
+      { "code": "NC", "name": "North Carolina", "fee": 125 },
+      { "code": "ND", "name": "North Dakota", "fee": 135 },
+      { "code": "OH", "name": "Ohio", "fee": 99 },
+      { "code": "OK", "name": "Oklahoma", "fee": 100 },
+      { "code": "OR", "name": "Oregon", "fee": 100 },
+      { "code": "PA", "name": "Pennsylvania", "fee": 125 },
+      { "code": "RI", "name": "Rhode Island", "fee": 150 },
+      { "code": "SC", "name": "South Carolina", "fee": 110 },
+      { "code": "SD", "name": "South Dakota", "fee": 150 },
+      { "code": "TN", "name": "Tennessee", "fee": 300, "note": "Tennessee charges $50 per member, minimum $300 (covers up to 6 members)." },
+      { "code": "TX", "name": "Texas", "fee": 300 },
+      { "code": "UT", "name": "Utah", "fee": 59 },
+      { "code": "VT", "name": "Vermont", "fee": 155 },
+      { "code": "VA", "name": "Virginia", "fee": 100 },
+      { "code": "WA", "name": "Washington", "fee": 200 },
+      { "code": "WV", "name": "West Virginia", "fee": 100 },
+      { "code": "WI", "name": "Wisconsin", "fee": 130 },
+      { "code": "WY", "name": "Wyoming", "fee": 100, "note": "Popular with non-residents: low fees and a $60 annual report." }
+    ]
+  }
 }

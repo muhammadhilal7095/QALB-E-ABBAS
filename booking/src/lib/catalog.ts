@@ -22,6 +22,14 @@ type RawGroup = { title: string; currency?: string; items: RawItem[] };
 type RawPage = { currency?: string; groups: RawGroup[]; quarters?: { skuPrefix: string; label: string; price: number } };
 
 export const QUARTERS = ["Q1", "Q2", "Q3", "Q4"] as const;
+
+// ---- US LLC state filing fees ------------------------------------------------------
+export type UsState = { code: string; name: string; fee: number; note?: string };
+export const US_STATE_FEES = (raw as unknown as { usStateFees: { packages: string[]; states: UsState[] } }).usStateFees;
+export const STATE_FEE_PREFIX = "us-state-fee-";
+export const stateFeeSku = (code: string) => `${STATE_FEE_PREFIX}${code.toLowerCase()}`;
+/** SKUs that are US LLC packages (each needs exactly one state fee in the same order). */
+export const US_LLC_PACKAGES = new Set(US_STATE_FEES.packages);
 export const MAX_QTY = 50;
 
 function build(): Map<string, CatalogItem> {
@@ -50,6 +58,13 @@ function build(): Map<string, CatalogItem> {
       }
     }
   }
+  // US LLC state filing fees: one item per state ("us-state-fee-tx"), added alongside a US LLC package.
+  for (const s of US_STATE_FEES.states) {
+    add({
+      sku: stateFeeSku(s.code), name: `US LLC state filing fee — ${s.name}`, price: s.fee, currency: "USD",
+      note: s.note, multiQty: false, page: "us-llc",
+    });
+  }
   return map;
 }
 
@@ -61,4 +76,26 @@ export function getCatalogItem(sku: string): CatalogItem | undefined {
 
 export function allCatalogItems(): CatalogItem[] {
   return [...CATALOG.values()];
+}
+
+// ---- Paid consultations (Book a Consultation form) --------------------------------
+
+export type Consultation = { slug: string; name: string; minutes: number; price: number; currency: string; desc: string; topics: string[] };
+
+const CONSULTATIONS: Consultation[] = (raw as unknown as { consultations: { types: Consultation[] } }).consultations.types;
+
+export function getConsultation(slug: string): Consultation | undefined {
+  return CONSULTATIONS.find((c) => c.slug === slug);
+}
+
+export function allConsultations(): Consultation[] {
+  return CONSULTATIONS;
+}
+
+// ---- Booking hours ---------------------------------------------------------------
+
+export type Availability = { timezone: string; days: number[]; start: string; end: string; slotMinutes: number; minNoticeHours: number };
+
+export function getAvailability(): Availability {
+  return (raw as unknown as { availability: Availability }).availability;
 }

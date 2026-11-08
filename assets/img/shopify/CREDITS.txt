@@ -1,0 +1,13 @@
+Shopify page photos — free under the Unsplash License (unsplash.com; free commercial use, no attribution required),
+except where marked Rawpixel CC0. Resized for the web: <name>.jpg = 1280px (1024px for the Rawpixel ones),
+<name>-800.jpg = phones, <name>-1920.jpg = full-width banner.
+
+sh-store          https://unsplash.com/photos/6Pa7l0unTAY   Laptop showing a Shopify website
+sh-checkout       https://unsplash.com/photos/ShB9pI4mpRg   Paying online with a card on a laptop
+sh-laptop         https://unsplash.com/photos/1N49Cn7P0Fg   Woman using a laptop
+sh-products       https://unsplash.com/photos/Nm5MnMNxAK4   Product flat lay
+sh-analytics      https://unsplash.com/photos/JKUTrJ4vK00   Analytics on a laptop
+sh-buyer          https://unsplash.com/photos/4OPaeyML_lM   Man holding a card while shopping online
+sh-shopper        https://unsplash.com/photos/BmsI7XzQHkc   Woman paying online with a card
+sh-payments       https://unsplash.com/photos/Q9aqU6g49iw   Phone, card and laptop
+sh-flatlay        https://unsplash.com/photos/_GA41qytzy4   Product flat lay on grey

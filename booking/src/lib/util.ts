@@ -1,11 +1,7 @@
-import { randomBytes, createHash } from "node:crypto";
+import { randomBytes } from "node:crypto";
 
 export function randomToken(bytes = 32): string {
   return randomBytes(bytes).toString("base64url");
-}
-
-export function sha256(s: string): string {
-  return createHash("sha256").update(s).digest("hex");
 }
 
 const REF_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I
@@ -25,17 +21,4 @@ export function formatMoney(cents: number, currency: string): string {
 
 export function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
-}
-
-export function formatInTz(d: Date, tz: string, opts: Intl.DateTimeFormatOptions = {}): string {
-  return new Intl.DateTimeFormat("en-GB", { timeZone: tz, dateStyle: "full", timeStyle: "short", ...opts }).format(d);
-}
-
-export function formatTimeInTz(d: Date, tz: string): string {
-  return new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit" }).format(d);
-}
-
-export function tzAbbrev(d: Date, tz: string): string {
-  const p = new Intl.DateTimeFormat("en-GB", { timeZone: tz, timeZoneName: "short" }).formatToParts(d);
-  return p.find((x) => x.type === "timeZoneName")?.value ?? tz;
 }

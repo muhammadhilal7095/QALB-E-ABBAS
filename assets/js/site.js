@@ -105,9 +105,10 @@
     return key;
   }
 
+  // Current page as a clean path: "/", "/services", "/amazon-fba" (works with or without .html).
   function currentFile() {
-    var f = location.pathname.split("/").pop();
-    return f || "index.html";
+    var f = location.pathname.split("/").pop().replace(/\.html$/, "");
+    return !f || f === "index" ? "/" : "/" + f;
   }
 
   function applyBrandColors() {
@@ -121,24 +122,55 @@
   /* ---------- Header ----------------------------------------------------- */
   function navLinkHTML(item, file, extraClass) {
     var active = item.match.indexOf(file) !== -1;
-    return '<a class="' + extraClass + (active ? " is-active" : "") + '" href="' + esc(resolveLink(item.link)) + '"' +
-      (active ? ' aria-current="page"' : "") + ">" + esc(item.label) + "</a>";
+    var attrs = '" href="' + esc(resolveLink(item.link)) + '"' + (active ? ' aria-current="page"' : "");
+    var h = item.highlight;
+    if (h && extraClass === "nav__link") {
+      // Featured link (Qalb-E-Abbas University): pill with icon + tag.
+      return '<a class="nav__link nav__link--feature' + (active ? " is-active" : "") + attrs + ' aria-label="' + esc(item.label) + '" title="' + esc(item.label) + '">' +
+        '<span class="nav__feat-icon">' + icon(h.icon) + "</span>" +
+        "<span>" + esc(item.short || item.label) + "</span>" +
+        (h.tag ? '<span class="nav__tag">' + esc(h.tag) + "</span>" : "") + "</a>";
+    }
+    if (h && extraClass === "drawer__link") {
+      return '<a class="drawer__link drawer__link--feature' + (active ? " is-active" : "") + attrs + ">" +
+        '<span class="drawer__feat-icon">' + icon(h.icon) + "</span>" +
+        '<span class="drawer__feat-text"><b>' + esc(item.label) + "</b>" + (h.sub ? "<small>" + esc(h.sub) + "</small>" : "") + "</span>" +
+        icon("arrow-right", "drawer__feat-go") + "</a>";
+    }
+    return '<a class="' + extraClass + (active ? " is-active" : "") + attrs + ">" + esc(item.label) + "</a>";
+  }
+
+  // Thin info strip above the main bar (desktop): contact details + University promo.
+  function topbarHTML() {
+    var c = CFG.contact || {};
+    var uni = CFG.nav.filter(function (n) { return n.highlight; })[0];
+    return '<div class="topbar"><div class="container topbar__row">' +
+      '<ul class="topbar__info">' +
+        (c.location ? '<li>' + icon("map-pin") + '<a href="' + esc(c.mapUrl || "#") + '" target="_blank" rel="noopener">' + esc(c.location.replace(", United Kingdom", ", UK")) + "</a></li>" : "") +
+        (c.email ? '<li>' + icon("mail") + '<a href="mailto:' + esc(c.email) + '">' + esc(c.email) + "</a></li>" : "") +
+        '<li>' + icon("clock") + "<span>Consultations Mon–Fri</span></li>" +
+      "</ul>" +
+      '<div class="topbar__links">' +
+        (uni ? '<a class="topbar__uni" href="' + esc(resolveLink(uni.link)) + '">' + icon("graduation") + "<span><b>" + esc(uni.label) + "</b> — " + esc(uni.highlight.promo || uni.highlight.sub) + "</span>" + icon("arrow-right", "topbar__go") + "</a>" : "") +
+        '<a class="topbar__link" href="' + esc(CFG.links.assessment) + '">' + icon("check-circle") + "Free assessment</a>" +
+      "</div>" +
+    "</div></div>";
   }
 
   function megaHTML() {
-    function mark(m) {
+    function mark(m, label) {
       if (!m) return '<span class="mega__mark">' + icon("arrow-right") + "</span>";
       if (m.indexOf("icon:") === 0) return '<span class="mega__mark">' + icon(m.slice(5)) + "</span>";
       var flag = m.indexOf("flag-") === 0;
-      return '<span class="mega__mark' + (flag ? " mega__mark--flag" : "") + '"><img src="assets/img/platforms/' + esc(m) + '.svg" alt="" width="18" height="18" loading="lazy"></span>';
+      return '<span class="mega__mark' + (flag ? " mega__mark--flag" : "") + '"><img src="assets/img/platforms/' + esc(m) + '.svg" alt="' + esc(label) + ' logo" title="' + esc(label) + '" width="18" height="18" loading="lazy"></span>';
     }
     var cols = CFG.services.map(function (cat) {
       var links = cat.items.map(function (it) {
-        return '<li><a class="mega__link" href="' + esc(it[2] || "services.html#" + it[1]) + '">' + mark(it[3]) +
+        return '<li><a class="mega__link" href="' + esc(it[2] || "/services#" + it[1]) + '">' + mark(it[3], it[0]) +
           '<span class="mega__label">' + esc(it[0]) + "</span>" + icon("arrow-right", "mega__go") + "</a></li>";
       }).join("");
       return '<div class="mega__col">' +
-        '<a class="mega__heading" href="services.html#' + cat.id + '"><span class="mega__icon">' + icon(cat.icon) + "</span>" +
+        '<a class="mega__heading" href="/services#' + cat.id + '"><span class="mega__icon">' + icon(cat.icon) + "</span>" +
         '<span class="mega__titles"><span class="mega__title">' + esc(cat.title) + "</span>" +
         (cat.desc ? '<span class="mega__desc">' + esc(cat.desc) + "</span>" : "") + "</span></a>" +
         '<ul class="mega__list">' + links + "</ul></div>";
@@ -146,7 +178,7 @@
     return '<div class="mega" id="mega-menu" role="region" aria-label="Services">' +
       '<div class="mega__panel"><div class="mega__grid">' + cols + "</div>" +
       '<div class="mega__foot"><div class="mega__foot-text"><span class="mega__foot-icon">' + icon("headset") + "</span>" +
-      '<p><strong>Not sure which service fits?</strong><span>Talk it through with an expert in a free consultation.</span></p></div>' +
+      '<p><strong>Not sure which service fits?</strong><span>Book a 1:1 online consultation with an expert for $50.</span></p></div>' +
       '<div class="mega__foot-actions"><a class="btn btn--outline btn--sm" href="' + esc(CFG.links.services) + '">View all services</a>' +
       '<a class="btn btn--primary btn--sm" href="' + esc(CFG.links.book) + '">Book Consultation' + icon("arrow-right", "btn__arrow") + "</a></div></div>" +
       "</div></div>";
@@ -155,9 +187,9 @@
   function drawerServicesHTML() {
     return CFG.services.map(function (cat) {
       var pid = "acc-" + cat.id;
-      var links = '<li><a class="acc__link acc__link--all" href="services.html#' + cat.id + '">All ' + esc(cat.title) + "</a></li>" +
+      var links = '<li><a class="acc__link acc__link--all" href="/services#' + cat.id + '">All ' + esc(cat.title) + "</a></li>" +
         cat.items.map(function (it) {
-          return '<li><a class="acc__link" href="' + esc(it[2] || "services.html#" + it[1]) + '">' + esc(it[0]) + "</a></li>";
+          return '<li><a class="acc__link" href="' + esc(it[2] || "/services#" + it[1]) + '">' + esc(it[0]) + "</a></li>";
         }).join("");
       return '<li class="acc">' +
         '<button type="button" class="acc__toggle" aria-expanded="false" aria-controls="' + pid + '">' +
@@ -168,7 +200,7 @@
 
   function logoHTML(cls) {
     return '<a class="' + cls + '" href="' + esc(CFG.links.home) + '">' +
-      '<img src="' + esc(CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" width="190" height="44" decoding="async"></a>';
+      '<img src="' + esc(CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" title="Qalb-E-Abbas" width="190" height="44" decoding="async"></a>';
   }
 
   function renderHeader(mount) {
@@ -194,12 +226,12 @@
     }).join("");
 
     mount.outerHTML =
-      '<header class="site-header" id="site-header">' +
+      topbarHTML() + '<header class="site-header" id="site-header">' +
       '<div class="container header__bar">' +
       logoHTML("header__logo") +
       '<nav class="header__nav" aria-label="Main"><ul class="nav__list">' + items + "</ul></nav>" +
       '<div class="header__actions">' +
-      '<a class="header__cart" href="cart.html" aria-label="Your cart" data-cart-link>' + icon("cart") + '<span class="header__cart-count" data-cart-count hidden></span></a>' +
+      '<a class="header__cart" href="/cart" aria-label="Your cart" data-cart-link>' + icon("cart") + '<span class="header__cart-count" data-cart-count hidden></span></a>' +
       '<a class="btn btn--accent header__cta" href="' + esc(CFG.links.book) + '">Book Consultation' + icon("arrow-right", "btn__arrow") + "</a>" +
       "</div>" +
       '<button type="button" class="hamburger" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Open menu">' +
@@ -437,30 +469,33 @@
       '<footer class="site-footer">' +
       '<div class="container footer__grid">' +
       '<div class="footer__brand">' +
-      '<a class="footer__logo" href="' + esc(CFG.links.home) + '"><img src="' + esc(CFG.brand.logoOnDark || CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" width="190" height="44" loading="lazy"></a>' +
+      '<a class="footer__logo" href="' + esc(CFG.links.home) + '"><img src="' + esc(CFG.brand.logoOnDark || CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" title="Qalb-E-Abbas" width="190" height="44" loading="lazy"></a>' +
       "<p>" + esc(f.description) + "</p>" +
       '<p class="footer__commitment">' + icon("check-circle") + "<span>" + esc(f.commitment) + "</span></p></div>" +
 
-      '<details class="footer__col" data-footer-acc><summary><h2 class="footer__title">Quick Links</h2>' + icon("chevron-down", "footer__chev") + "</summary>" +
+      '<details class="footer__col" data-footer-acc><summary><h2 class="footer__title">Services</h2>' + icon("chevron-down", "footer__chev") + "</summary>" +
+      '<ul class="footer__links">' + linkList(f.serviceLinks) + "</ul></details>" +
+
+      '<details class="footer__col" data-footer-acc><summary><h2 class="footer__title">Company</h2>' + icon("chevron-down", "footer__chev") + "</summary>" +
       '<ul class="footer__links">' + linkList(f.quickLinks) + "</ul></details>" +
 
-      '<div class="footer__col footer__col--static"><h2 class="footer__title">Contact Information</h2>' +
+      '<div class="footer__col footer__col--static"><h2 class="footer__title">Get in Touch</h2>' +
       '<ul class="footer__contact">' +
-      '<li><a href="' + esc(c.mapUrl) + '" target="_blank" rel="noopener noreferrer">' + icon("map-pin") + "<span>" + esc(c.location) + '<span class="sr-only"> (opens map in a new tab)</span></span></a></li>' +
-      '<li><a href="' + esc(c.phoneHref) + '">' + icon("phone") + "<span>UK: " + esc(c.phoneDisplay) + "</span></a></li>" +
-      (c.phoneUSDisplay ? '<li><a href="' + esc(c.phoneUSHref) + '">' + icon("phone") + "<span>USA: " + esc(c.phoneUSDisplay) + "</span></a></li>" : "") +
-      '<li><a href="mailto:' + esc(c.email) + '">' + icon("mail") + "<span>" + esc(c.email) + "</span></a></li>" +
-      "</ul></div>" +
-
-      '<details class="footer__col" data-footer-acc><summary><h2 class="footer__title">Services &amp; Support</h2>' + icon("chevron-down", "footer__chev") + "</summary>" +
-      '<ul class="footer__links footer__links--2col">' + linkList(f.serviceLinks) + "</ul></details>" +
+      '<li><a href="' + esc(c.mapUrl) + '" target="_blank" rel="noopener noreferrer"><span class="footer__ci">' + icon("map-pin") + '</span><span><small>Office</small>' + esc(c.location) + '<span class="sr-only"> (opens map in a new tab)</span></span></a></li>' +
+      (c.phoneDisplay ? '<li><a href="' + esc(c.phoneHref) + '"><span class="footer__ci">' + icon("phone") + "</span><span><small>UK</small>" + esc(c.phoneDisplay) + "</span></a></li>" : "") +
+      (c.phoneUSDisplay ? '<li><a href="' + esc(c.phoneUSHref) + '"><span class="footer__ci">' + icon("phone") + "</span><span><small>USA</small>" + esc(c.phoneUSDisplay) + "</span></a></li>" : "") +
+      '<li><a href="mailto:' + esc(c.email) + '"><span class="footer__ci">' + icon("mail") + "</span><span><small>Email</small>" + esc(c.email) + "</span></a></li>" +
+      "</ul>" +
+      '<a class="btn btn--accent btn--sm footer__cta" href="' + esc(CFG.links.book) + '">' + icon("calendar") + "Book Consultation — $50</a>" +
+      "</div>" +
       "</div>" +
 
-      '<div class="container"><div class="footer__social"><h2 class="footer__title">Follow Us</h2><ul class="social-list">' + socials + "</ul></div></div>" +
+      '<div class="container" data-social-group><div class="footer__social"><h2 class="footer__title">Follow Us</h2><ul class="social-list">' + socials + "</ul></div></div>" +
 
       '<div class="footer__bottom"><div class="container footer__bottom-inner">' +
       '<p>&copy; <span>' + year + "</span> " + esc(CFG.brand.name) + ". All rights reserved.</p>" +
-      '<nav aria-label="Legal"><ul class="footer__legal">' + linkList(f.legal) + "</ul></nav>" +
+      '<nav aria-label="Legal"><ul class="footer__legal">' + linkList(f.legal) +
+      (CFG.analytics && CFG.analytics.ga4Id ? '<li><button type="button" class="footer__cookie" data-cookie-settings>Cookie settings</button></li>' : "") + "</ul></nav>" +
       "</div></div></footer>";
 
     // Footer link groups are accordions on phones and always open on wider screens.
@@ -495,10 +530,17 @@
         if (!a.querySelector(".sr-only")) a.insertAdjacentHTML("beforeend", '<span class="sr-only"> (opens in a new tab)</span>');
         else a.querySelector(".sr-only").textContent = name + " (opens in a new tab)";
       } else {
+        // No link configured yet (assets/js/site-config.js → social): hide the button rather than show a dead link.
         a.href = "#";
-        a.setAttribute("data-placeholder", name + " link has not been configured yet.");
-        a.title = name + " — link coming soon";
+        var hideEl = a.parentElement && a.parentElement.tagName === "LI" ? a.parentElement : a;
+        hideEl.hidden = true;
+        hideEl.style.display = "none";
       }
+    });
+    // Hide a social block (e.g. "Follow Us") when none of its links are configured.
+    (root || document).querySelectorAll("[data-social-group]").forEach(function (g) {
+      var any = Array.prototype.some.call(g.querySelectorAll("[data-social]"), function (a) { return !!CFG.social[a.getAttribute("data-social")]; });
+      g.hidden = !any; g.style.display = any ? "" : "none";
     });
   }
 
@@ -549,6 +591,46 @@
     });
   }
 
+  /* ---------- Analytics with consent (GA4) --------------------------------
+     Loads Google Analytics 4 only after the visitor accepts analytics cookies.
+     The choice is remembered; "Cookie settings" in the footer reopens the banner. */
+  function initAnalytics() {
+    var id = CFG.analytics && CFG.analytics.ga4Id;
+    if (!id || !/^G-[A-Z0-9]+$/i.test(id)) return;
+    var KEY = "qa-consent";
+    function get() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+    function set(v) { try { localStorage.setItem(KEY, v); } catch (e) { /* private mode */ } }
+    function load() {
+      if (window.__gaLoaded) return; window.__gaLoaded = true;
+      var s = document.createElement("script"); s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id);
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag("js", new Date());
+      window.gtag("config", id, { anonymize_ip: true });
+    }
+    function banner() {
+      if (document.querySelector(".cookie-banner")) return;
+      var el = document.createElement("div");
+      el.className = "cookie-banner"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Cookie preferences");
+      el.innerHTML = '<p><strong>We value your privacy.</strong> We use analytics cookies to understand how visitors use our website so we can improve it. ' +
+        '<a href="' + esc(resolveLink("privacy")) + '">Privacy policy</a></p>' +
+        '<div class="cookie-banner__actions"><button type="button" class="btn btn--outline btn--sm" data-c="no">Decline</button>' +
+        '<button type="button" class="btn btn--primary btn--sm" data-c="yes">Accept analytics</button></div>';
+      el.addEventListener("click", function (e) {
+        var b = e.target.closest("[data-c]"); if (!b) return;
+        set(b.getAttribute("data-c") === "yes" ? "granted" : "denied");
+        if (get() === "granted") load();
+        el.remove();
+      });
+      document.body.appendChild(el);
+    }
+    var c = get();
+    if (c === "granted") load(); else if (c !== "denied") banner();
+    document.addEventListener("click", function (e) { if (e.target.closest("[data-cookie-settings]")) banner(); });
+  }
+
   /* ---------- Boot ------------------------------------------------------- */
   applyBrandColors();
   injectSprite();
@@ -561,6 +643,7 @@
   initDrawer();
   initStickyHeader();
   initMailtoForms();
+  initAnalytics();
 
   // Expose small helpers for page scripts.
   window.Site = { icon: icon, esc: esc, resolveLink: resolveLink, hydrateLinks: hydrateLinks, toast: toast, reducedMotion: REDUCED_MQ };

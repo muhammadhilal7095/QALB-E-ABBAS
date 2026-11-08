@@ -1,0 +1,16 @@
+TikTok Shop page photos — from Unsplash (unsplash.com), free under the Unsplash License
+(free commercial use, no attribution required). Downloaded at full resolution and resized
+for the web: <name>.jpg = 1280px, <name>-800.jpg = phones, <name>-1920.jpg = full-width banner.
+
+tts-live-setup    https://unsplash.com/photos/RtHTiKnZ_tk   Smartphone on a tripod streaming LIVE
+tts-feed          https://unsplash.com/photos/XthsrkTNZ6I   Scrolling a TikTok feed on a phone
+tts-shop-app      https://unsplash.com/photos/6Jhxq5MTd3Y   Phone showing the TikTok Shop app
+tts-products      https://unsplash.com/photos/Nm5MnMNxAK4   Product flat lay (watch, phone, box)
+tts-filming       https://unsplash.com/photos/cIps9jJaiVg   Phone on a tripod filming a video
+tts-ring-light    https://unsplash.com/photos/8CJOtjknIJE   Smartphone and ring light
+tts-packing       https://unsplash.com/photos/uqZXLOd4F8E   Preparing a box in a warehouse
+tts-seller        https://unsplash.com/photos/e7DxwVzL0hk   Seller on the phone in a clothing store
+tts-flatlay       https://unsplash.com/photos/_GA41qytzy4   Product flat lay on grey
+tts-creator       https://unsplash.com/photos/HxaxlRzUjeU   Creator recording on a smartphone tripod
+tts-affiliate     https://unsplash.com/photos/5vJ6GY0KzBs   Filming a creator on a phone
+tts-analytics     https://unsplash.com/photos/JKUTrJ4vK00   Performance analytics on a laptop

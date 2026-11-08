@@ -140,6 +140,21 @@
     return '<a class="' + extraClass + (active ? " is-active" : "") + attrs + ">" + esc(item.label) + "</a>";
   }
 
+  // "Free assessment" opens the assessment for the page you're on (eBay page → eBay questions);
+  // elsewhere it opens the assessment chooser.
+  function assessmentLink() {
+    var MAP = {
+      "/amazon-fba": "amazon", "/ebay": "ebay", "/walmart": "walmart", "/tiktok-shop": "tiktok", "/etsy": "etsy",
+      "/shopify-development": "shopify", "/uk-ltd-formation": "company", "/us-llc-formation": "company",
+      "/uae-company-formation": "company", "/malta-company-formation": "company", "/trademark-registration": "company",
+      "/taxation": "tax", "/digital-marketing": "marketing", "/seo": "marketing", "/social-media-marketing": "marketing",
+      "/email-marketing": "marketing", "/influencer-marketing": "marketing", "/affiliate-marketing": "marketing",
+      "/education-consultancy": "malta", "/real-estate": "realestate"
+    };
+    var t = MAP[currentFile()];
+    return CFG.links.assessment + (t ? "?type=" + t : "");
+  }
+
   // Thin info strip above the main bar (desktop): contact details + University promo.
   function topbarHTML() {
     var c = CFG.contact || {};
@@ -152,7 +167,7 @@
       "</ul>" +
       '<div class="topbar__links">' +
         (uni ? '<a class="topbar__uni" href="' + esc(resolveLink(uni.link)) + '">' + icon("graduation") + "<span><b>" + esc(uni.label) + "</b> — " + esc(uni.highlight.promo || uni.highlight.sub) + "</span>" + icon("arrow-right", "topbar__go") + "</a>" : "") +
-        '<a class="topbar__link" href="' + esc(CFG.links.assessment) + '">' + icon("check-circle") + "Free assessment</a>" +
+        '<a class="topbar__link" href="' + esc(assessmentLink()) + '">' + icon("check-circle") + "Free assessment</a>" +
       "</div>" +
     "</div></div>";
   }

@@ -18,8 +18,49 @@
   var ALL = window.QA_ASSESSMENTS;
   if (!root || !ALL) return;
 
-  var TYPE = (new URLSearchParams(location.search).get("type") || "amazon").toLowerCase();
-  if (!ALL[TYPE]) TYPE = "amazon";
+  var TYPE = (new URLSearchParams(location.search).get("type") || "").toLowerCase();
+
+  // No (or unknown) ?type= → let the visitor choose which assessment to take, instead of
+  // silently starting the Amazon one.
+  if (!ALL[TYPE]) { renderChooser(); return; }
+
+  function renderChooser() {
+    var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var ic = function (n) { return '<svg class="icon" aria-hidden="true"><use href="#i-' + n + '"></use></svg>'; };
+    var LIST = [
+      ["amazon", "logo", "amazon", "Amazon FBA & private label"],
+      ["ebay", "logo", "ebay", "Selling on eBay"],
+      ["walmart", "logo", "walmart", "Walmart Marketplace"],
+      ["tiktok", "logo", "tiktok", "TikTok Shop"],
+      ["etsy", "logo", "etsy", "Etsy shop"],
+      ["shopify", "logo", "shopify", "Shopify store"],
+      ["company", "icon", "building", "UK, US, UAE or Malta company"],
+      ["tax", "icon", "receipt", "US & UK company tax"],
+      ["marketing", "icon", "megaphone", "Ads, SEO & social media"],
+      ["malta", "icon", "graduation", "Study in Malta"],
+      ["realestate", "icon", "map-pin", "Buying property"]
+    ].filter(function (x) { return ALL[x[0]]; });
+    var cards = LIST.map(function (x) {
+      var a = ALL[x[0]];
+      var mark = x[1] === "logo"
+        ? '<img src="assets/img/platforms/' + x[2] + '.svg" alt="" width="28" height="28">'
+        : ic(x[2]);
+      return '<li><a class="sra-pick" href="?type=' + x[0] + '">' +
+        '<span class="sra-pick__mark">' + mark + "</span>" +
+        '<span class="sra-pick__text"><b>' + esc(a.name) + "</b><small>" + esc(x[3]) + " · " + (a.minutes ? "about " + esc(a.minutes) + " min" : "2–10 min, adapts to you") + "</small></span>" +
+        ic("arrow-right") + "</a></li>";
+    }).join("");
+    var hide = function (sel) { var el = root.querySelector(sel); if (el) el.hidden = true; };
+    hide("[data-sra-progress]"); hide("[data-sra-notice]"); hide(".sra-form");
+    var h1 = root.querySelector("[data-sra-h1]"); if (h1) h1.textContent = "Free Business Readiness Assessments";
+    var intro = root.querySelector("[data-sra-intro]");
+    if (intro) intro.textContent = "Choose the assessment that matches your plans. Each one asks questions about that platform or service only, then shows your readiness level, the biggest blockers and the safest next step. Free and instant.";
+    var crumb = root.querySelector("[data-sra-crumb]"); if (crumb) crumb.textContent = "Free Assessment";
+    var box = document.createElement("div");
+    box.className = "sra-chooser";
+    box.innerHTML = '<h2 class="sra-chooser__title">Which assessment would you like to take?</h2><ul class="sra-chooser__grid">' + cards + "</ul>";
+    root.appendChild(box);
+  }
   var A = ALL[TYPE];
   var Q = A.questions;
   var SECTIONS = A.sections;

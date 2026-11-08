@@ -3867,3 +3867,27 @@ main > :is(.section, .svc-sec, .svc-cat):last-child { padding-bottom: var(--sect
 .cookie-banner__actions { display: flex; gap: 8px; }
 .footer__cookie { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
 .footer__cookie:hover { color: #fff; text-decoration: underline; }
+
+/* Assessment chooser (assessment page opened without ?type=) */
+.sra-chooser { margin-top: 24px; }
+.sra-chooser__title { margin: 0 0 16px; font-size: clamp(1.2rem, 1.05rem + .5vw, 1.5rem); }
+.sra-chooser__grid { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .sra-chooser__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .sra-chooser__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.sra-pick { display: flex; align-items: center; gap: 14px; height: 100%; padding: 16px 18px; border: 1.5px solid color-mix(in srgb, var(--brand) 22%, #fff); border-radius: 18px; background: #fff; color: var(--ink); text-decoration: none; transition: border-color .2s, transform .2s, box-shadow .2s; }
+.sra-pick:hover, .sra-pick:focus-visible { border-color: var(--brand); transform: translateY(-2px); box-shadow: 0 16px 30px -22px rgba(11, 27, 54, .5); }
+.sra-pick__mark { display: grid; place-items: center; width: 46px; height: 46px; flex: none; border-radius: 14px; background: var(--tint); color: var(--brand); }
+.sra-pick__mark img { width: 28px; height: 28px; object-fit: contain; }
+.sra-pick__mark .icon { width: 24px; height: 24px; }
+.sra-pick__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.sra-pick__text b { font-family: var(--display); font-size: 1rem; }
+.sra-pick__text small { color: var(--muted); font-size: .84rem; }
+.sra-pick > .icon:last-child { margin-left: auto; width: 18px; height: 18px; color: var(--brand); flex: none; }
+/* centre an incomplete last row of assessment cards */
+@media (min-width: 1000px) {
+  .sra-chooser__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .sra-chooser__grid > li { grid-column: span 2; }
+  .sra-chooser__grid > li:last-child:nth-child(3n+1) { grid-column: 3 / 5; }
+  .sra-chooser__grid > li:nth-last-child(2):nth-child(3n+1) { grid-column: 2 / 4; }
+  .sra-chooser__grid > li:last-child:nth-child(3n+2) { grid-column: 4 / 6; }
+}

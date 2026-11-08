@@ -161,7 +161,7 @@
     var uni = CFG.nav.filter(function (n) { return n.highlight; })[0];
     return '<div class="topbar"><div class="container topbar__row">' +
       '<ul class="topbar__info">' +
-        (c.location ? '<li>' + icon("map-pin") + '<a href="' + esc(c.mapUrl || "#") + '" target="_blank" rel="noopener">' + esc(c.location.replace(", United Kingdom", ", UK")) + "</a></li>" : "") +
+        (c.location ? '<li>' + icon("map-pin") + '<a href="' + esc(c.mapUrl || "#") + '" target="_blank" rel="noopener">' + esc(c.location) + "</a></li>" : "") +
         (c.email ? '<li>' + icon("mail") + '<a href="mailto:' + esc(c.email) + '">' + esc(c.email) + "</a></li>" : "") +
         '<li>' + icon("clock") + "<span>Consultations Mon–Fri</span></li>" +
       "</ul>" +

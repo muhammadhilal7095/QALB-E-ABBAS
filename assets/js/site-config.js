@@ -74,8 +74,8 @@ window.SITE_CONFIG = {
   },
 
   contact: {
-    location: "Oldham, Manchester, United Kingdom",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Oldham%2C%20Manchester%2C%20United%20Kingdom",
+    location: "Manchester, United Kingdom",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Manchester%2C%20United%20Kingdom",
     // Phone numbers are not shown on the website (visitors book a consultation instead).
     // Fill these only if you want a phone number in the footer again.
     phoneDisplay: "",

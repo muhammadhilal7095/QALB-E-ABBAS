@@ -32,7 +32,7 @@ const org = {
   image: `${SITE_URL}/assets/img/hero/amazon-seller.jpg`,
   description: "E-commerce growth services, company formation for non-residents, tax filing, digital marketing and Qalb-E-Abbas University training.",
   email: "contact@qalbeabbas.com",
-  address: { "@type": "PostalAddress", addressLocality: "Oldham", addressRegion: "Greater Manchester", addressCountry: "GB" },
+  address: { "@type": "PostalAddress", addressLocality: "Manchester", addressRegion: "Greater Manchester", addressCountry: "GB" },
   areaServed: ["GB", "US", "MT", "AE", "PK"],
   // Opening hours = the consultation booking hours in service-catalog.json (availability).
   openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: hours.days, opens: hours.start, closes: hours.end }],

@@ -19,7 +19,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-16 bg-navy text-sm text-white/75">
       <div className="container-x flex flex-wrap items-center justify-between gap-3 py-6">
-        <p>© {new Date().getFullYear()} Qalb-E-Abbas · Oldham, Manchester, United Kingdom</p>
+        <p>© {new Date().getFullYear()} Qalb-E-Abbas · Manchester, United Kingdom</p>
         <p><a className="hover:text-white" href="mailto:contact@qalbeabbas.com">contact@qalbeabbas.com</a></p>
       </div>
     </footer>

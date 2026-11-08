@@ -9,7 +9,7 @@ export function layout(title: string, bodyHtml: string): string {
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border:1px solid #E3E8F0;border-radius:14px;overflow:hidden">
 <tr><td style="padding:22px 28px;border-bottom:4px solid #F5B12E"><span style="font:800 20px Arial,sans-serif;color:#0B1B36">${escapeHtml(env.businessName())}</span></td></tr>
 <tr><td style="padding:28px"><h1 style="margin:0 0 16px;font:800 22px Arial,sans-serif;color:#0B1B36">${escapeHtml(title)}</h1>${bodyHtml}</td></tr>
-<tr><td style="padding:18px 28px;background:#0B1B36;color:#C9D3E6;font-size:12px;line-height:1.6">${escapeHtml(env.businessName())} · Oldham, Manchester, United Kingdom · ${escapeHtml(env.adminEmail())}</td></tr>
+<tr><td style="padding:18px 28px;background:#0B1B36;color:#C9D3E6;font-size:12px;line-height:1.6">${escapeHtml(env.businessName())} · Manchester, United Kingdom · ${escapeHtml(env.adminEmail())}</td></tr>
 </table></td></tr></table></body></html>`;
 }
 

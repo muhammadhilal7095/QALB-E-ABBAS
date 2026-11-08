@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url><loc>https://www.qalbeabbas.com/</loc><lastmod>2026-11-07</lastmod><priority>1.0</priority>
+  <url><loc>https://www.qalbeabbas.com/</loc><lastmod>2026-11-08</lastmod><priority>1.0</priority>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/hero/amazon-seller.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/hero/ebay-parcel.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/hero/tiktok.webp</image:loc></image:image>
@@ -396,7 +396,7 @@
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/automation/au-social-apps.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/ebay/eb-analytics.webp</image:loc></image:image>
   </url>
-  <url><loc>https://www.qalbeabbas.com/about</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority></url>
+  <url><loc>https://www.qalbeabbas.com/about</loc><lastmod>2026-11-08</lastmod><priority>0.6</priority></url>
   <url><loc>https://www.qalbeabbas.com/beginners-guide</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority></url>
   <url><loc>https://www.qalbeabbas.com/blog</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/hero/amazon.webp</image:loc></image:image>
@@ -410,8 +410,8 @@
   <url><loc>https://www.qalbeabbas.com/blog-us-llc-vs-uk-ltd</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/hero/company.webp</image:loc></image:image>
   </url>
-  <url><loc>https://www.qalbeabbas.com/contact</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority></url>
-  <url><loc>https://www.qalbeabbas.com/team</loc><lastmod>2026-11-07</lastmod><priority>0.6</priority>
+  <url><loc>https://www.qalbeabbas.com/contact</loc><lastmod>2026-11-08</lastmod><priority>0.6</priority></url>
+  <url><loc>https://www.qalbeabbas.com/team</loc><lastmod>2026-11-08</lastmod><priority>0.6</priority>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/team/qalb-e-abbas.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/team/mohsin-abbas.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/team/amir-abbas.webp</image:loc></image:image>

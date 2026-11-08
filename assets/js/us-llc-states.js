@@ -31,9 +31,12 @@
     noteEl.textContent = s.note || "";
     noteEl.hidden = !s.note;
     chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.llcChip === code)); });
+    // Plan cards show one total price: package + the chosen state's filing fee.
+    document.querySelectorAll("[data-llc-price]").forEach(function (el) {
+      el.textContent = money(Number(el.dataset.llcPrice) + s.fee);
+    });
     document.querySelectorAll("[data-llc-total]").forEach(function (el) {
-      var base = Number(el.dataset.llcTotal);
-      el.innerHTML = "+ " + money(s.fee) + " " + s.name + " fee = <b>" + money(base + s.fee) + "</b> total";
+      el.innerHTML = "Total for <b>" + s.name + "</b> — state filing fee included";
     });
     document.querySelectorAll("[data-llc-package]").forEach(function (btn) {
       btn.dataset.withSku = "us-state-fee-" + s.code.toLowerCase();

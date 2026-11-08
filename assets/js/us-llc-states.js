@@ -27,7 +27,7 @@
     if (!s) return;
     select.value = code;
     nameEl.textContent = s.name;
-    feeEl.textContent = money(s.fee);
+    if (feeEl) feeEl.textContent = money(s.fee);
     noteEl.textContent = s.note || "";
     noteEl.hidden = !s.note;
     chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.llcChip === code)); });

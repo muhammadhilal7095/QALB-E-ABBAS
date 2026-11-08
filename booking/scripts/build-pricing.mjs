@@ -19,6 +19,18 @@ const SYMBOL = { USD: "$", GBP: "£", EUR: "€" };
 const money = (n, cur) => `${SYMBOL[cur] ?? cur + " "}${Number(n).toLocaleString("en-US")}`;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const icon = (n) => `<svg class="icon" aria-hidden="true"><use href="#i-${n}"></use></svg>`;
+// Find a catalog item (anywhere in the catalog) by its SKU.
+const catalogItem = (sku) => {
+  const walk = (o) => {
+    if (!o || typeof o !== "object") return null;
+    if (o.sku === sku && "price" in o) return o;
+    for (const v of Object.values(o)) { const r = walk(v); if (r) return r; }
+    return null;
+  };
+  const item = walk(catalog);
+  if (!item) throw new Error(`Catalog item not found: ${sku}`);
+  return item;
+};
 const START = "<!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->";
 const END = "<!-- PRICING:END -->";
 
@@ -187,7 +199,10 @@ console.log(`Pricing sections updated on ${changed} pages.`);
   const S_START = "<!-- US-STATES:START — generated from booking/src/lib/service-catalog.json (usStateFees); run `npm run pricing:build` -->";
   const S_END = "<!-- US-STATES:END -->";
   const byName = [...fees.states].sort((a, b) => a.name.localeCompare(b.name));
-  const opt = (s) => `<option value="${s.code}"${s.code === fees.default ? " selected" : ""}>${esc(s.name)} — ${money(s.fee, "USD")} state fee</option>`;
+  // Options show the state name only — the filing fee is built into each plan's total price.
+  const opt = (s) => `<option value="${s.code}"${s.code === fees.default ? " selected" : ""}>${esc(s.name)}</option>`;
+  const planPrice = (sku) => catalogItem(sku).price;
+  const basic = planPrice("us-llc-basic"), advanced = planPrice("us-llc-advanced");
   const popular = fees.popular.map((c) => fees.states.find((s) => s.code === c)).filter(Boolean);
   const def = fees.states.find((s) => s.code === fees.default);
   const data = JSON.stringify(fees.states.map(({ code, name, fee, note }) => ({ code, name, fee, ...(note ? { note } : {}) }))).replace(/</g, "\\u003c");
@@ -202,9 +217,14 @@ console.log(`Pricing sections updated on ${changed} pages.`);
             <div class="llc-state__chips" role="group" aria-label="Popular states">${popular.map((s) => `<button type="button" class="llc-state__chip" data-llc-chip="${s.code}">${esc(s.name)}</button>`).join("")}</div>
           </div>
           <div class="llc-state__info" aria-live="polite">
-            <p class="llc-state__fee"><span><span class="llc-state__step">2</span><b data-llc-name>${esc(def.name)}</b> state filing fee</span><strong data-llc-fee>${money(def.fee, "USD")}</strong></p>
+            <p class="llc-state__eyebrow"><span class="llc-state__step">2</span>Your LLC state</p>
+            <p class="llc-state__name">${icon("map-pin")}<b data-llc-name>${esc(def.name)}</b></p>
+            <ul class="llc-state__totals">
+              <li><span>Basic plan</span><strong data-llc-price="${basic}">${money(basic + def.fee, "USD")}</strong></li>
+              <li><span>Advanced plan</span><strong data-llc-price="${advanced}">${money(advanced + def.fee, "USD")}</strong></li>
+            </ul>
             <p class="llc-state__note" data-llc-note${def.note ? "" : " hidden"}>${def.note ? esc(def.note) : ""}</p>
-            <p class="llc-state__small">Paid to the state when we file your Articles of Organization. Fees checked ${esc(fees.checked)} — we confirm the current fee before filing.</p>
+            <p class="llc-state__small">${icon("check-circle")}Total prices include the state filing fee. We confirm the current state requirements before filing.</p>
           </div>
           <script type="application/json" id="us-state-fees">${data}</script>
         </div>

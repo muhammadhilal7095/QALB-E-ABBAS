@@ -4170,3 +4170,47 @@ main > :is(.section, .svc-sec, .svc-cat):last-child { padding-bottom: var(--sect
   .pill-marquee .home-h1__links { flex-wrap: wrap; justify-content: center; padding-right: 0; }
   .pill-marquee .home-h1__links[aria-hidden] { display: none; }
 }
+
+/* ==========================================================================
+   BLOG POSTS written in the admin dashboard (/blog/<slug>)
+   ========================================================================== */
+.bp-cat { display: inline-block; margin: 10px 0 0; padding: 4px 12px; border-radius: 999px; background: rgba(245, 166, 35, .16); color: var(--accent); font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.bp-preview { position: sticky; top: 0; z-index: 50; padding: 10px 16px; background: #FEF3E2; color: #7A3E06; text-align: center; font-weight: 600; font-size: .9rem; }
+.bp-layout { display: grid; gap: clamp(24px, 4vw, 56px); align-items: start; }
+@media (min-width: 1100px) { .bp-layout { grid-template-columns: minmax(0, 1fr) 260px; } }
+.bp-article { max-width: 780px; min-width: 0; }
+.bp-toc { position: sticky; top: 100px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; font-size: .9rem; }
+.bp-toc p { margin: 0 0 8px; font-weight: 700; color: var(--ink); }
+.bp-toc ol { margin: 0; padding-left: 18px; line-height: 1.6; }
+.bp-toc li + li { margin-top: 6px; }
+.bp-toc a { color: var(--text); text-decoration: none; }
+.bp-toc a:hover { color: var(--brand); }
+@media (max-width: 1099px) { .bp-toc { position: static; order: -1; } }
+.bp-body { font-size: 1.0625rem; line-height: 1.75; color: var(--text); overflow-wrap: break-word; }
+.bp-body > h2 { margin: clamp(36px, 5vw, 52px) 0 14px; font-size: clamp(1.4rem, 1.15rem + 1vw, 1.9rem); font-weight: 800; line-height: 1.25; color: var(--ink); scroll-margin-top: 100px; }
+.bp-body > h3 { margin: 28px 0 8px; font-size: clamp(1.1rem, 1rem + .4vw, 1.3rem); font-weight: 700; color: var(--ink); scroll-margin-top: 100px; }
+.bp-body > h4 { margin: 22px 0 6px; font-size: 1.05rem; color: var(--ink); }
+.bp-body p { margin: 0 0 16px; }
+.bp-body a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.bp-body strong, .bp-body b { color: var(--ink); }
+.bp-body ul, .bp-body ol { margin: 0 0 18px; padding-left: 24px; }
+.bp-body li { margin: 6px 0; }
+.bp-body li::marker { color: var(--brand); font-weight: 700; }
+.bp-body blockquote { margin: 22px 0; padding: 16px 20px; border-left: 4px solid var(--accent); background: var(--tint); border-radius: 0 14px 14px 0; color: var(--ink); font-size: 1.08rem; }
+.bp-body blockquote p:last-child { margin: 0; }
+.bp-body figure { margin: 26px 0; }
+.bp-body img { display: block; max-width: 100%; height: auto; border-radius: 16px; }
+.bp-body figcaption { margin-top: 8px; font-size: .88rem; color: var(--muted); text-align: center; }
+.bp-body iframe { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; border-radius: 16px; margin: 22px 0; }
+.bp-body table { width: 100%; margin: 22px 0; border-collapse: collapse; font-size: .95rem; display: block; overflow-x: auto; }
+.bp-body th, .bp-body td { padding: 10px 14px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.bp-body th { background: var(--tint); color: var(--ink); }
+.bp-body hr { margin: 32px 0; border: 0; border-top: 1px solid var(--line); }
+.bp-body pre { overflow-x: auto; padding: 14px 16px; border-radius: 12px; background: var(--navy); color: #E6ECF7; font-size: .88rem; }
+.bp-faq { margin-top: 8px; }
+.bp-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; }
+.bp-tags span { padding: 4px 12px; border-radius: 999px; background: var(--tint); color: var(--text); font-size: .85rem; }
+.bp-share { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 24px 0 32px; padding-top: 20px; border-top: 1px solid var(--line); font-weight: 600; color: var(--ink); }
+.bp-share a { padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: .88rem; text-decoration: none; }
+.bp-share a:hover { border-color: var(--brand); color: var(--brand); }
+.post__date { color: var(--muted); font-size: .82rem; }

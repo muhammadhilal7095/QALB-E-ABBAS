@@ -113,7 +113,8 @@ writeFileSync(join(SITE, "sitemap.xml"),
 writeFileSync(LASTMOD_FILE, JSON.stringify(lastmod, null, 1) + "\n");
 writeFileSync(join(SITE, "robots.txt"),
   // Pages like /cart are kept out with "noindex" (not Disallow), so Google can still read that tag.
-  `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+  // /admin is the private dashboard; /sitemap-blog.xml lists posts written in Admin → Blog.
+  `User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ${SITE_URL}/sitemap.xml\nSitemap: ${SITE_URL}/sitemap-blog.xml\n`);
 
 console.log(`SEO tags written to ${pages.length - missing.length} pages; sitemap.xml lists ${sitemap.length} pages and ${sitemap.reduce((n, s) => n + s.images.length, 0)} images.`);
 if (missing.length) console.warn(`No SEO entry (skipped): ${missing.join(", ")}`);

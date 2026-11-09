@@ -7,13 +7,13 @@
    contact@qalbeabbas.com and lets you choose the admin password.
    ========================================================================== */
 declare(strict_types=1);
-require __DIR__ . '/../api/_lib.php';
+require __DIR__ . '/../api/_blog.php';
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
 header('X-Frame-Options: DENY');
 header('Referrer-Policy: same-origin');
-header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'");
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self'; frame-ancestors 'none'");
 
 $https = (($_SERVER['HTTPS'] ?? '') !== '' && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
 session_name('qa_admin');
@@ -60,6 +60,8 @@ function icon(string $n): string {
         'cal' => '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
         'money' => '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/>',
         'check' => '<path d="M20 6L9 17l-5-5"/>',
+        'pen' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+        'search' => '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
         'warn' => '<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
     ][$n] ?? '';
     return '<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $p . '</svg>';
@@ -264,6 +266,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
             flash('Saved. The website updates within about a minute.'); go('tab=reviews&f=samples');
 
+        case 'blog_upload':
+            header('Content-Type: application/json');
+            $f = $_FILES['image'] ?? null;
+            if (!$f || ($f['error'] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) { echo json_encode(['ok' => false, 'error' => 'Upload failed.']); exit; }
+            if ($f['size'] > 8 * 1024 * 1024) { echo json_encode(['ok' => false, 'error' => 'The image must be 8 MB or smaller.']); exit; }
+            $url = blog_store_image($f['tmp_name']);
+            echo json_encode($url ? ['ok' => true, 'url' => $url] : ['ok' => false, 'error' => 'Please upload a JPG, PNG, WebP or GIF image.']);
+            exit;
+
+        case 'post_save':
+            $existing = $id ? qa_find('posts', $id) : null;
+            $title = qa_text($_POST['title'] ?? '', 160);
+            if (mb_strlen($title) < 5) { flash('Please write a title (at least 5 characters).', 'err'); go('tab=blog&' . ($id ? 'id=' . $id : 'new=1')); }
+            $slug = blog_slugify((string)($_POST['slug'] ?? '') ?: $title);
+            foreach (blog_posts() as $p) if ($p['slug'] === $slug && $p['id'] !== $id) $slug .= '-' . substr(qa_id(), 0, 4);
+            if (blog_reserved_slug($slug)) $slug .= '-post';
+            $status = (string)($_POST['status'] ?? ($existing['status'] ?? 'draft'));
+            if (!in_array($status, ['draft', 'published'], true)) $status = 'draft';
+            $pubInput = trim((string)($_POST['publishedAt'] ?? ''));
+            $pubAt = $existing['publishedAt'] ?? null;
+            if ($pubInput !== '') { try { $pubAt = (new DateTimeImmutable($pubInput, new DateTimeZone('Europe/London')))->format('c'); } catch (Throwable $e) { /* keep */ } }
+            if ($status === 'published' && !$pubAt) $pubAt = qa_now();
+            $faqs = [];
+            foreach ((array)($_POST['faq_q'] ?? []) as $i => $q) {
+                $q = qa_text($q, 200); $a = qa_text($_POST['faq_a'][$i] ?? '', 1000);
+                if ($q !== '' && $a !== '') $faqs[] = ['q' => $q, 'a' => $a];
+            }
+            $cover = (string)($_POST['cover'] ?? '');
+            if ($cover !== '' && !preg_match('#^(/blog-img/[\w.-]+|/assets/[\w./-]+)$#', $cover)) $cover = '';
+            $ctaLink = qa_text($_POST['ctaLink'] ?? '', 200);
+            if ($ctaLink !== '' && !preg_match('#^(/|https://)#', $ctaLink)) $ctaLink = '';
+            $canonical = qa_text($_POST['canonical'] ?? '', 300);
+            if ($canonical !== '' && !preg_match('#^https://#', $canonical)) $canonical = '';
+            $post = array_merge($existing ?? ['id' => qa_id(), 'createdAt' => qa_now()], [
+                'title' => $title, 'slug' => $slug, 'status' => $status, 'publishedAt' => $pubAt, 'updatedAt' => qa_now(),
+                'excerpt' => qa_text($_POST['excerpt'] ?? '', 400),
+                'content' => blog_clean_html((string)($_POST['content'] ?? ''), $slug),
+                'category' => in_array($_POST['category'] ?? '', BLOG_CATEGORIES, true) ? $_POST['category'] : 'News',
+                'tags' => array_values(array_filter(array_map(fn($t) => qa_text($t, 40), explode(',', (string)($_POST['tags'] ?? ''))))),
+                'cover' => $cover, 'coverAlt' => qa_text($_POST['coverAlt'] ?? '', 160),
+                'author' => qa_text($_POST['author'] ?? '', 80), 'authorIsPerson' => !empty($_POST['authorIsPerson']),
+                'featured' => !empty($_POST['featured']),
+                'seoTitle' => qa_text($_POST['seoTitle'] ?? '', 80), 'seoDescription' => qa_text($_POST['seoDescription'] ?? '', 200),
+                'keyword' => qa_text($_POST['keyword'] ?? '', 80), 'canonical' => $canonical, 'noindex' => !empty($_POST['noindex']),
+                'faqs' => $faqs,
+                'ctaTitle' => qa_text($_POST['ctaTitle'] ?? '', 120), 'ctaText' => qa_text($_POST['ctaText'] ?? '', 300),
+                'ctaButton' => qa_text($_POST['ctaButton'] ?? '', 60), 'ctaLink' => $ctaLink,
+            ]);
+            if ($post['featured']) qa_update('posts', fn(array $l) => array_map(fn($p) => array_merge($p, ['featured' => false]), $l));
+            if ($existing) qa_patch('posts', $post['id'], fn() => $post); else qa_insert('posts', $post);
+            $live = blog_is_live($post);
+            flash($status === 'published' ? ($live ? 'Published — the post is live at /blog/' . $slug : 'Scheduled — it goes live on ' . when($pubAt) . '.') : 'Draft saved.');
+            go('tab=blog&id=' . $post['id']);
+
+        case 'post_delete':
+            qa_update('posts', fn(array $l) => array_values(array_filter($l, fn($p) => $p['id'] !== $id)));
+            flash('Post deleted.'); go('tab=blog');
+
+        case 'seo_verify_add':
+            $name = basename(trim((string)($_POST['file'] ?? '')));
+            $body = trim((string)($_POST['body'] ?? ''));
+            if (!preg_match('/^(google[0-9a-f]+\.html|yandex_[0-9a-f]+\.html|BingSiteAuth\.xml)$/', $name) || $body === '' || strlen($body) > 5000) {
+                flash('Use the exact file name from Google (google….html) or Bing (BingSiteAuth.xml) and paste its contents.', 'err'); go('tab=seo');
+            }
+            qa_update('settings', function (array $s) use ($name, $body) { $s['verifyFiles'][$name] = $body; return $s; });
+            flash("Added — it is now online at /$name. Go back to Google/Bing and press Verify."); go('tab=seo');
+
+        case 'seo_verify_delete':
+            $name = (string)($_POST['file'] ?? '');
+            qa_update('settings', function (array $s) use ($name) { unset($s['verifyFiles'][$name]); return $s; });
+            flash('Verification file removed.'); go('tab=seo');
+
         case 'review_delete':
             $r = qa_find('reviews', $id);
             if ($r && $r['photo']) @unlink(qa_data_dir() . '/photos/' . basename($r['photo']));
@@ -334,7 +408,7 @@ $flash = $_SESSION['flash'] ?? null; unset($_SESSION['flash']);
 function page_start(string $title, bool $app = true): void {
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
        . '<meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
-       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=1"></head><body class="' . ($app ? 'app' : 'auth') . '">';
+       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=2"></head><body class="' . ($app ? 'app' : 'auth') . '">';
 }
 function flash_html(?array $f): string { return $f ? '<div class="flash flash--' . h($f[1]) . '" role="status">' . icon($f[1] === 'err' ? 'warn' : 'check') . '<span>' . h($f[0]) . '</span></div>' : ''; }
 
@@ -376,7 +450,7 @@ $count = [
     'enquiries' => count(array_filter($enquiries, fn($e) => $e['status'] === 'new')),
     'reviews' => count(array_filter($reviews, fn($r) => $r['status'] === 'pending')),
 ];
-$nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'settings' => ['Settings', 'cog']];
+$nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'blog' => ['Blog', 'pen'], 'seo' => ['SEO', 'search'], 'settings' => ['Settings', 'cog']];
 if (!isset($nav[$tab])) $tab = 'dashboard';
 
 page_start($nav[$tab][0]);
@@ -708,6 +782,145 @@ if ($tab === 'prices') {
     foreach ($cat as $sku => $it) if (!empty($it['stateCode'])) echo '<div class="prices__row"><span><b>' . h(str_replace('US LLC state filing fee — ', '', $it['name'])) . '</b></span>' . $field("p[$sku]", $it['price'], $it['defaultPrice'], 'USD') . '</div>';
     echo '</div></details>';
     echo '<div class="savebar"><span class="muted">Prices are charged in the currency shown. Google may show old prices until the next site update.</span><button class="btn btn--primary">Save prices</button></div></form>';
+}
+
+// ===========================================================================
+// BLOG
+// ===========================================================================
+function preview_link(array $p): string {
+    $key = (string)(admin_data()['previewKey'] ?? '');
+    if ($key === '') { $key = bin2hex(random_bytes(16)); qa_update('admin', function (array $a) use ($key) { $a['previewKey'] ??= $key; return $a; }); $key = (string)admin_data()['previewKey']; }
+    return '/blog/' . $p['slug'] . '?preview=' . hash_hmac('sha256', $p['id'], $key);
+}
+function post_badge(array $p): string {
+    if (($p['status'] ?? '') !== 'published') return '<span class="badge badge--grey">Draft</span>';
+    return blog_is_live($p) ? '<span class="badge badge--green">Published</span>' : '<span class="badge badge--blue">Scheduled</span>';
+}
+function score_badge(int $s): string { return '<span class="badge badge--' . ($s >= 80 ? 'green' : ($s >= 50 ? 'amber' : 'red')) . '">SEO ' . $s . '</span>'; }
+
+if ($tab === 'blog' && ($id || isset($_GET['new']))) {
+    $p = $id ? qa_find('posts', $id) : null;
+    if ($id && !$p) { echo empty_state('Post not found.'); }
+    else {
+        $p ??= ['id' => '', 'title' => '', 'slug' => '', 'status' => 'draft', 'publishedAt' => null, 'excerpt' => '', 'content' => '', 'category' => 'Amazon', 'tags' => [],
+            'cover' => '', 'coverAlt' => '', 'author' => 'Qalb-E-Abbas Team', 'authorIsPerson' => false, 'featured' => false, 'seoTitle' => '', 'seoDescription' => '',
+            'keyword' => '', 'canonical' => '', 'noindex' => false, 'faqs' => [], 'ctaTitle' => '', 'ctaText' => '', 'ctaButton' => '', 'ctaLink' => ''];
+        $pubLocal = $p['publishedAt'] ? (new DateTimeImmutable($p['publishedAt']))->setTimezone(new DateTimeZone('Europe/London'))->format('Y-m-d\TH:i') : '';
+        echo '<a class="back" href="/admin/?tab=blog">' . icon('back') . 'All posts</a>';
+        echo '<header class="head"><div><h1>' . ($p['id'] ? 'Edit post' : 'New post') . '</h1>' . ($p['id'] ? '<p class="muted">' . post_badge($p) . ' Last saved ' . ago($p['updatedAt'] ?? null) . '</p>' : '<p class="muted">Write, add images, then check the SEO panel on the right.</p>') . '</div>'
+           . ($p['id'] ? '<div class="head__badges">' . (blog_is_live($p) ? '<a class="btn btn--ghost btn--sm" href="/blog/' . h($p['slug']) . '" target="_blank" rel="noopener">' . icon('ext') . 'View live</a>' : '<a class="btn btn--ghost btn--sm" href="' . h(preview_link($p)) . '" target="_blank" rel="noopener">' . icon('ext') . 'Preview</a>') . '</div>' : '') . '</header>';
+        echo '<form method="post" id="post-form" class="editor">' . csrf_field() . '<input type="hidden" name="do" value="post_save"><input type="hidden" name="id" value="' . h($p['id']) . '">';
+        // Main column
+        echo '<div class="stack">';
+        echo '<section class="card stack"><label>Title *<input name="title" value="' . h($p['title']) . '" maxlength="160" required class="input--lg" placeholder="e.g. How to Start Selling on Amazon UK in 2026"></label>'
+           . '<label>Short summary <small>(shown under the title and on the blog page — 1–2 sentences)</small><textarea name="excerpt" rows="2" maxlength="400">' . h($p['excerpt']) . '</textarea></label></section>';
+        echo '<section class="card card--flush"><div class="ed-bar" id="ed-bar">'
+           . '<button data-cmd="h2" title="Heading">H2</button><button data-cmd="h3" title="Sub-heading">H3</button><button data-cmd="p" title="Normal text">¶</button><span></span>'
+           . '<button data-cmd="bold" title="Bold"><b>B</b></button><button data-cmd="italic" title="Italic"><i>I</i></button><button data-cmd="underline" title="Underline"><u>U</u></button><span></span>'
+           . '<button data-cmd="insertUnorderedList" title="Bullet list">• List</button><button data-cmd="insertOrderedList" title="Numbered list">1. List</button><button data-cmd="blockquote" title="Quote">“ ”</button><span></span>'
+           . '<button data-cmd="link" title="Add link">Link</button><button data-cmd="unlink" title="Remove link">Unlink</button><button data-cmd="image" title="Insert image">Image</button><button data-cmd="video" title="YouTube video">Video</button><button data-cmd="table" title="Table">Table</button><span></span>'
+           . '<button data-cmd="removeFormat" title="Clear formatting">Clear</button><button data-cmd="undo" title="Undo">↶</button><button data-cmd="redo" title="Redo">↷</button><button data-cmd="source" title="Edit HTML">&lt;/&gt;</button>'
+           . '<em id="ed-status"></em></div>'
+           . '<div id="ed" class="ed" contenteditable="true">' . ($p['content'] ?: '<p><br></p>') . '</div><textarea id="ed-src" class="ed-src" hidden></textarea><textarea name="content" hidden></textarea></section>';
+        echo '<section class="card stack"><h2>FAQs <small class="muted">(optional — can appear as rich results on Google)</small></h2><div id="faqs" class="stack">';
+        foreach ($p['faqs'] as $f) echo '<div class="faq-row"><input name="faq_q[]" value="' . h($f['q']) . '" maxlength="200" placeholder="Question"><textarea name="faq_a[]" rows="2" maxlength="1000" placeholder="Answer">' . h($f['a']) . '</textarea><button type="button" class="linkbtn linkbtn--danger" data-faq-del>Remove</button></div>';
+        echo '</div><button class="btn btn--ghost btn--sm" id="faq-add" type="button">+ Add a question</button></section>';
+        echo '<details class="card"><summary><h2>Call-to-action box</h2><small>shown at the end of the post</small></summary><div class="stack" style="margin-top:14px">'
+           . '<div class="row2"><label>Heading<input name="ctaTitle" value="' . h($p['ctaTitle']) . '" placeholder="Need expert help with this?"></label><label>Button text<input name="ctaButton" value="' . h($p['ctaButton']) . '" placeholder="Book Consultation — $50"></label></div>'
+           . '<div class="row2"><label>Text<input name="ctaText" value="' . h($p['ctaText']) . '" placeholder="Book a one-to-one consultation with our team…"></label><label>Button link<input name="ctaLink" value="' . h($p['ctaLink']) . '" placeholder="/book-consultation?topic=amazon"></label></div></div></details>';
+        echo '</div>';
+        // Side column
+        echo '<aside class="stack editor__side">';
+        echo '<section class="card stack"><h2>Publish</h2>'
+           . '<label>Publish date &amp; time <small>(UK time — a future date schedules the post)</small><input type="datetime-local" name="publishedAt" value="' . h($pubLocal) . '"></label>'
+           . '<label class="check"><input type="checkbox" name="featured" value="1"' . ($p['featured'] ? ' checked' : '') . '> Feature at the top of the blog page</label>'
+           . '<div class="row2 row2--tight"><button class="btn btn--ghost" name="status" value="draft">Save draft</button><button class="btn btn--primary" name="status" value="published">' . icon('check') . ($p['status'] === 'published' ? 'Update' : 'Publish') . '</button></div>'
+           . '<small class="muted">Tip: Ctrl/Cmd + S saves.</small></section>';
+        echo '<section class="card stack"><h2>Cover image</h2><img id="cover-img" class="cover-prev" src="' . h($p['cover']) . '" alt=""' . ($p['cover'] ? '' : ' hidden') . '><input type="hidden" name="cover" value="' . h($p['cover']) . '">'
+           . '<div class="row2 row2--tight"><button class="btn btn--ghost btn--sm" id="cover-btn" type="button">Upload image</button><button class="btn btn--ghost btn--sm" id="cover-remove" type="button"' . ($p['cover'] ? '' : ' hidden') . '>Remove</button></div>'
+           . '<label>Alt text <small>(describe the image)</small><input name="coverAlt" value="' . h($p['coverAlt']) . '" maxlength="160"></label><small class="muted">Best size: 1200 × 675 px (16:9). Large photos are resized and converted to WebP automatically.</small></section>';
+        echo '<section class="card stack"><h2>Category &amp; author</h2><label>Category<select name="category">';
+        foreach (BLOG_CATEGORIES as $c) echo '<option' . ($c === $p['category'] ? ' selected' : '') . '>' . h($c) . '</option>';
+        echo '</select></label><label>Tags <small>(comma separated)</small><input name="tags" value="' . h(implode(', ', $p['tags'])) . '" placeholder="amazon fba, uk vat"></label>'
+           . '<label>Author<input name="author" value="' . h($p['author']) . '" maxlength="80"></label><label class="check"><input type="checkbox" name="authorIsPerson" value="1"' . ($p['authorIsPerson'] ? ' checked' : '') . '> The author is a person (not the company)</label></section>';
+        echo '<section class="card stack"><h2>SEO</h2>'
+           . '<div class="gprev"><span id="g-url"></span><b id="g-title"></b><p id="g-desc"></p></div>'
+           . '<label>Focus keyword <small>(what people type into Google)</small><input name="keyword" value="' . h($p['keyword']) . '" maxlength="80" placeholder="e.g. amazon fba uk"></label>'
+           . '<label>SEO title <span class="count"></span><input name="seoTitle" value="' . h($p['seoTitle']) . '" maxlength="80"></label>'
+           . '<label>Meta description <span class="count"></span><textarea name="seoDescription" rows="3" maxlength="200">' . h($p['seoDescription']) . '</textarea></label>'
+           . '<label>URL <small>qalbeabbas.com/blog/…</small><input name="slug" value="' . h($p['slug']) . '" maxlength="80" pattern="[a-z0-9-]*"></label>'
+           . '<div id="seo-live" class="seo-live"></div>'
+           . '<details><summary><b>Advanced</b></summary><div class="stack" style="margin-top:10px"><label>Canonical URL <small>(only if this post was first published elsewhere)</small><input name="canonical" value="' . h($p['canonical']) . '" placeholder="https://…"></label>'
+           . '<label class="check"><input type="checkbox" name="noindex" value="1"' . ($p['noindex'] ? ' checked' : '') . '> Hide from Google (noindex)</label></div></details></section>';
+        if ($p['id']) {
+            $chk = blog_seo_checks($p);
+            echo '<section class="card stack"><h2>Full SEO check <small class="muted">(after last save)</small></h2>' . score_badge($chk['score']) . '<ul class="checks">';
+            foreach ($chk['checks'] as $c) echo '<li class="' . ($c['ok'] ? 'is-ok' : 'is-no') . '">' . h($c['text']) . '</li>';
+            echo '</ul></section>';
+        }
+        echo '</aside></form>';
+        if ($p['id']) echo '<form method="post" class="danger-row" onsubmit="return confirm(\'Delete this post permanently?\')">' . csrf_field() . '<input type="hidden" name="do" value="post_delete"><input type="hidden" name="id" value="' . h($p['id']) . '"><button class="linkbtn linkbtn--danger">Delete post</button></form>';
+        echo '<script src="/admin/editor.js?v=1" defer></script>';
+    }
+} elseif ($tab === 'blog') {
+    $posts = blog_posts();
+    echo '<header class="head"><div><h1>Blog</h1><p class="muted">Write articles that bring visitors from Google. Published posts appear on <a href="/blog" target="_blank" rel="noopener">/blog</a> and in your sitemap automatically.</p></div><a class="btn btn--primary" href="/admin/?tab=blog&new=1">+ New post</a></header>';
+    echo toolbar('blog', ['' => 'All', 'published' => 'Published', 'draft' => 'Drafts'], $filter, $q, 'Search posts…');
+    $list = array_filter($posts, fn($p) => ($filter === '' || ($filter === 'published' ? $p['status'] === 'published' : $p['status'] !== 'published')) && matches($p, $q, ['title', 'excerpt', 'keyword', 'category']));
+    if (!$list) echo empty_state($posts ? 'Nothing matches.' : 'No posts yet. Click “New post” to write your first article.');
+    else {
+        echo '<div class="card card--flush"><div class="table"><table><thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>SEO</th></tr></thead><tbody>';
+        foreach ($list as $p) {
+            $s = blog_seo_checks($p)['score'];
+            echo '<tr onclick="location=\'/admin/?tab=blog&id=' . h($p['id']) . '\'"><td><a href="/admin/?tab=blog&id=' . h($p['id']) . '">' . h($p['title']) . '</a><small>/blog/' . h($p['slug']) . ($p['featured'] ? ' · ★ featured' : '') . '</small></td><td>' . h($p['category']) . '</td><td>' . post_badge($p) . '</td><td>' . ($p['publishedAt'] ? when($p['publishedAt']) : '—') . '</td><td>' . score_badge($s) . '</td></tr>';
+        }
+        echo '</tbody></table></div></div>';
+    }
+    echo '<p class="muted">The two older articles (Amazon FBA vs FBM, US LLC vs UK LTD) are part of the website code and stay as they are.</p>';
+}
+
+// ===========================================================================
+// SEO
+// ===========================================================================
+if ($tab === 'seo') {
+    $posts = array_filter(blog_posts(), 'blog_is_live');
+    echo '<header class="head"><div><h1>SEO</h1><p class="muted">Google &amp; Bing setup, sitemaps and the SEO health of your blog.</p></div></header>';
+    echo '<div class="grid2">';
+    echo '<section class="card stack"><h2>1. Connect Google Search Console</h2><ol class="steps"><li>Open <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a> → Add property → <b>URL prefix</b> → <code>' . h(QA_SITE) . '</code>.</li>'
+       . '<li>Choose <b>HTML file</b> verification and download the file (e.g. <code>google1a2b3c.html</code>).</li><li>Open the file, copy its text, and add it below. Then press <b>Verify</b> in Google.</li>'
+       . '<li>In Search Console → <b>Sitemaps</b>, submit <code>sitemap.xml</code> and <code>sitemap-blog.xml</code>.</li></ol>'
+       . '<p class="muted">Bing: <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener">Bing Webmaster Tools</a> can import everything from Google Search Console in one click.</p></section>';
+    $files = (array)($settings['verifyFiles'] ?? []);
+    echo '<section class="card stack"><h2>2. Verification files</h2>';
+    if ($files) {
+        echo '<ul class="list">';
+        foreach ($files as $name => $body) echo '<li style="display:flex;align-items:center;gap:10px;padding:8px 0"><span class="grow"><a href="/' . h($name) . '" target="_blank" rel="noopener">/' . h($name) . '</a></span><form method="post">' . csrf_field() . '<input type="hidden" name="do" value="seo_verify_delete"><input type="hidden" name="file" value="' . h($name) . '"><button class="linkbtn linkbtn--danger">Remove</button></form></li>';
+        echo '</ul>';
+    }
+    echo '<form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="do" value="seo_verify_add"><label>File name<input name="file" placeholder="google1a2b3c4d5e6f.html" required></label><label>File contents<textarea name="body" rows="3" placeholder="google-site-verification: google1a2b3c4d5e6f.html" required></textarea></label><button class="btn btn--primary">Add verification file</button></form></section>';
+    echo '</div>';
+    echo '<section class="card"><div class="card__head"><h2>Sitemaps &amp; tools</h2></div><div class="tools">'
+       . '<a href="/sitemap.xml" target="_blank" rel="noopener"><b>sitemap.xml</b><small>All website pages</small></a>'
+       . '<a href="/sitemap-blog.xml" target="_blank" rel="noopener"><b>sitemap-blog.xml</b><small>' . count($posts) . ' published post' . (count($posts) === 1 ? '' : 's') . '</small></a>'
+       . '<a href="/robots.txt" target="_blank" rel="noopener"><b>robots.txt</b><small>Tells search engines what to crawl</small></a>'
+       . '<a href="https://pagespeed.web.dev/analysis?url=' . rawurlencode(QA_SITE . '/') . '" target="_blank" rel="noopener"><b>PageSpeed Insights</b><small>Speed &amp; Core Web Vitals</small></a>'
+       . '<a href="https://search.google.com/test/rich-results?url=' . rawurlencode(QA_SITE . '/') . '" target="_blank" rel="noopener"><b>Rich Results Test</b><small>Check structured data</small></a>'
+       . '<a href="https://search.google.com/search-console" target="_blank" rel="noopener"><b>Search Console</b><small>Clicks, rankings &amp; errors</small></a>'
+       . '</div></section>';
+    echo '<section class="card"><div class="card__head"><h2>Blog SEO health</h2><a href="/admin/?tab=blog&new=1">+ New post</a></div>';
+    $all = blog_posts();
+    if (!$all) echo empty_state('No blog posts yet.');
+    else {
+        echo '<div class="table"><table><thead><tr><th>Post</th><th>Score</th><th>To improve</th></tr></thead><tbody>';
+        foreach ($all as $p) {
+            $chk = blog_seo_checks($p);
+            $todo = array_slice(array_values(array_filter($chk['checks'], fn($c) => !$c['ok'])), 0, 3);
+            echo '<tr onclick="location=\'/admin/?tab=blog&id=' . h($p['id']) . '\'"><td><a href="/admin/?tab=blog&id=' . h($p['id']) . '">' . h($p['title']) . '</a><small>' . post_badge($p) . '</small></td><td>' . score_badge($chk['score']) . '</td><td><small>' . ($todo ? implode('<br>', array_map(fn($c) => '• ' . h($c['text']), $todo)) : 'Looks great ✓') . '</small></td></tr>';
+        }
+        echo '</tbody></table></div>';
+    }
+    echo '</section>';
+    echo '<section class="card"><h2>Writing tips that help ranking</h2><ul class="bul" style="margin-top:10px"><li>One clear topic per post, answering a real question your clients ask.</li><li>Use the focus keyword naturally in the title, first paragraph, one subheading and the URL — never repeat it unnaturally.</li><li>Add your own experience: real examples, numbers, screenshots. Google rewards first-hand expertise.</li><li>Link to a related service page and to official sources (Amazon, GOV.UK, IRS).</li><li>Update older posts when rules or fees change — the “Updated” date shows on the post.</li></ul></section>';
 }
 
 // ===========================================================================

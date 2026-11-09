@@ -53,7 +53,7 @@ for (const f of readdirSync(SITE).filter((n) => n.endsWith(".html"))) {
   }
   html = html.replace(/assets\/img\/platforms\/([\w-]+)\.svg(?:\?v=\w+)?/g, (m, n) => logoV[n] ? `assets/img/platforms/${n}.svg?v=${logoV[n]}` : m);
   // Google Fonts: load the stylesheet without blocking the first paint (font-display: swap is already set).
-  html = html.replace(/<link rel="stylesheet" href="(https:\/\/fonts\.googleapis\.com\/css2\?[^"]+)">/,
+  html = html.replace(/(?<!<noscript>)<link rel="stylesheet" href="(https:\/\/fonts\.googleapis\.com\/css2\?[^"]+)">/,
     (m, url) => `<link rel="preload" as="style" href="${url}" onload="this.onload=null;this.rel='stylesheet'">\n  <noscript><link rel="stylesheet" href="${url}"></noscript>`);
   if (html !== orig) { writeFileSync(path, html); pages++; }
 }

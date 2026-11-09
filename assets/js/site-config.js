@@ -89,7 +89,7 @@ window.SITE_CONFIG = {
   nav: [
     { label: "Home", link: "home", match: ["/", ""] },
     { label: "Services", link: "services", match: ["/services"], mega: true },
-    { label: "Qalb-E-Abbas University", link: "university", match: ["/university"], highlight: { icon: "graduation", tag: "Courses", promo: "Learn Amazon & e-commerce", sub: "Amazon & e-commerce courses with live mentorship" } },
+    { label: "Qalb-E-Abbas University", link: "university", match: ["/university"], highlight: { icon: "graduation", promo: "Learn Amazon & e-commerce", sub: "Amazon & e-commerce courses with live mentorship" } },
     { label: "Team", link: "team", match: ["/team"] },
     { label: "About Us", link: "about", match: ["/about"] },
     { label: "Contact Us", link: "contact", match: ["/contact"] },

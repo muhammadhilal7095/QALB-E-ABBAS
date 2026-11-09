@@ -21,6 +21,7 @@ session_set_cookie_params(['lifetime' => 0, 'path' => '/admin', 'secure' => $htt
 session_start();
 
 const SESSION_HOURS = 12;
+const ADMIN_BUILD = 'review-photo-2';
 // Temporary first password (only its one-way hash is stored here). It stops working as
 // soon as a new password is saved in Settings or through an emailed reset link.
 const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$8baa121837504633e7698e761ec51017$565126e92ec63768d4b5290d09f102e64ca9194134302321d2bcf5ca6a13e29e';
@@ -419,7 +420,7 @@ $flash = $_SESSION['flash'] ?? null; unset($_SESSION['flash']);
 
 function page_start(string $title, bool $app = true): void {
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
-       . '<meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
+       . '<meta name="robots" content="noindex, nofollow"><meta name="qa-build" content="' . ADMIN_BUILD . '"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
        . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=2"></head><body class="' . ($app ? 'app' : 'auth') . '">';
 }
 function flash_html(?array $f): string { return $f ? '<div class="flash flash--' . h($f[1]) . '" role="status">' . icon($f[1] === 'err' ? 'warn' : 'check') . '<span>' . h($f[0]) . '</span></div>' : ''; }

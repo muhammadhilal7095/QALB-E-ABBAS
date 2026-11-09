@@ -156,12 +156,13 @@ window.SITE_CONFIG = {
       ["Web & Software Development", "/services#development"],
       ["Company Formation", "/services#formation"],
       ["Taxation Services", "/taxation"],
-      ["Education Consultancy", "/services#education"]
+      ["Education Consultancy", "/services#education"],
+      ["Real Estate (Pakistan)", "/real-estate"]
     ],
     // "Company" column
     quickLinks: [
       ["About Us", "about"], ["Our Team", "team"], ["Qalb-E-Abbas University", "university"],
-      ["Blog", "blog"], ["Contact Us", "contact"], ["Support", "support"], ["Finance", "finance"]
+      ["Blog", "blog"], ["Contact Us", "contact"], ["Leave a Review", "/leave-review"], ["Support", "support"], ["Finance", "finance"]
     ],
     legal: [["Privacy Policy", "privacy"], ["Terms and Conditions", "terms"], ["Disclaimer", "disclaimer"]]
   }

@@ -4041,3 +4041,51 @@ main > :is(.section, .svc-sec, .svc-cat):last-child { padding-bottom: var(--sect
 .uj__icon .icon { width: 24px; height: 24px; }
 .uj__steps h3 { margin: 16px 0 6px; font-size: 1.1rem; }
 .uj__steps p { margin: 0; font-size: .93rem; line-height: 1.6; color: var(--text); }
+
+/* ==========================================================================
+   LEAVE A REVIEW page
+   ========================================================================== */
+.rv-page__grid { display: grid; gap: clamp(28px, 4vw, 56px); align-items: start; }
+@media (min-width: 960px) { .rv-page__grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); } .rv-page__intro { position: sticky; top: calc(var(--header-h) + 24px); } }
+.rv-page__title { margin: 6px 0 14px; font-size: clamp(1.8rem, 1.3rem + 1.6vw, 2.6rem); line-height: 1.15; }
+.rv-page__lead { margin: 0; color: var(--text); line-height: 1.7; max-width: 52ch; }
+.rv-page__points { display: grid; gap: 12px; margin: 24px 0 0; padding: 0; list-style: none; }
+.rv-page__points li { display: flex; gap: 12px; padding: 14px 16px; border-radius: 16px; background: var(--tint); font-size: .93rem; line-height: 1.55; color: var(--text); }
+.rv-page__points b { color: var(--ink); }
+.rv-page__points .icon { flex: none; width: 20px; height: 20px; margin-top: 2px; color: var(--brand); }
+.rv-form { display: grid; gap: 16px; padding: clamp(20px, 3vw, 32px); border-radius: 24px; background: #fff; border: 1px solid var(--line); box-shadow: 0 26px 56px -38px rgba(11, 27, 54, .55); }
+.rv-form__row { display: grid; gap: 16px; }
+@media (min-width: 600px) { .rv-form__row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.rv-form .field { display: flex; flex-direction: column; gap: 6px; margin: 0; }
+.rv-form label, .rv-form legend, .rv-photo__label { font-weight: 600; font-size: .9rem; color: var(--ink); }
+.rv-form small { font-weight: 500; color: var(--muted); }
+.rv-form input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), .rv-form select, .rv-form textarea {
+  width: 100%; min-height: 48px; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; font: 500 .95rem var(--font); color: var(--ink);
+}
+.rv-form textarea { min-height: 130px; resize: vertical; line-height: 1.6; }
+.rv-form input:focus-visible, .rv-form select:focus-visible, .rv-form textarea:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 30%, transparent); border-color: var(--brand); }
+.rv-count { align-self: flex-end; font-size: .78rem; }
+.rv-stars { border: 0; padding: 0; }
+.rv-stars__set { display: inline-flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; }
+.rv-stars__set input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.rv-stars__set label { cursor: pointer; padding: 2px; }
+.rv-stars__set .icon { width: 34px; height: 34px; color: #D7DCE6; transition: color .15s, transform .15s; }
+.rv-stars__set label:hover .icon, .rv-stars__set label:hover ~ label .icon, .rv-stars__set input:checked ~ label .icon { color: #F5A623; }
+.rv-stars__set input:focus-visible + label { outline: 3px solid color-mix(in srgb, var(--brand) 35%, transparent); border-radius: 8px; }
+.rv-photo__drop { display: flex; align-items: center; gap: 14px; padding: 14px; border: 1.5px dashed color-mix(in srgb, var(--brand) 40%, var(--line)); border-radius: 16px; cursor: pointer; transition: background .2s, border-color .2s; }
+.rv-photo__drop:hover { background: var(--tint); border-color: var(--brand); }
+.rv-photo__drop b { display: block; color: var(--brand); }
+.rv-photo__drop small { display: block; margin-top: 2px; }
+.rv-photo__preview { display: grid; place-items: center; width: 64px; height: 64px; flex: none; overflow: hidden; border-radius: 50%; background: var(--tint); color: var(--brand); }
+.rv-photo__preview .icon { width: 28px; height: 28px; }
+.rv-photo__preview img { width: 100%; height: 100%; object-fit: cover; }
+#rv-photo:focus-visible + * , .rv-photo:focus-within .rv-photo__drop { outline: 3px solid color-mix(in srgb, var(--brand) 30%, transparent); }
+.rv-hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.rv-consent { display: flex; gap: 10px; align-items: flex-start; font-weight: 500 !important; font-size: .88rem !important; line-height: 1.55; color: var(--text) !important; }
+.rv-consent input { width: 18px; height: 18px; margin-top: 2px; flex: none; accent-color: var(--brand); }
+.rv-submit { min-height: 52px; gap: 8px; font-size: 1rem; }
+.rv-submit .icon { width: 18px; height: 18px; }
+.rv-submit.is-loading { opacity: .7; pointer-events: none; }
+.rv-status { margin: 0; padding: 12px 14px; border-radius: 12px; font-size: .92rem; line-height: 1.5; }
+.rv-status--ok { background: color-mix(in srgb, #10B981 12%, #fff); color: #065F46; }
+.rv-status--err { background: color-mix(in srgb, #EF4444 10%, #fff); color: #991B1B; }

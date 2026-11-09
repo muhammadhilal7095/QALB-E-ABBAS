@@ -230,5 +230,10 @@
     "title": "Page Not Found (404) | Qalb-E-Abbas",
     "description": "Sorry, the page you were looking for can't be found. It may have moved — try our homepage, services, US LLC and Amazon FBA pages or contact our team for help.",
     "noindex": true
+  },
+  "leave-review": {
+    "title": "Leave a Review — Share Your Experience | Qalb-E-Abbas",
+    "description": "Worked with Qalb-E-Abbas or studied at Qalb-E-Abbas University? Share your experience: your name, photo and a few words help others choose with confidence.",
+    "noindex": true
   }
 }

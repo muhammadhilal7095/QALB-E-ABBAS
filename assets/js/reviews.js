@@ -43,7 +43,9 @@
   }
 
   function render(mount) {
-    var list = DATA[mount.getAttribute("data-page-reviews")] || [];
+    // Only real, approved reviews are shown. Entries still marked `sample: true` are skipped,
+    // and a section with no real reviews hides itself until reviews are added.
+    var list = (DATA[mount.getAttribute("data-page-reviews")] || []).filter(function (r) { return r && !r.sample; });
     if (!list.length) { var sec = mount.closest("section"); if (sec) sec.hidden = true; return; }
     var cards = list.map(card);
 

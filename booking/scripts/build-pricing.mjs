@@ -240,3 +240,16 @@ console.log(`Pricing sections updated on ${changed} pages.`);
 // (api/_catalog.json is blocked from the web by .htaccess).
 writeFileSync(join(here, "..", "..", "api", "_catalog.json"), JSON.stringify(catalog));
 console.log("✓ api/_catalog.json (catalog for the PHP checkout & admin)");
+
+// Sample reviews (assets/js/reviews-data.js) → api/_samples.json, shown in Admin → Reviews.
+{
+  const vm = await import("node:vm");
+  const ctx = { window: {} };
+  vm.runInNewContext(readFileSync(join(here, "..", "..", "assets", "js", "reviews-data.js"), "utf8"), ctx);
+  const samples = {};
+  for (const [key, list] of Object.entries(ctx.window.QA_REVIEWS || {})) {
+    samples[key] = list.filter((r) => r.sample).map((r) => ({ text: r.text, service: r.service || r.role || "", rating: r.rating || 5 }));
+  }
+  writeFileSync(join(here, "..", "..", "api", "_samples.json"), JSON.stringify(samples));
+  console.log(`✓ api/_samples.json (${Object.values(samples).flat().length} sample reviews for the admin)`);
+}

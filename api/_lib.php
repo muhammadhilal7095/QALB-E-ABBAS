@@ -102,6 +102,7 @@ function qa_settings(): array {
         'stripeWebhook'  => '',
         'manualPayments' => true,
         'hideSamples'    => false,
+        'hiddenSampleKeys' => [],
     ];
 }
 

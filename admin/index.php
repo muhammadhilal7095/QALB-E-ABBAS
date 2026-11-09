@@ -231,6 +231,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $msg = ['approved' => 'Review approved — it is now live on the website.', 'rejected' => 'Review rejected.'][$_POST['status'] ?? ''] ?? 'Review saved.';
             flash($msg); go('tab=reviews' . (isset($_POST['back']) ? '' : '&id=' . $id));
 
+        case 'review_add':
+            $name = qa_text($_POST['name'] ?? '', 80);
+            $text = qa_text($_POST['text'] ?? '', 1200);
+            $page = (string)($_POST['page'] ?? 'students');
+            if (mb_strlen($name) < 2 || mb_strlen($text) < 10 || !isset(QA_REVIEW_KEYS[$page])) { flash('Please fill in the name, the page and the review text.', 'err'); go('tab=reviews&new=1'); }
+            if (empty($_POST['confirm'])) { flash('Please confirm this is a real client who agreed to publish their review.', 'err'); go('tab=reviews&new=1'); }
+            $rid = qa_id(); $photoFile = null; $mime = null;
+            if (!empty($_FILES['photo']) && ($_FILES['photo']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && is_uploaded_file($_FILES['photo']['tmp_name'])) {
+                $types = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+                $mime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['photo']['tmp_name']) ?: '';
+                if ($_FILES['photo']['size'] > 5 * 1024 * 1024 || !isset($types[$mime]) || @getimagesize($_FILES['photo']['tmp_name']) === false) { flash('The photo must be a JPG, PNG or WebP image up to 5 MB.', 'err'); go('tab=reviews&new=1'); }
+                $photoFile = "$rid.{$types[$mime]}";
+                if (!@move_uploaded_file($_FILES['photo']['tmp_name'], qa_data_dir() . "/photos/$photoFile")) { $photoFile = null; $mime = null; }
+            }
+            $country = qa_text($_POST['country'] ?? '', 60);
+            qa_insert('reviews', [
+                'id' => $rid, 'ref' => qa_ref('REV'), 'createdAt' => qa_now(), 'approvedAt' => qa_now(), 'status' => 'approved', 'addedByAdmin' => true,
+                'name' => $name, 'email' => qa_text($_POST['email'] ?? '', 120), 'country' => $country, 'flag' => qa_country_flag($country),
+                'service' => qa_text($_POST['service'] ?? '', 80), 'page' => $page, 'rating' => max(1, min(5, (int)($_POST['rating'] ?? 5))), 'text' => $text,
+                'photo' => $photoFile, 'photoMime' => $mime, 'consent' => true, 'featured' => !empty($_POST['featured']),
+            ]);
+            flash('Review added — it is now live on the website.'); go('tab=reviews');
+
+        case 'samples_toggle':
+            $key = (string)($_POST['key'] ?? '');
+            qa_update('settings', function (array $s) use ($key) {
+                $list = (array)($s['hiddenSampleKeys'] ?? []);
+                $list = in_array($key, $list, true) ? array_values(array_diff($list, [$key])) : array_merge($list, [$key]);
+                $s['hiddenSampleKeys'] = $list;
+                return $s;
+            });
+            flash('Saved. The website updates within about a minute.'); go('tab=reviews&f=samples');
+
         case 'review_delete':
             $r = qa_find('reviews', $id);
             if ($r && $r['photo']) @unlink(qa_data_dir() . '/photos/' . basename($r['photo']));
@@ -586,10 +619,42 @@ if ($tab === 'reviews' && $id) {
            . '</section></form>';
         echo '<form method="post" class="danger-row" onsubmit="return confirm(\'Delete this review and its photo permanently?\')">' . csrf_field() . '<input type="hidden" name="do" value="review_delete"><input type="hidden" name="id" value="' . h($r['id']) . '"><button class="linkbtn linkbtn--danger">Delete review</button></form>';
     }
+} elseif ($tab === 'reviews' && isset($_GET['new'])) {
+    echo '<a class="back" href="/admin/?tab=reviews">' . icon('back') . 'All reviews</a>';
+    echo '<header class="head"><div><h1>Add a real review</h1><p class="muted">For a review a client sent you by WhatsApp, email or in person. Use their own words.</p></div></header>';
+    echo '<form method="post" enctype="multipart/form-data" class="card stack narrow">' . csrf_field() . '<input type="hidden" name="do" value="review_add">'
+       . '<div class="row2"><label>Client name *<input name="name" maxlength="80" required></label><label>Country<input name="country" maxlength="60" placeholder="e.g. United Kingdom"></label></div>'
+       . '<div class="row2"><label>Service or course<input name="service" maxlength="80" placeholder="e.g. Amazon account creation"></label><label>Client email <small>(private)</small><input type="email" name="email" maxlength="120"></label></div>'
+       . '<div class="row2"><label>Show on page *<select name="page">';
+    foreach (QA_REVIEW_KEYS as $k => $label) echo '<option value="' . $k . '">' . h($label) . '</option>';
+    echo '</select></label><label>Rating<select name="rating"><option value="5">5 stars</option><option value="4">4 stars</option><option value="3">3 stars</option><option value="2">2 stars</option><option value="1">1 star</option></select></label></div>'
+       . '<label>Review (client\'s own words) *<textarea name="text" rows="6" maxlength="1200" required></textarea></label>'
+       . '<label>Client photo <small>(optional — JPG, PNG or WebP, square works best)</small><input type="file" name="photo" accept="image/jpeg,image/png,image/webp"></label>'
+       . '<label class="check"><input type="checkbox" name="featured" value="1"> Show first in its section</label>'
+       . '<label class="check"><input type="checkbox" name="confirm" value="1" required> This is a real client or student, these are their words, and they agreed that we may publish their name, photo and review.</label>'
+       . '<button class="btn btn--primary">' . icon('check') . 'Add &amp; publish</button></form>';
+} elseif ($tab === 'reviews' && $filter === 'samples') {
+    $samples = json_decode((string)@file_get_contents(__DIR__ . '/../api/_samples.json'), true) ?: [];
+    $hidden = (array)$settings['hiddenSampleKeys'];
+    $realCount = [];
+    foreach ($reviews as $r) if ($r['status'] === 'approved') $realCount[$r['page']] = ($realCount[$r['page']] ?? 0) + 1;
+    echo '<header class="head"><div><h1>Reviews</h1><p class="muted">Sample (placeholder) reviews shown on the website with a “Sample review” badge.</p></div><a class="btn btn--primary" href="/admin/?tab=reviews&new=1">+ Add a real review</a></header>';
+    echo toolbar('reviews', ['' => 'All', 'pending' => 'Waiting for approval', 'approved' => 'Live', 'rejected' => 'Rejected', 'samples' => 'Sample reviews'], $filter, '', 'Search name or text…');
+    echo '<div class="notice notice--info">' . icon('star') . '<p>Sample reviews are placeholders written by us, so they can\'t carry a real person\'s name or photo. Replace them with real reviews: <b>Add a real review</b>, or share <a href="/leave-review" target="_blank" rel="noopener">qalbeabbas.com/leave-review</a>. A page hides its samples automatically once it has 3 real reviews.</p></div>';
+    if ($settings['hideSamples']) echo '<div class="notice">' . icon('warn') . '<p>All samples are hidden (Settings → “Hide all sample reviews”).</p></div>';
+    foreach ($samples as $key => $list) {
+        if (!$list) continue;
+        $isHidden = $settings['hideSamples'] || in_array($key, $hidden, true) || ($realCount[$key] ?? 0) >= 3;
+        echo '<details class="card"><summary><h2>' . h(QA_REVIEW_KEYS[$key] ?? $key) . '</h2><small>' . count($list) . ' samples · ' . (int)($realCount[$key] ?? 0) . ' real</small>'
+           . '<span style="margin-left:auto">' . ($isHidden ? '<span class="badge badge--grey">Hidden on website</span>' : '<span class="badge badge--amber">Shown on website</span>') . '</span></summary>'
+           . '<form method="post" style="margin:14px 0">' . csrf_field() . '<input type="hidden" name="do" value="samples_toggle"><input type="hidden" name="key" value="' . h($key) . '"><button class="btn btn--ghost btn--sm">' . (in_array($key, $hidden, true) ? 'Show samples on this page' : 'Hide samples on this page') . '</button></form><ul class="list">';
+        foreach ($list as $sm) echo '<li style="padding:10px 0">' . stars((int)$sm['rating']) . ' <small class="muted">' . h($sm['service']) . '</small><br>' . h($sm['text']) . '</li>';
+        echo '</ul></details>';
+    }
 } elseif ($tab === 'reviews') {
-    echo '<header class="head"><div><h1>Reviews</h1><p class="muted">Real reviews from <a href="/leave-review" target="_blank" rel="noopener">/leave-review</a>. Approved reviews appear on the website within a minute.</p></div></header>';
+    echo '<header class="head"><div><h1>Reviews</h1><p class="muted">Real reviews from <a href="/leave-review" target="_blank" rel="noopener">/leave-review</a> or added by you. Approved reviews appear on the website within a minute.</p></div><a class="btn btn--primary" href="/admin/?tab=reviews&new=1">+ Add a real review</a></header>';
     if (!$settings['hideSamples']) echo '<div class="notice notice--info">' . icon('star') . '<p>Sample reviews are still shown on the website (with a “Sample review” badge). A section stops showing samples once it has 3 approved real reviews — or hide all samples now in <a href="/admin/?tab=settings">Settings</a>.</p></div>';
-    echo toolbar('reviews', ['' => 'All', 'pending' => 'Waiting for approval', 'approved' => 'Live', 'rejected' => 'Rejected'], $filter, $q, 'Search name or text…');
+    echo toolbar('reviews', ['' => 'All', 'pending' => 'Waiting for approval', 'approved' => 'Live', 'rejected' => 'Rejected', 'samples' => 'Sample reviews'], $filter, $q, 'Search name or text…');
     $list = array_filter($reviews, fn($r) => ($filter === '' || $r['status'] === $filter) && matches($r, $q, ['name', 'email', 'text', 'service']));
     if (!$list) echo empty_state($reviews ? 'Nothing matches.' : 'No reviews yet. Share the link qalbeabbas.com/leave-review with your clients and students.');
     else {

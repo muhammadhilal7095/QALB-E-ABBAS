@@ -16,4 +16,5 @@ foreach (qa_read('reviews') as $r) {
 foreach ($out as &$list) usort($list, fn($a, $b) => (int)$b['featured'] <=> (int)$a['featured']);
 unset($list);
 header('Cache-Control: public, max-age=60');
-qa_json(200, ['ok' => true, 'hideSamples' => (bool)qa_settings()['hideSamples'], 'reviews' => (object)$out]);
+$s = qa_settings();
+qa_json(200, ['ok' => true, 'hideSamples' => (bool)$s['hideSamples'], 'hiddenSamples' => array_values((array)$s['hiddenSampleKeys']), 'reviews' => (object)$out]);

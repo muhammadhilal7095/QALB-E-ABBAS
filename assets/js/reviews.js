@@ -88,14 +88,16 @@
     if (!LIVE) return samples;
     var real = (LIVE.reviews && LIVE.reviews[key]) || [];
     // Samples disappear once a section has 3 real reviews, or when hidden in Admin → Settings.
-    return real.concat(LIVE.hideSamples || real.length >= 3 ? [] : samples);
+    var hidden = LIVE.hideSamples || (LIVE.hiddenSamples || []).indexOf(key) >= 0 || real.length >= 3;
+    return real.concat(hidden ? [] : samples);
   }
 
   function render(mount) {
     // Sample reviews (sample: true) show a "Sample review" badge until replaced with real ones.
     var list = listFor(mount.getAttribute("data-page-reviews"));
     var section = mount.closest("section");
-    if (section && list.length) section.hidden = false;
+    if (section) section.hidden = !list.length;
+    if (!list.length) return;
     if (!list.length) { var sec = mount.closest("section"); if (sec) sec.hidden = true; return; }
     var cards = list.map(card);
 
@@ -145,7 +147,7 @@
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
         if (!j || !j.ok) return;
-        var any = j.hideSamples || Object.keys(j.reviews || {}).length;
+        var any = j.hideSamples || (j.hiddenSamples || []).length || Object.keys(j.reviews || {}).length;
         LIVE = j;
         if (any) mounts.forEach(render);
       })

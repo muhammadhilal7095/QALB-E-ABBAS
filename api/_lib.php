@@ -451,3 +451,75 @@ function qa_country_flag(string $country): string {
         'kuwait' => 'kw', 'bahrain' => 'bh', 'bangladesh' => 'bd', 'turkey' => 'tr', 'malaysia' => 'my', 'new zealand' => 'nz', 'sweden' => 'se'];
     return $map[$c] ?? '';
 }
+
+// ---------------------------------------------------------------------------
+// Photos (review photos): validated, re-encoded and resized before saving to
+// qa-data/photos/. Returns ['file' => …, 'mime' => …] or ['error' => message].
+// ---------------------------------------------------------------------------
+function qa_upload_error(int $code): string {
+    return [
+        UPLOAD_ERR_INI_SIZE => 'The photo is too large for the server. Please use a smaller photo.',
+        UPLOAD_ERR_FORM_SIZE => 'The photo is too large. Please use a smaller photo.',
+        UPLOAD_ERR_PARTIAL => 'The photo was only partly uploaded. Please try again.',
+        UPLOAD_ERR_NO_TMP_DIR => 'The server has no temporary folder for uploads. Please contact your host.',
+        UPLOAD_ERR_CANT_WRITE => 'The server could not save the photo. Please contact your host.',
+    ][$code] ?? 'The photo could not be uploaded. Please try again.';
+}
+
+function qa_store_photo(?array $f, string $prefix, int $maxSide = 800, int $maxBytes = 20 * 1024 * 1024): ?array {
+    if (!$f || ($f['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) return null;
+    if ($f['error'] !== UPLOAD_ERR_OK) return ['error' => qa_upload_error((int)$f['error'])];
+    if (!is_uploaded_file($f['tmp_name'])) return ['error' => 'The photo could not be uploaded. Please try again.'];
+    if ($f['size'] > $maxBytes) return ['error' => 'The photo must be ' . round($maxBytes / 1048576) . ' MB or smaller.'];
+    $info = @getimagesize($f['tmp_name']);
+    $types = [IMAGETYPE_JPEG => ['jpg', 'image/jpeg'], IMAGETYPE_PNG => ['png', 'image/png'], IMAGETYPE_WEBP => ['webp', 'image/webp']];
+    if (!$info || !isset($types[$info[2]])) return ['error' => 'Please use a JPG, PNG or WebP photo (iPhone HEIC photos: set the camera to “Most Compatible”, or take a screenshot of the photo).'];
+    [$ext, $mime] = $types[$info[2]];
+    $dir = qa_data_dir() . '/photos';
+    if (!is_dir($dir)) @mkdir($dir, 0750, true);
+    if (!is_writable($dir)) return ['error' => 'The photo folder on the server is not writable. Check Admin → Settings → System check.'];
+    $name = $prefix . '-' . bin2hex(random_bytes(4));
+
+    // Re-encode with GD when available: fixes phone rotation, removes hidden data (GPS), makes it small.
+    $src = null;
+    if (function_exists('imagecreatetruecolor')) {
+        $src = match ($ext) { 'jpg' => @imagecreatefromjpeg($f['tmp_name']), 'png' => @imagecreatefrompng($f['tmp_name']), 'webp' => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($f['tmp_name']) : false, default => false };
+    }
+    if ($src) {
+        if ($ext === 'jpg' && function_exists('exif_read_data')) {
+            $o = (int)(@exif_read_data($f['tmp_name'])['Orientation'] ?? 1);
+            if ($o === 3) $src = imagerotate($src, 180, 0); elseif ($o === 6) $src = imagerotate($src, -90, 0); elseif ($o === 8) $src = imagerotate($src, 90, 0);
+        }
+        $w = imagesx($src); $h = imagesy($src);
+        $scale = min(1, $maxSide / max($w, $h));
+        $nw = max(1, (int)round($w * $scale)); $nh = max(1, (int)round($h * $scale));
+        $dst = imagecreatetruecolor($nw, $nh);
+        imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+        imagedestroy($src);
+        $ok = false;
+        if (function_exists('imagewebp')) { $ok = @imagewebp($dst, "$dir/$name.webp", 84); if ($ok) { $ext = 'webp'; $mime = 'image/webp'; } }
+        if (!$ok) { $ok = @imagejpeg($dst, "$dir/$name.jpg", 86); $ext = 'jpg'; $mime = 'image/jpeg'; }
+        imagedestroy($dst);
+        if ($ok) return ['file' => "$name.$ext", 'mime' => $mime];
+    }
+    // No GD: keep the original file.
+    if (@move_uploaded_file($f['tmp_name'], "$dir/$name.$ext")) return ['file' => "$name.$ext", 'mime' => $mime];
+    return ['error' => 'The server could not save the photo. Check Admin → Settings → System check.'];
+}
+
+/** Server checks shown in Admin → Settings. */
+function qa_system_check(): array {
+    $dir = qa_data_dir();
+    $photos = "$dir/photos";
+    return [
+        ['Data folder', is_writable($dir), $dir],
+        ['Photos folder', is_dir($photos) && is_writable($photos), $photos],
+        ['Image processing (GD)', function_exists('imagecreatetruecolor'), function_exists('imagewebp') ? 'WebP supported' : 'WebP not available — JPG used'],
+        ['File type check (fileinfo)', class_exists('finfo'), ''],
+        ['Max upload size', true, ini_get('upload_max_filesize') . ' per file, ' . ini_get('post_max_size') . ' per form'],
+        ['Email sending (mail)', function_exists('mail'), ''],
+        ['Card payments (cURL)', function_exists('curl_init'), ''],
+        ['PHP version', version_compare(PHP_VERSION, '8.0', '>='), PHP_VERSION],
+    ];
+}

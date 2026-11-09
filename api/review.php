@@ -7,7 +7,6 @@
 declare(strict_types=1);
 require __DIR__ . '/_lib.php';
 
-const MAX_PHOTO = 3 * 1024 * 1024; // 3 MB
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') qa_json(405, ['ok' => false, 'error' => 'Method not allowed.']);
 qa_check_origin();
@@ -28,40 +27,30 @@ if ($rating < 1 || $rating > 5) $errors[] = 'Please choose a star rating.';
 if (mb_strlen($text) < 30) $errors[] = 'Please write at least 30 characters about your experience.';
 if (!$consent) $errors[] = 'Please confirm we may publish your review.';
 
-// Optional photo: JPG, PNG or WebP up to 3 MB, checked by its real content.
-$photo = null;
-if (!empty($_FILES['photo']) && ($_FILES['photo']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
-    $f = $_FILES['photo'];
-    if ($f['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) $errors[] = 'The photo could not be uploaded. Please try again.';
-    elseif ($f['size'] > MAX_PHOTO) $errors[] = 'The photo must be 3 MB or smaller.';
-    else {
-        $types = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']) ?: '';
-        if (!isset($types[$mime]) || @getimagesize($f['tmp_name']) === false) $errors[] = 'The photo must be a JPG, PNG or WebP image.';
-        else $photo = ['tmp' => $f['tmp_name'], 'mime' => $mime, 'ext' => $types[$mime]];
-    }
-}
+// Optional photo: checked, resized and re-encoded by qa_store_photo() after validation.
+$hasPhoto = !empty($_FILES['photo']) && ($_FILES['photo']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE;
 if ($errors) qa_json(422, ['ok' => false, 'error' => implode(' ', $errors)]);
 qa_rate_limit('review', 5, 3600);
 
 $id = qa_id();
 $ref = qa_ref('REV');
-$photoFile = null;
-if ($photo) {
-    $photoFile = "$id.{$photo['ext']}";
-    if (!@move_uploaded_file($photo['tmp'], qa_data_dir() . "/photos/$photoFile")) $photoFile = null;
+$photoFile = null; $photoMime = null;
+if ($hasPhoto) {
+    $res = qa_store_photo($_FILES['photo'], $id, 800, 15 * 1024 * 1024);
+    if (isset($res['error'])) qa_json(422, ['ok' => false, 'error' => $res['error']]);
+    $photoFile = $res['file']; $photoMime = $res['mime'];
 }
 
 qa_insert('reviews', [
     'id' => $id, 'ref' => $ref, 'createdAt' => qa_now(), 'status' => 'pending',
     'name' => $name, 'email' => $email, 'country' => $country, 'flag' => qa_country_flag($country),
     'service' => $service, 'page' => qa_review_key_for($service), 'rating' => $rating, 'text' => $text,
-    'photo' => $photoFile, 'photoMime' => $photo['mime'] ?? null, 'consent' => true, 'ip' => hash('sha256', qa_ip()),
+    'photo' => $photoFile, 'photoMime' => $photoMime, 'consent' => true, 'ip' => hash('sha256', qa_ip()),
 ]);
 
 $stars = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
 $attachment = null;
-if ($photoFile) $attachment = ['name' => $photoFile, 'mime' => $photo['mime'], 'data' => (string)@file_get_contents(qa_data_dir() . "/photos/$photoFile")];
+if ($photoFile) $attachment = ['name' => $photoFile, 'mime' => $photoMime, 'data' => (string)@file_get_contents(qa_data_dir() . "/photos/$photoFile")];
 qa_notify("New review ($rating/5) from $name — $ref",
     "New review submitted on qalbeabbas.com ($ref)\n\nName:    $name\nEmail:   $email\nCountry: " . ($country ?: '—') . "\nService: " . ($service ?: '—') . "\nRating:  $stars ($rating/5)\n\nReview:\n$text\n\n"
     . "Photo: " . ($photoFile ? 'attached' : 'not provided') . "\n\nApprove or reject it in the admin dashboard: " . QA_SITE . "/admin/?tab=reviews\n",

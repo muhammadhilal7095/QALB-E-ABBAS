@@ -21,7 +21,7 @@ session_set_cookie_params(['lifetime' => 0, 'path' => '/admin', 'secure' => $htt
 session_start();
 
 const SESSION_HOURS = 12;
-const ADMIN_BUILD = 'login-reset-1';
+const ADMIN_BUILD = 'photos-2';
 // Temporary first password (only its one-way hash is stored here). It stops working as
 // soon as a new password is saved in Settings or through an emailed reset link.
 const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$4ecee5cea90a8a4f4460dedda52c8ccc$b80455753112ce076e6e8232e7a4c7d8a95ea2c6548803bb3e728a36fb5d08d8';
@@ -240,23 +240,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $r['rating'] = max(1, min(5, (int)($_POST['rating'] ?? $r['rating'])));
                     $r['featured'] = !empty($_POST['featured']);
                     if (!empty($_POST['remove_photo']) && $r['photo']) { @unlink(qa_data_dir() . '/photos/' . basename($r['photo'])); $r['photo'] = null; }
-                    $up = $_FILES['photo'] ?? null;
-                    if ($up && ($up['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && is_uploaded_file($up['tmp_name']) && $up['size'] <= 5 * 1024 * 1024) {
-                        $types = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-                        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($up['tmp_name']) ?: '';
-                        if (isset($types[$mime]) && @getimagesize($up['tmp_name']) !== false) {
-                            $file = $r['id'] . '-' . substr(bin2hex(random_bytes(3)), 0, 6) . '.' . $types[$mime];
-                            if (@move_uploaded_file($up['tmp_name'], qa_data_dir() . '/photos/' . $file)) {
-                                if ($r['photo']) @unlink(qa_data_dir() . '/photos/' . basename($r['photo']));
-                                $r['photo'] = $file; $r['photoMime'] = $mime;
-                            }
-                        }
+                    $GLOBALS['photoResult'] = $res = qa_store_photo($_FILES['photo'] ?? null, $r['id']);
+                    if ($res && isset($res['file'])) {
+                        if ($r['photo']) @unlink(qa_data_dir() . '/photos/' . basename($r['photo']));
+                        $r['photo'] = $res['file']; $r['photoMime'] = $res['mime'];
                     }
                 }
                 if ($r['status'] === 'approved' && empty($r['approvedAt'])) $r['approvedAt'] = qa_now();
                 return $r;
             });
             $msg = ['approved' => 'Review approved — it is now live on the website.', 'rejected' => 'Review rejected.'][$_POST['status'] ?? ''] ?? 'Review saved.';
+            $pr = $GLOBALS['photoResult'] ?? null;
+            if ($pr && isset($pr['error'])) { flash('Saved, but the photo was not added: ' . $pr['error'], 'err'); go('tab=reviews&id=' . $id); }
+            if ($pr && isset($pr['file'])) $msg .= ' Photo added.';
             flash($msg); go('tab=reviews' . (isset($_POST['back']) ? '' : '&id=' . $id));
 
         case 'review_add':
@@ -266,13 +262,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (mb_strlen($name) < 2 || mb_strlen($text) < 10 || !isset(QA_REVIEW_KEYS[$page])) { flash('Please fill in the name, the page and the review text.', 'err'); go('tab=reviews&new=1'); }
             if (empty($_POST['confirm'])) { flash('Please confirm this is a real client who agreed to publish their review.', 'err'); go('tab=reviews&new=1'); }
             $rid = qa_id(); $photoFile = null; $mime = null;
-            if (!empty($_FILES['photo']) && ($_FILES['photo']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && is_uploaded_file($_FILES['photo']['tmp_name'])) {
-                $types = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-                $mime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['photo']['tmp_name']) ?: '';
-                if ($_FILES['photo']['size'] > 5 * 1024 * 1024 || !isset($types[$mime]) || @getimagesize($_FILES['photo']['tmp_name']) === false) { flash('The photo must be a JPG, PNG or WebP image up to 5 MB.', 'err'); go('tab=reviews&new=1'); }
-                $photoFile = "$rid.{$types[$mime]}";
-                if (!@move_uploaded_file($_FILES['photo']['tmp_name'], qa_data_dir() . "/photos/$photoFile")) { $photoFile = null; $mime = null; }
-            }
+            $res = qa_store_photo($_FILES['photo'] ?? null, $rid);
+            if ($res && isset($res['error'])) { flash('The photo was not added: ' . $res['error'], 'err'); go('tab=reviews&new=1'); }
+            if ($res) { $photoFile = $res['file']; $mime = $res['mime']; }
             $country = qa_text($_POST['country'] ?? '', 60);
             qa_insert('reviews', [
                 'id' => $rid, 'ref' => qa_ref('REV'), 'createdAt' => qa_now(), 'approvedAt' => qa_now(), 'status' => 'approved', 'addedByAdmin' => true,
@@ -464,7 +456,7 @@ if (!logged_in()) {
            . '<button class="btn btn--primary btn--block">Sign in</button></form>'
            . '<form method="post" class="auth__forgot">' . csrf_field() . '<input type="hidden" name="do" value="send_setup"><button class="linkbtn">Forgot password? Email me a reset link</button></form>';
     }
-    echo '</main></body></html>';
+    echo '</main><script src="/admin/upload.js?v=1" defer></script></body></html>';
     exit;
 }
 
@@ -710,7 +702,7 @@ if ($tab === 'reviews' && $id) {
         for ($i = 5; $i >= 1; $i--) echo '<option value="' . $i . '"' . ($i === (int)$r['rating'] ? ' selected' : '') . '>' . $i . ' star' . ($i > 1 ? 's' : '') . '</option>';
         echo '</select></label></div><label>Review text<textarea name="text" rows="7" maxlength="1200">' . h($r['text']) . '</textarea></label>'
            . '<label class="check"><input type="checkbox" name="featured" value="1"' . (!empty($r['featured']) ? ' checked' : '') . '> Show first in its section</label>'
-           . '<label>' . ($r['photo'] ? 'Replace photo' : 'Add the client\'s photo') . ' <small>(JPG, PNG or WebP up to 5 MB — square works best)</small><input type="file" name="photo" accept="image/jpeg,image/png,image/webp"></label>'
+           . '<label>' . ($r['photo'] ? 'Replace photo' : 'Add the client\'s photo') . ' <small>(JPG, PNG, WebP or iPhone photo — resized automatically; square works best)</small><input type="file" name="photo" accept="image/jpeg,image/png,image/webp"></label>'
            . ($r['photo'] ? '<label class="check"><input type="checkbox" name="remove_photo" value="1"> Remove the photo</label>' : '')
            . '</section>';
         echo '<section class="card card--sticky stack"><h2>Preview</h2><figure class="rvp">' . stars((int)$r['rating']) . '<blockquote>' . h($r['text']) . '</blockquote><figcaption>' . avatar($r) . '<span><b>' . h($r['name']) . '</b><small>' . h(implode(' · ', array_filter([$r['country'], $r['service']]))) . '</small></span></figcaption></figure>'
@@ -730,7 +722,7 @@ if ($tab === 'reviews' && $id) {
     foreach (QA_REVIEW_KEYS as $k => $label) echo '<option value="' . $k . '">' . h($label) . '</option>';
     echo '</select></label><label>Rating<select name="rating"><option value="5">5 stars</option><option value="4">4 stars</option><option value="3">3 stars</option><option value="2">2 stars</option><option value="1">1 star</option></select></label></div>'
        . '<label>Review (client\'s own words) *<textarea name="text" rows="6" maxlength="1200" required></textarea></label>'
-       . '<label>Client photo <small>(optional — JPG, PNG or WebP, square works best)</small><input type="file" name="photo" accept="image/jpeg,image/png,image/webp"></label>'
+       . '<label>Client photo <small>(optional — any phone photo; resized automatically, square works best)</small><input type="file" name="photo" accept="image/jpeg,image/png,image/webp"></label>'
        . '<label class="check"><input type="checkbox" name="featured" value="1"> Show first in its section</label>'
        . '<label class="check"><input type="checkbox" name="confirm" value="1" required> This is a real client or student, these are their words, and they agreed that we may publish their name, photo and review.</label>'
        . '<button class="btn btn--primary">' . icon('check') . 'Add &amp; publish</button></form>';
@@ -969,6 +961,10 @@ if ($tab === 'settings') {
        . '<label>Send notifications to<input type="email" name="notifyEmail" value="' . h($settings['notifyEmail']) . '" required></label>'
        . '<label class="check"><input type="checkbox" name="hideSamples" value="1"' . ($settings['hideSamples'] ? ' checked' : '') . '> Hide all sample reviews on the website (show only approved real reviews)</label>'
        . '<button class="btn btn--primary">Save settings</button></section></form>';
+    echo '<section class="card narrow"><div class="card__head"><h2>System check</h2><small class="muted">Where your data and photos are stored</small></div><ul class="checks">';
+    foreach (qa_system_check() as [$label, $ok, $detail]) echo '<li class="' . ($ok ? 'is-ok' : 'is-no') . '"><b>' . h($label) . '</b>' . ($detail !== '' ? ' — <small class="muted">' . h($detail) . '</small>' : '') . '</li>';
+    $photoCount = count(glob(qa_data_dir() . '/photos/*') ?: []);
+    echo '</ul><p class="muted" style="margin:10px 0 0">Saved review photos: <b>' . $photoCount . '</b>. All records (bookings, enquiries, reviews, posts, prices) are kept as files in the private data folder above — outside the website folder, so updates never erase them and nobody can download them directly.</p></section>';
     $temp = using_temp_password();
     echo '<form method="post" class="card stack narrow" id="login">' . csrf_field() . '<input type="hidden" name="do" value="password_change"><h2>Login email &amp; password</h2>'
        . ($temp ? '<div class="notice">' . icon('warn') . '<p>You are using the temporary password. Choose your own password now.</p></div>' : '<p class="muted">Last sign-in: ' . when($a['lastLogin'] ?? null) . '. Leave the new password empty to change only the email.</p>')

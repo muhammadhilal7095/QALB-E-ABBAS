@@ -61,6 +61,9 @@
 
   // ---------- Image upload (inline images and the cover) ----------
   function upload(file, done) {
+    if (window.qaResizeImage && !file.__resized) {
+      return window.qaResizeImage(file, 1600).then(function (f) { f.__resized = true; upload(f, done); });
+    }
     var fd = new FormData();
     fd.append("do", "blog_upload"); fd.append("csrf", csrf); fd.append("image", file);
     var status = document.getElementById("ed-status");

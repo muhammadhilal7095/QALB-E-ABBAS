@@ -4155,3 +4155,18 @@ main > :is(.section, .svc-sec, .svc-cat):last-child { padding-bottom: var(--sect
 .ty__box dd { margin: 0; font-weight: 700; color: var(--ink); text-align: right; }
 .ty__steps { text-align: left; margin: 0 0 26px; padding-left: 20px; line-height: 1.8; }
 .ty__actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+/* Home: "Popular services" pills slide continuously (pause on hover/focus) */
+.pill-marquee { position: relative; overflow: hidden; padding: 4px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.pill-marquee__track { display: flex; width: max-content; animation: pill-slide 38s linear infinite; }
+.pill-marquee .home-h1__links { flex-wrap: nowrap; justify-content: flex-start; padding-right: 8px; }
+.pill-marquee .home-h1__links li { flex: none; }
+.pill-marquee .home-h1__links a { white-space: nowrap; }
+.pill-marquee:hover .pill-marquee__track, .pill-marquee:focus-within .pill-marquee__track { animation-play-state: paused; }
+@keyframes pill-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .pill-marquee { -webkit-mask-image: none; mask-image: none; }
+  .pill-marquee__track { animation: none; width: auto; }
+  .pill-marquee .home-h1__links { flex-wrap: wrap; justify-content: center; padding-right: 0; }
+  .pill-marquee .home-h1__links[aria-hidden] { display: none; }
+}

@@ -24,6 +24,7 @@ RewriteRule ^(.+?)/?$ $1.html [L]
 #    private if they are ever copied to the server.
 RewriteRule ^(booking|\.git|\.github|\.work|docs)(/|$) - [R=404,L]
 RewriteRule (^|/)\.(?!well-known) - [R=404,L]
+RewriteRule ^(serve\.py|.*\.md)$ - [R=404,L]
 
 # 4. Custom "page not found" page
 ErrorDocument 404 /404.html

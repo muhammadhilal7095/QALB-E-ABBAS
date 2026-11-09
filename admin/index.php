@@ -21,6 +21,9 @@ session_set_cookie_params(['lifetime' => 0, 'path' => '/admin', 'secure' => $htt
 session_start();
 
 const SESSION_HOURS = 12;
+// Temporary first password (only its one-way hash is stored here). It stops working as
+// soon as a new password is saved in Settings or through an emailed reset link.
+const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$8baa121837504633e7698e761ec51017$565126e92ec63768d4b5290d09f102e64ca9194134302321d2bcf5ca6a13e29e';
 
 // ---------------------------------------------------------------------------
 // Small helpers
@@ -71,10 +74,21 @@ const ENQ_STATUS = ['new' => ['New', 'blue'], 'replied' => ['Replied', 'teal'], 
 const REVIEW_STATUS = ['pending' => ['Waiting for approval', 'amber'], 'approved' => ['Live on website', 'green'], 'rejected' => ['Rejected', 'grey']];
 
 function admin_data(): array { return qa_read('admin'); }
+function admin_email(): string { return (string)(admin_data()['email'] ?? QA_ADMIN_EMAIL); }
+function active_hash(): string { return (string)(admin_data()['passwordHash'] ?? ADMIN_TEMP_HASH); }
+function using_temp_password(): bool { return empty(admin_data()['passwordHash']); }
+function pwv(): string { return substr(hash('sha256', active_hash()), 0, 16); }
+function check_password(string $p): bool {
+    $hash = active_hash();
+    if (str_starts_with($hash, 'pbkdf2_sha256$')) {
+        [, $it, $salt, $want] = explode('$', $hash);
+        return hash_equals($want, hash_pbkdf2('sha256', $p, $salt, (int)$it));
+    }
+    return password_verify($p, $hash);
+}
 function logged_in(): bool {
-    $a = admin_data();
-    return !empty($_SESSION['admin']) && !empty($a['passwordHash'])
-        && ($_SESSION['pwv'] ?? '') === substr(hash('sha256', $a['passwordHash']), 0, 16)
+    return !empty($_SESSION['admin'])
+        && ($_SESSION['pwv'] ?? '') === pwv()
         && (time() - (int)($_SESSION['since'] ?? 0)) < SESSION_HOURS * 3600;
 }
 /** Max $max attempts per $seconds per IP for $bucket. Returns false when the limit is reached. */
@@ -91,7 +105,7 @@ function send_setup_link(): void {
     $token = bin2hex(random_bytes(24));
     qa_update('admin', function (array $a) use ($token) { $a['setupHash'] = hash('sha256', $token); $a['setupExpires'] = time() + 3600; return $a; });
     $link = QA_SITE . '/admin/?setup=' . $token;
-    qa_mail(QA_ADMIN_EMAIL, 'Qalb-E-Abbas admin — set your password',
+    qa_mail(admin_email(), 'Qalb-E-Abbas admin — set your password',
         "Use this link within 1 hour to set the admin dashboard password:\n\n$link\n\nIf you didn't ask for this, ignore this email — nothing changes.\n");
 }
 function strong_enough(string $p): ?string {
@@ -122,19 +136,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // --- Not logged in: login, setup link, set password ---
     if ($do === 'login') {
         if (!allow('login', 8, 900)) { flash('Too many attempts. Please wait 15 minutes.', 'err'); go(); }
-        $a = admin_data();
-        if (!empty($a['passwordHash']) && password_verify((string)($_POST['password'] ?? ''), $a['passwordHash'])) {
+        $email = strtolower(trim((string)($_POST['email'] ?? '')));
+        if ($email === strtolower(admin_email()) && check_password((string)($_POST['password'] ?? ''))) {
             session_regenerate_id(true);
-            $_SESSION['admin'] = true; $_SESSION['since'] = time(); $_SESSION['pwv'] = substr(hash('sha256', $a['passwordHash']), 0, 16);
+            $_SESSION['admin'] = true; $_SESSION['since'] = time(); $_SESSION['pwv'] = pwv();
             qa_update('admin', function (array $x) { $x['lastLogin'] = qa_now(); return $x; });
             go();
         }
         usleep(400000);
-        flash('Wrong password.', 'err'); go();
+        flash('Wrong email or password.', 'err'); go();
     }
     if ($do === 'send_setup') {
         if (allow('setup', 3, 3600)) send_setup_link();
-        flash('If the email address is correct, a setup link has been sent to ' . QA_ADMIN_EMAIL . '. It works for 1 hour.');
+        flash('A password reset link has been sent to the admin email address. It works for 1 hour.');
         go();
     }
     if ($do === 'set_password') {
@@ -149,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hash = password_hash($p, PASSWORD_DEFAULT);
         qa_update('admin', function (array $x) use ($hash) { $x['passwordHash'] = $hash; unset($x['setupHash'], $x['setupExpires']); $x['passwordSetAt'] = qa_now(); return $x; });
         session_regenerate_id(true);
-        $_SESSION['admin'] = true; $_SESSION['since'] = time(); $_SESSION['pwv'] = substr(hash('sha256', $hash), 0, 16);
+        $_SESSION['admin'] = true; $_SESSION['since'] = time(); $_SESSION['pwv'] = pwv();
         flash('Password saved. Welcome to your dashboard!'); go();
     }
 
@@ -261,15 +275,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('Settings saved.'); go('tab=settings');
 
         case 'password_change':
-            $a = admin_data();
-            if (!password_verify((string)($_POST['current'] ?? ''), $a['passwordHash'] ?? '')) { flash('Your current password is wrong.', 'err'); go('tab=settings'); }
+            if (!check_password((string)($_POST['current'] ?? ''))) { flash('Your current password is wrong.', 'err'); go('tab=settings'); }
+            $newEmail = strtolower(trim((string)($_POST['email'] ?? '')));
+            if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) { flash('Please enter a valid login email.', 'err'); go('tab=settings'); }
             $p = (string)($_POST['password'] ?? '');
+            if ($p === '' && !using_temp_password()) {
+                qa_update('admin', function (array $x) use ($newEmail) { $x['email'] = $newEmail; return $x; });
+                flash('Login email saved.'); go('tab=settings');
+            }
             if ($err = strong_enough($p)) { flash($err, 'err'); go('tab=settings'); }
             if ($p !== (string)($_POST['password2'] ?? '')) { flash('The two new passwords do not match.', 'err'); go('tab=settings'); }
             $hash = password_hash($p, PASSWORD_DEFAULT);
-            qa_update('admin', function (array $x) use ($hash) { $x['passwordHash'] = $hash; $x['passwordSetAt'] = qa_now(); return $x; });
-            $_SESSION['pwv'] = substr(hash('sha256', $hash), 0, 16);
-            flash('Password changed. Other devices are signed out.'); go('tab=settings');
+            qa_update('admin', function (array $x) use ($hash, $newEmail) { $x['passwordHash'] = $hash; $x['email'] = $newEmail; $x['passwordSetAt'] = qa_now(); return $x; });
+            $_SESSION['pwv'] = pwv();
+            flash('Login details saved. Other devices are signed out.'); go('tab=settings');
     }
     go();
 }
@@ -304,13 +323,11 @@ if (!logged_in()) {
             echo '<h1>Link expired</h1><p class="muted">This setup link is no longer valid. Request a new one below.</p>'
                . '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="send_setup"><button class="btn btn--primary btn--block">Email me a new setup link</button></form>';
         }
-    } elseif (empty($a['passwordHash'])) {
-        echo '<h1>Set up your dashboard</h1><p class="muted">For security, we email a one-time link to <b>' . h(QA_ADMIN_EMAIL) . '</b>. Open it to choose your admin password.</p>'
-           . '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="send_setup"><button class="btn btn--primary btn--block">' . icon('mail') . 'Email me a setup link</button></form>';
     } else {
-        echo '<h1>Sign in</h1>'
+        echo '<h1>Sign in</h1><p class="muted">Use your admin email and password.</p>'
            . '<form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="do" value="login">'
-           . '<label>Password<input type="password" name="password" autocomplete="current-password" required autofocus></label>'
+           . '<label>Email<input type="email" name="email" autocomplete="username" required autofocus></label>'
+           . '<label>Password<input type="password" name="password" autocomplete="current-password" required></label>'
            . '<button class="btn btn--primary btn--block">Sign in</button></form>'
            . '<form method="post" class="auth__forgot">' . csrf_field() . '<input type="hidden" name="do" value="send_setup"><button class="linkbtn">Forgot password? Email me a reset link</button></form>';
     }
@@ -387,6 +404,7 @@ if ($tab === 'dashboard') {
        . '</div>';
 
     $todo = [];
+    if (using_temp_password()) $todo[] = '<b>You are using the temporary password.</b> <a href="/admin/?tab=settings#login">Choose your own password</a> now.';
     if (!$settings['stripeSecret']) $todo[] = 'Card payments are off. Add your Stripe secret key in <a href="/admin/?tab=settings">Settings</a> to take payments online' . ($settings['manualPayments'] ? ' (until then, clients can send a request and you email them a payment link).' : '.');
     elseif (!$settings['stripeWebhook']) $todo[] = 'Add the Stripe webhook signing secret in <a href="/admin/?tab=settings">Settings</a> so payments are confirmed automatically.';
     if ($awaiting) $todo[] = "$awaiting order" . ($awaiting > 1 ? 's are' : ' is') . ' waiting for payment — <a href="/admin/?tab=orders&f=awaiting">send payment links</a>.';
@@ -646,11 +664,13 @@ if ($tab === 'settings') {
        . '<label>Send notifications to<input type="email" name="notifyEmail" value="' . h($settings['notifyEmail']) . '" required></label>'
        . '<label class="check"><input type="checkbox" name="hideSamples" value="1"' . ($settings['hideSamples'] ? ' checked' : '') . '> Hide all sample reviews on the website (show only approved real reviews)</label>'
        . '<button class="btn btn--primary">Save settings</button></section></form>';
-    echo '<form method="post" class="card stack narrow">' . csrf_field() . '<input type="hidden" name="do" value="password_change"><h2>Change password</h2>'
-       . '<p class="muted">Last sign-in: ' . when($a['lastLogin'] ?? null) . '</p>'
+    $temp = using_temp_password();
+    echo '<form method="post" class="card stack narrow" id="login">' . csrf_field() . '<input type="hidden" name="do" value="password_change"><h2>Login email &amp; password</h2>'
+       . ($temp ? '<div class="notice">' . icon('warn') . '<p>You are using the temporary password. Choose your own password now.</p></div>' : '<p class="muted">Last sign-in: ' . when($a['lastLogin'] ?? null) . '. Leave the new password empty to change only the email.</p>')
+       . '<label>Login email<input type="email" name="email" value="' . h(admin_email()) . '" autocomplete="username" required></label>'
        . '<label>Current password<input type="password" name="current" autocomplete="current-password" required></label>'
-       . '<div class="row2"><label>New password<input type="password" name="password" autocomplete="new-password" minlength="10" required></label><label>Repeat new password<input type="password" name="password2" autocomplete="new-password" minlength="10" required></label></div>'
-       . '<button class="btn btn--ghost">Change password</button></form>';
+       . '<div class="row2"><label>New password<input type="password" name="password" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label><label>Repeat new password<input type="password" name="password2" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label></div>'
+       . '<button class="btn btn--primary">Save login details</button></form>';
 }
 
 echo '</main></body></html>';

@@ -33,8 +33,10 @@
     btns.forEach(function (b) { b.disabled = true; });
     var note = input.parentNode.querySelector(".up-note");
     if (!note) { note = document.createElement("small"); note.className = "up-note"; input.parentNode.appendChild(note); }
-    note.textContent = "Preparing photo…";
-    resize(input.files[0], 1200).then(function (f) {
+    note.textContent = "Crop the photo…";
+    var prepare = window.qaCropPhoto ? window.qaCropPhoto(input.files[0]) : resize(input.files[0], 1200);
+    prepare.then(function (f) {
+      if (!f) { input.value = ""; note.textContent = "No photo chosen."; btns.forEach(function (b) { b.disabled = false; }); return; }
       try { var dt = new DataTransfer(); dt.items.add(f); input.files = dt.files; input.dataset.resized = "1"; } catch (err) { /* old browser: upload original */ }
       var prev = input.parentNode.querySelector(".up-prev");
       if (!prev) { prev = document.createElement("img"); prev.className = "up-prev"; prev.alt = ""; input.parentNode.appendChild(prev); }

@@ -13,7 +13,7 @@ header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
 header('X-Frame-Options: DENY');
 header('Referrer-Policy: same-origin');
-header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self'; frame-ancestors 'none'");
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self'; frame-ancestors 'none'");
 
 $https = (($_SERVER['HTTPS'] ?? '') !== '' && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
 session_name('qa_admin');
@@ -21,7 +21,7 @@ session_set_cookie_params(['lifetime' => 0, 'path' => '/admin', 'secure' => $htt
 session_start();
 
 const SESSION_HOURS = 12;
-const ADMIN_BUILD = 'photos-2';
+const ADMIN_BUILD = 'crop-1';
 // Temporary first password (only its one-way hash is stored here). It stops working as
 // soon as a new password is saved in Settings or through an emailed reset link.
 const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$4ecee5cea90a8a4f4460dedda52c8ccc$b80455753112ce076e6e8232e7a4c7d8a95ea2c6548803bb3e728a36fb5d08d8';
@@ -456,7 +456,7 @@ if (!logged_in()) {
            . '<button class="btn btn--primary btn--block">Sign in</button></form>'
            . '<form method="post" class="auth__forgot">' . csrf_field() . '<input type="hidden" name="do" value="send_setup"><button class="linkbtn">Forgot password? Email me a reset link</button></form>';
     }
-    echo '</main><script src="/admin/upload.js?v=1" defer></script></body></html>';
+    echo '</main><script src="/assets/js/photo-crop.js?v=1" defer></script><script src="/admin/upload.js?v=2" defer></script></body></html>';
     exit;
 }
 

@@ -35,7 +35,8 @@
     var f = photo.files && photo.files[0];
     if (!f) return;
     ready = null; status.hidden = true;
-    shrink(f).then(function (small) {
+    (window.qaCropPhoto ? window.qaCropPhoto(f) : shrink(f)).then(function (small) {
+      if (small === null && window.qaCropPhoto) { photo.value = ""; return; }
       if (!small) { show("This photo can't be opened. Please choose a JPG or PNG photo (or a screenshot of it).", false); photo.value = ""; return; }
       ready = small;
       preview.innerHTML = '<img src="' + URL.createObjectURL(small) + '" alt="Your photo preview" width="64" height="64">';

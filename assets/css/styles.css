@@ -2652,8 +2652,8 @@ html.modal-open { overflow: hidden; }
   .nav__list { gap: 2px; }
   .header__actions { margin-left: 0; }
 }
-/* 1200–1439: compact menu so everything fits comfortably */
-@media (min-width: 1200px) and (max-width: 1439px) {
+/* Desktop: compact menu so everything fits comfortably (the container width stays the same on wide screens) */
+@media (min-width: 1200px) {
   .nav__link { padding: 0 clamp(7px, .75vw, 11px); font-size: .875rem; }
   .header__logo img { height: 36px; }
   .header__cta { padding: 0 1rem; font-size: .875rem; }
@@ -4246,3 +4246,14 @@ main > :is(.section, .svc-sec, .svc-cat):last-child { padding-bottom: var(--sect
 .uc__facts li { flex-direction: column; justify-content: center; gap: 6px; padding: 12px 6px; text-align: center; font-size: .8rem; }
 .uc__facts .icon { width: 26px; height: 26px; padding: 5px; }
 .uc__facts small { margin-bottom: 1px; }
+
+/* Header: when the full menu doesn't fit on one line (narrow window, browser zoom,
+   large text), site.js adds .is-compact and the ☰ menu is used instead. */
+@media (min-width: 1200px) {
+  .site-header.is-compact .header__nav { display: none; }
+  .site-header.is-compact .hamburger { display: inline-grid; margin-left: 0; }
+  .site-header.is-compact .header__actions { margin-left: auto; }
+  .site-header.is-compact .header__cta .btn__arrow { display: inline-block; }
+}
+.header__logo, .header__actions { flex-shrink: 0; }
+.nav__link--feature { white-space: nowrap; }

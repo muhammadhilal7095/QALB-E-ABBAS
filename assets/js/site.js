@@ -462,6 +462,34 @@
     update();
   }
 
+  /* ---------- Header fit -------------------------------------------------
+     On desktop widths the full menu is shown only if it really fits on one
+     line (screen width, browser zoom and font size all matter). If it would
+     collide with the logo or the buttons, the header switches to the ☰ menu. */
+  function initHeaderFit() {
+    var header = document.getElementById("site-header");
+    if (!header) return;
+    var nav = header.querySelector(".header__nav"), bar = header.querySelector(".header__bar");
+    if (!nav || !bar) return;
+    var queued = false;
+    function check() {
+      queued = false;
+      if (!DESKTOP_MQ.matches) { header.classList.remove("is-compact"); return; }
+      header.classList.remove("is-compact");
+      // Compare where things actually are: the menu items must sit between the logo and the buttons.
+      var items = nav.querySelectorAll(".nav__list > li"), logo = header.querySelector(".header__logo"), actions = header.querySelector(".header__actions");
+      if (!items.length || !logo || !actions) return;
+      var first = items[0].getBoundingClientRect(), last = items[items.length - 1].getBoundingClientRect();
+      var over = first.left < logo.getBoundingClientRect().right + 8 || last.right > actions.getBoundingClientRect().left - 8 || last.top >= first.bottom - 2; // last item wrapped onto a second line
+      header.classList.toggle("is-compact", over);
+    }
+    function queue() { if (!queued) { queued = true; requestAnimationFrame(check); } }
+    window.addEventListener("resize", queue);
+    window.addEventListener("load", queue);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(queue);
+    check();
+  }
+
   /* ---------- Footer ----------------------------------------------------- */
   var SOCIAL_LABELS = {
     facebook: "Facebook", instagram: "Instagram", tiktok: "TikTok", youtube: "YouTube",
@@ -731,6 +759,7 @@
   initMega();
   initDrawer();
   initStickyHeader();
+  initHeaderFit();
   initMailtoForms();
   initApiForms();
   initLivePrices();

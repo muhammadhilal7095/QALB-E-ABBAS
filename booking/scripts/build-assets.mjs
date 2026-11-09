@@ -13,6 +13,18 @@ import { transform } from "esbuild";
 
 const SITE = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const hash = (s) => createHash("sha1").update(s).digest("hex").slice(0, 8);
+
+// Platform logos (assets/img/platforms/*.svg) are cached for a year, so every link gets
+// ?v=<content hash>: when a logo changes, browsers download the new one straight away.
+const LOGO_DIR = join(SITE, "assets/img/platforms");
+const logoV = Object.fromEntries(readdirSync(LOGO_DIR).filter((n) => n.endsWith(".svg")).map((n) => [n.replace(/\.svg$/, ""), hash(readFileSync(join(LOGO_DIR, n)))]));
+for (const f of ["site.js", "assessment.js"]) {
+  // These scripts build logo links themselves; they read LOGO_V (one hash for the whole folder).
+  const p = join(SITE, "assets/js", f);
+  const js = readFileSync(p, "utf8");
+  const next = js.replace(/var LOGO_V = "\w*";/, `var LOGO_V = "${hash(JSON.stringify(logoV))}";`);
+  if (next !== js) writeFileSync(p, next);
+}
 const assets = [{ src: "assets/css/styles.css", loader: "css" }];
 for (const f of readdirSync(join(SITE, "assets/js")).filter((n) => n.endsWith(".js") && !n.endsWith(".min.js")))
   assets.push({ src: `assets/js/${f}`, loader: "js" });
@@ -39,6 +51,7 @@ for (const f of readdirSync(SITE).filter((n) => n.endsWith(".html"))) {
     const re = new RegExp(`${base.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}(?:\\.min)?\\.${ext}(?:\\?v=[\\w.]+)?(?=")`, "g");
     html = html.replace(re, `${min}?v=${v}`);
   }
+  html = html.replace(/assets\/img\/platforms\/([\w-]+)\.svg(?:\?v=\w+)?/g, (m, n) => logoV[n] ? `assets/img/platforms/${n}.svg?v=${logoV[n]}` : m);
   // Google Fonts: load the stylesheet without blocking the first paint (font-display: swap is already set).
   html = html.replace(/<link rel="stylesheet" href="(https:\/\/fonts\.googleapis\.com\/css2\?[^"]+)">/,
     (m, url) => `<link rel="preload" as="style" href="${url}" onload="this.onload=null;this.rel='stylesheet'">\n  <noscript><link rel="stylesheet" href="${url}"></noscript>`);

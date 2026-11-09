@@ -13,6 +13,7 @@
    ========================================================================== */
 (function () {
   "use strict";
+  var LOGO_V = "58cf2050"; // logo version, set by `npm run assets:build`
 
   var root = document.getElementById("sra");
   var ALL = window.QA_ASSESSMENTS;
@@ -43,7 +44,7 @@
     var cards = LIST.map(function (x) {
       var a = ALL[x[0]];
       var mark = x[1] === "logo"
-        ? '<img src="assets/img/platforms/' + x[2] + '.svg" alt="" width="28" height="28">'
+        ? '<img src="assets/img/platforms/' + x[2] + '.svg?v=' + LOGO_V + '" alt="" width="28" height="28">'
         : ic(x[2]);
       return '<li><a class="sra-pick" href="?type=' + x[0] + '">' +
         '<span class="sra-pick__mark">' + mark + "</span>" +

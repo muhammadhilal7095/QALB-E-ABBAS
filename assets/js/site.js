@@ -5,6 +5,7 @@
    ========================================================================== */
 (function () {
   "use strict";
+  var LOGO_V = "58cf2050"; // logo version, set by `npm run assets:build`
 
   var CFG = window.SITE_CONFIG;
   var DESKTOP_MQ = window.matchMedia("(min-width: 1200px)");
@@ -177,7 +178,7 @@
       if (!m) return '<span class="mega__mark">' + icon("arrow-right") + "</span>";
       if (m.indexOf("icon:") === 0) return '<span class="mega__mark">' + icon(m.slice(5)) + "</span>";
       var flag = m.indexOf("flag-") === 0;
-      return '<span class="mega__mark' + (flag ? " mega__mark--flag" : "") + '"><img src="assets/img/platforms/' + esc(m) + '.svg" alt="' + esc(label) + ' logo" title="' + esc(label) + '" width="18" height="18" loading="lazy"></span>';
+      return '<span class="mega__mark' + (flag ? " mega__mark--flag" : "") + '"><img src="assets/img/platforms/' + esc(m) + '.svg?v=' + LOGO_V + '" alt="' + esc(label) + ' logo" title="' + esc(label) + '" width="18" height="18" loading="lazy"></span>';
     }
     var cols = CFG.services.map(function (cat) {
       var links = cat.items.map(function (it) {

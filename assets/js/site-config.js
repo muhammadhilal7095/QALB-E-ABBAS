@@ -151,13 +151,13 @@ window.SITE_CONFIG = {
     // "Services" column
     serviceLinks: [
       ["E-commerce Services", "/services#ecommerce"],
-      ["Digital Marketing", "/digital-marketing"],
-      ["AI & Business Automation", "/services#automation"],
-      ["Web & Software Development", "/services#development"],
       ["Company Formation", "/services#formation"],
       ["Taxation Services", "/taxation"],
       ["Education Consultancy", "/services#education"],
-      ["Real Estate (Pakistan)", "/real-estate"]
+      ["Real Estate (Pakistan)", "/real-estate"],
+      ["Digital Marketing", "/digital-marketing"],
+      ["AI & Business Automation", "/services#automation"],
+      ["Web & Software Development", "/services#development"]
     ],
     // "Company" column
     quickLinks: [

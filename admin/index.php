@@ -226,6 +226,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $r['rating'] = max(1, min(5, (int)($_POST['rating'] ?? $r['rating'])));
                     $r['featured'] = !empty($_POST['featured']);
                     if (!empty($_POST['remove_photo']) && $r['photo']) { @unlink(qa_data_dir() . '/photos/' . basename($r['photo'])); $r['photo'] = null; }
+                    $up = $_FILES['photo'] ?? null;
+                    if ($up && ($up['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && is_uploaded_file($up['tmp_name']) && $up['size'] <= 5 * 1024 * 1024) {
+                        $types = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+                        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($up['tmp_name']) ?: '';
+                        if (isset($types[$mime]) && @getimagesize($up['tmp_name']) !== false) {
+                            $file = $r['id'] . '-' . substr(bin2hex(random_bytes(3)), 0, 6) . '.' . $types[$mime];
+                            if (@move_uploaded_file($up['tmp_name'], qa_data_dir() . '/photos/' . $file)) {
+                                if ($r['photo']) @unlink(qa_data_dir() . '/photos/' . basename($r['photo']));
+                                $r['photo'] = $file; $r['photoMime'] = $mime;
+                            }
+                        }
+                    }
                 }
                 if ($r['status'] === 'approved' && empty($r['approvedAt'])) $r['approvedAt'] = qa_now();
                 return $r;
@@ -674,7 +686,7 @@ if ($tab === 'reviews' && $id) {
     else {
         echo '<a class="back" href="/admin/?tab=reviews">' . icon('back') . 'All reviews</a>';
         echo '<header class="head"><div><h1>Review from ' . h($r['name']) . '</h1><p class="muted">' . h($r['ref']) . ' · ' . when($r['createdAt']) . ' · ' . h($r['email']) . '</p></div><div class="head__badges">' . badge($r['status'], REVIEW_STATUS) . '</div></header>';
-        echo '<form method="post" class="grid2 grid2--wide">' . csrf_field() . '<input type="hidden" name="do" value="review_update"><input type="hidden" name="id" value="' . h($r['id']) . '">';
+        echo '<form method="post" enctype="multipart/form-data" class="grid2 grid2--wide">' . csrf_field() . '<input type="hidden" name="do" value="review_update"><input type="hidden" name="id" value="' . h($r['id']) . '">';
         echo '<section class="card stack"><h2>Edit before publishing</h2><p class="muted">Only fix spelling or remove private details — keep the client\'s meaning.</p>'
            . '<div class="row2"><label>Name shown<input name="name" value="' . h($r['name']) . '" maxlength="80"></label><label>Country<input name="country" value="' . h($r['country']) . '" maxlength="60"></label></div>'
            . '<div class="row2"><label>Service shown<input name="service" value="' . h($r['service']) . '" maxlength="80"></label><label>Flag code <small>(gb, pk, us…)</small><input name="flag" value="' . h($r['flag']) . '" maxlength="2"></label></div>'
@@ -684,6 +696,7 @@ if ($tab === 'reviews' && $id) {
         for ($i = 5; $i >= 1; $i--) echo '<option value="' . $i . '"' . ($i === (int)$r['rating'] ? ' selected' : '') . '>' . $i . ' star' . ($i > 1 ? 's' : '') . '</option>';
         echo '</select></label></div><label>Review text<textarea name="text" rows="7" maxlength="1200">' . h($r['text']) . '</textarea></label>'
            . '<label class="check"><input type="checkbox" name="featured" value="1"' . (!empty($r['featured']) ? ' checked' : '') . '> Show first in its section</label>'
+           . '<label>' . ($r['photo'] ? 'Replace photo' : 'Add the client\'s photo') . ' <small>(JPG, PNG or WebP up to 5 MB — square works best)</small><input type="file" name="photo" accept="image/jpeg,image/png,image/webp"></label>'
            . ($r['photo'] ? '<label class="check"><input type="checkbox" name="remove_photo" value="1"> Remove the photo</label>' : '')
            . '</section>';
         echo '<section class="card card--sticky stack"><h2>Preview</h2><figure class="rvp">' . stars((int)$r['rating']) . '<blockquote>' . h($r['text']) . '</blockquote><figcaption>' . avatar($r) . '<span><b>' . h($r['name']) . '</b><small>' . h(implode(' · ', array_filter([$r['country'], $r['service']]))) . '</small></span></figcaption></figure>'

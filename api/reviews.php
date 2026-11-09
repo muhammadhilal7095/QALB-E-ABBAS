@@ -9,7 +9,7 @@ foreach (qa_read('reviews') as $r) {
     $out[$r['page'] ?: 'students'][] = [
         'name' => $r['name'], 'country' => $r['country'] ?: null, 'flag' => $r['flag'] ?: null,
         'service' => $r['service'] ?: null, 'rating' => (int)$r['rating'], 'text' => $r['text'],
-        'photo' => $r['photo'] ? '/api/review-photo.php?id=' . rawurlencode($r['id']) : null,
+        'photo' => $r['photo'] ? '/api/review-photo.php?id=' . rawurlencode($r['id']) . '&v=' . substr(md5((string)$r['photo']), 0, 8) : null,
         'featured' => !empty($r['featured']),
     ];
 }

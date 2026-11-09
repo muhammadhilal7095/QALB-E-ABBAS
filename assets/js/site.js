@@ -606,6 +606,79 @@
     });
   }
 
+  /* ---------- Forms sent to the PHP API (contact form) --------------------
+     <form action="/api/enquiry.php" data-api-form> posts in the background and
+     shows the result. If the API can't be reached it falls back to email. */
+  function initApiForms() {
+    document.querySelectorAll("form[data-api-form]").forEach(function (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+        var note = form.querySelector(".form__status");
+        var btn = form.querySelector('[type="submit"]');
+        var label = btn ? btn.innerHTML : "";
+        function done(ok, text) {
+          if (btn) { btn.disabled = false; btn.innerHTML = label; }
+          if (note) { note.textContent = text; note.className = "form__status " + (ok ? "is-ok" : "is-err"); }
+        }
+        if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+        fetch(form.getAttribute("action"), { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) {
+            if (res.ok && res.j.ok) {
+              form.reset();
+              done(true, "Thank you — your message has been sent" + (res.j.ref ? " (reference " + res.j.ref + ")" : "") + ". We'll reply within one working day.");
+            } else done(false, (res.j && res.j.error) || "Something went wrong. Please try again.");
+          })
+          .catch(function () {
+            // API not reachable (e.g. local preview): open the visitor's email app instead.
+            var lines = [];
+            Array.prototype.forEach.call(form.elements, function (el) {
+              if (!el.name || el.name === "website" || el.type === "submit") return;
+              var lab = form.querySelector('label[for="' + el.id + '"]');
+              lines.push((lab ? lab.textContent.replace(/\s*\*$/, "").trim() : el.name) + ": " + el.value);
+            });
+            window.location.href = "mailto:" + CFG.contact.email + "?subject=" + encodeURIComponent(form.getAttribute("data-subject") || "Website enquiry") + "&body=" + encodeURIComponent(lines.join("\n"));
+            done(true, "Your email app should now open with your message. If it doesn't, email us at " + CFG.contact.email + ".");
+          });
+      });
+    });
+  }
+
+  /* ---------- Live prices (Admin → Prices) ---------------------------------
+     Pages are built with the standard prices; if a price is changed in the
+     admin dashboard, /api/prices.php returns it and the page updates. */
+  function initLivePrices() {
+    var hasPrices = document.querySelector("[data-add-to-cart][data-sku], #bk-type, [data-llc-states], #cart-app");
+    if (!hasPrices || !window.fetch) return;
+    var api = String((CFG.links && CFG.links.api) || "/api").replace(/\/$/, "");
+    fetch(api + "/prices.php", { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (p) {
+        if (!p || !p.ok) return;
+        var fmt = function (n) { return Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 }); };
+        document.querySelectorAll("[data-add-to-cart][data-sku]").forEach(function (btn) {
+          var price = p.items[btn.dataset.sku];
+          if (price == null || Number(btn.dataset.price) === Number(price)) return;
+          btn.dataset.price = String(price);
+          var card = btn.closest(".pr-item, .plan, article");
+          var el = card && card.querySelector(".pr-item__price");
+          if (el) el.innerHTML = el.innerHTML.replace(/\d[\d,]*(\.\d+)?/, fmt(price));
+        });
+        var sel = document.getElementById("bk-type");
+        if (sel) {
+          var changed = false;
+          Array.prototype.forEach.call(sel.options, function (o) {
+            var price = p.consultations[o.value];
+            if (price != null && Number(o.dataset.price) !== Number(price)) { o.dataset.price = String(price); changed = true; }
+          });
+          if (changed) sel.dispatchEvent(new Event("change"));
+        }
+        document.dispatchEvent(new CustomEvent("qa:prices", { detail: p }));
+      })
+      .catch(function () { /* keep the built-in prices */ });
+  }
+
   /* ---------- Analytics with consent (GA4) --------------------------------
      Loads Google Analytics 4 only after the visitor accepts analytics cookies.
      The choice is remembered; "Cookie settings" in the footer reopens the banner. */
@@ -658,6 +731,8 @@
   initDrawer();
   initStickyHeader();
   initMailtoForms();
+  initApiForms();
+  initLivePrices();
   initAnalytics();
 
   // Expose small helpers for page scripts.

@@ -105,7 +105,7 @@
   // ======================================================================
   var app = document.getElementById("cart-app");
   var CFG = window.SITE_CONFIG || {};
-  var API = String((CFG.links && CFG.links.bookingApp) || "").replace(/\/$/, "");
+  var API = String((CFG.links && CFG.links.api) || "").replace(/\/$/, "");
   var gateways = null; // null = loading, [] = none available
   var gatewayError = false;
   var chosenCurrency = null;
@@ -113,6 +113,7 @@
   var formState = { name: "", email: "", phone: "", notes: "", gateway: "", terms: false };
   var GATEWAY_LABEL = {
     STRIPE: ["Card payment", "Visa, Mastercard, Amex, Apple Pay & Google Pay — processed securely by Stripe."],
+    MANUAL: ["Request now, pay by secure link", "We email you a secure payment link or bank details within one working day."],
     TEST: ["Test payment", "Development only — no real money is taken."]
   };
 
@@ -222,7 +223,7 @@
 
   function loadGateways() {
     if (!API) { gateways = []; render(); return; }
-    fetch(API + "/api/checkout/options", { headers: { Accept: "application/json" } })
+    fetch(API + "/checkout-options.php", { headers: { Accept: "application/json" } })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (j) { gateways = Array.isArray(j.gateways) ? j.gateways : []; })
       .catch(function () { gateways = []; gatewayError = true; })
@@ -263,7 +264,7 @@
       if (!formState.terms) return showError(form, "Please accept the Terms & Conditions to continue.");
       var payItems = load().filter(function (i) { return i.currency === chosenCurrency; });
       busy = true; render();
-      fetch(API + "/api/checkout", {
+      fetch(API + "/checkout.php", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
@@ -273,7 +274,8 @@
             customer: { name: formState.name, email: formState.email, phone: formState.phone || null },
             notes: formState.notes || null
           },
-          acceptTerms: true
+          acceptTerms: true,
+          gateway: formState.gateway
         })
       })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
@@ -295,6 +297,17 @@
     render();
     loadGateways();
   }
+
+  // Prices changed in the admin dashboard: update what's already in the cart
+  // (checkout always charges the server price anyway).
+  document.addEventListener("qa:prices", function (e) {
+    var p = e.detail || {}, list = load(), changed = false;
+    list.forEach(function (i) {
+      var price = p.items && p.items[i.sku];
+      if (price != null && Number(i.price) !== Number(price)) { i.price = Number(price); changed = true; }
+    });
+    if (changed) { save(list); if (app) render(); }
+  });
 
   // Keep the count in sync across tabs and after the header is drawn.
   window.addEventListener("storage", function (e) { if (e.key === KEY) { updateBadge(); render(); } });

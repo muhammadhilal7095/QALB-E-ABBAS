@@ -2,6 +2,7 @@
 # Qalb-E-Abbas — Hostinger (LiteSpeed / Apache) hosting
 # ==========================================================================
 Options -MultiViews
+DirectoryIndex index.html index.php
 RewriteEngine On
 
 # 1. Always use HTTPS and the www domain (one canonical version of every URL)
@@ -25,6 +26,8 @@ RewriteRule ^(.+?)/?$ $1.html [L]
 RewriteRule ^(booking|\.git|\.github|\.work|docs)(/|$) - [R=404,L]
 RewriteRule (^|/)\.(?!well-known) - [R=404,L]
 RewriteRule ^(serve\.py|.*\.md)$ - [R=404,L]
+# PHP API: shared code and the price copy (api/_lib.php, api/_catalog.json) are never served.
+RewriteRule ^api/_ - [R=404,L]
 
 # 4. Custom "page not found" page
 ErrorDocument 404 /404.html

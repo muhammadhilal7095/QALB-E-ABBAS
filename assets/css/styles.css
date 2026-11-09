@@ -4089,3 +4089,69 @@ main > :is(.section, .svc-sec, .svc-cat):last-child { padding-bottom: var(--sect
 .rv-status { margin: 0; padding: 12px 14px; border-radius: 12px; font-size: .92rem; line-height: 1.5; }
 .rv-status--ok { background: color-mix(in srgb, #10B981 12%, #fff); color: #065F46; }
 .rv-status--err { background: color-mix(in srgb, #EF4444 10%, #fff); color: #991B1B; }
+
+/* Default profile icon for sample reviews (no real person's photo) */
+.rv-card .avatar--default { background: linear-gradient(160deg, #E8EDF7, #CBD5E6) !important; color: #8796B0; overflow: hidden; align-items: end; }
+.rv-card .avatar--default svg { width: 100%; height: 100%; transform: translateY(4px); }
+/* "Leave a Review" button under every review row */
+.rv-marquee__controls { align-items: center; gap: 12px; flex-wrap: wrap; }
+.rv-leave { gap: 8px; min-height: 44px; font-size: .92rem; }
+.rv-leave .icon { width: 17px; height: 17px; color: #F5A623; }
+/* Illustrated avatars on sample reviews */
+.rv-card .avatar--drawn { padding: 0; overflow: hidden; background: transparent !important; box-shadow: 0 0 0 2px #fff, 0 0 0 3px color-mix(in srgb, var(--brand) 22%, #fff); }
+.rv-card .avatar--drawn svg { display: block; width: 100%; height: 100%; }
+
+/* ==========================================================================
+   PEOPLE PHOTOS — home "Who we help", University steps, Leave a Review
+   ========================================================================== */
+.wh-grid { display: grid; gap: clamp(16px, 2vw, 22px); margin: 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .wh-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .wh-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.wh { display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; background: #fff; border: 1px solid var(--line); box-shadow: 0 22px 46px -34px rgba(11, 27, 54, .55); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.wh:hover { transform: translateY(-5px); box-shadow: 0 32px 60px -34px rgba(11, 27, 54, .6); }
+.wh__media { position: relative; margin: 0; aspect-ratio: 4 / 5; overflow: hidden; }
+.wh__media::after { content: ""; position: absolute; inset: 50% 0 0; background: linear-gradient(to top, rgba(8, 18, 38, .75), transparent); }
+.wh__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.wh:hover .wh__media img { transform: scale(1.04); }
+.wh__tag { position: absolute; left: 16px; bottom: 14px; z-index: 1; color: #fff; font: 700 1.25rem/1.2 var(--display); }
+.wh__body { display: flex; flex-direction: column; flex: 1; padding: 16px 18px 18px; }
+.wh__body p { margin: 0; font-size: .92rem; line-height: 1.6; color: var(--text); }
+.wh__link { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 14px; color: var(--brand); font-weight: 700; font-size: .9rem; text-decoration: none; }
+.wh__link .icon { width: 15px; height: 15px; transition: transform .2s; }
+.wh__link:hover .icon { transform: translateX(3px); }
+
+.uj__grid { display: grid; gap: clamp(20px, 3vw, 32px); align-items: stretch; }
+@media (min-width: 960px) {
+  .uj__grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
+  .uj__grid .uj__steps { grid-template-columns: minmax(0, 1fr); }
+}
+.uj__media { position: relative; margin: 0; min-height: 320px; overflow: hidden; border-radius: 24px; box-shadow: 0 26px 52px -32px rgba(11, 27, 54, .6); }
+.uj__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.uj__badge { position: absolute; left: 16px; bottom: 16px; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 10px 14px 10px 10px; border-radius: 16px; background: rgba(255, 255, 255, .95); box-shadow: 0 12px 26px -14px rgba(0, 0, 0, .45); font-size: .82rem; color: var(--text); }
+.uj__badge .icon { width: 34px; height: 34px; padding: 8px; border-radius: 10px; background: var(--navy); color: var(--accent); flex: none; }
+.uj__badge b { display: block; color: var(--ink); font-size: .9rem; }
+
+.rv-invite { position: relative; margin: 24px 0 0; overflow: hidden; border-radius: 22px; aspect-ratio: 4 / 4.2; box-shadow: 0 24px 48px -32px rgba(11, 27, 54, .6); }
+.rv-invite img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+.rv-invite figcaption { position: absolute; left: 14px; right: 14px; bottom: 14px; padding: 14px 16px; border-radius: 16px; background: rgba(255, 255, 255, .95); box-shadow: 0 12px 26px -14px rgba(0, 0, 0, .45); font-size: .86rem; line-height: 1.45; color: var(--text); }
+.rv-invite figcaption b { display: block; margin: 4px 0 2px; color: var(--ink); font-size: .98rem; }
+.rv-invite__stars { display: inline-flex; gap: 2px; color: #F5A623; }
+.rv-invite__stars .icon { width: 15px; height: 15px; }
+
+/* Contact form: spam trap + result message */
+.hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form__status.is-err { color: #B91C1C; }
+.form__status.is-ok, .form__status.is-err { padding: 12px 14px; border-radius: 12px; background: #E3F5E9; font-weight: 600; }
+.form__status.is-err { background: #FDE8E8; }
+
+/* Thank-you page */
+.ty { max-width: 640px; margin: 0 auto; text-align: center; }
+.ty__icon { display: inline-grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: #E3F5E9; color: #15803D; margin-bottom: 18px; }
+.ty__icon .icon { width: 38px; height: 38px; }
+.ty__icon--wait { background: #FEF3E2; color: #B45309; }
+.ty__box { margin: 24px 0; padding: 18px 20px; border-radius: 18px; background: #fff; border: 1px solid var(--line); text-align: left; box-shadow: 0 20px 40px -32px rgba(11, 27, 54, .5); }
+.ty__box dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; }
+.ty__box dt { color: var(--muted); }
+.ty__box dd { margin: 0; font-weight: 700; color: var(--ink); text-align: right; }
+.ty__steps { text-align: left; margin: 0 0 26px; padding-left: 20px; line-height: 1.8; }
+.ty__actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }

@@ -231,6 +231,11 @@
     "description": "Sorry, the page you were looking for can't be found. It may have moved — try our homepage, services, US LLC and Amazon FBA pages or contact our team for help.",
     "noindex": true
   },
+  "thank-you": {
+    "title": "Thank You — Request Received | Qalb-E-Abbas",
+    "description": "Thank you for booking with Qalb-E-Abbas. Your request has been received and our team will contact you within one working day with the next steps.",
+    "noindex": true
+  },
   "leave-review": {
     "title": "Leave a Review — Share Your Experience | Qalb-E-Abbas",
     "description": "Worked with Qalb-E-Abbas or studied at Qalb-E-Abbas University? Share your experience: your name, photo and a few words help others choose with confidence.",

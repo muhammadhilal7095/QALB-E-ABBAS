@@ -31,9 +31,9 @@ window.SITE_CONFIG = {
     about: "/about",
     contact: "/contact",
     blog: "/blog",
-    // Online booking & payment system (the Next.js app in /booking).
-    // Change to the live booking URL when deployed, e.g. "https://book.qalbeabbas.com".
-    bookingApp: "http://localhost:3000",
+    // Booking, checkout, contact, assessment & review API (PHP in /api on Hostinger).
+    // Managed from the admin dashboard at /admin.
+    api: "/api",
     // Header / menu "Book Consultation" button. book-consultation.html forwards
     // each ?topic= to the matching meeting type in the booking app.
     book: "/book-consultation",

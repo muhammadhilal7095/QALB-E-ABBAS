@@ -120,7 +120,7 @@
   function pathName() { return A.adaptive && state.path ? A.adaptive.paths[state.path].name : A.name; }
 
   var CFG = window.SITE_CONFIG || {};
-  var API = String((CFG.links && CFG.links.bookingApp) || "").replace(/\/$/, "");
+  var API = String((CFG.links && CFG.links.api) || "").replace(/\/$/, "");
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function icon(n) { return '<svg class="icon" aria-hidden="true"><use href="#i-' + n + '"></use></svg>'; }
 
@@ -335,7 +335,7 @@
       nextStep: { title: next.title, text: next.text }, answers: answers
     };
     if (!API) return setSaveStatus(false);
-    fetch(API + "/api/assessments", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) })
+    fetch(API + "/assessment.php", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) { setSaveStatus(res.ok, res.j.reference, res.j.error); })
       .catch(function () { setSaveStatus(false); });

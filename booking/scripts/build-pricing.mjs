@@ -235,3 +235,8 @@ console.log(`Pricing sections updated on ${changed} pages.`);
   writeFileSync(file, html);
   console.log(`✓ ${catalog.pages["us-llc"].file} (state selector, ${fees.states.length} states)`);
 }
+
+// The PHP checkout and admin dashboard on Hostinger read prices from this copy
+// (api/_catalog.json is blocked from the web by .htaccess).
+writeFileSync(join(here, "..", "..", "api", "_catalog.json"), JSON.stringify(catalog));
+console.log("✓ api/_catalog.json (catalog for the PHP checkout & admin)");

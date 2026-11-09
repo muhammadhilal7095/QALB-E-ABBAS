@@ -13,7 +13,7 @@
   var SYMBOL = { USD: "$", GBP: "£", EUR: "€" };
   var KEY = "qa_booking_draft_v1";
   var CFG = window.SITE_CONFIG || {};
-  var API = String((CFG.links && CFG.links.bookingApp) || "").replace(/\/$/, "");
+  var API = String((CFG.links && CFG.links.api) || "").replace(/\/$/, "");
   var type = form.elements.consultation, date = form.elements.date, time = form.elements.time;
   var errEl = form.querySelector(".bk-error"), submitBtn = form.querySelector("[data-bk-submit]");
   var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || "";
@@ -122,7 +122,7 @@
     if (!API) return showError("Online booking isn't available right now. Please email contact@qalbeabbas.com and we'll arrange your consultation.");
 
     submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.innerHTML; submitBtn.textContent = "Please wait…";
-    fetch(API + "/api/checkout", {
+    fetch(API + "/checkout.php", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({

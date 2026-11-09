@@ -66,4 +66,18 @@
     if (h) states.forEach(function (s) { if (s.name.toLowerCase().replace(/\s+/g, "-") === h) start = s.code; });
   } catch (e) { /* ignore */ }
   apply(start, false);
+
+  // Prices changed in the admin dashboard (site.js → /api/prices.php).
+  var packageBase = {};
+  document.querySelectorAll("[data-llc-package]").forEach(function (b) { packageBase[b.dataset.price] = b.dataset.sku; });
+  document.addEventListener("qa:prices", function (e) {
+    var p = e.detail || {};
+    states.forEach(function (s) { if (p.states && p.states[s.code] != null) s.fee = Number(p.states[s.code]); });
+    document.querySelectorAll("[data-llc-price]").forEach(function (el) {
+      if (!el.dataset.llcOrig) el.dataset.llcOrig = el.dataset.llcPrice;
+      var sku = packageBase[el.dataset.llcOrig];
+      if (sku && p.items && p.items[sku] != null) el.dataset.llcPrice = String(p.items[sku]);
+    });
+    apply(select.value, false);
+  });
 })();

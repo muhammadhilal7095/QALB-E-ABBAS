@@ -21,10 +21,10 @@ session_set_cookie_params(['lifetime' => 0, 'path' => '/admin', 'secure' => $htt
 session_start();
 
 const SESSION_HOURS = 12;
-const ADMIN_BUILD = 'review-photo-2';
+const ADMIN_BUILD = 'login-reset-1';
 // Temporary first password (only its one-way hash is stored here). It stops working as
 // soon as a new password is saved in Settings or through an emailed reset link.
-const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$8baa121837504633e7698e761ec51017$565126e92ec63768d4b5290d09f102e64ca9194134302321d2bcf5ca6a13e29e';
+const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$4ecee5cea90a8a4f4460dedda52c8ccc$b80455753112ce076e6e8232e7a4c7d8a95ea2c6548803bb3e728a36fb5d08d8';
 
 // ---------------------------------------------------------------------------
 // Small helpers
@@ -76,7 +76,20 @@ const PAYMENT_STATUS = ['paid' => ['Paid', 'green'], 'pending' => ['Card payment
 const ENQ_STATUS = ['new' => ['New', 'blue'], 'replied' => ['Replied', 'teal'], 'closed' => ['Closed', 'grey']];
 const REVIEW_STATUS = ['pending' => ['Waiting for approval', 'amber'], 'approved' => ['Live on website', 'green'], 'rejected' => ['Rejected', 'grey']];
 
-function admin_data(): array { return qa_read('admin'); }
+// Raise ADMIN_RESET to reset the login once (saved password and email are cleared,
+// so the temporary password above and contact@qalbeabbas.com work again).
+const ADMIN_RESET = 'reset-1';
+function admin_data(): array {
+    static $done = false;
+    if (!$done) {
+        $done = true;
+        $a = qa_read('admin');
+        if (($a['resetApplied'] ?? '') !== ADMIN_RESET) {
+            qa_update('admin', function (array $x) { unset($x['passwordHash'], $x['email']); $x['resetApplied'] = ADMIN_RESET; return $x; });
+        }
+    }
+    return qa_read('admin');
+}
 function admin_email(): string { return (string)(admin_data()['email'] ?? QA_ADMIN_EMAIL); }
 function active_hash(): string { return (string)(admin_data()['passwordHash'] ?? ADMIN_TEMP_HASH); }
 function using_temp_password(): bool { return empty(admin_data()['passwordHash']); }

@@ -530,7 +530,7 @@
       (c.phoneUSDisplay ? '<li><a href="' + esc(c.phoneUSHref) + '"><span class="footer__ci">' + icon("phone") + "</span><span><small>USA</small>" + esc(c.phoneUSDisplay) + "</span></a></li>" : "") +
       '<li><a href="mailto:' + esc(c.email) + '"><span class="footer__ci">' + icon("mail") + "</span><span><small>Email</small>" + esc(c.email) + "</span></a></li>" +
       "</ul>" +
-      '<a class="btn btn--accent btn--sm footer__cta" href="' + esc(CFG.links.book) + '">' + icon("calendar") + "Book Consultation — $50</a>" +
+      '<a class="btn btn--accent btn--sm footer__cta" href="' + esc(CFG.links.book) + '">' + icon("calendar") + "Book Consultation</a>" +
       "</div>" +
       "</div>" +
 

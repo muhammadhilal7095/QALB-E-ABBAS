@@ -137,7 +137,7 @@ if ($preview) header('X-Robots-Tag: noindex');
             <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?= rawurlencode($url) ?>" target="_blank" rel="noopener">LinkedIn</a>
             <a href="https://twitter.com/intent/tweet?url=<?= rawurlencode($url) ?>&amp;text=<?= rawurlencode($post['title']) ?>" target="_blank" rel="noopener">X</a>
           </div>
-          <div class="page-cta"><h2><?= $e($post['ctaTitle'] ?: 'Need expert help with this?') ?></h2><p><?= $e($post['ctaText'] ?: 'Book a one-to-one consultation with our team and get a clear plan for your next step.') ?></p><div class="btn-row"><a class="btn btn--accent" href="<?= $e($post['ctaLink'] ?: '/book-consultation') ?>"><?= $e($post['ctaButton'] ?: 'Book Consultation — $50') ?><svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="/contact">Contact us</a></div></div>
+          <div class="page-cta"><h2><?= $e($post['ctaTitle'] ?: 'Need expert help with this?') ?></h2><p><?= $e($post['ctaText'] ?: 'Book a one-to-one consultation with our team and get a clear plan for your next step.') ?></p><div class="btn-row"><a class="btn btn--accent" href="<?= $e($post['ctaLink'] ?: '/book-consultation') ?>"><?= $e($post['ctaButton'] ?: 'Book Consultation') ?><svg class="icon btn__arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a><a class="btn btn--outline" href="/contact">Contact us</a></div></div>
         </article>
 <?php if (count($toc) >= 2): ?>
         <aside class="bp-toc" aria-label="On this page"><p>On this page</p><ol><?php foreach ($toc as $t): ?><li><a href="/blog/<?= $e($post['slug']) ?>#<?= $e($t['id']) ?>"><?= $e($t['text']) ?></a></li><?php endforeach; ?></ol></aside>

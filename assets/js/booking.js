@@ -67,9 +67,21 @@
   // Preselect from ?topic= (every service page links here with its topic).
   var params = new URLSearchParams(location.search);
   var topic = params.get("topic") || "";
+  // Coming from a service page: only the related consultation is offered.
   if (topic) {
+    var match = null;
     for (var i = 0; i < type.options.length; i++) {
-      if ((" " + (type.options[i].dataset.topics || "") + " ").indexOf(" " + topic + " ") >= 0) { type.selectedIndex = i; break; }
+      if ((" " + (type.options[i].dataset.topics || "") + " ").indexOf(" " + topic + " ") >= 0) { match = type.options[i]; break; }
+    }
+    if (match) {
+      Array.prototype.slice.call(type.options).forEach(function (o) { if (o !== match && o.value) o.remove(); });
+      type.value = match.value;
+      // e.g. from the Amazon page: "Amazon consultation" instead of the general e-commerce one.
+      var PLATFORM = {"amazon": "Amazon", "ebay": "eBay", "walmart": "Walmart", "etsy": "Etsy", "tiktok-shop": "TikTok Shop", "shopify": "Shopify", "china-sourcing": "China sourcing"};
+      if (PLATFORM[topic]) {
+        match.textContent = PLATFORM[topic] + " consultation, $" + match.dataset.price + " · " + match.dataset.minutes + " min";
+        match.dataset.desc = "A 1-to-1 " + PLATFORM[topic] + " consultation: your account, products, costs and the right next steps for your " + PLATFORM[topic] + " business.";
+      }
     }
   }
 

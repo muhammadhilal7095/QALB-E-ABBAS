@@ -293,6 +293,9 @@ function qa_price_submission(array $sub, bool $checkDate = true): array {
         if (!preg_match('/^\d{2}:\d{2}$/', $time)) throw new QaUserError('Please choose a preferred time.');
         if ($checkDate) qa_check_availability($date, $time, (int)$c['minutes']);
         $cents = (int)round($c['price'] * 100);
+        // Booked from a platform page (e.g. Amazon): name it "Amazon consultation".
+        $platform = ['amazon' => 'Amazon', 'ebay' => 'eBay', 'walmart' => 'Walmart', 'etsy' => 'Etsy', 'tiktok-shop' => 'TikTok Shop', 'shopify' => 'Shopify', 'china-sourcing' => 'China sourcing'][(string)($sub['topic'] ?? '')] ?? null;
+        if ($platform && in_array($sub['topic'], (array)($c['topics'] ?? []), true)) $c['name'] = "$platform consultation";
         return ['currency' => $c['currency'], 'title' => $c['name'], 'totalCents' => $cents,
                 'lines' => [['name' => "{$c['name']} ({$c['minutes']} min)", 'unitCents' => $cents, 'quantity' => 1, 'lineCents' => $cents, 'note' => null]]];
     }

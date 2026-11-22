@@ -19,7 +19,19 @@
   function money(n) { return "$" + Number(n).toLocaleString("en-US"); }
   function chosen() { return form.querySelector('input[name="course"]:checked'); }
 
+  // Phones & tablets: a bar fixed at the bottom of the form repeats the fee and the pay button.
+  var bar = form.querySelector("[data-en-bar]");
+  var barTotal = bar && bar.querySelector("[data-en-bar-total]"), barBtn = bar && bar.querySelector("button");
+  function syncBar() {
+    if (!bar) return;
+    barTotal.textContent = totalEl.textContent;
+    barBtn.disabled = btn.disabled; barBtn.textContent = btn.disabled && chosen() && !busy ? "Pay & enrol" : btn.textContent;
+  }
+
   function update() {
+    _update(); syncBar();
+  }
+  function _update() {
     var c = chosen();
     if (!c) {
       sumEl.innerHTML = '<p class="cart-muted">Choose a course to see the fee.</p>';
@@ -47,10 +59,39 @@
 
   function showError(msg) { errEl.textContent = msg; errEl.hidden = false; errEl.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
 
+  // With a course chosen from its "Apply Now" button (or ?course=…), only that course is shown.
+  var courseTitle = form.querySelector("#en-course-title");
+  function pick(slug) {
+    var r = slug && form.querySelector('input[name="course"][value="' + String(slug).replace(/[^a-z0-9-]/g, "") + '"]');
+    if (r) r.checked = true;
+    form.classList.toggle("is-one-course", !!r);
+    if (courseTitle) courseTitle.textContent = r ? "1. Your course" : "1. Choose your course";
+    update();
+  }
+
+  // On the University page the form sits in a popup opened by the "Apply Now" buttons.
+  var dialog = form.closest("dialog");
+  if (dialog) {
+    var openDialog = function (slug) {
+      if (slug) pick(slug);
+      if (!dialog.open) { if (dialog.showModal) dialog.showModal(); else dialog.setAttribute("open", ""); }
+      document.documentElement.classList.add("mfg-lock");
+      dialog.scrollTop = 0;
+    };
+    var closeDialog = function () { if (dialog.open) { if (dialog.close) dialog.close(); else dialog.removeAttribute("open"); } };
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-enrol-open]"); if (!b) return;
+      e.preventDefault(); pick(b.getAttribute("data-enrol-open")); openDialog(b.getAttribute("data-enrol-open"));
+    });
+    dialog.querySelectorAll("[data-enrol-close]").forEach(function (b) { b.addEventListener("click", closeDialog); });
+    dialog.addEventListener("click", function (e) { if (e.target === dialog) closeDialog(); });
+    dialog.addEventListener("close", function () { document.documentElement.classList.remove("mfg-lock"); });
+  }
+
   // Pre-select a course from ?course=…, fill the time zone, show a note after a cancelled payment.
   var q = new URLSearchParams(location.search);
-  var pre = q.get("course") && form.querySelector('input[name="course"][value="' + q.get("course").replace(/[^a-z0-9-]/g, "") + '"]');
-  if (pre) pre.checked = true;
+  if (q.get("course")) pick(q.get("course"));
+  if (dialog && (location.hash === "#admission" || q.get("apply") === "1")) openDialog(q.get("course"));
   try { form.timezone.value = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) { /* type it in */ }
   if (q.get("cancelled") === "1") showError("Your payment was cancelled and nothing was charged. You can try again below.");
 

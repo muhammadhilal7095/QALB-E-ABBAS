@@ -90,7 +90,7 @@
     var result = addItem({ sku: d.sku, name: d.name, price: d.price, currency: d.currency, unit: d.unit, note: d.note, multi: d.multi === "1", group: d.group });
     if (d.withSku) addItem({ sku: d.withSku, name: d.withName, price: d.withPrice, currency: d.withCurrency, note: d.withNote, group: d.group });
     if (d.group) result = "added";
-    toast(icon("check-circle") + "<span><strong>" + esc(d.name) + (d.withSku ? " + " + esc(d.withName.replace("US LLC state filing fee — ", "")) + " state fee" : "") + "</strong> " +
+    toast(icon("check-circle") + "<span><strong>" + esc(d.name) + (d.withSku ? " + " + esc(d.withName.replace("US LLC state filing fee: ", "")) + " state fee" : "") + "</strong> " +
       (result === "exists" ? "is already in your cart." : "added to your cart.") +
       '</span><a href="/cart">View cart</a>');
     if (!btn.dataset.label) btn.dataset.label = btn.innerHTML;
@@ -112,9 +112,9 @@
   var busy = false;
   var formState = { name: "", email: "", phone: "", notes: "", gateway: "", terms: false };
   var GATEWAY_LABEL = {
-    STRIPE: ["Card payment", "Visa, Mastercard, Amex, Apple Pay & Google Pay — processed securely by Stripe."],
+    STRIPE: ["Card payment", "Visa, Mastercard, Amex, Apple Pay & Google Pay, processed securely by Stripe."],
     MANUAL: ["Request now, pay by secure link", "We email you a secure payment link or bank details within one working day."],
-    TEST: ["Test payment", "Development only — no real money is taken."]
+    TEST: ["Test payment", "Development only, no real money is taken."]
   };
 
   function groups(list) {
@@ -128,13 +128,17 @@
     var list = load();
     if (!list.length) {
       app.innerHTML = '<div class="cart-empty">' + icon("cart") +
-        "<h2>Your cart is empty</h2><p>Browse our services and add what you need — prices are shown on each service page.</p>" +
+        "<h2>Your cart is empty</h2><p>Browse our services and add what you need, prices are shown on each service page.</p>" +
         '<a class="btn btn--primary" href="/services">Browse services</a></div>';
       return;
     }
     var byCur = groups(list);
     var currencies = Object.keys(byCur);
     if (!chosenCurrency || !byCur[chosenCurrency]) chosenCurrency = currencies[0];
+
+    function lineTotal(i) { return i.price * (i.multi ? i.qty : 1); }
+    function sum(arr) { return arr.reduce(function (t, i) { return t + lineTotal(i); }, 0); }
+    var itemCount = list.reduce(function (t, i) { return t + (i.multi ? i.qty : 1); }, 0);
 
     var itemsHtml = currencies.map(function (cur) {
       var rows = byCur[cur].map(function (i) {
@@ -146,35 +150,37 @@
           : '<span class="cart-qty cart-qty--fixed">1</span>';
         return '<li class="cart-line">' +
           '<div class="cart-line__info"><p class="cart-line__name">' + esc(i.name) + "</p>" +
-          '<p class="cart-line__meta">' + money(i.price, cur) + (i.unit ? " " + esc(i.unit) : "") + (i.note ? " · " + esc(i.note) : "") + "</p></div>" +
+          '<p class="cart-line__meta">' + money(i.price, cur) + (i.unit ? " " + esc(i.unit) : "") + (i.note ? " · " + esc(i.note) : "") + "</p>" +
+          '<button type="button" class="cart-line__remove" data-remove="' + esc(i.sku) + '" aria-label="Remove ' + esc(i.name) + '">Remove</button></div>' +
           qty +
-          '<p class="cart-line__total">' + money(i.price * (i.multi ? i.qty : 1), cur) + "</p>" +
-          '<button type="button" class="cart-line__remove" data-remove="' + esc(i.sku) + '" aria-label="Remove ' + esc(i.name) + '">' + icon("close") + "</button>" +
+          '<p class="cart-line__total">' + money(lineTotal(i), cur) + "</p>" +
           "</li>";
       }).join("");
-      var total = byCur[cur].reduce(function (t, i) { return t + i.price * (i.multi ? i.qty : 1); }, 0);
       return '<div class="cart-group">' +
-        (currencies.length > 1 ? '<h3 class="cart-group__title">Services in ' + cur + "</h3>" : "") +
-        '<ul class="cart-lines">' + rows + "</ul>" +
-        '<p class="cart-group__total"><span>Subtotal</span><strong>' + money(total, cur) + "</strong></p></div>";
+        (currencies.length > 1 ? '<h3 class="cart-group__title">Priced in ' + cur + "</h3>" : "") +
+        '<div class="cart-cols" aria-hidden="true"><span>Service</span><span>Qty</span><span>Total</span></div>' +
+        '<ul class="cart-lines">' + rows + "</ul></div>";
     }).join("");
 
     var cancelled = /[?&]cancelled=1/.test(location.search)
-      ? '<div class="cart-notice cart-notice--warn">' + icon("info") + "<p>Your payment was cancelled — nothing was charged. Your services are still in your cart.</p></div>"
+      ? '<div class="cart-notice cart-notice--warn">' + icon("info") + "<p>Your payment was cancelled. Nothing was charged. Your services are still in your cart.</p></div>"
       : "";
     var multiNote = currencies.length > 1
-      ? '<div class="cart-notice">' + icon("info") + "<p>Your cart has services priced in different currencies (" + currencies.join(", ") +
-        "). Each currency is paid separately — choose which one to pay for now. The rest stay in your cart.</p></div>"
+      ? '<div class="cart-notice">' + icon("info") + "<p>Your cart has services in " + currencies.join(" and ") +
+        ". Each currency is paid separately. Choose one to pay for now; the rest stay in your cart.</p></div>"
       : "";
 
     var curPick = currencies.length > 1
-      ? '<fieldset class="cart-field"><legend>Pay for</legend><div class="cart-options">' + currencies.map(function (c) {
-          var t = byCur[c].reduce(function (s, i) { return s + i.price * (i.multi ? i.qty : 1); }, 0);
-          return '<label class="cart-option"><input type="radio" name="cur" value="' + c + '"' + (c === chosenCurrency ? " checked" : "") + "><span><strong>" + c + " services</strong><small>" + money(t, c) + "</small></span></label>";
+      ? '<fieldset class="cart-field"><legend>Pay for</legend><div class="cart-options cart-options--row">' + currencies.map(function (c) {
+          return '<label class="cart-option"><input type="radio" name="cur" value="' + c + '"' + (c === chosenCurrency ? " checked" : "") + "><span><strong>" + c + "</strong><small>" + money(sum(byCur[c]), c) + "</small></span></label>";
         }).join("") + "</div></fieldset>"
       : "";
 
-    var payTotal = byCur[chosenCurrency].reduce(function (t, i) { return t + i.price * (i.multi ? i.qty : 1); }, 0);
+    var payList = byCur[chosenCurrency];
+    var payTotal = sum(payList);
+    var summaryLines = payList.map(function (i) {
+      return '<li><span>' + esc(i.name) + (i.multi && i.qty > 1 ? " × " + i.qty : "") + "</span><b>" + money(lineTotal(i), chosenCurrency) + "</b></li>";
+    }).join("");
 
     var gw;
     if (gateways === null) gw = '<p class="cart-muted">Loading payment options…</p>';
@@ -190,23 +196,35 @@
     }
 
     app.innerHTML =
-      '<div class="cart-layout">' +
-        '<div class="cart-panel"><div class="cart-panel__head"><h2>Your services</h2><button type="button" class="cart-clear" data-clear>Clear cart</button></div>' + cancelled + multiNote + itemsHtml +
-        '<p class="cart-hint">' + icon("info") + "Government, state and university fees noted on a service are paid separately and are not included.</p></div>" +
-        '<form class="cart-panel cart-checkout" novalidate>' +
-          "<h2>Checkout</h2>" + curPick +
-          '<div class="cart-field"><label for="c-name">Full name *</label><input id="c-name" name="name" autocomplete="name" required value="' + esc(formState.name) + '"></div>' +
-          '<div class="cart-field"><label for="c-email">Email *</label><input id="c-email" name="email" type="email" autocomplete="email" required value="' + esc(formState.email) + '"></div>' +
-          '<div class="cart-field"><label for="c-phone">Phone / WhatsApp</label><input id="c-phone" name="phone" type="tel" autocomplete="tel" value="' + esc(formState.phone) + '"></div>' +
-          '<div class="cart-field"><label for="c-notes">Anything we should know?</label><textarea id="c-notes" name="notes" rows="3" placeholder="Store link, account details, deadlines…">' + esc(formState.notes) + "</textarea></div>" +
-          '<fieldset class="cart-field"><legend>Payment</legend>' + gw + "</fieldset>" +
+      '<form class="cart-layout" novalidate>' +
+        '<div class="cart-main">' +
+          '<section class="cart-panel"><div class="cart-panel__head"><h2>Your services <span>' + itemCount + (itemCount === 1 ? " item" : " items") + '</span></h2><button type="button" class="cart-clear" data-clear>Clear cart</button></div>' +
+            cancelled + multiNote + itemsHtml +
+            '<p class="cart-hint">Government, state and university fees noted on a service are paid separately and are not included.</p>' +
+            '<a class="cart-more" href="/services">← Continue browsing services</a></section>' +
+          '<section class="cart-panel"><div class="cart-panel__head"><h2>Your details</h2></div>' +
+            '<div class="cart-row">' +
+              '<div class="cart-field"><label for="c-name">Full name</label><input id="c-name" name="name" autocomplete="name" required value="' + esc(formState.name) + '"></div>' +
+              '<div class="cart-field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" required value="' + esc(formState.email) + '"></div>' +
+            "</div>" +
+            '<div class="cart-field"><label for="c-phone">Phone / WhatsApp <span class="cart-opt">(optional)</span></label><input id="c-phone" name="phone" type="tel" autocomplete="tel" value="' + esc(formState.phone) + '"></div>' +
+            '<div class="cart-field"><label for="c-notes">Anything we should know? <span class="cart-opt">(optional)</span></label><textarea id="c-notes" name="notes" rows="3" placeholder="Store link, account details, deadlines">' + esc(formState.notes) + "</textarea></div>" +
+          "</section>" +
+        "</div>" +
+        '<aside class="cart-panel cart-summary">' +
+          "<h2>Order summary</h2>" + curPick +
+          '<ul class="cart-sum">' + summaryLines + "</ul>" +
+          '<p class="cart-sum__total"><span>Total</span><strong>' + money(payTotal, chosenCurrency) + "</strong></p>" +
+          '<fieldset class="cart-field"><legend>Payment method</legend>' + gw + "</fieldset>" +
           '<label class="cart-terms"><input type="checkbox" name="terms"' + (formState.terms ? " checked" : "") + '> <span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>' +
-          '<div class="cart-pay"><p><span>Total to pay</span><strong>' + money(payTotal, chosenCurrency) + "</strong></p>" +
-          '<button type="submit" class="btn btn--accent btn--block"' + (busy || !gateways || !gateways.length ? " disabled" : "") + ">" +
-            (busy ? "Please wait…" : icon("shield") + "Continue to secure payment") + "</button></div>" +
+          '<button type="submit" class="btn btn--primary btn--block cart-submit"' + (busy || !gateways || !gateways.length ? " disabled" : "") + ">" +
+            (busy ? "Please wait…" : "Pay " + money(payTotal, chosenCurrency)) + "</button>" +
           '<p class="cart-error" role="alert" hidden></p>' +
-        "</form>" +
-      "</div>";
+          '<ul class="cart-assure"><li>' + icon("shield") + "Payments processed by Stripe. We never see your card details.</li>" +
+            "<li>" + icon("mail") + "Email confirmation with your order reference.</li>" +
+            "<li>" + icon("headset") + "Our team contacts you within one working day.</li></ul>" +
+        "</aside>" +
+      "</form>";
   }
 
   function readForm(form) {

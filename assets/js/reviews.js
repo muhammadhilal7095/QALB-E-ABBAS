@@ -77,7 +77,7 @@
       (r.sample ? '<span class="review__badge">Sample review</span>' : "") +
       '<div class="stars stars--sm" role="img" aria-label="' + rating + ' out of 5 stars">' + new Array(rating + 1).join(star()) + "</div>" +
       "<blockquote>" + esc(r.text) + "</blockquote>" +
-      "<figcaption>" + avatar + "<span><b>" + esc(r.name) + "</b><small>" + sub + "</small></span></figcaption>" +
+      "<figcaption><span><b>" + esc(r.name) + "</b><small>" + sub + "</small></span></figcaption>" +
       "</figure>";
   }
 
@@ -98,7 +98,6 @@
     var section = mount.closest("section");
     if (section) section.hidden = !list.length;
     if (!list.length) return;
-    if (!list.length) { var sec = mount.closest("section"); if (sec) sec.hidden = true; return; }
     var cards = list.map(card);
 
     // One "loop unit" holds at least 8 cards so the row is always wider than

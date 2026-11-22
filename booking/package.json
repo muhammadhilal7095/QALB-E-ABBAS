@@ -16,7 +16,8 @@
     "links:build": "node scripts/build-links.mjs",
     "images:build": "node scripts/build-images.mjs",
     "assets:build": "node scripts/build-assets.mjs",
-    "site:build": "npm run pricing:build && npm run faqs:build && npm run links:build && npm run images:build && npm run seo:build && npm run schema:build && npm run assets:build"
+    "assistant:build": "node scripts/build-assistant.mjs",
+    "site:build": "npm run pricing:build && npm run faqs:build && npm run links:build && npm run images:build && npm run seo:build && npm run schema:build && npm run assistant:build && npm run assets:build"
   },
   "dependencies": {
     "next": "^15.5.28",

@@ -71,12 +71,12 @@
   },
   "trademark-registration": {
     "title": "Trademark Registration UK & US (UKIPO, USPTO) | Qalb-E-Abbas",
-    "description": "Register your trademark in the UK (UKIPO) or US (USPTO) with conflict searches, class selection and US attorney filing — ready for Amazon Brand Registry.",
+    "description": "Register your trademark in the UK (UKIPO) or US (USPTO) with conflict searches, class selection and US attorney filing, ready for Amazon Brand Registry.",
     "priority": "0.8"
   },
   "digital-marketing": {
     "title": "Digital Marketing & PPC Services – Meta, TikTok, Google Ads",
-    "description": "Paid advertising management for Meta (Facebook & Instagram), TikTok and Google Ads — campaign setup, creatives, conversion tracking and monthly reporting.",
+    "description": "Paid advertising management for Meta (Facebook & Instagram), TikTok and Google Ads: campaign setup, creatives, conversion tracking and monthly reporting.",
     "priority": "0.8"
   },
   "seo": {
@@ -86,7 +86,7 @@
   },
   "social-media-marketing": {
     "title": "Social Media Marketing & Management Services | Qalb-E-Abbas",
-    "description": "Social media management for Facebook, Instagram, TikTok, YouTube and LinkedIn — content creation, reels, community management and monthly reporting.",
+    "description": "Social media management for Facebook, Instagram, TikTok, YouTube and LinkedIn: content creation, reels, community management and monthly reporting.",
     "priority": "0.8"
   },
   "email-marketing": {
@@ -96,7 +96,7 @@
   },
   "influencer-marketing": {
     "title": "Influencer Marketing Services for Brands | Qalb-E-Abbas",
-    "description": "Find and manage the right TikTok, Instagram and YouTube influencers — outreach, product seeding, UGC content and campaign reporting that drives sales.",
+    "description": "Find and manage the right TikTok, Instagram and YouTube influencers: outreach, product seeding, UGC content and campaign reporting that drives sales.",
     "priority": "0.7"
   },
   "affiliate-marketing": {
@@ -121,17 +121,17 @@
   },
   "tiktok-automation": {
     "title": "TikTok Automation Services for Business | Qalb-E-Abbas",
-    "description": "TikTok business automation: auto-replies, comment management, content scheduling and lead capture using TikTok's official tools — safe for your account.",
+    "description": "TikTok business automation: auto-replies, comment management, content scheduling and lead capture using TikTok's official tools, safe for your account.",
     "priority": "0.7"
   },
   "website-development": {
     "title": "Website Design & Development Services | Qalb-E-Abbas",
-    "description": "Professional website design and development: business websites, e-commerce stores, WordPress, Shopify, landing pages and booking sites — fast and SEO-ready.",
+    "description": "Professional website design and development: business websites, e-commerce stores, WordPress, Shopify, landing pages and booking sites, fast and SEO-ready.",
     "priority": "0.7"
   },
   "app-development": {
     "title": "Mobile App Development Services – Android & iOS | Qalb-E-Abbas",
-    "description": "Custom Android, iOS and cross-platform app development for startups and businesses — UI/UX design, e-commerce apps, booking apps, launch and ongoing support.",
+    "description": "Custom Android, iOS and cross-platform app development for startups and businesses, UI/UX design, e-commerce apps, booking apps, launch and ongoing support.",
     "priority": "0.7"
   },
   "crm-development": {
@@ -196,8 +196,13 @@
     "type": "article",
     "priority": "0.6"
   },
+  "enroll": {
+    "title": "Enrol in a Course & Pay Online | Qalb-E-Abbas University",
+    "description": "Enrol in a Qalb-E-Abbas University course: choose your programme, add your details and pay the course fee securely online. 24 live classes per course.",
+    "noindex": true
+  },
   "cart": {
-    "title": "Your Cart — Review Services & Pay Securely | Qalb-E-Abbas",
+    "title": "Your Cart: Review Services & Pay Securely | Qalb-E-Abbas",
     "description": "Review the services in your cart, update quantities and pay securely by card. You'll receive an email confirmation with your order reference.",
     "noindex": true
   },
@@ -207,7 +212,7 @@
     "noindex": true
   },
   "privacy": {
-    "title": "Privacy Policy — How We Protect Your Data | Qalb-E-Abbas",
+    "title": "Privacy Policy: How We Protect Your Data | Qalb-E-Abbas",
     "description": "How Qalb-E-Abbas collects, uses, stores and protects your personal information, your rights under UK GDPR, and how to contact us about your data.",
     "noindex": true
   },
@@ -217,9 +222,14 @@
     "noindex": true
   },
   "disclaimer": {
-    "title": "Website Disclaimer — Information & Advice | Qalb-E-Abbas",
+    "title": "Website Disclaimer: Information & Advice | Qalb-E-Abbas",
     "description": "Important information about the content on the Qalb-E-Abbas website: general guidance only, not legal, tax or financial advice, and how to get advice for you.",
     "noindex": true
+  },
+  "china-sourcing": {
+    "title": "Product Sourcing from China | Suppliers, QC & Shipping",
+    "description": "Source products from China safely: supplier checks, samples, quality inspection, private label packaging and shipping to the UK, US, UAE or Pakistan.",
+    "priority": "0.8"
   },
   "real-estate": {
     "title": "Real Estate Services in Pakistan | Buy, Sell & Invest",
@@ -228,17 +238,27 @@
   },
   "404": {
     "title": "Page Not Found (404) | Qalb-E-Abbas",
-    "description": "Sorry, the page you were looking for can't be found. It may have moved — try our homepage, services, US LLC and Amazon FBA pages or contact our team for help.",
+    "description": "Sorry, the page you were looking for can't be found. It may have moved: try our homepage, services, US LLC and Amazon FBA pages or contact our team for help.",
     "noindex": true
   },
   "thank-you": {
-    "title": "Thank You — Request Received | Qalb-E-Abbas",
+    "title": "Thank You: Request Received | Qalb-E-Abbas",
     "description": "Thank you for booking with Qalb-E-Abbas. Your request has been received and our team will contact you within one working day with the next steps.",
     "noindex": true
   },
   "leave-review": {
-    "title": "Leave a Review — Share Your Experience | Qalb-E-Abbas",
+    "title": "Leave a Review: Share Your Experience | Qalb-E-Abbas",
     "description": "Worked with Qalb-E-Abbas or studied at Qalb-E-Abbas University? Share your experience: your name, photo and a few words help others choose with confidence.",
     "noindex": true
+  },
+  "stock-exchange": {
+    "title": "Stock Exchange Investing | US & UK Stocks",
+    "description": "Invest in US and UK shares: stock market courses, account opening with regulated brokers, consultations and managed portfolios.",
+    "priority": "0.8"
+  },
+  "stock-exchange-join": {
+    "title": "Join the Stock Market Club | Qalb-E-Abbas",
+    "description": "Join the Qalb-E-Abbas Stock Market Club: create a member account, pay a one-time fee and join our WhatsApp group for US and UK markets.",
+    "priority": "0.6"
   }
 }

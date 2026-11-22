@@ -21,7 +21,7 @@ session_set_cookie_params(['lifetime' => 0, 'path' => '/admin', 'secure' => $htt
 session_start();
 
 const SESSION_HOURS = 12;
-const ADMIN_BUILD = 'crop-2';
+const ADMIN_BUILD = 'members-1';
 // Temporary first password (only its one-way hash is stored here). It stops working as
 // soon as a new password is saved in Settings or through an emailed reset link.
 const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$4ecee5cea90a8a4f4460dedda52c8ccc$b80455753112ce076e6e8232e7a4c7d8a95ea2c6548803bb3e728a36fb5d08d8';
@@ -50,6 +50,7 @@ function ago(?string $iso): string {
 function icon(string $n): string {
     $p = [
         'home' => '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+        'box' => '<path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
         'cart' => '<circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/>',
         'mail' => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
         'star' => '<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/>',
@@ -63,6 +64,9 @@ function icon(string $n): string {
         'check' => '<path d="M20 6L9 17l-5-5"/>',
         'pen' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
         'search' => '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+        'users' => '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 0 1 0 6M18.5 20c0-2.6-1.3-4.8-3.2-5.6"/>',
+        'bot' => '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4.5V8M9 13v1.5M15 13v1.5M2 13v3M22 13v3"/><circle cx="12" cy="3.5" r="1"/>',
+        'chat' => '<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/>',
         'warn' => '<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
     ][$n] ?? '';
     return '<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $p . '</svg>';
@@ -134,8 +138,9 @@ function strong_enough(string $p): ?string {
 // Admin-only review photo
 // ---------------------------------------------------------------------------
 if (isset($_GET['photo']) && logged_in()) {
-    $r = qa_find('reviews', preg_replace('/[^a-f0-9]/', '', (string)$_GET['photo']));
-    $file = $r && $r['photo'] ? qa_data_dir() . '/photos/' . basename($r['photo']) : '';
+    $pid = preg_replace('/[^a-f0-9]/', '', (string)$_GET['photo']);
+    $r = ($_GET['kind'] ?? '') === 'enquiry' ? qa_find('enquiries', $pid) : qa_find('reviews', $pid);
+    $file = $r && !empty($r['photo']) ? qa_data_dir() . '/photos/' . basename($r['photo']) : '';
     if (!$file || !is_file($file)) { http_response_code(404); exit; }
     header('Content-Type: ' . ($r['photoMime'] ?: 'image/jpeg'));
     readfile($file);
@@ -205,6 +210,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $o['note'] = $note;
                 return $o;
             });
+            $o2 = qa_find('orders', $id);
+            if ($o2 && !empty($o2['membership']) && ($o2['payment'] ?? '') === 'paid') qa_activate_member($o2);
             flash('Order updated.'); go('tab=orders&id=' . $id);
 
         case 'order_delete':
@@ -221,6 +228,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('Enquiry updated.'); go('tab=enquiries&id=' . $id);
 
         case 'enquiry_delete':
+            $del = qa_find('enquiries', $id);
+            if ($del && !empty($del['photo'])) @unlink(qa_data_dir() . '/photos/' . basename($del['photo']));
             qa_update('enquiries', fn(array $l) => array_values(array_filter($l, fn($e) => $e['id'] !== $id)));
             flash('Enquiry deleted.'); go('tab=enquiries');
 
@@ -356,6 +365,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             qa_update('settings', function (array $s) use ($name) { unset($s['verifyFiles'][$name]); return $s; });
             flash('Verification file removed.'); go('tab=seo');
 
+        case 'club_settings':
+            $link = qa_text($_POST['clubWhatsapp'] ?? '', 300);
+            if ($link !== '' && !preg_match('#^https://(chat\.whatsapp\.com|wa\.me|whatsapp\.com)/#i', $link)) { flash('Please paste a WhatsApp invite link (it starts with https://chat.whatsapp.com/).', 'err'); go('tab=members'); }
+            qa_update('settings', function (array $s) use ($link) { $s['clubWhatsapp'] = $link; return $s; });
+            flash('WhatsApp group link saved. New members will receive it automatically.'); go('tab=members');
+        case 'member_update':
+            qa_patch('members', $id, function (array $m) {
+                if (isset($_POST['joined'])) $m['joinedGroup'] = $_POST['joined'] === '1';
+                if (isset($_POST['status']) && in_array($_POST['status'], ['pending', 'active', 'cancelled'], true)) $m['status'] = $_POST['status'];
+                return $m;
+            });
+            flash('Member updated.'); go('tab=members');
+        case 'member_resend':
+            $m = qa_find('members', $id);
+            $link = trim((string)qa_settings()['clubWhatsapp']);
+            if ($m && $link !== '' && ($m['status'] ?? '') === 'active') {
+                qa_mail($m['email'], "Your Stock Market Club WhatsApp link ({$m['memberId']})", "Hi " . explode(' ', trim($m['name']))[0] . ",\n\nHere is the link to join the Qalb-E-Abbas Stock Market Club WhatsApp group:\n$link\n\nPlease join with the number you gave us ({$m['whatsapp']}).\n\nQalb-E-Abbas\n" . QA_SITE . "\n", qa_settings()['notifyEmail'] ?: QA_ADMIN_EMAIL);
+                flash('WhatsApp link emailed to ' . $m['email'] . '.');
+            } else flash('Save the WhatsApp group link first, and make sure the member is active.', 'err');
+            go('tab=members');
+        case 'assistant_settings':
+            qa_update('assistant', function (array $a) {
+                $a['enabled'] = !empty($_POST['enabled']);
+                $a['name'] = qa_text($_POST['name'] ?? '', 60) ?: 'Qalb-E-Abbas';
+                $a['welcome'] = qa_text($_POST['welcome'] ?? '', 600);
+                return $a;
+            });
+            flash('Assistant settings saved. The website updates within a few minutes.'); go('tab=assistant');
+        case 'assistant_answer_save':
+            $q = qa_text($_POST['q'] ?? '', 200); $ans = qa_text($_POST['a'] ?? '', 3000);
+            $aid = preg_replace('/[^a-f0-9]/', '', (string)($_POST['aid'] ?? ''));
+            if (mb_strlen($q) < 3 || mb_strlen($ans) < 3) { flash('Please write the question and the answer.', 'err'); go('tab=assistant&answer=' . ($aid ?: 'new')); }
+            $lnk = qa_text($_POST['link'] ?? '', 300);
+            if ($lnk !== '' && !preg_match('#^(/|https?://)#', $lnk)) $lnk = '/' . ltrim($lnk, '/');
+            $row = ['q' => $q, 'keywords' => qa_text($_POST['keywords'] ?? '', 300), 'a' => $ans, 'link' => $lnk, 'label' => qa_text($_POST['label'] ?? '', 60), 'live' => !empty($_POST['live']), 'updatedAt' => qa_now()];
+            qa_update('assistant', function (array $a) use ($row, $aid) {
+                $list = array_values(array_filter((array)($a['answers'] ?? []), 'is_array'));
+                $found = false;
+                foreach ($list as $i => $x) if ($aid !== '' && ($x['id'] ?? '') === $aid) { $list[$i] = $row + $x; $found = true; }
+                if (!$found) array_unshift($list, $row + ['id' => qa_id(), 'createdAt' => qa_now()]);
+                $a['answers'] = $list;
+                return $a;
+            });
+            if (!empty($_POST['logid'])) { $lid = preg_replace('/[^a-f0-9]/', '', (string)$_POST['logid']); qa_patch('assistant-log', $lid, function (array $r) { $r['handled'] = true; return $r; }); }
+            flash('Answer saved. The assistant uses it within a few minutes.'); go('tab=assistant');
+        case 'assistant_answer_delete':
+            $aid = preg_replace('/[^a-f0-9]/', '', (string)($_POST['aid'] ?? ''));
+            qa_update('assistant', function (array $a) use ($aid) { $a['answers'] = array_values(array_filter((array)($a['answers'] ?? []), fn($x) => is_array($x) && ($x['id'] ?? '') !== $aid)); return $a; });
+            flash('Answer deleted.'); go('tab=assistant');
+        case 'assistant_log_handled':
+            qa_patch('assistant-log', $id, function (array $r) { $r['handled'] = true; return $r; });
+            flash('Marked as handled.'); go('tab=assistant');
+        case 'assistant_log_clear':
+            qa_update('assistant-log', fn() => []);
+            flash('Question history cleared.'); go('tab=assistant');
         case 'review_delete':
             $r = qa_find('reviews', $id);
             if ($r && $r['photo']) @unlink(qa_data_dir() . '/photos/' . basename($r['photo']));
@@ -426,7 +490,7 @@ $flash = $_SESSION['flash'] ?? null; unset($_SESSION['flash']);
 function page_start(string $title, bool $app = true): void {
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
        . '<meta name="robots" content="noindex, nofollow"><meta name="qa-build" content="' . ADMIN_BUILD . '"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
-       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=2"></head><body class="' . ($app ? 'app' : 'auth') . '">';
+       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=3"></head><body class="' . ($app ? 'app' : 'auth') . '">';
 }
 function flash_html(?array $f): string { return $f ? '<div class="flash flash--' . h($f[1]) . '" role="status">' . icon($f[1] === 'err' ? 'warn' : 'check') . '<span>' . h($f[0]) . '</span></div>' : ''; }
 
@@ -468,7 +532,13 @@ $count = [
     'enquiries' => count(array_filter($enquiries, fn($e) => $e['status'] === 'new')),
     'reviews' => count(array_filter($reviews, fn($r) => $r['status'] === 'pending')),
 ];
-$nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'blog' => ['Blog', 'pen'], 'seo' => ['SEO', 'search'], 'settings' => ['Settings', 'cog']];
+$count['investment'] = count(array_filter($enquiries, fn($e) => ($e['type'] ?? '') === 'investment' && $e['status'] === 'new'));
+$count['manufacturing'] = count(array_filter($enquiries, fn($e) => ($e['type'] ?? '') === 'manufacturing' && $e['status'] === 'new'));
+$assistLog = qa_read('assistant-log');
+$members = qa_read('members');
+$count['members'] = count(array_filter($members, fn($m) => ($m['status'] ?? '') === 'active' && empty($m['joinedGroup'])));
+$count['assistant'] = count(array_filter($assistLog, fn($r) => ($r['hit'] ?? '') === '' && ($r['kind'] ?? '') === 'typed' && empty($r['handled']) && strtotime($r['at']) > time() - 30 * 86400));
+$nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'members' => ['Members', 'users'], 'assistant' => ['Assistant', 'bot'], 'blog' => ['Blog', 'pen'], 'seo' => ['SEO', 'search'], 'settings' => ['Settings', 'cog']];
 if (!isset($nav[$tab])) $tab = 'dashboard';
 
 page_start($nav[$tab][0]);
@@ -525,6 +595,8 @@ if ($tab === 'dashboard') {
        . '<a class="stat" href="/admin/?tab=orders&f=new"><span class="stat__ic stat__ic--blue">' . icon('cart') . '</span><span><b>' . $count['orders'] . '</b>New bookings &amp; orders</span></a>'
        . '<a class="stat" href="/admin/?tab=orders&f=paid"><span class="stat__ic stat__ic--green">' . icon('money') . '</span><span><b>' . h($rev) . '</b>Paid this month</span></a>'
        . '<a class="stat" href="/admin/?tab=enquiries&f=new"><span class="stat__ic stat__ic--teal">' . icon('mail') . '</span><span><b>' . $count['enquiries'] . '</b>New enquiries</span></a>'
+       . '<a class="stat" href="/admin/?tab=enquiries&f=manufacturing"><span class="stat__ic stat__ic--blue">' . icon('box') . '</span><span><b>' . $count['manufacturing'] . '</b>New manufacturing requests</span></a>'
+       . '<a class="stat" href="/admin/?tab=enquiries&f=investment"><span class="stat__ic stat__ic--green">' . icon('money') . '</span><span><b>' . $count['investment'] . '</b>New investment applications</span></a>'
        . '<a class="stat" href="/admin/?tab=reviews&f=pending"><span class="stat__ic stat__ic--amber">' . icon('star') . '</span><span><b>' . $count['reviews'] . '</b>Reviews to approve</span></a>'
        . '</div>';
 
@@ -641,8 +713,11 @@ if ($tab === 'enquiries' && $id) {
         echo '<a class="back" href="/admin/?tab=enquiries">' . icon('back') . 'All enquiries</a>';
         echo '<header class="head"><div><h1>' . h($e['subject'] ?: ($e['topic'] ?: 'Enquiry')) . '</h1><p class="muted">' . h($e['ref']) . ' · ' . h($e['source']) . ' · ' . when($e['createdAt']) . '</p></div><div class="head__badges">' . badge($e['status'], ENQ_STATUS) . '</div></header>';
         echo '<div class="grid2 grid2--wide"><div class="stack"><section class="card"><h2>From</h2><dl class="dl"><dt>Name</dt><dd>' . h($e['name']) . '</dd><dt>Email</dt><dd><a href="mailto:' . h($e['email']) . '?subject=' . rawurlencode('Re: ' . ($e['subject'] ?: 'Your enquiry') . ' (' . $e['ref'] . ')') . '">' . h($e['email']) . '</a></dd>'
-           . '<dt>Phone</dt><dd>' . ($e['phone'] ? '<a href="https://wa.me/' . h(preg_replace('/\D/', '', $e['phone'])) . '" target="_blank" rel="noopener">' . h($e['phone']) . '</a>' : '—') . '</dd>' . ($e['topic'] ? '<dt>Topic</dt><dd>' . h($e['topic']) . '</dd>' : '') . '</dl>'
-           . ($e['message'] ? '<h3>Message</h3><p class="pre">' . h($e['message']) . '</p>' : '') . '</section>';
+           . '<dt>Phone</dt><dd>' . ($e['phone'] ? '<a href="https://wa.me/' . h(preg_replace('/\D/', '', $e['phone'])) . '" target="_blank" rel="noopener">' . h($e['phone']) . '</a>' : '—') . '</dd>' . (!empty($e['country']) ? '<dt>Country</dt><dd>' . h($e['country']) . '</dd>' : '') . ($e['topic'] ? '<dt>Topic</dt><dd>' . h($e['topic']) . '</dd>' : '') . '</dl>'
+           . (!empty($e['invest']) ? '<h3>Investment</h3><dl class="dl"><dt>Market</dt><dd>' . h($e['invest']['market'] ?? '') . '</dd><dt>Amount</dt><dd>' . h($e['invest']['amount'] ?? '') . '</dd><dt>Risk level</dt><dd>' . h($e['invest']['risk'] ?? '') . '</dd><dt>Time horizon</dt><dd>' . h($e['invest']['horizon'] ?? '') . '</dd><dt>Risk warning</dt><dd>' . (!empty($e['invest']['riskAcknowledged']) ? 'Accepted' : '—') . '</dd></dl>' : '')
+           . (!empty($e['product']) ? '<h3>Product</h3><p><b>' . h($e['product']) . '</b></p>' : '')
+           . ($e['message'] ? '<h3>' . (($e['type'] ?? '') === 'manufacturing' ? 'Product description' : 'Message') . '</h3><p class="pre">' . h($e['message']) . '</p>' : '')
+           . (!empty($e['photo']) ? '<h3>Product picture</h3><a href="/admin/?kind=enquiry&photo=' . h($e['id']) . '" target="_blank" rel="noopener"><img class="enq-photo" src="/admin/?kind=enquiry&photo=' . h($e['id']) . '" alt="Product picture" loading="lazy"></a>' : '') . '</section>';
         if (!empty($e['assessment'])) {
             $a = $e['assessment'];
             echo '<section class="card"><h2>Assessment result</h2><div class="score"><b>' . (int)$a['score'] . '%</b><span>' . h($a['level']) . '<small>' . h($a['path']) . '</small></span></div><dl class="dl">';
@@ -661,17 +736,17 @@ if ($tab === 'enquiries' && $id) {
            . '<form method="post" onsubmit="return confirm(\'Delete this enquiry permanently?\')">' . csrf_field() . '<input type="hidden" name="do" value="enquiry_delete"><input type="hidden" name="id" value="' . h($e['id']) . '"><button class="linkbtn linkbtn--danger">Delete enquiry</button></form></section></div>';
     }
 } elseif ($tab === 'enquiries') {
-    echo '<header class="head"><div><h1>Enquiries</h1><p class="muted">Contact form messages and assessment results.</p></div></header>';
-    echo toolbar('enquiries', ['' => 'All', 'new' => 'New', 'contact' => 'Contact form', 'assessment' => 'Assessments', 'replied' => 'Replied', 'closed' => 'Closed'], $filter, $q, 'Search name, email or text…');
+    echo '<header class="head"><div><h1>Enquiries</h1><p class="muted">Contact form messages, manufacturing requests, investment applications and assessment results.</p></div></header>';
+    echo toolbar('enquiries', ['' => 'All', 'new' => 'New', 'contact' => 'Contact form', 'assessment' => 'Assessments', 'manufacturing' => 'Manufacturing', 'investment' => 'Investing', 'replied' => 'Replied', 'closed' => 'Closed'], $filter, $q, 'Search name, email or text…');
     $list = array_filter($enquiries, function ($e) use ($filter, $q) {
-        $ok = match ($filter) { 'new', 'replied', 'closed' => $e['status'] === $filter, 'contact', 'assessment' => $e['type'] === $filter, default => true };
-        return $ok && matches($e, $q, ['ref', 'name', 'email', 'subject', 'message', 'topic']);
+        $ok = match ($filter) { 'new', 'replied', 'closed' => $e['status'] === $filter, 'contact', 'assessment', 'manufacturing', 'investment' => ($e['type'] ?? '') === $filter, default => true };
+        return $ok && matches($e, $q, ['ref', 'name', 'email', 'subject', 'message', 'topic', 'product', 'country', 'phone']);
     });
     if (!$list) echo empty_state($enquiries ? 'Nothing matches.' : 'No enquiries yet.');
     else {
         echo '<div class="card card--flush"><div class="table"><table><thead><tr><th>From</th><th>Subject</th><th>Type</th><th>Received</th><th>Status</th></tr></thead><tbody>';
         foreach ($list as $e) {
-            echo '<tr' . ($e['status'] === 'new' ? ' class="is-new"' : '') . ' onclick="location=\'/admin/?tab=enquiries&id=' . h($e['id']) . '\'"><td><a href="/admin/?tab=enquiries&id=' . h($e['id']) . '">' . h($e['name']) . '</a><small>' . h($e['email']) . '</small></td><td>' . h($e['subject'] ?: ($e['topic'] ?: '—')) . '<small>' . h(mb_strimwidth((string)$e['message'], 0, 90, '…')) . '</small></td><td>' . ($e['type'] === 'assessment' ? 'Assessment' : 'Contact') . '</td><td>' . ago($e['createdAt']) . '</td><td>' . badge($e['status'], ENQ_STATUS) . '</td></tr>';
+            echo '<tr' . ($e['status'] === 'new' ? ' class="is-new"' : '') . ' onclick="location=\'/admin/?tab=enquiries&id=' . h($e['id']) . '\'"><td><a href="/admin/?tab=enquiries&id=' . h($e['id']) . '">' . h($e['name']) . '</a><small>' . h($e['email']) . '</small></td><td>' . h($e['subject'] ?: ($e['topic'] ?: '—')) . '<small>' . h(mb_strimwidth((string)$e['message'], 0, 90, '…')) . '</small></td><td>' . (['assessment' => 'Assessment', 'manufacturing' => 'Manufacturing', 'investment' => 'Investing'][$e['type'] ?? ''] ?? 'Contact') . '</td><td>' . ago($e['createdAt']) . '</td><td>' . badge($e['status'], ENQ_STATUS) . '</td></tr>';
         }
         echo '</tbody></table></div></div>';
     }
@@ -896,6 +971,184 @@ if ($tab === 'blog' && ($id || isset($_GET['new']))) {
         echo '</tbody></table></div></div>';
     }
     echo '<p class="muted">The two older articles (Amazon FBA vs FBM, US LLC vs UK LTD) are part of the website code and stay as they are.</p>';
+}
+
+// ===========================================================================
+// MEMBERS (Stock Market Club: $20 sign-up → WhatsApp group)
+// ===========================================================================
+if ($tab === 'members') {
+    $link = (string)$settings['clubWhatsapp'];
+    $active = array_values(array_filter($members, fn($m) => ($m['status'] ?? '') === 'active'));
+    $pending = array_values(array_filter($members, fn($m) => ($m['status'] ?? '') === 'pending'));
+    $toAdd = array_values(array_filter($active, fn($m) => empty($m['joinedGroup'])));
+    $price = qa_catalog()[QA_CLUB_SKU]['price'] ?? 20;
+    echo '<header class="head"><div><h1>Stock Market Club members</h1><p class="muted">People who signed up on <a href="/stock-exchange-join" target="_blank" rel="noopener">/stock-exchange-join</a>. After paying the $' . h((string)$price) . ' joining fee they get a Member ID and the WhatsApp group link.</p></div>'
+       . '<a class="btn btn--ghost" href="/admin/?tab=prices">Change the price</a></header>';
+    if ($link === '') echo '<div class="notice">' . icon('warn') . '<p><b>Add your WhatsApp group link below.</b> Until then, paid members are told that your team will add them to the group within one working day.</p></div>';
+    echo '<div class="stats">'
+       . '<div class="stat"><span class="stat__ic stat__ic--green">' . icon('users') . '</span><span><b>' . count($active) . '</b>Active members</span></div>'
+       . '<div class="stat"><span class="stat__ic stat__ic--amber">' . icon('warn') . '</span><span><b>' . count($toAdd) . '</b>Paid, not yet marked as in the group</span></div>'
+       . '<div class="stat"><span class="stat__ic stat__ic--blue">' . icon('money') . '</span><span><b>' . count($pending) . '</b>Signed up, payment not finished</span></div>'
+       . '</div>';
+    echo '<form method="post" class="card stack narrow">' . csrf_field() . '<input type="hidden" name="do" value="club_settings"><h2>WhatsApp group link</h2>'
+       . '<p class="muted" style="margin:0">In WhatsApp: open the group → group name → <b>Invite via link</b> → <b>Copy link</b>, and paste it here. Members see it straight after paying and also get it by email.</p>'
+       . '<label>Invite link<input name="clubWhatsapp" value="' . h($link) . '" placeholder="https://chat.whatsapp.com/…" maxlength="300"></label>'
+       . '<button class="btn btn--primary">Save link</button></form>';
+    $f = in_array($filter, ['active', 'pending', 'toadd'], true) ? $filter : '';
+    $rows = array_values(array_filter($members, function ($m) use ($f, $q) {
+        if ($f === 'active' && ($m['status'] ?? '') !== 'active') return false;
+        if ($f === 'pending' && ($m['status'] ?? '') !== 'pending') return false;
+        if ($f === 'toadd' && !(($m['status'] ?? '') === 'active' && empty($m['joinedGroup']))) return false;
+        return matches($m, $q, ['name', 'email', 'whatsapp', 'memberId', 'country']);
+    }));
+    echo '<section class="card"><div class="card__head"><h2>Members</h2></div>';
+    echo toolbar('members', ['' => 'All', 'active' => 'Active', 'toadd' => 'Not in group yet', 'pending' => 'Payment not finished'], $f, $q, 'Search name, email, WhatsApp…');
+    if (!$rows) echo empty_state('No members yet.');
+    else {
+        echo '<div class="table"><table><thead><tr><th>Member</th><th>WhatsApp</th><th>Details</th><th>Status</th><th></th></tr></thead><tbody>';
+        foreach ($rows as $m) {
+            $wa = preg_replace('/\D/', '', (string)$m['whatsapp']);
+            $st = ($m['status'] ?? '') === 'active' ? '<span class="badge badge--green">Active</span>' : (($m['status'] ?? '') === 'pending' ? '<span class="badge badge--amber">Payment not finished</span>' : '<span class="badge badge--grey">Cancelled</span>');
+            echo '<tr><td><b>' . h($m['name']) . '</b><small>' . h($m['memberId']) . ' · ' . h($m['email']) . '</small><small>' . ago($m['createdAt']) . '</small></td>'
+               . '<td>' . ($wa ? '<a href="https://wa.me/' . h($wa) . '" target="_blank" rel="noopener">' . h($m['whatsapp']) . '</a>' : '—') . '</td>'
+               . '<td><small>' . h(implode(' · ', array_filter([$m['country'], $m['city'] ?? '', $m['experience'] ?? '', implode(', ', $m['markets'] ?? [])]))) . '</small>' . (!empty($m['goal']) ? '<small>“' . h(mb_strimwidth($m['goal'], 0, 90, '…')) . '”</small>' : '') . '</td>'
+               . '<td>' . $st . (($m['status'] ?? '') === 'active' ? '<small>' . (!empty($m['joinedGroup']) ? 'In the WhatsApp group' : 'Not marked in group') . '</small>' : '') . '</td><td style="white-space:nowrap">';
+            if (($m['status'] ?? '') === 'active') {
+                echo '<form method="post" style="display:inline">' . csrf_field() . '<input type="hidden" name="do" value="member_update"><input type="hidden" name="id" value="' . h($m['id']) . '"><input type="hidden" name="joined" value="' . (empty($m['joinedGroup']) ? '1' : '0') . '"><button class="linkbtn">' . (empty($m['joinedGroup']) ? 'Mark as in group' : 'Undo') . '</button></form> · '
+                   . '<form method="post" style="display:inline">' . csrf_field() . '<input type="hidden" name="do" value="member_resend"><input type="hidden" name="id" value="' . h($m['id']) . '"><button class="linkbtn">Email link again</button></form>';
+            } else {
+                $ord = null; foreach ($orders as $o) if (($o['ref'] ?? '') === ($m['ref'] ?? '')) { $ord = $o; break; }
+                echo $ord ? '<a class="linkbtn" href="/admin/?tab=orders&id=' . h($ord['id']) . '">Open payment</a>' : '';
+            }
+            echo '</td></tr>';
+        }
+        echo '</tbody></table></div>';
+    }
+    echo '<p class="muted" style="margin:12px 0 0"><small>To activate someone who paid another way: open their payment (Bookings &amp; orders) and set Payment to <b>Paid</b> — they get their Member ID and WhatsApp link by email automatically.</small></p></section>';
+}
+
+// ===========================================================================
+// ASSISTANT (chat box on the website)
+// ===========================================================================
+if ($tab === 'assistant') {
+    $as = qa_assistant();
+    $since = time() - 30 * 86400;
+    $recent = array_values(array_filter($assistLog, fn($r) => strtotime($r['at']) > $since));
+    $typed = array_values(array_filter($recent, fn($r) => ($r['kind'] ?? '') === 'typed'));
+    $missed = array_values(array_filter($typed, fn($r) => ($r['hit'] ?? '') === ''));
+    $open = array_values(array_filter($missed, fn($r) => empty($r['handled'])));
+    $chats = count(array_unique(array_filter(array_column($recent, 'sid'))));
+    $rate = $typed ? round((count($typed) - count($missed)) / count($typed) * 100) : 100;
+    $know = ['services' => 0, 'faqs' => 0, 'prices' => 0];
+    $raw = (string)@file_get_contents(QA_ROOT . '/assets/js/assistant-data.js');
+    if (preg_match('/=\s*(\{.*\});\s*$/s', $raw, $m) && is_array($kd = json_decode($m[1], true))) {
+        $know['services'] = count($kd['services'] ?? []);
+        foreach ($kd['services'] ?? [] as $sv) { $know['faqs'] += count($sv['faqs'] ?? []); $know['prices'] += count($sv['prices'] ?? []); }
+    }
+
+    // Add / edit one answer
+    if (isset($_GET['answer'])) {
+        $aid = preg_replace('/[^a-f0-9]/', '', (string)$_GET['answer']);
+        $x = ['id' => '', 'q' => qa_text($_GET['q'] ?? '', 200), 'keywords' => '', 'a' => '', 'link' => '', 'label' => '', 'live' => true];
+        foreach ($as['answers'] as $y) if ($aid !== '' && $y['id'] === $aid) $x = $y;
+        echo '<a class="back" href="/admin/?tab=assistant">' . icon('back') . 'Assistant</a>';
+        echo '<header class="head"><div><h1>' . ($x['id'] ? 'Edit answer' : 'Add an answer') . '</h1><p class="muted">When a visitor asks something similar, the assistant shows your answer first.</p></div></header>';
+        echo '<form method="post" class="card stack narrow">' . csrf_field() . '<input type="hidden" name="do" value="assistant_answer_save"><input type="hidden" name="aid" value="' . h($x['id']) . '">'
+           . (!empty($_GET['log']) ? '<input type="hidden" name="logid" value="' . h(preg_replace('/[^a-f0-9]/', '', (string)$_GET['log'])) . '">' : '')
+           . '<label>Question<input name="q" value="' . h($x['q']) . '" maxlength="200" required placeholder="e.g. What is your refund policy?"></label>'
+           . '<label>Other words people use <small>optional — separate with spaces, English or Roman Urdu</small><input name="keywords" value="' . h($x['keywords']) . '" maxlength="300" placeholder="refund money back cancel wapis"></label>'
+           . '<label>Answer<textarea name="a" rows="6" maxlength="3000" required placeholder="Write the answer exactly as visitors should see it.">' . h($x['a']) . '</textarea></label>'
+           . '<div class="row2"><label>Link <small>optional</small><input name="link" value="' . h($x['link']) . '" maxlength="300" placeholder="/terms or https://…"></label><label>Link text <small>optional</small><input name="label" value="' . h($x['label']) . '" maxlength="60" placeholder="Read our terms"></label></div>'
+           . '<label class="check"><input type="checkbox" name="live" value="1"' . ($x['live'] ? ' checked' : '') . '> Use this answer on the website</label>'
+           . '<button class="btn btn--primary">Save answer</button></form>';
+        if ($x['id']) echo '<form method="post" class="narrow" style="margin-top:12px" onsubmit="return confirm(\'Delete this answer?\')">' . csrf_field() . '<input type="hidden" name="do" value="assistant_answer_delete"><input type="hidden" name="aid" value="' . h($x['id']) . '"><button class="linkbtn linkbtn--danger">Delete this answer</button></form>';
+    } else {
+        echo '<header class="head"><div><h1>Website assistant</h1><p class="muted">The chat box on every page of your website. It answers instantly from your services, prices, “How it works” steps and FAQs — and from the answers you add here.</p></div>'
+           . '<div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn--ghost" href="/" target="_blank" rel="noopener">' . icon('ext') . ' Try it on the website</a><a class="btn btn--primary" href="/admin/?tab=assistant&answer=new">+ Add an answer</a></div></header>';
+        if (!$as['enabled']) echo '<div class="notice">' . icon('warn') . '<p>The assistant is <b>switched off</b> — visitors don\'t see it. Turn it on in the settings below.</p></div>';
+        echo '<div class="stats">'
+           . '<div class="stat"><span class="stat__ic stat__ic--blue">' . icon('chat') . '</span><span><b>' . $chats . '</b>Conversations (30 days)</span></div>'
+           . '<div class="stat"><span class="stat__ic stat__ic--teal">' . icon('search') . '</span><span><b>' . count($typed) . '</b>Typed questions (30 days)</span></div>'
+           . '<div class="stat"><span class="stat__ic stat__ic--green">' . icon('check') . '</span><span><b>' . $rate . '%</b>Answered automatically</span></div>'
+           . '<a class="stat" href="#missed"><span class="stat__ic stat__ic--amber">' . icon('warn') . '</span><span><b>' . count($open) . '</b>Need an answer from you</span></a>'
+           . '</div>';
+
+        echo '<div class="grid2">';
+        // Questions it couldn't answer
+        echo '<section class="card" id="missed"><div class="card__head"><h2>Questions it couldn\'t answer</h2><small class="muted">Add an answer and it will know next time</small></div>';
+        if (!$open) echo empty_state('Nothing waiting — every recent question was answered.');
+        else {
+            echo '<ul class="list">';
+            foreach (array_slice($open, 0, 25) as $r) {
+                echo '<li style="display:flex;gap:10px;align-items:center;padding:10px 0"><span class="grow"><b>“' . h($r['q']) . '”</b><small>' . ago($r['at']) . ($r['page'] ? ' · on ' . h($r['page']) : '') . '</small></span>'
+                   . '<a class="btn btn--primary btn--sm" href="/admin/?tab=assistant&answer=new&q=' . urlencode($r['q']) . '&log=' . h($r['id']) . '">Answer</a>'
+                   . '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="assistant_log_handled"><input type="hidden" name="id" value="' . h($r['id']) . '"><button class="linkbtn" title="Hide from this list">Dismiss</button></form></li>';
+            }
+            echo '</ul>';
+        }
+        echo '<p class="muted" style="margin:12px 0 0"><small>Visitors who leave their email in the chat appear in <a href="/admin/?tab=enquiries">Enquiries</a> (source “Website assistant”).</small></p></section>';
+
+        // Most asked
+        $top = [];
+        foreach ($recent as $r) if (($r['hitTitle'] ?? '') !== '') $top[$r['hitTitle']] = ($top[$r['hitTitle']] ?? 0) + 1;
+        arsort($top);
+        echo '<section class="card"><div class="card__head"><h2>Most asked about</h2><small class="muted">Last 30 days</small></div>';
+        if (!$top) echo empty_state('No questions yet. Open your website and try the “Ask us” button.');
+        else {
+            $max = max($top);
+            echo '<ul class="list">';
+            foreach (array_slice($top, 0, 10, true) as $t => $n) echo '<li style="padding:8px 0"><div style="display:flex;justify-content:space-between;gap:10px"><span>' . h($t) . '</span><b>' . $n . '</b></div><div style="height:6px;border-radius:6px;background:#EEF2F8;margin-top:6px"><div style="height:6px;border-radius:6px;background:#1F55E0;width:' . max(4, round($n / $max * 100)) . '%"></div></div></li>';
+            echo '</ul>';
+        }
+        echo '</section></div>';
+
+        // Your answers
+        echo '<section class="card"><div class="card__head"><h2>Your answers (' . count($as['answers']) . ')</h2><a href="/admin/?tab=assistant&answer=new">+ Add an answer</a></div>';
+        if (!$as['answers']) echo empty_state('No extra answers yet. Add answers for questions about refunds, payment methods, timings, office visits — anything visitors ask that isn\'t on your service pages.');
+        else {
+            echo '<div class="table"><table><thead><tr><th>Question</th><th>Answer</th><th>Status</th></tr></thead><tbody>';
+            foreach ($as['answers'] as $x) echo '<tr onclick="location=\'/admin/?tab=assistant&answer=' . h($x['id']) . '\'"><td><a href="/admin/?tab=assistant&answer=' . h($x['id']) . '">' . h($x['q']) . '</a>' . ($x['keywords'] ? '<small>' . h($x['keywords']) . '</small>' : '') . '</td><td><small>' . h(mb_strimwidth($x['a'], 0, 120, '…')) . '</small></td><td>' . ($x['live'] ? '<span class="badge badge--green">Live</span>' : '<span class="badge badge--grey">Off</span>') . '</td></tr>';
+            echo '</tbody></table></div>';
+        }
+        echo '</section>';
+
+        echo '<div class="grid2">';
+        // Settings
+        echo '<form method="post" class="card stack">' . csrf_field() . '<input type="hidden" name="do" value="assistant_settings"><h2>Settings</h2>'
+           . '<label class="check"><input type="checkbox" name="enabled" value="1"' . ($as['enabled'] ? ' checked' : '') . '> Show the assistant on the website</label>'
+           . '<label>Name<input name="name" value="' . h($as['name']) . '" maxlength="60"></label>'
+           . '<label>Welcome message<textarea name="welcome" rows="3" maxlength="600">' . h($as['welcome']) . '</textarea></label>'
+           . '<button class="btn btn--primary">Save settings</button></form>';
+        // What it knows
+        echo '<section class="card stack"><h2>What it already knows</h2><ul class="checks">'
+           . '<li class="is-ok"><b>' . $know['services'] . ' services</b> — description and the step-by-step “How it works” process from each service page</li>'
+           . '<li class="is-ok"><b>' . $know['prices'] . ' prices</b> — your price lists (changes in <a href="/admin/?tab=prices">Prices</a> show automatically)</li>'
+           . '<li class="is-ok"><b>' . $know['faqs'] . ' FAQs</b> — the questions on your service pages</li>'
+           . '<li class="is-ok"><b>Consultations, University courses &amp; contact details</b></li>'
+           . '<li class="is-ok"><b>' . count(array_filter($as['answers'], fn($x) => $x['live'])) . ' answers you added</b> — checked first</li></ul>'
+           . '<p class="muted" style="margin:0"><small>When a page, price or FAQ on the website changes, the assistant learns it with the next website update.</small></p></section>';
+        echo '</div>';
+
+        // Recent questions
+        $f = $filter === 'missed' ? 'missed' : ($filter === 'all' ? 'all' : '');
+        $rows = array_values(array_filter($assistLog, function ($r) use ($f, $q) {
+            if ($f === '' && ($r['kind'] ?? '') !== 'typed') return false;
+            if ($f === 'missed' && (($r['hit'] ?? '') !== '' || ($r['kind'] ?? '') !== 'typed')) return false;
+            return matches($r, $q, ['q', 'hitTitle', 'page']);
+        }));
+        echo '<section class="card"><div class="card__head"><h2>Question history</h2>' . ($assistLog ? '<form method="post" onsubmit="return confirm(\'Clear the whole question history?\')">' . csrf_field() . '<input type="hidden" name="do" value="assistant_log_clear"><button class="linkbtn linkbtn--danger">Clear history</button></form>' : '') . '</div>';
+        echo toolbar('assistant', ['' => 'Typed questions', 'missed' => 'Not answered', 'all' => 'Everything (incl. buttons)'], $f, $q, 'Search questions…');
+        if (!$rows) echo empty_state('No questions yet.');
+        else {
+            echo '<div class="table"><table><thead><tr><th>Question</th><th>Answer shown</th><th>Page</th><th>When</th></tr></thead><tbody>';
+            foreach (array_slice($rows, 0, 100) as $r) {
+                $ans = ($r['hit'] ?? '') === '' ? '<span class="badge badge--amber">Not answered</span>' . (!empty($r['handled']) ? ' <small>handled</small>' : '') : h($r['hitTitle']);
+                echo '<tr><td>' . h($r['q']) . (($r['kind'] ?? '') === 'button' ? ' <small>button</small>' : '') . '</td><td>' . $ans . '</td><td><small>' . h($r['page']) . '</small></td><td><small>' . ago($r['at']) . '</small></td></tr>';
+            }
+            echo '</tbody></table></div>' . (count($rows) > 100 ? '<p class="muted"><small>Showing the latest 100 of ' . count($rows) . '.</small></p>' : '');
+        }
+        echo '<p class="muted" style="margin:10px 0 0"><small>Only the question text, the page and the time are saved (no names or IP addresses). The latest 3,000 are kept.</small></p></section>';
+    }
 }
 
 // ===========================================================================

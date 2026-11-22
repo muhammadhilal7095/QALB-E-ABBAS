@@ -28,7 +28,7 @@ const org = {
   "@id": ORG_ID,
   name: "Qalb-E-Abbas",
   url: `${SITE_URL}/`,
-  logo: `${SITE_URL}/assets/img/logo.svg`,
+  logo: `${SITE_URL}/assets/img/logo-wordmark.png`,
   image: `${SITE_URL}/assets/img/hero/amazon-seller.jpg`,
   description: "E-commerce growth services, company formation for non-residents, tax filing, digital marketing and Qalb-E-Abbas University training.",
   email: "contact@qalbeabbas.com",

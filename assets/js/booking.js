@@ -54,7 +54,7 @@
           var label = t + " UK time" + (local ? " (" + new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit" }).format(at) + " your time)" : "");
           opts.push('<option value="' + t + '"' + (t === keep ? " selected" : "") + ">" + label + "</option>"); n++;
         }
-        if (!n) note = "No times left on this date — please choose a later date (we need " + AV.minNoticeHours + " hours' notice).";
+        if (!n) note = "No times left on this date, please choose a later date (we need " + AV.minNoticeHours + " hours' notice).";
       }
     }
     time.innerHTML = opts.join("");

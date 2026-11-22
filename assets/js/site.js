@@ -6,6 +6,7 @@
 (function () {
   "use strict";
   var LOGO_V = "58cf2050"; // logo version, set by `npm run assets:build`
+  var ASSIST_V = "0dcb4f3e"; // website assistant version, set by `npm run assets:build`
 
   var CFG = window.SITE_CONFIG;
   var DESKTOP_MQ = window.matchMedia("(min-width: 1200px)");
@@ -167,7 +168,7 @@
         '<li>' + icon("clock") + "<span>Consultations Mon–Fri</span></li>" +
       "</ul>" +
       '<div class="topbar__links">' +
-        (uni ? '<a class="topbar__uni" href="' + esc(resolveLink(uni.link)) + '">' + icon("graduation") + "<span><b>" + esc(uni.label) + "</b> — " + esc(uni.highlight.promo || uni.highlight.sub) + "</span>" + icon("arrow-right", "topbar__go") + "</a>" : "") +
+        (uni ? '<a class="topbar__uni" href="' + esc(resolveLink(uni.link)) + '">' + icon("graduation") + "<span><b>" + esc(uni.label) + "</b>: " + esc(uni.highlight.promo || uni.highlight.sub) + "</span>" + icon("arrow-right", "topbar__go") + "</a>" : "") +
         '<a class="topbar__link" href="' + esc(assessmentLink()) + '">' + icon("check-circle") + "Free assessment</a>" +
       "</div>" +
     "</div></div>";
@@ -180,7 +181,7 @@
       var flag = m.indexOf("flag-") === 0;
       return '<span class="mega__mark' + (flag ? " mega__mark--flag" : "") + '"><img src="assets/img/platforms/' + esc(m) + '.svg?v=' + LOGO_V + '" alt="' + esc(label) + ' logo" title="' + esc(label) + '" width="18" height="18" loading="lazy"></span>';
     }
-    var cols = CFG.services.map(function (cat) {
+    function col(cat) {
       var links = cat.items.map(function (it) {
         return '<li><a class="mega__link" href="' + esc(it[2] || "/services#" + it[1]) + '">' + mark(it[3], it[0]) +
           '<span class="mega__label">' + esc(it[0]) + "</span>" + icon("arrow-right", "mega__go") + "</a></li>";
@@ -190,9 +191,12 @@
         '<span class="mega__titles"><span class="mega__title">' + esc(cat.title) + "</span>" +
         (cat.desc ? '<span class="mega__desc">' + esc(cat.desc) + "</span>" : "") + "</span></a>" +
         '<ul class="mega__list">' + links + "</ul></div>";
-    }).join("");
+    }
+    // Every service area is shown the same way: heading, short description and its links.
+    var cols = CFG.services.map(col).join("");
+    var aside = "";
     return '<div class="mega" id="mega-menu" role="region" aria-label="Services">' +
-      '<div class="mega__panel"><div class="mega__grid">' + cols + "</div>" +
+      '<div class="mega__panel"><div class="mega__body"><div class="mega__grid">' + cols + "</div>" + aside + "</div>" +
       '<div class="mega__foot"><div class="mega__foot-text"><span class="mega__foot-icon">' + icon("headset") + "</span>" +
       '<p><strong>Not sure which service fits?</strong><span>Book a 1:1 online consultation with an expert for $50.</span></p></div>' +
       '<div class="mega__foot-actions"><a class="btn btn--outline btn--sm" href="' + esc(CFG.links.services) + '">View all services</a>' +
@@ -216,7 +220,7 @@
 
   function logoHTML(cls) {
     return '<a class="' + cls + '" href="' + esc(CFG.links.home) + '">' +
-      '<img src="' + esc(CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" title="Qalb-E-Abbas" width="190" height="44" decoding="async"></a>';
+      '<img src="' + esc(CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" title="Qalb-E-Abbas" width="720" height="147" decoding="async"></a>';
   }
 
   function renderHeader(mount) {
@@ -509,38 +513,20 @@
     }).join("");
     var year = new Date().getFullYear();
 
+    var nav = [["Services", CFG.links.services], ["University", resolveLink("university")], ["Team", resolveLink("team")],
+      ["About", resolveLink("about")], ["Blog", resolveLink("blog")], ["Contact", resolveLink("contact")]];
     mount.outerHTML =
-      '<footer class="site-footer">' +
-      '<div class="container footer__grid">' +
-      '<div class="footer__brand">' +
-      '<a class="footer__logo" href="' + esc(CFG.links.home) + '"><img src="' + esc(CFG.brand.logoOnDark || CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" title="Qalb-E-Abbas" width="190" height="44" loading="lazy"></a>' +
-      "<p>" + esc(f.description) + "</p>" +
-      '<p class="footer__commitment">' + icon("check-circle") + "<span>" + esc(f.commitment) + "</span></p></div>" +
-
-      '<details class="footer__col" data-footer-acc><summary><h2 class="footer__title">Services</h2>' + icon("chevron-down", "footer__chev") + "</summary>" +
-      '<ul class="footer__links">' + linkList(f.serviceLinks) + "</ul></details>" +
-
-      '<details class="footer__col" data-footer-acc><summary><h2 class="footer__title">Company</h2>' + icon("chevron-down", "footer__chev") + "</summary>" +
-      '<ul class="footer__links">' + linkList(f.quickLinks) + "</ul></details>" +
-
-      '<div class="footer__col footer__col--static"><h2 class="footer__title">Get in Touch</h2>' +
-      '<ul class="footer__contact">' +
-      '<li><a href="' + esc(c.mapUrl) + '" target="_blank" rel="noopener noreferrer"><span class="footer__ci">' + icon("map-pin") + '</span><span><small>Office</small>' + esc(c.location) + '<span class="sr-only"> (opens map in a new tab)</span></span></a></li>' +
-      (c.phoneDisplay ? '<li><a href="' + esc(c.phoneHref) + '"><span class="footer__ci">' + icon("phone") + "</span><span><small>UK</small>" + esc(c.phoneDisplay) + "</span></a></li>" : "") +
-      (c.phoneUSDisplay ? '<li><a href="' + esc(c.phoneUSHref) + '"><span class="footer__ci">' + icon("phone") + "</span><span><small>USA</small>" + esc(c.phoneUSDisplay) + "</span></a></li>" : "") +
-      '<li><a href="mailto:' + esc(c.email) + '"><span class="footer__ci">' + icon("mail") + "</span><span><small>Email</small>" + esc(c.email) + "</span></a></li>" +
-      "</ul>" +
-      '<a class="btn btn--accent btn--sm footer__cta" href="' + esc(CFG.links.book) + '">' + icon("calendar") + "Book Consultation</a>" +
-      "</div>" +
-      "</div>" +
-
-      '<div class="container" data-social-group><div class="footer__social"><h2 class="footer__title">Follow Us</h2><ul class="social-list">' + socials + "</ul></div></div>" +
-
-      '<div class="footer__bottom"><div class="container footer__bottom-inner">' +
-      '<p>&copy; <span>' + year + "</span> " + esc(CFG.brand.name) + ". All rights reserved.</p>" +
-      '<nav aria-label="Legal"><ul class="footer__legal">' + linkList(f.legal) +
-      (CFG.analytics && CFG.analytics.ga4Id ? '<li><button type="button" class="footer__cookie" data-cookie-settings>Cookie settings</button></li>' : "") + "</ul></nav>" +
-      "</div></div></footer>";
+      '<footer class="site-footer site-footer--min">' +
+      '<div class="container fm">' +
+      '<a class="footer__logo fm-logo" href="' + esc(CFG.links.home) + '"><img src="' + esc(CFG.brand.logoOnDark || CFG.brand.logo) + '" alt="' + esc(CFG.brand.logoAlt) + '" title="Qalb-E-Abbas" width="720" height="147" loading="lazy"></a>' +
+      '<p class="fm-tag">E-commerce, business and learning, done properly.</p>' +
+      '<nav aria-label="Footer"><ul class="fm-nav">' + nav.map(function (l) { return '<li><a href="' + esc(l[1]) + '">' + esc(l[0]) + "</a></li>"; }).join("") + "</ul></nav>" +
+      '<p class="fm-contact"><a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a><span aria-hidden="true">·</span><span>' + esc(c.location) + "</span></p>" +
+      '<div class="fm-social" data-social-group><ul class="social-list">' + socials + "</ul></div>" +
+      '<div class="fm-bottom"><p>&copy; <span>' + year + "</span> " + esc(CFG.brand.name) + "</p>" +
+      '<ul class="fm-legal">' + linkList(f.legal) +
+      (CFG.analytics && CFG.analytics.ga4Id ? '<li><button type="button" class="footer__cookie" data-cookie-settings>Cookies</button></li>' : "") + "</ul></div>" +
+      "</div></footer>";
 
     // Footer link groups are accordions on phones and always open on wider screens.
     var accs = document.querySelectorAll("[data-footer-acc]");
@@ -656,7 +642,7 @@
           .then(function (res) {
             if (res.ok && res.j.ok) {
               form.reset();
-              done(true, "Thank you — your message has been sent" + (res.j.ref ? " (reference " + res.j.ref + ")" : "") + ". We'll reply within one working day.");
+              done(true, "Thank you: your message has been sent" + (res.j.ref ? " (reference " + res.j.ref + ")" : "") + ". We'll reply within one working day.");
             } else done(false, (res.j && res.j.error) || "Something went wrong. Please try again.");
           })
           .catch(function () {
@@ -708,6 +694,86 @@
       .catch(function () { /* keep the built-in prices */ });
   }
 
+  /* ---------- Website assistant (chat box) ---------------------------------
+     A small "Ask us" button on every page. The assistant itself
+     (assistant.js + assistant-data.js) loads only when it's first opened.
+     On/off, name, welcome text and extra answers: Admin → Assistant. */
+  function initAssistant() {
+    if (CFG.assistant === false || /^\/admin/.test(location.pathname)) return;
+    var api = String((CFG.links && CFG.links.api) || "/api").replace(/\/$/, "");
+    var KEY = "qa-assistant-cfg", remote = null, loading = null;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "qai-launch";
+    btn.setAttribute("aria-controls", "qa-assistant");
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-label", "Chat with us: instant answers");
+    btn.innerHTML = '<span class="qai-launch__ic">' + icon("message") + '<i class="qai-launch__dot" aria-hidden="true"></i></span><span>Chat with us</span>';
+    btn.hidden = true;
+    document.body.appendChild(btn);
+
+    var me = document.querySelector('script[src*="assets/js/site."]');
+    function base() { return me && me.src ? me.src.replace(/site(\.min)?\.js.*$/, "") : "/assets/js/"; }
+    function loadScript(src) {
+      return new Promise(function (resolve, reject) {
+        var sc = document.createElement("script"); sc.src = src; sc.onload = resolve; sc.onerror = reject; document.head.appendChild(sc);
+      });
+    }
+    function load() {
+      if (window.qaAssistant) return Promise.resolve();
+      if (!loading) {
+        var b = base(), min = me && /\.min\.js/.test(me.src) ? ".min" : "";
+        var v = ASSIST_V ? "?v=" + ASSIST_V : "";
+        loading = loadScript(b + "assistant-data" + min + ".js" + v).then(function () { return loadScript(b + "assistant" + min + ".js" + v); });
+      }
+      return loading;
+    }
+    var teaser = null;
+    function hideTeaser() { if (teaser) { teaser.remove(); teaser = null; } try { sessionStorage.setItem("qa-assistant-teased", "1"); } catch (e) { /* private mode */ } }
+    function showTeaser() {
+      var seen = null;
+      try { seen = sessionStorage.getItem("qa-assistant-teased") || sessionStorage.getItem("qa-assistant"); } catch (e) { /* private mode */ }
+      if (seen || btn.hidden || !window.matchMedia("(min-width: 640px)").matches || document.documentElement.classList.contains("qai-open")) return;
+      teaser = document.createElement("div");
+      teaser.className = "qai-teaser";
+      teaser.setAttribute("role", "status");
+      teaser.innerHTML = '<div><b>Hi there \u{1F44B}</b><span>Questions about our services, prices or the process? Ask here: instant answers.</span></div><button type="button" aria-label="Dismiss">' + icon("close") + "</button>";
+      teaser.addEventListener("click", function (e) { var x = e.target.closest("button"); hideTeaser(); if (!x) openIt(); });
+      document.body.appendChild(teaser);
+    }
+    function openIt() {
+      hideTeaser();
+      btn.classList.add("is-loading");
+      load().then(function () {
+        btn.classList.remove("is-loading");
+        window.qaAssistant.configure(remote);
+        window.qaAssistant.toggle();
+      }).catch(function () { btn.classList.remove("is-loading"); window.location.href = CFG.links.contact || "/contact"; });
+    }
+    btn.addEventListener("click", openIt);
+
+    function ready(cfg) {
+      remote = cfg || {};
+      if (remote.enabled === false) return;
+      btn.hidden = false;
+      setTimeout(showTeaser, 6000);
+      var was = null;
+      try { was = JSON.parse(sessionStorage.getItem("qa-assistant") || "null"); } catch (e) { /* private mode */ }
+      if (was && was.open) openIt();
+    }
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(KEY) || "null"); } catch (e) { /* private mode */ }
+    if (cached && cached.t > Date.now() - 5 * 60 * 1000) return ready(cached.d);
+    fetch(api + "/assistant.php", { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        d = d && d.ok ? d : {};
+        try { sessionStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d: d })); } catch (e) { /* private mode */ }
+        ready(d);
+      })
+      .catch(function () { ready({}); });
+  }
+
   /* ---------- Analytics with consent (GA4) --------------------------------
      Loads Google Analytics 4 only after the visitor accepts analytics cookies.
      The choice is remembered; "Cookie settings" in the footer reopens the banner. */
@@ -748,6 +814,42 @@
     document.addEventListener("click", function (e) { if (e.target.closest("[data-cookie-settings]")) banner(); });
   }
 
+  /* ---------- Tabs (e.g. University course catalogue) --------------------- */
+  function initTabs() {
+    document.querySelectorAll("[data-tabs]").forEach(function (root) {
+      var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+      function select(tab, focus) {
+        tabs.forEach(function (t) {
+          var on = t === tab;
+          t.setAttribute("aria-selected", on ? "true" : "false");
+          t.tabIndex = on ? 0 : -1;
+          var panel = document.getElementById(t.getAttribute("aria-controls"));
+          if (panel) panel.hidden = !on;
+        });
+        if (focus) tab.focus();
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener("click", function () { select(t); });
+        t.addEventListener("keydown", function (e) {
+          var k = e.key, j = -1;
+          if (k === "ArrowDown" || k === "ArrowRight") j = (i + 1) % tabs.length;
+          else if (k === "ArrowUp" || k === "ArrowLeft") j = (i - 1 + tabs.length) % tabs.length;
+          else if (k === "Home") j = 0; else if (k === "End") j = tabs.length - 1;
+          if (j >= 0) { e.preventDefault(); select(tabs[j], true); }
+        });
+      });
+      root.querySelectorAll("[data-tab-go]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var t = document.getElementById(b.getAttribute("data-tab-go"));
+          if (t) { select(t); t.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" }); }
+        });
+      });
+      var start = tabs.filter(function (t) { return t.getAttribute("aria-selected") === "true"; })[0] || tabs[0];
+      if (start) select(start);
+      root.classList.add("is-ready");
+    });
+  }
+
   /* ---------- Boot ------------------------------------------------------- */
   applyBrandColors();
   injectSprite();
@@ -763,6 +865,8 @@
   initMailtoForms();
   initApiForms();
   initLivePrices();
+  initAssistant();
+  initTabs();
   initAnalytics();
 
   // Expose small helpers for page scripts.

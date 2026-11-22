@@ -28,8 +28,12 @@ const EXTRA = {
   marketing: ["/website-development", "/shopify-development"],
   formation: ["/taxation", "/trademark-registration"],
   education: ["/malta-company-formation", "/university"],
+  sourcing: ["/amazon-fba", "/shopify-development", "/tiktok-shop", "/walmart", "/trademark-registration"],
   "real-estate": ["/digital-marketing", "/social-media-marketing", "/website-development", "/uae-company-formation"],
+  "stock-exchange": ["/university", "/real-estate", "/taxation", "/us-llc-formation"],
 };
+// Pages that should NOT show the "Related services & official sources" block.
+const SKIP = new Set(["/stock-exchange"]);
 // Pages that are not in the Services menu but should link like a category.
 const EXTRA_PAGES = { "/taxation": "formation", "/trademark-registration": "formation", "/tiktok-shop": "ecommerce" };
 
@@ -39,7 +43,7 @@ for (const cat of CFG.services) for (const it of cat.items) {
   const path = it[2];
   if (!all.has(path)) all.set(path, { name: it[0], cat: cat.id, title: cat.title, icon: cat.icon });
 }
-const NAMES = { "/taxation": "US & UK Taxation", "/university": "Qalb-E-Abbas University", "/shopify-development": "Shopify Store Development", "/real-estate": "Real Estate in Pakistan" };
+const NAMES = { "/taxation": "US & UK Taxation", "/university": "Qalb-E-Abbas University", "/shopify-development": "Shopify Store Development", "/real-estate": "Real Estate in Pakistan", "/stock-exchange": "Stock Exchange & Investing" };
 // Link text: the target page's own breadcrumb name (e.g. "US LLC Formation"), so links are descriptive.
 const crumb = (p) => {
   try {
@@ -58,6 +62,10 @@ for (const file of readdirSync(SITE).filter((f) => f.endsWith(".html") && !f.sta
   if (!/<li><a href="\/services">Services<\/a><\/li><li aria-current="page">/.test(html)) continue; // service pages only
   const cat = (all.get(page) || {}).cat || EXTRA_PAGES[page];
   if (!cat) continue;
+  if (SKIP.has(page)) { // pages that don't show this block
+    if (html.includes("<!-- LINKS:START")) { writeFileSync(join(SITE, file), html.replace(/\s*<!-- LINKS:START[\s\S]*?<!-- LINKS:END -->/, "")); }
+    continue;
+  }
   const same = [...all.entries()].filter(([p, v]) => v.cat === cat && p !== page).map(([p]) => p);
   const related = [...new Set([...same, ...(EXTRA[cat] || [])])].filter((p) => p !== page).slice(0, 6);
   const src = sources[page.slice(1)] || [];
@@ -74,7 +82,7 @@ for (const file of readdirSync(SITE).filter((f) => f.endsWith(".html") && !f.sta
           </div>${off ? `
           <aside class="rl__col rl__src" aria-label="Official sources">
             <h2 class="rl__title">Official sources</h2>
-            <p class="rl__note">Rules and fees change — check the official guidance:</p>
+            <p class="rl__note">Rules and fees change, so check the official guidance:</p>
             <ul class="rl__ext">${off}</ul>
           </aside>` : ""}
         </div>

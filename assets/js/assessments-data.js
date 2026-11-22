@@ -64,15 +64,15 @@
     var c = h.text("Q01");
     if (!c) return null;
     var f = fit(c, mode);
-    if (mode === "ukus" && f < 3) return [6, platform + " sellers living in the UK or USA are approved most smoothly. From " + c + ", plan to sell through a UK or US company with matching ID, address and bank documents — we can set this up for you."];
-    if (f <= 1) return [6, platform + " approves sellers in developed countries (US, UK, EU, Canada, Australia) most smoothly. From " + c + ", plan to register through a US or UK company with matching documents and bank account — we can set this up for you."];
+    if (mode === "ukus" && f < 3) return [6, platform + " sellers living in the UK or USA are approved most smoothly. From " + c + ", plan to sell through a UK or US company with matching ID, address and bank documents. We can set this up for you."];
+    if (f <= 1) return [6, platform + " approves sellers in developed countries (US, UK, EU, Canada, Australia) most smoothly. From " + c + ", plan to register through a US or UK company with matching documents and bank account. We can set this up for you."];
     return null;
   }
   function moneyFlags(h, platform, ids) {
     var f = [];
     if (h.idx(ids.source) === 0) f.push([9, "Don't use household, emergency, borrowed, rent or bill money for your " + platform + " business."]);
     if (h.idx(ids.source) === 1) f.push([8, "Avoid funding your " + platform + " stock or ads with credit or a loan that must be repaid quickly."]);
-    if (h.idx(ids.profit) === 0) f.push([8, "Don't rely on " + platform + " to pay current bills — profit usually takes months to build."]);
+    if (h.idx(ids.profit) === 0) f.push([8, "Don't rely on " + platform + " to pay current bills, profit usually takes months to build."]);
     if (h.idx(ids.budget) === 0) f.push([7, "Set a separate, safe budget for " + platform + " before buying any stock or paying for ads."]);
     return f;
   }
@@ -83,7 +83,7 @@
     var q = {
       Q01: { type: "country", q: "Where do you live?", fit: m.fit, hint: m.fitHint },
       Q02: { q: "Which " + P + " market do you want to sell on?", cols: 2, o: m.regions },
-      Q03: { q: "Where are you in your " + P + " journey right now?", o: ["Exploring whether " + P + " is right for me", "Learning the basics of " + P, "Choosing products for " + P, "Setting up my " + P + " account and store", "Selling on " + P + " but not yet stable", "Selling on " + P + " and ready to grow"], s: [0, 1, 1, 2, 2, 3] },
+      Q03: { q: "Where are you in your " + P + " path right now?", o: ["Exploring whether " + P + " is right for me", "Learning the basics of " + P, "Choosing products for " + P, "Setting up my " + P + " account and store", "Selling on " + P + " but not yet stable", "Selling on " + P + " and ready to grow"], s: [0, 1, 1, 2, 2, 3] },
       Q04: { q: "What e-commerce experience do you already have?", o: ["None yet", "I have studied or trained but not sold", "I have sold on another marketplace or website", "I sold on " + P + " before but stopped", "I currently sell on " + P], s: [0, 1, 2, 2, 3] },
       Q05: { q: "Is there any urgent issue with " + P + " right now?", o: m.issues },
       Q06: m.account,
@@ -93,8 +93,8 @@
       Q10: { q: "Have you or anyone at your address ever had a " + P + " account suspended or closed?", o: ["No, never", "Not sure", "Yes, but it was reinstated", "Yes, and it is still suspended"], s: [3, 1, 2, 0] },
       Q11: m.what,
       Q12: { q: "What is the status of the products you want to sell on " + P + "?", o: ["I don't have products yet", "I have ideas only", "I'm comparing suppliers or samples", "Products chosen, stock not ordered", "Stock ordered or ready", "Already selling these products"], s: [0, 0, 1, 2, 3, 3] },
-      Q13: { q: "How well do you understand " + P + " account creation and verification?", o: ["Not at all — I need it done for me", "I know the basics but haven't done it", "I've started or completed it with some help", "I've done it before without problems"], s: S3 },
-      Q14: { q: m.storeQ || ("How well do you understand " + P + " store management — listings, pricing, orders, customer service and performance metrics?"), o: ["Not at all yet", "A little, from videos or reading", "Fairly well, with some hands-on practice", "Very well — I manage a store already"], s: S3 },
+      Q13: { q: "How well do you understand " + P + " account creation and verification?", o: ["Not at all: I need it done for me", "I know the basics but haven't done it", "I've started or completed it with some help", "I've done it before without problems"], s: S3 },
+      Q14: { q: m.storeQ || ("How well do you understand " + P + " store management: listings, pricing, orders, customer service and performance metrics?"), o: ["Not at all yet", "A little, from videos or reading", "Fairly well, with some hands-on practice", "Very well: I manage a store already"], s: S3 },
       Q20: { type: "budget", q: "After bills and emergency savings, how much could you safely invest in your " + P + " business?", hint: "Choose only money you can afford to put at risk. Bands are approximate local equivalents.", usd: m.budgetUsd || [500, 2000, 10000, 30000], s: [0, 1, 2, 2, 3, 3] },
       Q21: { q: "Where would this " + P + " budget come from?", o: ["Household, emergency, borrowed, rent or bill money", "Credit or a loan that must be repaid quickly", "Savings while keeping my current income", "Protected personal savings or business funds"], s: [0, 0, 2, 3] },
       Q22: { q: "How soon would you need " + P + " to make a profit?", o: ["I need profit for current bills", "I feel strong pressure for quick profit", "I can wait 3–6 months to learn and improve", "I'm building for the long term"], s: S3 },
@@ -114,7 +114,7 @@
       name: P + " Seller Assessment", platform: P, topic: m.topic, countryQ: "Q01", minutes: 6,
       title: P + " Seller Readiness Assessment",
       intro: m.intro,
-      notice: "Free " + P + " assessment — about 6 minutes. Find out how ready you are to sell on " + P + " and what to fix first.",
+      notice: "Free " + P + " assessment, about 6 minutes. Find out how ready you are to sell on " + P + " and what to fix first.",
       questions: q,
       sections: {
         about: { title: "You and your " + P + " plans", sub: "Where you live and where you are with " + P + " today.", q: ["Q01", "Q02", "Q03", "Q04", "Q05"] },
@@ -135,14 +135,14 @@
         var f = [];
         var loc = locationFlag(h, P, m.fit); if (loc) f.push(loc);
         if (h.idx("Q05") > 0 && h.idx("Q05") < m.issues.length - 1) f.push([10, "Resolve the active " + P + " issue (" + h.text("Q05").toLowerCase() + ") before spending more or listing new products."]);
-        if (h.idx("Q07") === 0) f.push([9, "Never use borrowed or mismatched documents — " + P + " verification can fail and lead to a permanent ban."]);
+        if (h.idx("Q07") === 0) f.push([9, "Never use borrowed or mismatched documents: " + P + " verification can fail and lead to a permanent ban."]);
         if (h.idx("Q07") === 1) f.push([6, "Update your ID, address and bank documents so every name and address matches before you apply to " + P + "."]);
-        if (h.idx("Q10") === 3) f.push([9, "An existing " + P + " suspension at your address can block a new account — fix it before opening another one."]);
+        if (h.idx("Q10") === 3) f.push([9, "An existing " + P + " suspension at your address can block a new account, fix it before opening another one."]);
         if (h.idx("Q09") === 0) f.push([5, "Set up a payout account in your own name (e.g. Payoneer, Wise or a business bank) before applying to " + P + "."]);
         f = f.concat(moneyFlags(h, P, { source: "Q21", profit: "Q22", budget: "Q20" }));
-        if (h.idx("Q25") === 0) f.push([5, P + " isn't quick or easy money — plan for months of learning and reinvestment."]);
+        if (h.idx("Q25") === 0) f.push([5, P + " isn't quick or easy money, plan for months of learning and reinvestment."]);
         if (h.idx("Q27") === 0) f.push([5, "Slow down: rushing onto " + P + " without preparation is the most common way new sellers lose money."]);
-        if (h.idx("Q23") === 0) f.push([4, "Block out regular weekly time — " + P + " stores need attention every week."]);
+        if (h.idx("Q23") === 0) f.push([4, "Block out regular weekly time: " + P + " stores need attention every week."]);
         if (h.idx("Q13") === 0) f.push([4, "Get help with " + P + " account creation so verification succeeds the first time."]);
         return f.concat(m.flags ? m.flags(h) : []);
       },
@@ -150,7 +150,7 @@
         var book = ["Book a " + P + " consultation", "/book-consultation?topic=" + m.topic, "outline"];
         if (h.idx("Q05") > 0 && h.idx("Q05") < m.issues.length - 1) return { title: "Fix your " + P + " account issue first", text: "Pause new spending and resolve the active issue with a clear, documented plan. We review your " + P + " account and prepare the right response or appeal.", links: [["Account review & reactivation", m.page + "#pricing", "accent"], book] };
         if (level === L[0]) return { title: "Build your " + P + " foundations first", text: "Set a safe budget, get your documents in order and learn how " + P + " works before you spend on stock. Start with free learning, then one-to-one guidance.", links: [["Explore Level 1 training", "/#level-1", "accent"], book] };
-        if (h.idx("Q06") <= 1 || h.idx("Q13") <= 1) return { title: "Get your " + P + " account created and verified properly", text: "We create and verify your " + P + " seller account with you — matching documents, business setup and payout account — so it's approved the first time.", links: [[P + " account creation", m.page + "#pricing", "accent"], book] };
+        if (h.idx("Q06") <= 1 || h.idx("Q13") <= 1) return { title: "Get your " + P + " account created and verified properly", text: "We create and verify your " + P + " seller account with you (matching documents, business setup and payout account) so it's approved the first time.", links: [[P + " account creation", m.page + "#pricing", "accent"], book] };
         if (level === L[3]) return { title: "Grow your " + P + " store with a clear plan", text: "Your foundations are strong. Focus on product research, store optimisation and marketing to grow sales steadily on " + P + ".", links: [[P + " growth services", m.page + "#pricing", "accent"], book] };
         return { title: "Set up and manage your " + P + " store step by step", text: "Choose proven products, set up your " + P + " store correctly and follow a weekly management routine before scaling.", links: [[P + " services & pricing", m.page + "#pricing", "accent"], book] };
       }
@@ -161,46 +161,46 @@
 
   A.ebay = marketplace({
     platform: "eBay", topic: "ebay", page: "/ebay", fit: "developed",
-    intro: "Check how ready you are to sell on eBay — eBay account creation, store management, products, budget and time — and get your safest next step.",
+    intro: "Check how ready you are to sell on eBay (eBay account creation, store management, products, budget and time) and get your safest next step.",
     fitHint: "eBay approves and supports sellers in developed countries (US, UK, EU, Canada, Australia) most smoothly.",
     regions: ["eBay US (ebay.com)", "eBay UK (ebay.co.uk)", "eBay Germany (ebay.de)", "eBay Australia", "eBay Canada", "Several eBay sites", "Not sure yet"],
     issues: ["No urgent issue", "eBay account suspended", "MC011 / MC999 restriction", "Selling limits or payment hold", "Listings removed or policy warning", "Identity or document verification problem", "I am not sure"],
     account: { q: "Do you already have an eBay seller account?", o: ["No, I need to create one", "I have a personal eBay account only", "I have an eBay business seller account", "My eBay account is restricted or suspended"], s: [1, 1, 3, 0] },
     what: { q: "What do you plan to sell on eBay?", o: ["New branded products (wholesale / retail)", "My own brand / private label", "Used or refurbished items", "Collectibles, vintage or parts", "Dropshipped products from other retailers", "Not sure yet"], s: [3, 3, 2, 2, 0, 1] },
-    storeQ: "How well do you understand eBay store management — store categories, item specifics, promoted listings, markdown sales and seller performance standards?",
+    storeQ: "How well do you understand eBay store management: store categories, item specifics, promoted listings, markdown sales and seller performance standards?",
     specific: {
       Q15: { q: "How well do you understand eBay selling limits and how they increase?", o: ["I didn't know eBay has selling limits", "I've heard of them", "I understand them and plan around them", "I've already raised my limits"], s: S3 },
       Q16: { q: "How will you handle eBay shipping, handling time and returns?", o: ["I haven't thought about it", "I'll ship myself when an order comes", "A warehouse / 3PL with tracked shipping", "A tested shipping and returns process"], s: S3 }
     },
-    flags: function (h) { return h.idx("Q11") === 4 ? [[7, "eBay doesn't allow dropshipping from other retailers (e.g. buying from Amazon to ship to your eBay buyer) — it's a common cause of MC011 restrictions."]] : []; }
+    flags: function (h) { return h.idx("Q11") === 4 ? [[7, "eBay doesn't allow dropshipping from other retailers (e.g. buying from Amazon to ship to your eBay buyer). It's a common cause of MC011 restrictions."]] : []; }
   });
 
   A.tiktok = marketplace({
     platform: "TikTok Shop", topic: "tiktok-shop", page: "/tiktok-shop", fit: "ukus",
-    intro: "Check how ready you are to sell on TikTok Shop — TikTok Shop account creation, store management, content, budget and time — and get your safest next step.",
+    intro: "Check how ready you are to sell on TikTok Shop (TikTok Shop account creation, store management, content, budget and time) and get your safest next step.",
     fitHint: "TikTok Shop is built for sellers in the UK and USA, who are approved most easily.",
     regions: ["TikTok Shop US", "TikTok Shop UK", "Both US and UK", "TikTok Shop EU (Germany, France, Italy, Spain, Ireland)", "TikTok Shop Southeast Asia", "Not sure yet"],
     issues: ["No urgent issue", "TikTok Shop account deactivated", "Products rejected or restricted", "Violation points / shop health warning", "Payouts on hold", "Identity or document verification problem", "I am not sure"],
     account: { q: "Do you already have a TikTok Shop seller account?", o: ["No, I need to create one", "Application started / under review", "Approved and active", "Rejected, deactivated or restricted"], s: [1, 2, 3, 0] },
     what: { q: "What will you sell on TikTok Shop?", o: ["Beauty and personal care", "Fashion and accessories", "Home, kitchen and gadgets", "Health and supplements", "Electronics", "Something else / not sure"] },
-    storeQ: "How well do you understand TikTok Shop store management — product approval, orders, shipping deadlines, returns and shop health score?",
+    storeQ: "How well do you understand TikTok Shop store management: product approval, orders, shipping deadlines, returns and shop health score?",
     specific: {
       Q15: { q: "Can you create short TikTok videos or go live yourself?", o: ["No, I'm not comfortable on camera", "I could try with guidance", "Yes, I can make simple videos regularly", "Yes, I already create content and go live"], s: S3 },
       Q16: { q: "Will you work with TikTok creators and affiliates?", o: ["I don't know how it works", "Maybe later", "Yes, I plan to send samples to creators", "Yes, I already work with creators"], s: S3 },
       Q17: { q: "How will you fulfil TikTok Shop orders?", o: ["Not decided", "Ship myself from my home country", "A 3PL / Fulfilled by TikTok in the selling country", "An established local warehouse with fast tracked delivery"], s: [0, 0, 2, 3] }
     },
-    flags: function (h) { return h.idx("Q17") === 1 ? [[7, "TikTok Shop needs fast local delivery in the selling country — shipping from abroad usually breaks the shipping deadlines. Plan a local 3PL."]] : []; }
+    flags: function (h) { return h.idx("Q17") === 1 ? [[7, "TikTok Shop needs fast local delivery in the selling country, shipping from abroad usually breaks the shipping deadlines. Plan a local 3PL."]] : []; }
   });
 
   A.walmart = marketplace({
     platform: "Walmart", topic: "walmart", page: "/walmart", fit: "ukus", entityScores: [0, 0, 1, 3],
-    intro: "Check how ready you are to sell on Walmart Marketplace — Walmart account creation and approval, store management, products, budget and time — and get your safest next step.",
+    intro: "Check how ready you are to sell on Walmart Marketplace (Walmart account creation and approval, store management, products, budget and time) and get your safest next step.",
     fitHint: "Walmart Marketplace favours established sellers based in the USA (and the UK) with a proper business setup.",
     regions: ["Walmart US Marketplace", "Walmart Canada", "Walmart Mexico", "Not sure yet"],
     issues: ["No urgent issue", "Walmart application rejected", "Walmart seller account suspended", "Items unpublished or restricted", "Payment or payout hold", "Identity or document verification problem", "I am not sure"],
     account: { q: "Do you have a Walmart Marketplace seller account?", o: ["No, I need to apply", "Application submitted / pending", "Approved and active", "Application rejected or account suspended"], s: [1, 2, 3, 0] },
     what: { q: "What will you sell on Walmart?", o: ["My own brand / private label", "Wholesale branded products (with authorisation)", "Products I already sell on Amazon", "Bundles or multipacks", "Not sure yet"], s: [3, 3, 3, 2, 0] },
-    storeQ: "How well do you understand Walmart store management — Seller Center item setup, pricing rules, performance standards and Walmart Fulfillment Services (WFS)?",
+    storeQ: "How well do you understand Walmart store management, Seller Center item setup, pricing rules, performance standards and Walmart Fulfillment Services (WFS)?",
     specific: {
       Q15: { q: "Do you have GS1 UPC / GTIN barcodes for your Walmart products?", o: ["No, I don't know what they are", "No, but I know I need them", "For some products", "Yes, GS1 barcodes for all products"], s: S3 },
       Q16: { q: "What is your marketplace selling history? (Walmart prefers proven sellers.)", o: ["No sales history yet", "Under 6 months on another marketplace", "6–12 months with steady sales", "Over 12 months with strong performance"], s: S3 },
@@ -208,36 +208,36 @@
     },
     flags: function (h) {
       var f = [];
-      if (h.idx("Q08") <= 1) f.push([7, "Walmart Marketplace approves registered businesses — plan a US LLC (with EIN) or established company before applying."]);
-      if (h.idx("Q15") <= 1) f.push([6, "Walmart requires valid GS1 UPC/GTIN barcodes — buy them from GS1 before listing."]);
-      if (h.idx("Q17") === 1) f.push([6, "Walmart customers expect fast US delivery — use a US 3PL or WFS rather than shipping from abroad."]);
+      if (h.idx("Q08") <= 1) f.push([7, "Walmart Marketplace approves registered businesses, plan a US LLC (with EIN) or established company before applying."]);
+      if (h.idx("Q15") <= 1) f.push([6, "Walmart requires valid GS1 UPC/GTIN barcodes, buy them from GS1 before listing."]);
+      if (h.idx("Q17") === 1) f.push([6, "Walmart customers expect fast US delivery, use a US 3PL or WFS rather than shipping from abroad."]);
       return f;
     }
   });
 
   A.etsy = marketplace({
     platform: "Etsy", topic: "etsy", page: "/etsy", fit: "developed",
-    intro: "Check how ready you are to sell on Etsy — Etsy shop creation, store management, products, photos, budget and time — and get your safest next step.",
+    intro: "Check how ready you are to sell on Etsy (Etsy shop creation, store management, products, photos, budget and time) and get your safest next step.",
     regions: ["Selling mainly to the US", "Selling mainly to the UK", "Selling mainly to Europe", "Worldwide", "Not sure yet"],
     issues: ["No urgent issue", "Etsy shop suspended", "Payment account on reserve", "Listings removed for policy or IP", "Identity or document verification problem", "Low shop rating / case problems", "I am not sure"],
     account: { q: "Do you have an Etsy seller account?", o: ["No, I need to open one", "Opened, but not verified or no sales yet", "Active shop with sales", "Suspended or under review"], s: [1, 1, 3, 0] },
     what: { q: "What will you sell on Etsy?", o: ["Handmade items I make myself", "Items I design, made with a production partner", "Vintage items (20+ years old)", "Craft supplies", "Digital downloads / printables", "Print on demand", "Resold mass-produced items"], s: [3, 3, 3, 3, 2, 2, 0] },
-    storeQ: "How well do you understand Etsy shop management — shop sections, policies, Etsy SEO tags, Etsy Ads and Star Seller standards?",
+    storeQ: "How well do you understand Etsy shop management: shop sections, policies, Etsy SEO tags, Etsy Ads and Star Seller standards?",
     specific: {
       Q15: { q: "How strong are your Etsy product photos?", o: ["I don't have photos yet", "Phone photos without much styling", "Good, clean photos with some lifestyle shots", "Professional photos and video for every listing"], s: S3 },
       Q16: { q: "How many Etsy orders a week could you make and ship reliably?", o: ["Not sure", "1–5 orders", "6–20 orders", "More than 20, with a reliable process"], s: S3 }
     },
-    flags: function (h) { return h.idx("Q11") === 6 ? [[8, "Etsy only allows handmade, vintage, craft supplies or items you design — reselling mass-produced items can get your Etsy shop suspended."]] : []; }
+    flags: function (h) { return h.idx("Q11") === 6 ? [[8, "Etsy only allows handmade, vintage, craft supplies or items you design, reselling mass-produced items can get your Etsy shop suspended."]] : []; }
   });
 
   A.shopify = marketplace({
     platform: "Shopify", topic: "shopify", page: "/shopify-development", fit: "developed", budgetUsd: [1000, 3000, 10000, 30000],
-    intro: "Check how ready you are to launch and grow a Shopify store — with a strong focus on your investment budget for the store, ads and stock — and get your safest next step.",
+    intro: "Check how ready you are to launch and grow a Shopify store (with a strong focus on your investment budget for the store, ads and stock) and get your safest next step.",
     regions: ["Customers in the US", "Customers in the UK", "Customers in Europe", "Customers in Canada / Australia", "Customers in my own country", "Worldwide"],
     issues: ["No urgent issue", "Shopify store paused or closed", "Payment gateway / Shopify Payments problem", "Ad account disabled", "Chargebacks or payout holds", "Domain or website problem", "I am not sure"],
     account: { q: "Do you already have a Shopify store?", o: ["No store yet", "Store started but not launched", "Live store with few or no sales", "Live store with regular sales"], s: [1, 1, 2, 3] },
     what: { q: "What will your Shopify store sell?", o: ["My own brand products", "Wholesale / branded products", "Print on demand", "Dropshipping", "Digital products or services", "Not decided yet"], s: [3, 2, 2, 1, 2, 0] },
-    storeQ: "How well do you understand Shopify store management — theme, apps, products, checkout, payments, shipping and taxes?",
+    storeQ: "How well do you understand Shopify store management: theme, apps, products, checkout, payments, shipping and taxes?",
     specific: {
       Q15: { q: "How clear are your Shopify niche, brand and target customer?", o: ["Not decided", "A rough idea", "Clear niche and customer, brand in progress", "Clear niche, brand and offer ready"], s: S3 },
       Q16: { q: "Can you take card payments on Shopify in your target market?", o: ["Not sure", "I need help setting a payment gateway up", "Shopify Payments / Stripe is available for my business", "Set up and tested"], s: S3 }
@@ -251,10 +251,10 @@
       B03: { type: "budget", q: "How much can you spend on your first stock order?", usd: [500, 2000, 8000, 25000], none: "No stock needed (POD / digital / services)", s: [2, 1, 2, 3, 3, 3] },
       B04: { q: "How many months could you cover Shopify ads and running costs before the store must break even?", o: ["Less than 1 month", "1–2 months", "3–6 months", "More than 6 months"], s: S3 },
       B05: { q: "Have you worked out your break-even ROAS / maximum cost per purchase for your Shopify products?", o: ["I don't know what that means", "Not yet", "Roughly", "Yes, from real numbers"], s: S3 },
-      B06: { q: "If your first 30 days of Shopify ads don't make money, what will you do?", o: ["Stop — I can't afford more", "Keep spending the same way and hope", "Pause, review data and test new creatives/offers", "Follow a planned testing budget and kill/scale rules"], s: S3 }
+      B06: { q: "If your first 30 days of Shopify ads don't make money, what will you do?", o: ["Stop: I can't afford more", "Keep spending the same way and hope", "Pause, review data and test new creatives/offers", "Follow a planned testing budget and kill/scale rules"], s: S3 }
     };
     Object.keys(B).forEach(function (k) { S.questions[k] = B[k]; });
-    S.sections.money = { title: "Your Shopify investment budget", sub: "Shopify success depends heavily on budget for the store, ads and stock — please answer carefully.", q: ["Q20", "Q21", "B01", "B02", "B03", "B04", "B05", "B06", "Q22"] };
+    S.sections.money = { title: "Your Shopify investment budget", sub: "Shopify success depends heavily on budget for the store, ads and stock, please answer carefully.", q: ["Q20", "Q21", "B01", "B02", "B03", "B04", "B05", "B06", "Q22"] };
     S.sections.time = { title: "Time and execution", q: ["Q23", "Q24"] };
     S.order = ["about", "account", "store", "money", "time", "goals"];
     S.areas[3] = ["Investment budget", ["Q20", "Q21", "Q22", "B01", "B02", "B03", "B04", "B05", "B06"]];
@@ -262,8 +262,8 @@
     var base = S.flags;
     S.flags = function (h) {
       var f = base(h).filter(function (x) { return x[1].indexOf("approves sellers in developed countries") < 0; });
-      if (h.idx("B02") === 0) f.push([8, "Budget for Shopify advertising — without traffic, a new store gets almost no sales."]);
-      if (h.idx("B04") === 0) f.push([7, "Keep at least 3 months of Shopify ad and running costs in reserve — most stores need time to find winning products."]);
+      if (h.idx("B02") === 0) f.push([8, "Budget for Shopify advertising, without traffic, a new store gets almost no sales."]);
+      if (h.idx("B04") === 0) f.push([7, "Keep at least 3 months of Shopify ad and running costs in reserve. Most stores need time to find winning products."]);
       if (h.idx("B05") <= 1) f.push([5, "Work out your break-even ROAS and maximum cost per purchase before spending on ads."]);
       if (h.idx("B06") <= 1) f.push([5, "Plan a structured ad testing budget with clear rules to stop or scale, instead of spending and hoping."]);
       return f;
@@ -279,7 +279,7 @@
     questions: {
       Q01: { type: "country", q: "Where do you live?", fit: "developed", hint: "Amazon approves sellers in developed countries (US, UK, EU, Canada, Australia) most smoothly." },
       Q02: { q: "Which Amazon marketplace are you mainly interested in?", cols: 2, o: ["Amazon United States", "Amazon United Kingdom", "Amazon Canada", "Both Canada and the United States", "Amazon Germany / Europe", "Amazon Australia", "Amazon UAE / Saudi Arabia", "I am not sure yet"] },
-      Q07: { q: "Where are you in your Amazon seller journey right now?", o: ["Exploring whether Amazon is right for me", "Building my Amazon foundation", "Validating an Amazon product or sourcing path", "Preparing to launch on Amazon", "Launched on Amazon and working toward stable sales", "Scaling or protecting an active Amazon business"] },
+      Q07: { q: "Where are you in your Amazon seller path right now?", o: ["Exploring whether Amazon is right for me", "Building my Amazon foundation", "Validating an Amazon product or sourcing path", "Preparing to launch on Amazon", "Launched on Amazon and working toward stable sales", "Scaling or protecting an active Amazon business"] },
       Q08: { q: "What is the status of the Amazon product you are working on now?", o: ["I do not have a product yet", "I have a product idea only", "I am comparing suppliers, samples, or quotes", "I selected a product but have not ordered inventory", "I ordered inventory or am preparing the Amazon listing", "The product is live on Amazon but not yet stable", "The product is live on Amazon and established", "I am an active Amazon seller evaluating another new product"] },
       Q12: { q: "What experience do you already have with e-commerce?", o: ["None yet", "I have studied or trained but have not sold", "I have sold on another marketplace or my own website", "I sold on Amazon before but am not currently active", "I currently sell on Amazon", "I have worked as a service provider for Amazon sellers"], s: [0, 1, 2, 2, 3, 2] },
       Q15: { q: "Is any urgent Amazon issue active right now?", o: ["No urgent issue", "Amazon account deactivation or suspension", "Amazon listing removal or product restriction", "Intellectual-property complaint or legal notice", "Amazon account-health warning or policy violation", "Payment, identity, or document-verification problem", "I am not sure"] },
@@ -341,19 +341,19 @@
       if (u === 6) f.push([6, "Check Account Health in Amazon Seller Central for any active warnings before your next step."]);
       if (h.idx("Q04") === 0) f.push([9, "Don't use household, emergency, borrowed, rent or bill money for your Amazon business."]);
       if (h.idx("Q04") === 1) f.push([8, "Avoid funding Amazon inventory with credit or a loan that must be repaid quickly."]);
-      if (h.idx("Q19") === 0) f.push([9, "Never use borrowed or conflicting documents — Amazon verification can fail and lead to account suspension."]);
+      if (h.idx("Q19") === 0) f.push([9, "Never use borrowed or conflicting documents, Amazon verification can fail and lead to account suspension."]);
       if (h.idx("Q19") === 1) f.push([6, "Update your identity, business, address and bank documents so the names and addresses match for Amazon."]);
-      if (h.idx("Q05") === 0) f.push([8, "Don't rely on Amazon to pay current bills — Amazon profit usually takes months to build."]);
-      if (h.idx("Q20") === 0) f.push([8, "Don't buy from a supplier that won't provide authentic commercial invoices — Amazon may ask for them."]);
+      if (h.idx("Q05") === 0) f.push([8, "Don't rely on Amazon to pay current bills, Amazon profit usually takes months to build."]);
+      if (h.idx("Q20") === 0) f.push([8, "Don't buy from a supplier that won't provide authentic commercial invoices, Amazon may ask for them."]);
       if (h.idx("Q20") === 1) f.push([6, "Verify the supplier's identity and invoice capability before paying for Amazon stock."]);
       if (h.idx("Q03") === 0) f.push([7, "Set a separate, safe Amazon budget before buying any inventory."]);
       if (h.idx("Q18") === 0) f.push([7, "Check product, intellectual-property and document risk before paying any supplier."]);
-      if (h.idx("Q09") === 4) f.push([7, "Check Amazon's dropshipping policy carefully — buying from another retailer to ship to your Amazon customers isn't allowed."]);
-      if (h.idx("Q10") === 0 && h.idx("Q08") >= 2) f.push([6, "Calculate full Amazon economics — landed cost, Amazon fees, PPC, returns and reorder cash — before ordering."]);
-      if (h.idx("Q16") === 0) f.push([5, "Amazon isn't quick or easy money — plan for months of learning and reinvestment."]);
+      if (h.idx("Q09") === 4) f.push([7, "Check Amazon's dropshipping policy carefully, buying from another retailer to ship to your Amazon customers isn't allowed."]);
+      if (h.idx("Q10") === 0 && h.idx("Q08") >= 2) f.push([6, "Calculate full Amazon economics (landed cost, Amazon fees, PPC, returns and reorder cash) before ordering."]);
+      if (h.idx("Q16") === 0) f.push([5, "Amazon isn't quick or easy money, plan for months of learning and reinvestment."]);
       if (h.idx("Q22") === 0) f.push([5, "Slow down: rushing onto Amazon without preparation is the most common way new sellers lose money."]);
       if (h.idx("Q21") === 0) f.push([5, "Learn which invoices and documents Amazon may request before you start."]);
-      if (h.idx("Q06") === 0 || h.idx("Q11") === 0) f.push([4, "Block out regular weekly time — Amazon progress is hard with under 3 consistent hours a week."]);
+      if (h.idx("Q06") === 0 || h.idx("Q11") === 0) f.push([4, "Block out regular weekly time, Amazon progress is hard with under 3 consistent hours a week."]);
       return f;
     },
     next: function (level, h, p, L) {
@@ -370,11 +370,11 @@
   A.company = {
     name: "Company Formation Assessment", topic: "company-registration", countryQ: "Q01", minutes: 7,
     title: "Company Formation Readiness Assessment",
-    intro: "Check how ready you are for company formation — your experience, purpose, e-commerce market, investment budget, documents and tax management — and find the right company structure and next step.",
-    notice: "Free company formation assessment — about 7 minutes. All questions are about forming and running your company properly.",
+    intro: "Check how ready you are for company formation (your experience, purpose, e-commerce market, investment budget, documents and tax management) and find the right company structure and next step.",
+    notice: "Free company formation assessment, about 7 minutes. All questions are about forming and running your company properly.",
     questions: {
       Q01: { type: "country", q: "Where do you live (your country of residence)?", fit: "developed" },
-      Q02: { q: "Which company formation are you considering?", o: ["UK LTD company", "US LLC", "Malta company", "UAE company (free zone or mainland)", "More than one country", "Not sure — I need advice on company formation"] },
+      Q02: { q: "Which company formation are you considering?", o: ["UK LTD company", "US LLC", "Malta company", "UAE company (free zone or mainland)", "More than one country", "Not sure: I need advice on company formation"] },
       Q03: { q: "What is the main purpose of your new company?", o: ["Selling on Amazon / eBay / Walmart / TikTok Shop", "My own online store (Shopify, website)", "Freelancing or consulting services", "Software, apps or SaaS", "Import / export trading", "Holding company or investments"] },
       Q04: { q: "Which e-commerce market or customers will the company mainly sell to?", o: ["United States", "United Kingdom", "European Union", "Middle East", "Worldwide", "Not decided yet"] },
       Q05: { q: "What is your business experience?", o: ["This will be my first business", "Freelancer / sole trader before", "I have run a company before", "I run or have run several companies"], s: S3 },
@@ -383,7 +383,7 @@
       Q08: { q: "Expected company revenue in the first year (approx. USD)?", o: ["Not sure yet", "Under $50,000", "$50,000 – $250,000", "Over $250,000"] },
       Q09: { q: "Who will own the company?", o: ["Just me", "Me and one partner", "Three or more owners", "Another company will own it"] },
       Q10: { q: "Will the company store stock in a UK, EU or US warehouse (e.g. Amazon FBA)?", o: ["Yes, in the UK", "Yes, in the EU", "Yes, in the US", "No stock (services / dropship / digital)", "Not sure yet"] },
-      Q11: { q: "Do you need a business bank account for the company?", o: ["Not sure", "Yes — an online bank (Wise, Payoneer, Mercury etc.)", "Yes — a traditional bank in that country", "I already have one arranged"], s: [0, 2, 2, 3] },
+      Q11: { q: "Do you need a business bank account for the company?", o: ["Not sure", "Yes: an online bank (Wise, Payoneer, Mercury etc.)", "Yes: a traditional bank in that country", "I already have one arranged"], s: [0, 2, 2, 3] },
       Q12: { type: "budget", q: "What is your budget for company formation plus the first year of compliance (registered agent, address, accounts, tax filing)?", usd: [300, 700, 1500, 3000], none: "I haven't budgeted for company formation yet", s: [0, 1, 2, 3, 3, 3] },
       Q13: { type: "budget", q: "How much will you invest in the business itself (stock, ads, website) in year one?", usd: [1000, 5000, 20000, 50000], none: "I don't have an investment budget yet", s: [0, 1, 2, 2, 3, 3] },
       Q14: { q: "Where will the business investment come from?", o: ["Household, emergency or borrowed money", "Credit or a short-term loan", "Savings while keeping my income", "Protected savings or existing business funds"], s: [0, 0, 2, 3] },
@@ -391,9 +391,9 @@
       Q16: { q: "How well do you understand the tax management for the company you're forming? (e.g. US Form 5472/1120, UK Corporation Tax and VAT, Malta tax refunds, UAE corporate tax)", o: ["Not at all", "I know taxes exist but not the details", "I understand the main filings", "I understand the filings and deadlines in detail"], s: S3 },
       Q17: { q: "Who will keep the company's books and file its tax returns?", o: ["Not decided", "Myself, without accounting experience", "Myself, with software and guidance", "A qualified accountant / your firm"], s: S3 },
       Q18: { q: "Do you understand how the company affects your personal tax where you live?", o: ["No", "A little", "Mostly", "Yes, I've had advice"], s: S3 },
-      Q19: { q: "Have you had company or tax problems before (late filings, penalties, company struck off)?", o: ["No, never", "Not applicable — first company", "Yes, but resolved", "Yes, still unresolved"], s: [3, 3, 2, 0] },
+      Q19: { q: "Have you had company or tax problems before (late filings, penalties, company struck off)?", o: ["No, never", "Not applicable: first company", "Yes, but resolved", "Yes, still unresolved"], s: [3, 3, 2, 0] },
       Q20: { q: "How ready are your documents for company formation (passport, proof of address, ID of all owners)?", o: ["Missing or expired", "Some missing", "Mostly ready", "All current and in my name"], s: S3 },
-      Q21: { q: "Do you have a business address in the country of formation?", o: ["No — I'll need one", "A virtual address with mail forwarding", "A registered agent address only", "A physical office"], s: [1, 3, 2, 3] },
+      Q21: { q: "Do you have a business address in the country of formation?", o: ["No: I'll need one", "A virtual address with mail forwarding", "A registered agent address only", "A physical office"], s: [1, 3, 2, 3] },
       Q22: { q: "When do you want the company formed?", o: ["As soon as possible (this week)", "Within a month", "In 1–3 months", "Just exploring for now"] }
     },
     sections: {
@@ -412,15 +412,15 @@
     ],
     flags: function (h) {
       var f = [], j = h.idx("Q02");
-      if (h.idx("Q10") === 0) f.push([8, "Non-UK companies storing stock in a UK warehouse (e.g. Amazon FBA UK) must register for UK VAT from day one — plan this into your company formation."]);
-      if (j === 1 && h.idx("Q16") <= 1) f.push([8, "US LLCs owned by non-residents must file IRS Form 5472 with a pro-forma 1120 every year — missing it can trigger a $25,000 penalty."]);
-      if (h.idx("Q19") === 3) f.push([9, "Resolve the unresolved company or tax issue before forming a new company — it can affect banking and approvals."]);
+      if (h.idx("Q10") === 0) f.push([8, "Non-UK companies storing stock in a UK warehouse (e.g. Amazon FBA UK) must register for UK VAT from day one, plan this into your company formation."]);
+      if (j === 1 && h.idx("Q16") <= 1) f.push([8, "US LLCs owned by non-residents must file IRS Form 5472 with a pro-forma 1120 every year, missing it can trigger a $25,000 penalty."]);
+      if (h.idx("Q19") === 3) f.push([9, "Resolve the unresolved company or tax issue before forming a new company. It can affect banking and approvals."]);
       if (h.idx("Q14") <= 1) f.push([8, "Don't fund a new company with household, borrowed or short-term loan money."]);
-      if (h.idx("Q12") === 0) f.push([7, "Budget for formation and the first year of compliance — a company has yearly running costs."]);
-      if (h.idx("Q20") <= 1) f.push([7, "Get all owners' passports and proof of address current before company formation — banks and agents check them."]);
+      if (h.idx("Q12") === 0) f.push([7, "Budget for formation and the first year of compliance, a company has yearly running costs."]);
+      if (h.idx("Q20") <= 1) f.push([7, "Get all owners' passports and proof of address current before company formation, banks and agents check them."]);
       if (h.idx("Q17") <= 1) f.push([6, "Arrange an accountant or a clear bookkeeping process before the company starts trading."]);
-      if (h.idx("Q07") === 0) f.push([5, "Choose your e-commerce market first — it decides which country your company should be formed in."]);
-      if (j === 5) f.push([4, "Get advice on the right jurisdiction before forming — UK, US, Malta and UAE companies suit different businesses."]);
+      if (h.idx("Q07") === 0) f.push([5, "Choose your e-commerce market first. It decides which country your company should be formed in."]);
+      if (j === 5) f.push([4, "Get advice on the right jurisdiction before forming, UK, US, Malta and UAE companies suit different businesses."]);
       return f;
     },
     next: function (level, h, p, L) {
@@ -437,27 +437,27 @@
   A.tax = {
     name: "Company Taxation Assessment", topic: "taxation", countryQ: "Q01", minutes: 6,
     title: "Company Taxation Health Check",
-    intro: "Check your company taxation — tax filing history, previous returns, bookkeeping, VAT / sales tax and deadlines — and find out what needs fixing before penalties arrive.",
-    notice: "Free company taxation assessment — about 6 minutes. All questions are about your company's tax management and filings.",
-    levels: ["High risk — act now", "Needs attention", "Mostly compliant", "In good standing"],
+    intro: "Check your company taxation (tax filing history, previous returns, bookkeeping, VAT / sales tax and deadlines) and find out what needs fixing before penalties arrive.",
+    notice: "Free company taxation assessment, about 6 minutes. All questions are about your company's tax management and filings.",
+    levels: ["High risk: act now", "Needs attention", "Mostly compliant", "In good standing"],
     resultLabel: "Your company taxation health",
     disclaimer: "This assessment is general guidance on company taxation based on your answers. It is not tax advice; we confirm your position before any filing.",
     questions: {
       Q01: { type: "country", q: "Where do you live (your personal tax residence)?", fit: "developed" },
-      Q02: { q: "Where is your company registered for taxation?", o: ["US LLC — single member", "US LLC — multi-member or US corporation", "UK LTD", "Malta company", "UAE company", "Another country / I'm a sole trader"] },
+      Q02: { q: "Where is your company registered for taxation?", o: ["US LLC: single member", "US LLC: multi-member or US corporation", "UK LTD", "Malta company", "UAE company", "Another country / I'm a sole trader"] },
       Q03: { q: "When was the company formed?", o: ["Less than 12 months ago", "1–2 years ago", "3–5 years ago", "More than 5 years ago"] },
       Q04: { q: "What does the company do?", o: ["Sells on marketplaces (Amazon, eBay, Walmart, TikTok Shop)", "Own online store", "Services / freelancing", "Trading / import-export", "Holding company / no activity yet"] },
       Q05: { q: "Approximate company revenue last year (USD equivalent)?", o: ["No revenue / dormant", "Under $50,000", "$50,000 – $250,000", "Over $250,000"] },
       Q06: { q: "Have you filed every required company tax return since the company was formed?", o: ["Nothing has been filed yet", "Some filed, some missed", "All filed, but some late", "All filed on time"], s: S3 },
-      Q07: { q: "Have you received a penalty, notice or letter from the tax authority (IRS, HMRC or other)?", o: ["Yes — still unresolved", "Yes — resolved or on a payment plan", "No"], s: [0, 2, 3] },
+      Q07: { q: "Have you received a penalty, notice or letter from the tax authority (IRS, HMRC or other)?", o: ["Yes: still unresolved", "Yes: resolved or on a payment plan", "No"], s: [0, 2, 3] },
       Q08: { q: "Are your company's annual filings up to date (annual accounts, confirmation statement, state annual report / franchise tax)?", o: ["No / I don't know what these are", "Behind on some", "Up to date, but done at the last minute", "Fully up to date and planned"], s: S3 },
       Q09: { q: "Do you know your company's next tax filing deadlines?", o: ["No", "Roughly", "Yes, for the main return", "Yes, every deadline is in my calendar"], s: S3 },
-      Q10: { q: "Who prepared your previous company tax returns?", o: ["No one — none filed", "Myself", "A freelancer / unqualified preparer", "A qualified accountant or firm"], s: S3 },
+      Q10: { q: "Who prepared your previous company tax returns?", o: ["No one: none filed", "Myself", "A freelancer / unqualified preparer", "A qualified accountant or firm"], s: S3 },
       Q11: { q: "How are your company's books kept?", o: ["Not kept at all", "Occasionally in a spreadsheet", "A spreadsheet updated monthly", "Accounting software, reconciled monthly"], s: S3 },
       Q12: { q: "Do you have the company's bank and marketplace/payment statements for the whole year?", o: ["No", "Some months missing", "Yes, but not organised", "Yes, complete and organised"], s: S3 },
       Q13: { q: "Are payments between you and the company recorded (money you put in, money you took out)?", o: ["No", "Partly", "Mostly", "Yes, every transaction"], s: S3 },
       Q14: { q: "Do you keep receipts and invoices for company expenses and stock?", o: ["Rarely", "Sometimes", "Usually", "Always, stored digitally"], s: S3 },
-      Q15: { q: "What is the company's VAT / sales tax status?", o: ["Not registered, and not sure if it's needed", "Not registered — confirmed not needed", "Registered, but behind on returns", "Registered and returns up to date"], s: [0, 3, 0, 3] },
+      Q15: { q: "What is the company's VAT / sales tax status?", o: ["Not registered, and not sure if it's needed", "Not registered: confirmed not needed", "Registered, but behind on returns", "Registered and returns up to date"], s: [0, 3, 0, 3] },
       Q16: { q: "Does the company store stock in warehouses abroad (e.g. Amazon FBA)?", o: ["Yes, in the UK", "Yes, in the EU", "Yes, in the US", "No", "Not sure"] },
       Q17: { q: "How well do you understand your company's main tax filing? (US Form 5472 + pro-forma 1120 / Form 1065, UK CT600 Corporation Tax, Malta or UAE tax return)", o: ["Not at all", "I know it exists", "I understand what's filed", "I understand it and the penalties for missing it"], s: S3 },
       Q18: { q: "Does the company pay salaries or dividends?", o: ["No", "I take money out without a formal method", "Dividends with records", "Salary through payroll and/or documented dividends"], s: [3, 0, 2, 3] },
@@ -481,17 +481,17 @@
     ],
     flags: function (h) {
       var f = [], co = h.idx("Q02");
-      if (h.idx("Q19") === 0) f.push([10, "Your company tax deadline has passed — file as soon as possible to limit penalties and interest."]);
-      if (h.idx("Q07") === 0) f.push([10, "Respond to the unresolved tax notice before its deadline — ignoring it makes penalties grow."]);
-      if (h.idx("Q06") <= 1) f.push([9, "File the missed company tax returns — catching up voluntarily is far cheaper than waiting for enforcement."]);
-      if (co <= 1 && h.idx("Q17") <= 1) f.push([9, "A foreign-owned US LLC must file Form 5472 with a pro-forma 1120 every year, even with no profit — missing it can mean a $25,000 penalty."]);
+      if (h.idx("Q19") === 0) f.push([10, "Your company tax deadline has passed, file as soon as possible to limit penalties and interest."]);
+      if (h.idx("Q07") === 0) f.push([10, "Respond to the unresolved tax notice before its deadline, ignoring it makes penalties grow."]);
+      if (h.idx("Q06") <= 1) f.push([9, "File the missed company tax returns, catching up voluntarily is far cheaper than waiting for enforcement."]);
+      if (co <= 1 && h.idx("Q17") <= 1) f.push([9, "A foreign-owned US LLC must file Form 5472 with a pro-forma 1120 every year, even with no profit, missing it can mean a $25,000 penalty."]);
       if (h.idx("Q16") === 0 && h.idx("Q15") !== 3) f.push([9, "Overseas companies storing stock in the UK must be registered for UK VAT from day one and file returns."]);
-      if (h.idx("Q15") === 2) f.push([8, "Bring your VAT / sales tax returns up to date — late returns add penalties every period."]);
+      if (h.idx("Q15") === 2) f.push([8, "Bring your VAT / sales tax returns up to date, late returns add penalties every period."]);
       if (h.idx("Q15") === 0) f.push([6, "Confirm whether your company needs VAT or sales tax registration."]);
-      if (h.idx("Q08") <= 1) f.push([7, "Bring annual company filings up to date — late filings can lead to fines or the company being struck off."]);
+      if (h.idx("Q08") <= 1) f.push([7, "Bring annual company filings up to date, late filings can lead to fines or the company being struck off."]);
       if (h.idx("Q11") <= 1) f.push([6, "Start proper bookkeeping (monthly, in accounting software) so tax filings are accurate."]);
-      if (h.idx("Q18") === 1) f.push([6, "Record how you take money out of the company (salary or dividends) — undocumented withdrawals cause tax problems."]);
-      if (h.idx("Q19") === 1) f.push([6, "Your next filing is due within 30 days — start preparing now."]);
+      if (h.idx("Q18") === 1) f.push([6, "Record how you take money out of the company (salary or dividends), undocumented withdrawals cause tax problems."]);
+      if (h.idx("Q19") === 1) f.push([6, "Your next filing is due within 30 days. Start preparing now."]);
       return f;
     },
     next: function (level, h, p, L) {
@@ -544,16 +544,16 @@
   A.marketing = {
     name: "Digital Marketing Assessment", topic: "digital-marketing", countryQ: "Q01", minutes: 8,
     title: "Digital Marketing Readiness Assessment",
-    intro: "Check how ready your business is for digital marketing on Meta (Facebook & Instagram), TikTok and Google — budget, purpose, reach and tracking for each platform — and get a clear plan.",
-    notice: "Free digital marketing assessment — one page of questions for each platform you choose (Meta, TikTok, Google).",
+    intro: "Check how ready your business is for digital marketing on Meta (Facebook & Instagram), TikTok and Google (budget, purpose, reach and tracking for each platform) and get a clear plan.",
+    notice: "Free digital marketing assessment: one page of questions for each platform you choose (Meta, TikTok, Google).",
     levels: ["Not ready to advertise", "Building foundations", "Ready to test", "Ready to scale"],
     resultLabel: "Your digital marketing readiness",
     questions: dmQ,
     sections: {
       biz: { title: "Your business, budget and purpose", q: ["Q01", "Q02", "Q03", "Q04", "Q05", "Q06", "Q07", "Q08", "Q09"] },
-      meta: { title: "Meta — Facebook & Instagram", sub: "Budget, purpose, reach and setup for Meta ads.", q: ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08"], when: function (h) { return h.picked("Q06", 0); } },
+      meta: { title: "Meta: Facebook & Instagram", sub: "Budget, purpose, reach and setup for Meta ads.", q: ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08"], when: function (h) { return h.picked("Q06", 0); } },
       tiktok: { title: "TikTok", sub: "Budget, purpose, reach and setup for TikTok ads.", q: ["T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08"], when: function (h) { return h.picked("Q06", 1); } },
-      google: { title: "Google — Search, Shopping & YouTube", sub: "Budget, purpose, reach and setup for Google ads.", q: ["G01", "G02", "G03", "G04", "G05", "G06", "G07", "G08", "G09"], when: function (h) { return h.picked("Q06", 2); } }
+      google: { title: "Google: Search, Shopping & YouTube", sub: "Budget, purpose, reach and setup for Google ads.", q: ["G01", "G02", "G03", "G04", "G05", "G06", "G07", "G08", "G09"], when: function (h) { return h.picked("Q06", 2); } }
     },
     order: ["biz", "meta", "tiktok", "google"],
     areas: [
@@ -565,16 +565,16 @@
     flags: function (h) {
       var f = [];
       var n = (h.answers().Q06 || []).length;
-      if (h.idx("Q03") === 0 && h.idx("Q04") <= 1) f.push([8, "Build a website or landing page first — ads for sales or leads need somewhere to send people."]);
-      if (h.idx("Q07") === 0) f.push([8, "Set a monthly ad budget — digital marketing needs consistent spend to learn what works."]);
+      if (h.idx("Q03") === 0 && h.idx("Q04") <= 1) f.push([8, "Build a website or landing page first, ads for sales or leads need somewhere to send people."]);
+      if (h.idx("Q07") === 0) f.push([8, "Set a monthly ad budget, digital marketing needs consistent spend to learn what works."]);
       if (h.idx("Q07") === 1 && n >= 2) f.push([6, "With a small budget, start on one platform instead of spreading it across " + n + "."]);
       if (h.idx("M06") >= 0 && h.idx("M06") <= 1) f.push([6, "Install the Meta Pixel and Conversions API before running Meta sales or lead ads."]);
       if (h.idx("T07") >= 0 && h.idx("T07") <= 1) f.push([6, "Install the TikTok Pixel / Events API before running TikTok conversion campaigns."]);
       if (h.idx("G08") >= 0 && h.idx("G08") <= 1) f.push([6, "Set up GA4 and Google Ads conversion tracking before spending on Google."]);
-      if (h.idx("M08") === 0) f.push([5, "Prepare Meta ad creatives (photos, short videos or UGC) — creative is the biggest driver of results."]);
-      if (h.idx("T06") === 0) f.push([5, "TikTok ads need native short videos every week — plan content or creators before launching."]);
-      if (h.idx("G07") === 1) f.push([4, "Search demand for your product is low — Meta or TikTok may suit you better than Google Search."]);
-      if (h.idx("M05") === 1 || h.idx("T05") === 1 || h.idx("G05") === 1) f.push([5, "Previous campaigns lost money — fix tracking, offer and creatives before increasing budget."]);
+      if (h.idx("M08") === 0) f.push([5, "Prepare Meta ad creatives (photos, short videos or UGC), creative is the biggest driver of results."]);
+      if (h.idx("T06") === 0) f.push([5, "TikTok ads need native short videos every week, plan content or creators before launching."]);
+      if (h.idx("G07") === 1) f.push([4, "Search demand for your product is low, Meta or TikTok may suit you better than Google Search."]);
+      if (h.idx("M05") === 1 || h.idx("T05") === 1 || h.idx("G05") === 1) f.push([5, "Previous campaigns lost money, fix tracking, offer and creatives before increasing budget."]);
       return f;
     },
     next: function (level, h, p, L) {
@@ -599,8 +599,8 @@
   A.malta = {
     name: "Study in Malta Assessment", topic: "education-consultancy", countryQ: "S03", minutes: 12, noAgeInDetails: true,
     title: "Study in Malta Eligibility Assessment",
-    intro: "A complete international-student assessment for studying in Malta — your full study history and marks, English, finances and budget, visa history, accommodation and hostel needs — so we can match you to the right course and university.",
-    notice: "Free study abroad assessment — about 12 minutes. Please have your marks and test scores ready; the more accurate your answers, the better our advice.",
+    intro: "A complete international-student assessment for studying in Malta (your full study history and marks, English, finances and budget, visa history, accommodation and hostel needs) so we can match you to the right course and university.",
+    notice: "Free study abroad assessment, about 12 minutes. Please have your marks and test scores ready; the more accurate your answers, the better our advice.",
     levels: ["Not eligible yet", "Needs preparation", "Good candidate", "Strong candidate"],
     resultLabel: "Your study-in-Malta profile",
     disclaimer: "This assessment is general guidance based on your answers. Final admission depends on the university, and visas are decided by Identity Malta.",
@@ -615,10 +615,10 @@
       S08: { q: "Have you ever been refused a visa for any country?", o: ["No, never", "Once, and I can explain why", "More than once"], s: [3, 1, 0] },
       S09: { q: "What is your highest completed qualification?", o: ["Matric / O-Levels / SSC (10 years)", "Intermediate / A-Levels / HSSC (12 years)", "Diploma / DAE", "Bachelor's degree (2 or 3 years)", "Bachelor's degree (4 years)", "Master's degree", "Other"] },
       S10: { type: "number", q: "In which year did you complete your highest qualification?", min: 1975, max: 2027, step: 1, placeholder: "e.g. 2024" },
-      S11: { type: "number", q: "Secondary school result (Matric / O-Level / SSC) — percentage", min: 0, max: 100, unit: "%", placeholder: "e.g. 78", score: pct },
-      S12: { type: "number", optional: true, q: "Higher secondary result (Intermediate / A-Level / HSSC) — percentage", hint: "Leave blank if you haven't completed it. Convert A-Level grades to an approximate percentage.", min: 0, max: 100, unit: "%", placeholder: "e.g. 70", score: pct },
-      S13: { type: "number", optional: true, q: "Bachelor's degree result — percentage (or CGPA × 25 for a 4.0 scale)", hint: "Leave blank if you don't have a bachelor's degree.", min: 0, max: 100, unit: "%", placeholder: "e.g. 65", score: pct },
-      S14: { type: "number", optional: true, q: "Master's degree result — percentage", hint: "Leave blank if you don't have a master's degree.", min: 0, max: 100, unit: "%", score: pct },
+      S11: { type: "number", q: "Secondary school result (Matric / O-Level / SSC): percentage", min: 0, max: 100, unit: "%", placeholder: "e.g. 78", score: pct },
+      S12: { type: "number", optional: true, q: "Higher secondary result (Intermediate / A-Level / HSSC): percentage", hint: "Leave blank if you haven't completed it. Convert A-Level grades to an approximate percentage.", min: 0, max: 100, unit: "%", placeholder: "e.g. 70", score: pct },
+      S13: { type: "number", optional: true, q: "Bachelor's degree result, percentage (or CGPA × 25 for a 4.0 scale)", hint: "Leave blank if you don't have a bachelor's degree.", min: 0, max: 100, unit: "%", placeholder: "e.g. 65", score: pct },
+      S14: { type: "number", optional: true, q: "Master's degree result: percentage", hint: "Leave blank if you don't have a master's degree.", min: 0, max: 100, unit: "%", score: pct },
       S15: { type: "text", q: "What subject / field was your last qualification in?", placeholder: "e.g. Pre-Engineering, BBA, Computer Science" },
       S16: { q: "How long is your study gap since your last qualification?", o: ["No gap", "Less than 1 year", "1–2 years", "3–5 years", "More than 5 years"], s: [3, 3, 2, 1, 0] },
       S17: { q: "If you have a study gap, what did you do during it?", o: ["No gap", "Worked in a related field (with letters)", "Worked in an unrelated field", "Short courses or certificates", "Nothing I can document"], s: [3, 3, 2, 2, 0] },
@@ -630,11 +630,11 @@
       S23: { q: "How confident are you studying and writing in English?", o: ["Not confident", "Basic", "Good", "Fluent"], s: S3 },
       S24: { q: "Which level do you want to study in Malta?", o: ["Foundation year", "Diploma / Higher Diploma (MQF 4–5)", "Bachelor's degree", "Master's degree", "MBA", "PhD", "English language course"] },
       S25: { q: "Which field do you want to study?", o: ["Business & management", "IT, computing & software", "Data science & AI", "Engineering", "Health, nursing & care", "Tourism & hospitality", "Finance & accounting", "Law", "Other"] },
-      S26: { q: "Which type of institution do you prefer?", o: ["University of Malta (public)", "MCAST (public, vocational)", "Private university or college", "No preference — advise me"] },
+      S26: { q: "Which type of institution do you prefer?", o: ["University of Malta (public)", "MCAST (public, vocational)", "Private university or college", "No preference: advise me"] },
       S27: { q: "Which intake do you want?", o: ["February 2027", "September 2027", "February 2028", "Flexible"] },
       S28: { q: "Why do you want to study in Malta?", o: ["English-speaking EU country", "Affordable tuition and living costs", "Career opportunities in Europe", "Family or friends in Malta", "Recommended by someone", "Not sure yet"] },
       S29: { q: "What is your career plan after your studies?", o: ["Return home with an EU qualification", "Work in Malta", "Move elsewhere in Europe", "Further study", "Not decided"] },
-      S30: { q: "Have you prepared a Statement of Purpose (SOP)?", o: ["No — I don't know how", "Not yet", "A draft", "Yes, final and tailored to the course"], s: S3 },
+      S30: { q: "Have you prepared a Statement of Purpose (SOP)?", o: ["No: I don't know how", "Not yet", "A draft", "Yes, final and tailored to the course"], s: S3 },
       S31: { q: "How many reference / recommendation letters can you get?", o: ["None", "One", "Two or more"], s: [0, 2, 3] },
       S32: { type: "budget", currency: "EUR", q: "What is your tuition budget per year?", usd: [3000, 6000, 10000, 15000], none: "I haven't set a tuition budget", s: [0, 1, 2, 3, 3, 3] },
       S33: { type: "budget", currency: "EUR", q: "What is your living budget per year in Malta (excluding tuition)?", hint: "Most students need roughly €8,000–€10,000 a year for rent, food and transport.", usd: [5000, 8000, 10000, 14000], none: "I haven't set a living budget", s: [0, 0, 2, 3, 3, 3] },
@@ -642,7 +642,7 @@
       S35: { type: "budget", currency: "EUR", q: "How much can your sponsor show in a bank account for the visa?", usd: [5000, 10000, 20000, 35000], none: "No funds available yet", s: [0, 0, 1, 2, 3, 3] },
       S36: { q: "How long have these funds been in the account?", o: ["Not deposited yet", "Less than 3 months", "3–6 months", "More than 6 months"], s: S3 },
       S37: { q: "Can your sponsor show a legal source of income (salary slips, tax returns, business documents)?", o: ["No", "Partly", "Mostly", "Yes, fully documented"], s: S3 },
-      S38: { q: "Do you need to work part-time to cover your costs in Malta?", o: ["Yes — I must work to survive", "It would help a lot", "Nice to have", "No need"], s: [0, 1, 2, 3] },
+      S38: { q: "Do you need to work part-time to cover your costs in Malta?", o: ["Yes: I must work to survive", "It would help a lot", "Nice to have", "No need"], s: [0, 1, 2, 3] },
       S39: { q: "What type of accommodation do you prefer?", o: ["University residence / student hostel", "Shared apartment with other students", "Private studio apartment", "Homestay with a local family", "Staying with family or friends"] },
       S40: { type: "budget", currency: "EUR", q: "What is your monthly accommodation budget?", hint: "Typical: residence / hostel €300–€550, shared room €350–€500, studio €700+.", usd: [250, 400, 600, 900], per: "per month", none: "Not sure yet", s: [0, 0, 2, 3, 3, 3] },
       S41: { q: "Which area of Malta do you prefer to live in?", o: ["Near campus (Msida / Paola)", "Sliema / St Julian's", "Valletta area", "Wherever is cheapest", "No preference"] },
@@ -676,25 +676,25 @@
     flags: function (h) {
       var f = [], marks = ["S11", "S12", "S13", "S14"].map(h.num).filter(function (x) { return x != null; });
       var last = marks.length ? marks[marks.length - 1] : null;
-      if (h.idx("S48") === 1) f.push([10, "A criminal conviction can lead to visa refusal — we need to review this with you before applying."]);
-      if (h.idx("S08") === 2) f.push([9, "Several visa refusals weaken a new application — prepare a strong file that addresses each refusal reason."]);
+      if (h.idx("S48") === 1) f.push([10, "A criminal conviction can lead to visa refusal. We need to review this with you before applying."]);
+      if (h.idx("S08") === 2) f.push([9, "Several visa refusals weaken a new application, prepare a strong file that addresses each refusal reason."]);
       if (h.idx("S04") <= 1) f.push([8, "Get a passport valid for at least the length of your course plus 6 months before applying."]);
-      if (last != null && last < 50) f.push([8, "Your latest marks are below 50% — consider a foundation or diploma route first."]);
+      if (last != null && last < 50) f.push([8, "Your latest marks are below 50%, consider a foundation or diploma route first."]);
       if (h.idx("S35") <= 1) f.push([9, "You'll need to show enough funds for tuition and living costs (about €10,000+ a year) for the student visa."]);
       if (h.idx("S36") <= 1) f.push([6, "Keep visa funds in the bank account for at least 3–6 months before applying."]);
       if (h.idx("S37") <= 1) f.push([7, "Your sponsor should be able to show a legal, documented source of income."]);
-      if (h.idx("S38") === 0) f.push([7, "Don't plan to rely on part-time work to cover basic costs — student work hours are limited."]);
+      if (h.idx("S38") === 0) f.push([7, "Don't plan to rely on part-time work to cover basic costs, student work hours are limited."]);
       if (h.idx("S16") === 4 && h.idx("S17") === 4) f.push([7, "A study gap of more than 5 years with no documented activity needs a strong explanation and evidence."]);
-      if (h.idx("S21") <= 1) f.push([6, "Book an English test (IELTS, PTE, TOEFL or Duolingo) — most Malta courses need IELTS 6.0 or equivalent."]);
-      if (engScore(h.answers().S22, h) === 0 || engScore(h.answers().S22, h) === 1) f.push([6, "Your English score is below most course requirements — plan a retake or an English pathway course."]);
+      if (h.idx("S21") <= 1) f.push([6, "Book an English test (IELTS, PTE, TOEFL or Duolingo). Most Malta courses need IELTS 6.0 or equivalent."]);
+      if (engScore(h.answers().S22, h) === 0 || engScore(h.answers().S22, h) === 1) f.push([6, "Your English score is below most course requirements, plan a retake or an English pathway course."]);
       if (h.idx("S19") <= 1) f.push([5, "Get all certificates and transcripts together and attested before applying."]);
-      if (h.idx("S30") <= 1) f.push([4, "Prepare a Statement of Purpose tailored to your course — we can help."]);
+      if (h.idx("S30") <= 1) f.push([4, "Prepare a Statement of Purpose tailored to your course. We can help."]);
       if (h.idx("S33") <= 1) f.push([5, "Budget at least €8,000–€10,000 a year for living costs in Malta."]);
       return f;
     },
     next: function (level, h, p, L) {
       var book = ["Book an education consultation", "/book-consultation?topic=education-consultancy", "outline"];
-      if (level === L[0]) return { title: "Prepare your profile before applying", text: "Work on the issues listed above — marks, English, finances or visa history — before applying. We can plan a foundation or pathway route that fits your profile.", links: [["Book an education consultation", "/book-consultation?topic=education-consultancy", "accent"], ["Study in Malta services", "/education-consultancy", "outline"]] };
+      if (level === L[0]) return { title: "Prepare your profile before applying", text: "Work on the issues listed above (marks, English, finances or visa history) before applying. We can plan a foundation or pathway route that fits your profile.", links: [["Book an education consultation", "/book-consultation?topic=education-consultancy", "accent"], ["Study in Malta services", "/education-consultancy", "outline"]] };
       return { title: level === L[3] ? "Apply to study in Malta with confidence" : "Start your Malta application with expert support", text: "We shortlist courses and universities for your profile, prepare your application, SOP and visa file, and arrange your student residence or hostel before you arrive.", links: [["Malta university application service", "/education-consultancy#pricing", "accent"], book] };
     }
   };
@@ -705,11 +705,11 @@
   A.realestate = {
     name: "Property Buying Assessment", topic: "real-estate", countryQ: "R02", minutes: 8, noAgeInDetails: true,
     title: "Foreign Buyer Real Estate Assessment",
-    intro: "An international-standard assessment for foreigners buying property abroad — your budget, age, financing, target country and city, legal and tax readiness — so you buy safely and at the right price.",
-    notice: "Free real estate assessment for foreign buyers — about 8 minutes.",
+    intro: "An international-standard assessment for foreigners buying property abroad (your budget, age, financing, target country and city, legal and tax readiness) so you buy safely and at the right price.",
+    notice: "Free real estate assessment for foreign buyers, about 8 minutes.",
     levels: ["Not ready to buy", "Early research", "Nearly ready", "Ready to buy"],
     resultLabel: "Your property buying readiness",
-    disclaimer: "This assessment is general guidance based on your answers. It is not legal, tax or mortgage advice — always use an independent lawyer before buying property.",
+    disclaimer: "This assessment is general guidance based on your answers. It is not legal, tax or mortgage advice, always use an independent lawyer before buying property.",
     questions: {
       R01: { type: "country", select: true, list: WORLD, q: "What is your nationality?" },
       R02: { type: "country", select: true, list: WORLD, q: "Which country do you currently live in?" },
@@ -727,16 +727,16 @@
       R14: { q: "How will you pay for the property?", o: ["Cash", "A mortgage in that country", "A loan from my home country", "Part cash, part mortgage", "Not sure yet"], s: [3, 2, 2, 2, 0] },
       R15: { q: "What deposit can you pay?", hint: "Foreign buyers usually need 25–50% deposit for a mortgage.", o: ["Under 10%", "10–25%", "25–50%", "More than 50% / full cash"], s: S3 },
       R16: { q: "Can you prove the source of your funds (bank statements, salary, business income, sale of property)?", hint: "Banks, lawyers and agents must check this under anti-money-laundering rules.", o: ["No", "Partly", "Mostly", "Yes, fully documented"], s: S3 },
-      R17: { q: "Have you budgeted for buying costs on top of the price (purchase taxes / stamp duty, legal and agent fees — often 5–12%)?", o: ["I didn't know about these", "Not yet", "Partly", "Yes, fully budgeted"], s: S3 },
+      R17: { q: "Have you budgeted for buying costs on top of the price (purchase taxes / stamp duty, legal and agent fees, often 5–12%)?", o: ["I didn't know about these", "Not yet", "Partly", "Yes, fully budgeted"], s: S3 },
       R18: { q: "How will you transfer the money?", o: ["Not sure", "Cash or informal channels", "Normal bank transfer", "Bank or FX specialist with a full documented trail"], s: [0, 0, 2, 3] },
       R19: { q: "Have you budgeted for yearly costs (service charges, property tax, maintenance, insurance)?", o: ["No", "Not yet", "Roughly", "Yes"], s: S3 },
       R20: { q: "Do you know the rules for foreigners buying in that country? (e.g. Malta AIP permit / SDA areas, UAE freehold zones, UK stamp duty surcharge, Spain NIE)", o: ["Not at all", "A little", "Mostly", "Yes, in detail"], s: S3 },
       R21: { q: "Will you use an independent lawyer or notary?", o: ["No", "The developer's / agent's lawyer", "Yes, independent", "Yes, already appointed"], s: [0, 1, 3, 3] },
-      R22: { q: "Do you understand the taxes — purchase tax, rental income tax, capital gains and inheritance — in that country and at home?", o: ["No", "A little", "Mostly", "Yes, with professional advice"], s: S3 },
+      R22: { q: "Do you understand the taxes (purchase tax, rental income tax, capital gains and inheritance) in that country and at home?", o: ["No", "A little", "Mostly", "Yes, with professional advice"], s: S3 },
       R23: { q: "If you'll rent the property out, how will it be managed?", o: ["I won't rent it out", "I'll manage it myself from abroad", "A local letting / property manager", "Short-term holiday lets with the right licence"] },
       R24: { q: "Are you interested in residency or a visa through the purchase?", o: ["No", "Yes", "Not sure"] },
       R25: { q: "Are your ID documents ready (valid passport, proof of address)?", o: ["Expired or missing", "Some missing", "Mostly ready", "All valid and current"], s: S3 },
-      R26: { q: "Will you attend the purchase in person?", o: ["Yes, I'll travel", "No — I'll need a power of attorney", "Not sure"] },
+      R26: { q: "Will you attend the purchase in person?", o: ["Yes, I'll travel", "No: I'll need a power of attorney", "Not sure"] },
       R27: { q: "How important is it to see the property in person before buying?", o: ["I'll buy without seeing it", "A video tour is enough", "I'll visit before deciding", "I'll visit several times"], s: [0, 1, 3, 3] }
     },
     sections: {
@@ -753,18 +753,18 @@
     ],
     flags: function (h) {
       var f = [];
-      if (h.idx("R18") === 1) f.push([10, "Never transfer property money in cash or through informal channels — it can block the purchase and break money-laundering rules."]);
-      if (h.idx("R16") <= 1) f.push([9, "Prepare documents proving where your money comes from — lawyers and banks must check this before you can buy."]);
-      if (h.idx("R21") === 0) f.push([9, "Always use an independent lawyer or notary — never rely on the seller's or developer's lawyer alone."]);
+      if (h.idx("R18") === 1) f.push([10, "Never transfer property money in cash or through informal channels. It can block the purchase and break money-laundering rules."]);
+      if (h.idx("R16") <= 1) f.push([9, "Prepare documents proving where your money comes from, lawyers and banks must check this before you can buy."]);
+      if (h.idx("R21") === 0) f.push([9, "Always use an independent lawyer or notary, never rely on the seller's or developer's lawyer alone."]);
       if (h.idx("R21") === 1) f.push([6, "Use your own independent lawyer, not the developer's or agent's."]);
       if (h.idx("R13") === 0) f.push([7, "Set a clear budget, including buying costs, before viewing properties."]);
       if (h.idx("R17") <= 1) f.push([7, "Budget an extra 5–12% for purchase taxes, legal and agent fees."]);
-      if (h.idx("R14") >= 1 && h.idx("R14") <= 3 && h.idx("R15") <= 1) f.push([7, "Most banks lend to foreign buyers with a 25–50% deposit — check mortgage eligibility early."]);
+      if (h.idx("R14") >= 1 && h.idx("R14") <= 3 && h.idx("R15") <= 1) f.push([7, "Most banks lend to foreign buyers with a 25–50% deposit, check mortgage eligibility early."]);
       if (h.idx("R20") <= 1) f.push([6, "Check the foreign ownership rules for " + (h.text("R06") || "your target country") + " before choosing a property."]);
-      if (h.idx("R27") === 0) f.push([6, "Don't buy property abroad without seeing it — at least arrange an independent inspection."]);
-      if (h.idx("R09") === 3) f.push([5, "Off-plan purchases need extra checks — developer track record, escrow protection and completion guarantees."]);
+      if (h.idx("R27") === 0) f.push([6, "Don't buy property abroad without seeing it, at least arrange an independent inspection."]);
+      if (h.idx("R09") === 3) f.push([5, "Off-plan purchases need extra checks, developer track record, escrow protection and completion guarantees."]);
       var age = h.num("R03");
-      if (age != null && age > 65 && h.idx("R14") >= 1 && h.idx("R14") <= 3) f.push([6, "Mortgages for buyers over 65 are limited — plan more cash or a shorter term."]);
+      if (age != null && age > 65 && h.idx("R14") >= 1 && h.idx("R14") <= 3) f.push([6, "Mortgages for buyers over 65 are limited, plan more cash or a shorter term."]);
       if (h.idx("R25") <= 1) f.push([5, "Make sure your passport and proof of address are valid before you make an offer."]);
       return f;
     },

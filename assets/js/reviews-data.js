@@ -28,29 +28,29 @@ window.QA_REVIEWS = (function () {
       s("Client name", "United Kingdom", "gb", "PPC was eating my margin. After the restructure my ACoS dropped and sales stayed steady.", "Amazon PPC"),
       s("Client name", "United Kingdom", "gb", "Clear plan of action for my suspension and the account was reinstated. Very professional.", "Amazon reactivation"),
       s("Client name", "United Kingdom", "gb", "The listing rewrite and A+ content made a visible difference to conversion.", "Amazon SEO"),
-      s("Client name", "United Kingdom", "gb", "Honest advice — they told me what not to do as well as what to do.", "Amazon consultation"),
+      s("Client name", "United Kingdom", "gb", "Honest advice, they told me what not to do as well as what to do.", "Amazon consultation"),
       s("Client name", "United Kingdom", "gb", "The quarterly product list gave me real options with numbers, not just ideas.", "Q1–Q4 product research"),
       s("Client name", "United Kingdom", "gb", "Step-by-step support from Brand Registry to my first FBA shipment.", "Amazon FBA launch"),
       s("Client name", "United Kingdom", "gb", "Fast replies and practical guidance whenever I got stuck.", "Amazon growth strategy", 4)
     ],
     ebay: [
       s("Client name", "United Kingdom", "gb", "My MC011 restriction was lifted after they prepared the right invoices and appeal.", "eBay MC011 appeal"),
-      s("Client name", "United Kingdom", "gb", "Store set up properly from day one — categories, policies and promoted listings.", "eBay store setup"),
+      s("Client name", "United Kingdom", "gb", "Store set up properly from day one, categories, policies and promoted listings.", "eBay store setup"),
       s("Client name", "United Kingdom", "gb", "Account verified without problems. They explained every document I needed.", "eBay account creation"),
       s("Client name", "United Kingdom", "gb", "The SEO audit fixed my item specifics and my views went up within weeks.", "eBay SEO audit"),
       s("Client name", "United Kingdom", "gb", "MC999 felt impossible until they took over the appeal. Account restored.", "eBay MC999 appeal"),
       s("Client name", "United Kingdom", "gb", "Practical marketing plan with markdowns and promotions that actually sold stock.", "eBay marketing strategy"),
-      s("Client name", "United Kingdom", "gb", "Clear growth plan — which products to list and how to price them.", "eBay growth strategy"),
+      s("Client name", "United Kingdom", "gb", "Clear growth plan, which products to list and how to price them.", "eBay growth strategy"),
       s("Client name", "United Kingdom", "gb", "Good communication and honest timelines throughout.", "eBay account review", 4)
     ],
     tiktok: [
       s("Client name", "United Kingdom", "gb", "TikTok Shop UK approved first time, and they showed me how to keep shop health high.", "TikTok Shop account creation"),
       s("Client name", "United Kingdom", "gb", "Our first LIVE sale was planned to the minute. Sales from the stream beat a whole week of posts.", "TikTok LIVE selling"),
       s("Client name", "United Kingdom", "gb", "They found creators who actually fit our product. Affiliate sales are now our biggest channel.", "Creator affiliates"),
-      s("Client name", "United Kingdom", "gb", "Clear explanation of what TikTok Shop needs for overseas sellers — saved me months.", "TikTok Shop consultation"),
+      s("Client name", "United Kingdom", "gb", "Clear explanation of what TikTok Shop needs for overseas sellers, saved me months.", "TikTok Shop consultation"),
       s("Client name", "United Kingdom", "gb", "Shop reinstated after a deactivation, with a plan so it doesn't happen again.", "TikTok Shop reactivation"),
       s("Client name", "United Kingdom", "gb", "The content plan made posting every day realistic for a small team.", "TikTok growth strategy"),
-      s("Client name", "United Kingdom", "gb", "Product titles and keywords fixed — our products now show in TikTok search.", "TikTok SEO audit"),
+      s("Client name", "United Kingdom", "gb", "Product titles and keywords fixed. Our products now show in TikTok search.", "TikTok SEO audit"),
       s("Client name", "United Kingdom", "gb", "Helpful, quick and very knowledgeable about TikTok Shop rules.", "TikTok Shop account review", 4)
     ],
     walmart: [
@@ -61,10 +61,10 @@ window.QA_REVIEWS = (function () {
       s("Client name", "United Kingdom", "gb", "Listing quality score went up across our catalog after the SEO work.", "Walmart SEO"),
       s("Client name", "United Kingdom", "gb", "Our first Walmart live shopping event was well planned and brought new customers.", "Walmart live streaming"),
       s("Client name", "United Kingdom", "gb", "Account reinstated with a clear plan to keep performance standards up.", "Walmart reactivation"),
-      s("Client name", "United Kingdom", "gb", "Honest about what Walmart needs — no false promises.", "Walmart consultation", 4)
+      s("Client name", "United Kingdom", "gb", "Honest about what Walmart needs. No false promises.", "Walmart consultation", 4)
     ],
     etsy: [
-      s("Client name", "United Kingdom", "gb", "My Etsy shop finally looks professional — policies, sections and photos all set up.", "Etsy shop setup"),
+      s("Client name", "United Kingdom", "gb", "My Etsy shop finally looks professional, policies, sections and photos all set up.", "Etsy shop setup"),
       s("Client name", "United Kingdom", "gb", "Tags and titles rewritten and my listings now appear in Etsy search.", "Etsy SEO"),
       s("Client name", "United Kingdom", "gb", "Shop opened and verified from abroad without any problems.", "Etsy account creation"),
       s("Client name", "United Kingdom", "gb", "Clear growth plan with pricing and Etsy Ads that didn't waste money.", "Etsy growth strategy"),
@@ -75,7 +75,7 @@ window.QA_REVIEWS = (function () {
     ],
     shopify: [
       s("Client name", "United Kingdom", "gb", "Our new Shopify store is fast, clean and converts far better than the old one.", "Shopify store build"),
-      s("Client name", "United Kingdom", "gb", "Meta ads now bring steady sales — they handle the ads, boosting and content for us.", "Meta Ads"),
+      s("Client name", "United Kingdom", "gb", "Meta ads now bring steady sales. They handle the ads, boosting and content for us.", "Meta Ads"),
       s("Client name", "United Kingdom", "gb", "Store built, payments connected and products uploaded in record time.", "Shopify development"),
       s("Client name", "United Kingdom", "gb", "Google Shopping campaigns finally profitable after their setup.", "Google Ads"),
       s("Client name", "United Kingdom", "gb", "TikTok ads brought a younger audience to our store we couldn't reach before.", "TikTok Ads"),
@@ -93,7 +93,7 @@ window.QA_REVIEWS = (function () {
       s("Client name", "United Kingdom", "gb", "Comment-to-DM on our Reels doubled the comments and every buyer gets the link instantly.", "Comment-to-DM"),
       s("Client name", "United Kingdom", "gb", "DM questions about prices and sizes are answered automatically now. Huge time saver for our boutique.", "Instagram DM automation"),
       s("Client name", "United Kingdom", "gb", "Story replies turned into real leads in our CRM. Professional setup from start to finish.", "Lead generation"),
-      s("Client name", "United Kingdom", "gb", "Safe, official tools and no spammy tricks — exactly what we wanted for our brand account.", "Instagram chatbot"),
+      s("Client name", "United Kingdom", "gb", "Safe, official tools and no spammy tricks, exactly what we wanted for our brand account.", "Instagram chatbot"),
     ],
     "whatsapp-automation": [
       s("Client name", "United Kingdom", "gb", "Bookings and reminders on WhatsApp cut our no-shows. Patients love how quick it is.", "Appointment booking"),
@@ -186,6 +186,16 @@ window.QA_REVIEWS = (function () {
       s("Client name", "United Kingdom", "gb", "They helped me choose the right course and my application was accepted.", "Malta admissions"),
       s("Client name", "United Kingdom", "gb", "Every document for my visa was checked carefully. Very supportive team.", "Student visa guidance"),
       s("Client name", "United Kingdom", "gb", "Clear guidance from course selection to arrival in Malta.", "Study in Malta"),
+    ],
+    "china-sourcing": [
+      s("Client name", "United Kingdom", "gb", "They checked three factories and sent samples before I paid anything. The final order matched the sample exactly.", "China sourcing"),
+      s("Client name", "United Kingdom", "gb", "The pre-shipment inspection caught a packaging problem early, so it was fixed before the goods left China.", "Quality inspection"),
+      s("Client name", "United Kingdom", "gb", "My private label stock arrived labelled and ready for Amazon. Clear updates at every step.", "Private label & FBA prep"),
+    ],
+    "stock-exchange": [
+      s("Client name", "United Kingdom", "gb", "The course explained charts, risk and diversification in plain language. I finally understand what I'm investing in.", "Stock market course"),
+      s("Client name", "United Kingdom", "gb", "They helped me choose a regulated broker and set up a simple ETF portfolio. Everything was explained before I invested.", "ETF & index investing"),
+      s("Client name", "United Kingdom", "gb", "The 1-to-1 consultation gave me a clear written plan that matched my goals and risk level.", "Investment consultation"),
     ],
     "real-estate": [
       s("Client name", "United Kingdom", "gb", "I bought a house in Lahore while living in the UK. Video tours and regular updates made it stress-free.", "Overseas property purchase"),

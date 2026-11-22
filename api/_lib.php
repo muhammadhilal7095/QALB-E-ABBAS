@@ -103,7 +103,21 @@ function qa_settings(): array {
         'manualPayments' => true,
         'hideSamples'    => false,
         'hiddenSampleKeys' => [],
+        'clubWhatsapp'   => '',   // Stock Market Club WhatsApp group invite link (Admin → Members)
     ];
+}
+
+/** Website assistant settings + extra answers (Admin → Assistant). */
+function qa_assistant(): array {
+    $a = qa_read('assistant') + [
+        'enabled' => true,
+        'name'    => 'Qalb-E-Abbas',
+        'welcome' => "Hi there! 👋 Welcome to Qalb-E-Abbas. How can we help you today? Ask me anything about our services, prices or how to get started.",
+        'answers' => [],
+    ];
+    $a['answers'] = array_values(array_filter((array)$a['answers'], 'is_array'));
+    foreach ($a['answers'] as $i => $x) $a['answers'][$i] = $x + ['id' => '', 'q' => '', 'keywords' => '', 'a' => '', 'link' => '', 'label' => '', 'live' => true];
+    return $a;
 }
 
 // ---------------------------------------------------------------------------
@@ -404,6 +418,7 @@ function qa_mark_paid(string $ref, string $paymentId, ?int $paidCents = null): ?
         qa_notify(($isBooking ? 'New paid booking: ' : 'New paid order: ') . "{$order['priced']['title']} — {$order['submission']['customer']['name']} ($amount)",
             "A payment was completed on the website.\n\n" . qa_order_text($order) . "\nClient details\n" . qa_customer_text($order) . "\nPayment ID: $paymentId\nOpen the admin dashboard: " . QA_SITE . "/admin/",
             $order['submission']['customer']['email']);
+        if (!empty($order['membership'])) { qa_activate_member($order); return $order; }
         $first = explode(' ', trim($order['submission']['customer']['name']))[0];
         qa_mail($order['submission']['customer']['email'], "Payment received — {$order['priced']['title']} ({$order['ref']})",
             "Hi $first,\n\nThank you — we've received your payment of $amount. Our team will contact you within one working day"
@@ -414,6 +429,51 @@ function qa_mark_paid(string $ref, string $paymentId, ?int $paidCents = null): ?
 }
 
 // ---------------------------------------------------------------------------
+// Stock Market Club members (stock-exchange-join → $20 → WhatsApp group)
+// ---------------------------------------------------------------------------
+const QA_CLUB_SKU = 'stock-club-membership';
+
+function qa_member_id(): string {
+    return 'QAS-' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 6));
+}
+
+/** Find the member linked to an order reference. */
+function qa_member_by_ref(string $ref): ?array {
+    foreach (qa_read('members') as $m) if (($m['ref'] ?? '') === $ref) return $m;
+    return null;
+}
+
+/** Activate the member after payment and email the WhatsApp group link (once). */
+function qa_activate_member(array $order): void {
+    if (empty($order['membership'])) return;
+    $member = null; $changed = false;
+    qa_update('members', function (array $list) use ($order, &$member, &$changed) {
+        foreach ($list as $i => $m) {
+            if (($m['ref'] ?? '') !== $order['ref']) continue;
+            if (($m['status'] ?? '') !== 'active') { $m['status'] = 'active'; $m['activatedAt'] = qa_now(); $list[$i] = $m; $changed = true; }
+            $member = $list[$i];
+        }
+        return $list;
+    });
+    if (!$member || !$changed) return;
+    $link = trim((string)qa_settings()['clubWhatsapp']);
+    $first = explode(' ', trim($member['name']))[0];
+    qa_mail($member['email'], "Welcome to the Qalb-E-Abbas Stock Market Club ({$member['memberId']})",
+        "Hi $first,\n\nThank you for joining the Qalb-E-Abbas Stock Market Club. Your membership is now active.\n\n"
+        . "Member ID: {$member['memberId']}\nName: {$member['name']}\nWhatsApp: {$member['whatsapp']}\n\n"
+        . ($link !== '' ? "Join our WhatsApp group here:\n$link\n\nPlease join using the WhatsApp number you gave us ({$member['whatsapp']}).\n"
+                        : "Our team will add you to the WhatsApp group within one working day using the number you gave us ({$member['whatsapp']}).\n")
+        . "\nThe group is for learning and market discussion. It is not personal investment advice, and investing always carries risk.\n\n"
+        . "Questions? Just reply to this email.\n\nQalb-E-Abbas\n" . QA_SITE . "\n",
+        qa_settings()['notifyEmail'] ?: QA_ADMIN_EMAIL);
+    qa_notify("New Stock Market Club member: {$member['name']} ({$member['memberId']})",
+        "A new member has paid and joined the Stock Market Club.\n\nMember ID: {$member['memberId']}\nName: {$member['name']}\nEmail: {$member['email']}\nWhatsApp: {$member['whatsapp']}\n"
+        . "Country: " . ($member['country'] ?: '—') . "\nExperience: " . ($member['experience'] ?: '—') . "\nMarkets: " . (implode(', ', $member['markets'] ?? []) ?: '—') . "\n\n"
+        . ($link === '' ? "No WhatsApp group link is saved yet — add them to the group manually, or save the link in Admin → Members.\n" : '')
+        . "Admin: " . QA_SITE . "/admin/?tab=members\n", $member['email']);
+}
+
+// ---------------------------------------------------------------------------
 // Reviews: page keys used by the review sections on the website
 // ---------------------------------------------------------------------------
 const QA_REVIEW_KEYS = [
@@ -421,7 +481,7 @@ const QA_REVIEW_KEYS = [
     'walmart' => 'Walmart', 'etsy' => 'Etsy', 'shopify' => 'Shopify', 'us-llc-formation' => 'US LLC formation',
     'uk-ltd-formation' => 'UK LTD formation', 'uae-company-formation' => 'UAE company formation', 'malta-company-formation' => 'Malta company formation',
     'taxation' => 'Taxation', 'trademark-registration' => 'Trademark registration', 'education-consultancy' => 'Education consultancy',
-    'real-estate' => 'Real estate (Pakistan)', 'digital-marketing' => 'Digital marketing', 'seo' => 'SEO', 'social-media-marketing' => 'Social media marketing',
+    'real-estate' => 'Real estate (Pakistan)', 'china-sourcing' => 'China sourcing', 'stock-exchange' => 'Stock exchange & investing', 'digital-marketing' => 'Digital marketing', 'seo' => 'SEO', 'social-media-marketing' => 'Social media marketing',
     'email-marketing' => 'Email marketing', 'influencer-marketing' => 'Influencer marketing', 'affiliate-marketing' => 'Affiliate marketing',
     'website-development' => 'Website development', 'app-development' => 'App development', 'crm-development' => 'CRM development',
     'facebook-automation' => 'Facebook automation', 'instagram-automation' => 'Instagram automation', 'whatsapp-automation' => 'WhatsApp automation',
@@ -434,7 +494,7 @@ function qa_review_key_for(string $service): string {
         'Amazon FBA' => 'amazon', 'eBay' => 'ebay', 'Walmart' => 'walmart', 'TikTok Shop' => 'tiktok', 'Etsy' => 'etsy', 'Shopify' => 'shopify',
         'Qalb-E-Abbas University course' => 'students', 'US LLC formation' => 'us-llc-formation', 'UK LTD formation' => 'uk-ltd-formation',
         'UAE company formation' => 'uae-company-formation', 'Malta company formation' => 'malta-company-formation', 'Taxation' => 'taxation',
-        'Trademark registration' => 'trademark-registration', 'Education consultancy (Malta)' => 'education-consultancy', 'Real estate (Pakistan)' => 'real-estate',
+        'Trademark registration' => 'trademark-registration', 'Education consultancy (Malta)' => 'education-consultancy', 'Real estate (Pakistan)' => 'real-estate', 'China sourcing' => 'china-sourcing', 'Stock exchange & investing' => 'stock-exchange',
         'Digital marketing / ads' => 'digital-marketing', 'SEO' => 'seo', 'Social media marketing' => 'social-media-marketing',
         'Website or app development' => 'website-development', 'WhatsApp / social automation' => 'whatsapp-automation',
     ];

@@ -12,7 +12,7 @@
      data-image="assets/img/hero/amazon.webp" (and optional data-image-alt)
      to the slide's .hero-slide__visual element.                             */
   var VIZ = {
-    amazon: { v: "dashboard", t: "Seller dashboard — research", kpi: [["Learn", "Done"], ["Prepare", "Done"], ["Check", "Next"]], a: ["search", "Product research", "Demand & competition"], b: ["box", "Inventory", "Only after checks"], extra: "boxes" },
+    amazon: { v: "dashboard", t: "Seller dashboard: research", kpi: [["Learn", "Done"], ["Prepare", "Done"], ["Check", "Next"]], a: ["search", "Product research", "Demand & competition"], b: ["box", "Inventory", "Only after checks"], extra: "boxes" },
     ebay: { v: "store", t: "Marketplace listings", a: ["list", "Listings", "Drafted & reviewed"], b: ["box", "Inventory", "Planned in order"], extra: "boxes" },
     tiktok: { v: "dashboard", t: "Shop analytics", kpi: [["Content", "Ready"], ["Listing", "Live"], ["Orders", "Tracked"]], a: ["video", "Short-form video", "Content plan ready"], b: ["store", "Shop listing", "Product approved"], extra: "phone" },
     walmart: { v: "dashboard", t: "Marketplace dashboard", kpi: [["Research", "Done"], ["Pricing", "Set"], ["Stock", "Planned"]], a: ["chart", "Market research", "Category reviewed"], b: ["box", "Warehouse", "Fulfilment plan"], extra: "boxes" },
@@ -103,7 +103,7 @@
   // Proposed outline only — replace with the officially approved syllabus.
   var CURRICULUM = [
     {
-      title: "Module 1 — Foundation", range: "Classes 1–8", lessons: [
+      title: "Module 1: Foundation", range: "Classes 1–8", lessons: [
         ["How e-commerce works", "Understand how online marketplaces generate sales and where a seller fits in.", ["Marketplaces vs. your own store", "Common business models (private label, wholesale, handmade, arbitrage)", "Setting realistic expectations"], "Write down your goals, weekly time and starting budget."],
         ["Choosing the right marketplace", "Compare major marketplaces and choose a sensible starting point.", ["Amazon, eBay, Walmart, Etsy, TikTok Shop and Shopify compared", "Eligibility and supported regions", "Fee structures at a glance"], "Shortlist one marketplace and justify the choice."],
         ["Marketplace rules & policies", "Learn the rules that protect your account from day one.", ["Restricted and prohibited categories", "Account health basics", "Intellectual property and brand rights"], "Create a policy checklist for your chosen marketplace."],
@@ -115,7 +115,7 @@
       ]
     },
     {
-      title: "Module 2 — Product Research", range: "Classes 9–16", lessons: [
+      title: "Module 2: Product Research", range: "Classes 9–16", lessons: [
         ["Product research principles", "Learn what makes a product worth investigating.", ["Viability criteria", "Seasonality, fragility, size and regulation", "Common beginner traps"], "Score three example products against the criteria."],
         ["Niche & market research", "Explore categories and customer needs systematically.", ["Category exploration", "Trends vs. fads", "Customer problems and needs"], "Shortlist three niches."],
         ["Demand analysis", "Estimate whether there is consistent demand.", ["Sales estimates", "Search interest", "Demand consistency over time"], "Complete a demand worksheet for five products."],
@@ -127,7 +127,7 @@
       ]
     },
     {
-      title: "Module 3 — Supplier Evidence", range: "Classes 17–24", lessons: [
+      title: "Module 3: Supplier Evidence", range: "Classes 17–24", lessons: [
         ["Sourcing models & supplier types", "Understand where products can come from.", ["Manufacturers, wholesalers and distributors", "Local vs. overseas sourcing", "Pros and cons of each"], "Choose a sourcing model for your product."],
         ["Finding suppliers", "Build a list of potential suppliers.", ["Supplier directories and wholesale platforms", "Trade shows", "Outreach approach"], "Compile a list of ten potential suppliers."],
         ["Supplier verification", "Check that a supplier is genuine and reliable.", ["Business registration checks", "Track record and references", "Red flags"], "Verify three suppliers from your list."],

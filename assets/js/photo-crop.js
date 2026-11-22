@@ -8,7 +8,7 @@
   "use strict";
   if (window.qaCropPhoto) return;
 
-  var CSS = ".qcrop{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:16px;background:rgba(8,18,38,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);font:15px/1.4 Inter,-apple-system,Segoe UI,Roboto,sans-serif}" +
+  var CSS = ".qcrop{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:16px;background:rgba(8,18,38,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);font:15px/1.4 Arial,Helvetica,sans-serif}" +
     ".qcrop__box{width:min(420px,100%);background:#fff;border-radius:20px;padding:20px;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);color:#0B1B36}" +
     ".qcrop__box h2{margin:0 0 4px;font-size:1.1rem}.qcrop__box p{margin:0 0 14px;font-size:.85rem;color:#5F6E85}" +
     ".qcrop__stage{position:relative;width:100%;aspect-ratio:1;border-radius:14px;overflow:hidden;background:#0B1B36;touch-action:none;cursor:grab;user-select:none}" +

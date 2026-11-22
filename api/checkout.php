@@ -38,6 +38,18 @@ if (($in['kind'] ?? '') === 'booking') {
     $items = [];
     foreach (array_slice((array)($in['items'] ?? []), 0, 40) as $l) $items[] = ['sku' => qa_text($l['sku'] ?? '', 80), 'quantity' => (int)($l['quantity'] ?? 1)];
     $sub = ['kind' => 'order', 'items' => $items, 'customer' => $customer, 'notes' => qa_text($in['notes'] ?? '', 1000)];
+    // Course enrolment (/enroll): one course, plus the student's class preferences.
+    if (is_array($in['enrolment'] ?? null)) {
+        $e = $in['enrolment'];
+        if (count($items) !== 1 || strpos($items[0]['sku'], 'course-') !== 0) qa_json(422, ['ok' => false, 'error' => 'Please choose one course.']);
+        if (mb_strlen($customer['phone']) < 7) qa_json(422, ['ok' => false, 'error' => 'Please enter your phone / WhatsApp number.']);
+        if (mb_strlen($customer['country']) < 2) qa_json(422, ['ok' => false, 'error' => 'Please enter your country.']);
+        $sub['enrolment'] = [
+            'course' => preg_replace('/[^a-z0-9-]/', '', (string)($e['course'] ?? '')),
+            'classTime' => qa_text($e['classTime'] ?? '', 60), 'timezone' => qa_text($e['timezone'] ?? '', 60),
+            'level' => qa_text($e['level'] ?? '', 60), 'language' => qa_text($e['language'] ?? '', 40),
+        ];
+    }
 } else {
     qa_json(422, ['ok' => false, 'error' => 'Invalid request.']);
 }
@@ -68,7 +80,7 @@ if ($gateway === 'STRIPE') {
     }
     $cancel = $sub['kind'] === 'booking'
         ? QA_SITE . '/book-consultation?cancelled=1' . ($sub['topic'] ? '&topic=' . rawurlencode($sub['topic']) : '')
-        : QA_SITE . '/cart?cancelled=1';
+        : (!empty($sub['enrolment']) ? QA_SITE . '/enroll?cancelled=1&course=' . rawurlencode($sub['enrolment']['course']) : QA_SITE . '/cart?cancelled=1');
     try {
         $session = qa_stripe('POST', 'checkout/sessions', [
             'mode' => 'payment', 'customer_email' => $customer['email'], 'client_reference_id' => $ref,

@@ -56,7 +56,7 @@ for (const [page, { title, faqs }] of Object.entries(data)) {
     const section =
       `<section class="section mp-faq" aria-labelledby="faq-title">\n` +
       `      <div class="container">\n` +
-      `        <header class="section-head"><p class="eyebrow">FAQs</p><h2 id="faq-title" class="section-title">${esc(title)}</h2></header>\n` +
+      `        <header class="section-head"><h2 id="faq-title" class="section-title">${esc(title)}</h2></header>\n` +
       `        ${block}\n` +
       `      </div>\n` +
       `    </section>\n\n    `;

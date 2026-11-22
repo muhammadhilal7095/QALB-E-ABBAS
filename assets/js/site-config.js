@@ -11,14 +11,14 @@ window.SITE_CONFIG = {
     name: "Qalb-E-Abbas",
     // Logo: replace assets/img/logo.svg with your own file (SVG or PNG/WebP),
     // or point this path at a different file. The aspect ratio is preserved.
-    logo: "assets/img/logo.svg",
-    logoOnDark: "assets/img/logo-light.svg", // version used on the navy footer
-    logoAlt: "Qalb-E-Abbas — home",
+    logo: "assets/img/logo-wordmark.png",
+    logoOnDark: "assets/img/logo-wordmark-light.png", // version used on the navy footer
+    logoAlt: "Qalb-E-Abbas: home",
     // Brand colours (applied as CSS custom properties at runtime).
     colors: {
       primary: "#1F55E0",   // links, active states, accents
-      accent: "#F5B12E",    // Book Consultation button
-      accentInk: "#0B1B36", // text on the accent colour
+      accent: "#1F55E0",    // Book Consultation button
+      accentInk: "#FFFFFF", // text on the accent colour
       navy: "#0B1B36"       // headings, footer background
     }
   },
@@ -55,13 +55,13 @@ window.SITE_CONFIG = {
     applyAiVideoCreatorPro: "/book-consultation?topic=ai-video-creator-pro"
   },
 
-  /* Official social profiles — NOT supplied yet. Paste the real URLs here. */
+  /* Official social profiles — empty ones are hidden on the site. */
   social: {
-    facebook: "",
-    instagram: "",
+    facebook: "https://www.facebook.com/CHAUDHARYQALBEABBAS",
+    instagram: "https://www.instagram.com/chqalb_e_abbas/",
     tiktok: "",
     youtube: "",   // Qalb-E-Abbas University YouTube channel
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/ch-qalb-e-abbas-business-consultant-821784356/",
     x: "",
     reddit: "",
     whatsapp: ""   // e.g. https://wa.me/<number> once confirmed
@@ -107,6 +107,10 @@ window.SITE_CONFIG = {
       ]
     },
     {
+      id: "sourcing", title: "Product Sourcing", icon: "box", desc: "Source products from China: suppliers, quality checks and shipping.",
+      items: [["China Sourcing", "china-sourcing", "/china-sourcing", "icon:box"]]
+    },
+    {
       id: "formation", title: "Company Formation", icon: "building", desc: "Register your company and stay compliant.",
       items: [
         ["UK", "uk-company-formation", "/uk-ltd-formation", "flag-uk"], ["USA", "usa-company-formation", "/us-llc-formation", "flag-us"],
@@ -120,6 +124,10 @@ window.SITE_CONFIG = {
     {
       id: "real-estate", title: "Real Estate", icon: "building", desc: "Buy, sell, rent and invest in property in Pakistan.",
       items: [["Pakistan Property", "real-estate", "/real-estate", "flag-pk"]]
+    },
+    {
+      id: "stock-exchange", title: "Stock Exchange & Investing", icon: "trending-up", desc: "Learn, open an account and invest in US & UK markets.",
+      items: [["US · UK Stocks", "stock-exchange", "/stock-exchange", "icon:trending-up"]]
     },
     {
       id: "marketing", title: "Marketing & Business Growth", icon: "megaphone", desc: "Paid ads, SEO and campaigns that drive sales.",
@@ -147,14 +155,16 @@ window.SITE_CONFIG = {
 
   footer: {
     description: "Empowering entrepreneurs through e-commerce education, mentorship, business consultancy, and digital growth solutions.",
-    commitment: "Practical learning first — so you can make informed decisions and grow your business with confidence.",
+    commitment: "Practical learning first, so you can make informed decisions and grow your business with confidence.",
     // "Services" column
     serviceLinks: [
       ["E-commerce Services", "/services#ecommerce"],
+      ["Product Sourcing (China)", "/china-sourcing"],
       ["Company Formation", "/services#formation"],
       ["Taxation Services", "/taxation"],
       ["Education Consultancy", "/services#education"],
       ["Real Estate (Pakistan)", "/real-estate"],
+      ["Stock Exchange & Investing", "/stock-exchange"],
       ["Digital Marketing", "/digital-marketing"],
       ["AI & Business Automation", "/services#automation"],
       ["Web & Software Development", "/services#development"]

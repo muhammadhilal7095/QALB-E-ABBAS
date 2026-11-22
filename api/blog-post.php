@@ -68,7 +68,7 @@ $schema = [
         ['@type' => 'BlogPosting', '@id' => $url . '#article', 'headline' => mb_substr($post['title'], 0, 110), 'description' => $desc, 'url' => $url,
             'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $url], 'image' => [$coverAbs], 'datePublished' => $published, 'dateModified' => $modified,
             'author' => ['@type' => !empty($post['authorIsPerson']) ? 'Person' : 'Organization', 'name' => $author, 'url' => QA_SITE . '/team'],
-            'publisher' => ['@type' => 'Organization', 'name' => 'Qalb-E-Abbas', 'url' => QA_SITE . '/', 'logo' => ['@type' => 'ImageObject', 'url' => QA_SITE . '/assets/img/logo.svg']],
+            'publisher' => ['@type' => 'Organization', 'name' => 'Qalb-E-Abbas', 'url' => QA_SITE . '/', 'logo' => ['@type' => 'ImageObject', 'url' => QA_SITE . '/assets/img/logo-wordmark.png']],
             'articleSection' => $post['category'], 'keywords' => implode(', ', array_filter(array_merge([$post['keyword'] ?? ''], $post['tags'] ?? []))),
             'wordCount' => blog_words($content), 'inLanguage' => 'en-GB'],
     ],

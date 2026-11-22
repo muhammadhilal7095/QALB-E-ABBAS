@@ -25,6 +25,14 @@ for (const f of ["site.js", "assessment.js"]) {
   const next = js.replace(/var LOGO_V = "\w*";/, `var LOGO_V = "${hash(JSON.stringify(logoV))}";`);
   if (next !== js) writeFileSync(p, next);
 }
+// The website assistant is loaded on demand by site.js, so site.js carries its version (ASSIST_V).
+{
+  const p = join(SITE, "assets/js/site.js");
+  const js = readFileSync(p, "utf8");
+  const v = hash(readFileSync(join(SITE, "assets/js/assistant.js"), "utf8") + readFileSync(join(SITE, "assets/js/assistant-data.js"), "utf8"));
+  const next = js.replace(/var ASSIST_V = "\w*";/, `var ASSIST_V = "${v}";`);
+  if (next !== js) writeFileSync(p, next);
+}
 const assets = [{ src: "assets/css/styles.css", loader: "css" }];
 for (const f of readdirSync(join(SITE, "assets/js")).filter((n) => n.endsWith(".js") && !n.endsWith(".min.js")))
   assets.push({ src: `assets/js/${f}`, loader: "js" });

@@ -31,7 +31,7 @@ const catalogItem = (sku) => {
   if (!item) throw new Error(`Catalog item not found: ${sku}`);
   return item;
 };
-const START = "<!-- PRICING:START — generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->";
+const START = "<!-- PRICING:START, generated from booking/src/lib/service-catalog.json; edit the catalog and run `npm run pricing:build` -->";
 const END = "<!-- PRICING:END -->";
 
 function addAttrs(item, cur) {
@@ -81,7 +81,7 @@ function section(key, page) {
     const q = page.quarters;
     const QC = catalog.quarterContent || {};
     const cards = ["Q1", "Q2", "Q3", "Q4"].map((n) => {
-      const item = { sku: `${q.skuPrefix}-${n.toLowerCase()}`, name: `${q.label} — ${n} (20 products)`, price: q.price };
+      const item = { sku: `${q.skuPrefix}-${n.toLowerCase()}`, name: `${q.label}: ${n} (20 products)`, price: q.price };
       const [months, ...rest] = String(QC[n] || "").split(": ");
       return `<article class="rq-card">
               <div class="rq-card__band"><span class="rq-card__q">${n}</span><span class="rq-card__months">${esc(months || "")}</span></div>
@@ -98,7 +98,6 @@ function section(key, page) {
     quarters = `
         <div class="rq">
           <header class="rq__head">
-            <p class="rq__eyebrow">${icon("search")}Product research reports</p>
             <h3>${esc(q.label)}</h3>
             <p>Each quarter we research 20 high-demand products for that season, so you can choose what to sell with evidence, not guesswork.</p>
             <ol class="rq__steps"><li><b>1</b>Pick a quarter</li><li><b>2</b>We research 20 products</li><li><b>3</b>Get your report and choose</li></ol>
@@ -107,7 +106,6 @@ function section(key, page) {
           <div class="rq__list">
             ${cards}
           </div>
-          <p class="rq__tip">${icon("info")}Tip: order 2–3 months before the season, so there's time to source samples and have stock ready when demand starts.</p>
         </div>`;
   }
 
@@ -117,7 +115,6 @@ function section(key, page) {
     <section class="section svc-pricing" id="pricing" aria-labelledby="pricing-title">
       <div class="container">
         <header class="section-head">
-          <p class="eyebrow">Pricing</p>
           <h2 id="pricing-title" class="section-title">${esc(page.title)}</h2>
           <p class="section-sub">${esc(page.sub)}</p>
         </header>
@@ -176,9 +173,9 @@ console.log(`Pricing sections updated on ${changed} pages.`);
   const file = join(SITE, "book-consultation.html");
   let html = readFileSync(file, "utf8");
   const opts = catalog.consultations.types.map((c) =>
-    `<option value="${esc(c.slug)}" data-price="${c.price}" data-currency="${c.currency}" data-minutes="${c.minutes}" data-desc="${esc(c.desc)}" data-topics="${esc(c.topics.join(" "))}">${esc(c.name)} — ${money(c.price, c.currency)} · ${c.minutes} min</option>`
+    `<option value="${esc(c.slug)}" data-price="${c.price}" data-currency="${c.currency}" data-minutes="${c.minutes}" data-desc="${esc(c.desc)}" data-topics="${esc(c.topics.join(" "))}">${esc(c.name)}, ${money(c.price, c.currency)} · ${c.minutes} min</option>`
   ).join("\n              ");
-  const block = `<!-- CONSULTATIONS:START — generated from booking/src/lib/service-catalog.json; run \`npm run pricing:build\` -->\n              ${opts}\n              <!-- CONSULTATIONS:END -->`;
+  const block = `<!-- CONSULTATIONS:START, generated from booking/src/lib/service-catalog.json; run \`npm run pricing:build\` -->\n              ${opts}\n              <!-- CONSULTATIONS:END -->`;
   if (!html.includes("<!-- CONSULTATIONS:START")) throw new Error("book-consultation.html: CONSULTATIONS markers missing");
   html = html.replace(/<!-- CONSULTATIONS:START[\s\S]*?<!-- CONSULTATIONS:END -->/, block);
   // Booking hours for the form (from catalog.availability).
@@ -196,7 +193,7 @@ console.log(`Pricing sections updated on ${changed} pages.`);
   const fees = catalog.usStateFees;
   const file = join(SITE, catalog.pages["us-llc"].file);
   let html = readFileSync(file, "utf8");
-  const S_START = "<!-- US-STATES:START — generated from booking/src/lib/service-catalog.json (usStateFees); run `npm run pricing:build` -->";
+  const S_START = "<!-- US-STATES:START, generated from booking/src/lib/service-catalog.json (usStateFees); run `npm run pricing:build` -->";
   const S_END = "<!-- US-STATES:END -->";
   const byName = [...fees.states].sort((a, b) => a.name.localeCompare(b.name));
   // Options show the state name only — the filing fee is built into each plan's total price.

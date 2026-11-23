@@ -6822,3 +6822,41 @@ html.mfg-lock { overflow: hidden; }
 /* Category icon boxes (Services menu + Services page sections): site blue instead of navy */
 .mega__icon, .svc-sec__icon { background: #1F55E0 !important; color: #fff !important; }
 .mega__mark img[src*="mobile-apps"] { width: 19px !important; height: 10px !important; }
+
+/* ==========================================================================
+   Pakistan sourcing page: Pakistan flag colours (dark green + white)
+   ========================================================================== */
+.cs-theme.pk-theme, .pk-theme {
+  --brand: #01411C; --accent: #01411C; --accent-ink: #FFFFFF; --accent-light: #8FE0AE;
+  --brand-dark: #002A12; --accent-dark: #002A12; --tint: #E7F4EC; --soft: #F6FAF7;
+  --navy: #012614; --sx: #01411C !important; --sx-light: #8FE0AE !important; --sx-ink: #FFFFFF !important; --sx-deep: #01411C !important;
+}
+.cs-theme.pk-theme .btn--accent, .cs-theme.pk-theme .btn--primary { background: #01411C; border-color: #01411C; color: #fff; }
+.cs-theme.pk-theme .btn--accent:hover, .cs-theme.pk-theme .btn--primary:hover { background: #002A12; }
+.cs-theme.pk-theme .svcx-hero::before { background: linear-gradient(90deg, rgba(1, 26, 13, .96) 0%, rgba(1, 26, 13, .88) 50%, rgba(1, 26, 13, .66) 100%) !important; }
+@media (max-width: 1023px) { .cs-theme.pk-theme .svcx-hero::before { background: rgba(1, 26, 13, .93) !important; } }
+.cs-theme.pk-theme .svcx-hero__eyebrow { color: #8FE0AE !important; border-color: rgba(46, 160, 90, .5) !important; background: rgba(46, 160, 90, .1) !important; border-radius: 4px !important; }
+.cs-theme.pk-theme .fba-trust .icon { color: #8FE0AE !important; }
+.cs-theme.pk-theme .svcx-proof { background: #012614 !important; }
+.cs-theme.pk-theme .svcx-proof__list li { border-left-color: #FFFFFF !important; border-left-width: 2px !important; }
+.cs-theme.pk-theme .istep__ic, .cs-theme.pk-theme .fba-svc__icon { background: #012614 !important; }
+.cs-theme.pk-theme .istep__n { background: #E7F4EC !important; color: #002A12 !important; }
+.cs-theme.pk-theme .fba-svc__num { background: rgba(1, 26, 13, .7) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.cs-theme.pk-theme .fba-svc__link { background: #012614 !important; }
+.cs-theme.pk-theme .fba-svc__link:hover { background: #01411C !important; }
+.cs-theme.pk-theme .fba-svc__ask::after { color: #01411C !important; }
+.cs-theme.pk-theme .pr-email { background: #012614 !important; }
+.cs-theme.pk-theme .pr-email__icon { background: #01411C !important; }
+.cs-theme.pk-theme .tts-req thead tr, .cs-theme.pk-theme .tts-fee { background: #012614 !important; }
+.cs-theme.pk-theme .tts-fee__n { background: #01411C !important; }
+.cs-theme.pk-theme .fba-cta::before { background: linear-gradient(100deg, rgba(1, 26, 13, .96) 0%, rgba(1, 26, 13, .85) 55%, rgba(1, 26, 13, .5) 100%) !important; }
+.cs-theme.pk-theme .istep:hover, .cs-theme.pk-theme .fba-svc:hover { border-color: rgba(46, 160, 90, .35) !important; box-shadow: 0 18px 36px -28px rgba(1, 38, 20, .45) !important; }
+/* on the dark green hero and banner: white buttons with green text (like the flag) */
+.cs-theme.pk-theme .svcx-hero .btn--accent, .cs-theme.pk-theme .svcx-hero .btn--primary, .cs-theme.pk-theme .fba-cta .btn--accent, .cs-theme.pk-theme .pr-email .btn--accent { background: #FFFFFF !important; border-color: #FFFFFF !important; color: #01411C !important; }
+.cs-theme.pk-theme .svcx-hero .btn--accent:hover, .cs-theme.pk-theme .svcx-hero .btn--primary:hover, .cs-theme.pk-theme .fba-cta .btn--accent:hover, .cs-theme.pk-theme .pr-email .btn--accent:hover { background: #E7F4EC !important; }
+.cs-theme.pk-theme .svcx-hero__card li .icon { background: #FFFFFF !important; color: #01411C !important; }
+.pk-theme.mfg-dialog .mfg-submit, .pk-theme .mfg-submit { background: #01411C !important; border-color: #01411C !important; }
+.pk-theme .cs-route { background: rgba(1, 38, 20, .9) !important; }
+.pk-theme .cs-route__title { color: #8FE0AE !important; }
+.pk-theme .cs-route__ic { background: #01411C !important; color: #fff !important; box-shadow: 0 0 0 5px rgba(1, 38, 20, .95) !important; border: 1px solid rgba(255, 255, 255, .25); }
+.pk-theme .cs-route__stop:last-child .cs-route__ic { background: #fff !important; color: #01411C !important; }

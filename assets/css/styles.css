@@ -6800,3 +6800,20 @@ html.mfg-lock { overflow: hidden; }
 @keyframes ffs-move { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .ffs__track { animation: none; } .ffs__viewport { overflow-x: auto; } .ffs__group[aria-hidden] { display: none; } }
 @media (max-width: 700px) { .ffs__label b { display: none; } .ffs__label { padding: 0 12px; } .ffs__item { padding: 0 14px; font-size: .8rem; } }
+/* Calendar slider: still cards that change every few seconds (no continuous scrolling) */
+.ffs__viewport { -webkit-mask-image: none; mask-image: none; }
+.ffs__track { display: grid; grid-template-columns: repeat(var(--ffs-per, 4), minmax(0, 1fr)); width: 100%; animation: none; opacity: 0; transition: opacity .45s ease; }
+.ffs__track.is-in { opacity: 1; }
+.ffs__item { min-width: 0; padding: 0 16px; overflow: hidden; }
+.ffs__ev { overflow: hidden; text-overflow: ellipsis; }
+.ffs__nav { display: flex; align-items: center; gap: 2px; flex: none; padding: 0 max(12px, calc((100vw - var(--container, 1200px)) / 2)) 0 8px; border-left: 1px solid rgba(255, 255, 255, .08); }
+.ffs__btn { display: grid; place-items: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: #C9D3E3; cursor: pointer; }
+.ffs__btn:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.ffs__btn .icon { width: 16px; height: 16px; }
+.ffs__count { min-width: 42px; text-align: center; font-size: .74rem; color: #8A97AB; font-variant-numeric: tabular-nums; }
+@media (max-width: 700px) { .ffs__count { display: none; } .ffs__nav { padding: 0 6px; } .ffs__item { padding: 0 10px; } }
+.ffs__item { overflow: visible; gap: 7px; }
+.ffs__item .ffc__imp { flex: none; }
+.ffs__cur, .ffs__time, .ffs__num { flex: none; }
+.ffs__ev { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 759px) { .ffs__time { font-size: .76rem; } .ffs__num:last-child { display: none; } }

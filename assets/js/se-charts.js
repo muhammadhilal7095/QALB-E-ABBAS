@@ -285,13 +285,28 @@
         var list = ((j && j.events) || []).filter(function (e) { return e.t >= now && (e.i === "High" || e.i === "Medium"); }).slice(0, 24);
         if (!list.length) return;
         var item = function (e) {
-          return '<span class="ffs__item"><i class="ffc__imp ffc__imp--' + esc(e.i) + '" title="' + esc(e.i) + ' impact"></i>' +
+          return '<span class="ffs__item" title="' + esc(e.c + " · " + e.e + (e.f ? " · Forecast " + e.f : "") + (e.p ? " · Previous " + e.p : "")) + '"><i class="ffc__imp ffc__imp--' + esc(e.i) + '" title="' + esc(e.i) + ' impact"></i>' +
             '<b class="ffs__cur">' + esc(e.c) + '</b><span class="ffs__time">' + fmt(new Date(e.t * 1000)) + '</span><span class="ffs__ev">' + esc(e.e) + "</span>" +
             (e.f ? '<span class="ffs__num">F: ' + esc(e.f) + "</span>" : "") + (e.p ? '<span class="ffs__num">P: ' + esc(e.p) + "</span>" : "") + "</span>";
         };
-        var html = list.map(item).join("");
-        track.innerHTML = '<div class="ffs__group">' + html + '</div><div class="ffs__group" aria-hidden="true">' + html + "</div>";
-        track.style.setProperty("--ffs-dur", Math.max(40, list.length * 7) + "s");
+        var per = function () { return window.innerWidth < 760 ? 1 : window.innerWidth < 1280 ? 2 : 3; };
+        var page = 0, timer = null, count = bar.querySelector("[data-ffs-count]");
+        var show = function (p) {
+          var n = per(), pages = Math.ceil(list.length / n);
+          page = (p + pages) % pages;
+          track.classList.remove("is-in");
+          track.innerHTML = list.slice(page * n, page * n + n).map(item).join("");
+          track.style.setProperty("--ffs-per", n);
+          void track.offsetWidth; track.classList.add("is-in");
+          if (count) count.textContent = (page + 1) + " / " + pages;
+        };
+        var play = function () { clearInterval(timer); if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) timer = setInterval(function () { show(page + 1); }, 6000); };
+        bar.querySelector("[data-ffs-prev]").addEventListener("click", function () { show(page - 1); play(); });
+        bar.querySelector("[data-ffs-next]").addEventListener("click", function () { show(page + 1); play(); });
+        bar.addEventListener("mouseenter", function () { clearInterval(timer); });
+        bar.addEventListener("mouseleave", play);
+        window.addEventListener("resize", function () { show(0); });
+        show(0); play();
         bar.hidden = false;
       })
       .catch(function () {});

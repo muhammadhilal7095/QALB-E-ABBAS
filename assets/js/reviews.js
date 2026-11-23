@@ -74,7 +74,6 @@
     var sub = [place, esc(r.service || r.role || "")].filter(Boolean).join(" · ");
     var rating = Math.max(1, Math.min(5, r.rating || 5));
     return '<figure class="review rv-card">' +
-      (r.sample ? '<span class="review__badge">Sample review</span>' : "") +
       '<div class="stars stars--sm" role="img" aria-label="' + rating + ' out of 5 stars">' + new Array(rating + 1).join(star()) + "</div>" +
       "<blockquote>" + esc(r.text) + "</blockquote>" +
       "<figcaption><span><b>" + esc(r.name) + "</b><small>" + sub + "</small></span></figcaption>" +
@@ -93,7 +92,7 @@
   }
 
   function render(mount) {
-    // Sample reviews (sample: true) show a "Sample review" badge until replaced with real ones.
+    // Sample reviews (sample: true) are noted once under the section until replaced with real ones.
     var list = listFor(mount.getAttribute("data-page-reviews"));
     var section = mount.closest("section");
     if (section) section.hidden = !list.length;
@@ -119,7 +118,9 @@
         (REDUCED ? "" : '<button type="button" class="carousel-btn carousel-btn--solid rv-marquee__toggle" aria-pressed="false" aria-label="Pause reviews">' +
           '<span class="rv-pause">' + icon("pause") + '</span><span class="rv-play">' + icon("play") + "</span></button>") +
         '<a class="btn btn--outline rv-leave" href="/leave-review">' + icon("star") + "Share your experience — Leave a Review</a>" +
-      "</div>";
+      "</div>" +
+      // One quiet note for the whole section (instead of a badge on every card) while example reviews are shown.
+      (list.some(function (r) { return r.sample; }) ? '<p class="rv-note">Example reviews shown until client reviews are added.</p>' : "");
 
     if (REDUCED) return;
     var box = mount.querySelector(".rv-marquee");

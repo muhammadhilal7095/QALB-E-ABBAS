@@ -6703,3 +6703,4 @@ html.mfg-lock { overflow: hidden; }
   .tm3__mono span { width: 64px !important; height: 64px !important; font-size: 1.2rem !important; box-shadow: none !important; }
 }
 @media (max-width: 599px) { .tm-filter { flex-wrap: nowrap !important; justify-content: flex-start !important; overflow-x: auto; margin-inline: calc(-1 * var(--gutter, 16px)); padding: 2px var(--gutter, 16px) 8px; scrollbar-width: none; } .tm-filter::-webkit-scrollbar { display: none; } .tm-filter__btn { flex: none; white-space: nowrap; } }
+.rv-note { margin: 10px 0 0; text-align: center; font-size: .76rem; color: #94A3B8; } .se-dark .rv-note { color: #6B7A90; }

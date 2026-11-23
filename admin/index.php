@@ -24,7 +24,7 @@ const SESSION_HOURS = 12;
 const ADMIN_BUILD = 'members-1';
 // Temporary first password (only its one-way hash is stored here). It stops working as
 // soon as a new password is saved in Settings or through an emailed reset link.
-const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$4ecee5cea90a8a4f4460dedda52c8ccc$b80455753112ce076e6e8232e7a4c7d8a95ea2c6548803bb3e728a36fb5d08d8';
+const ADMIN_TEMP_HASH = 'pbkdf2_sha256$200000$c9c40b0d8521d1c162cb4191d824a7bd$41631278075a5167d7b4ccd78bd8d2514b585f5b105cb5e93e92f4f5cd5e8c18';
 
 // ---------------------------------------------------------------------------
 // Small helpers
@@ -82,7 +82,7 @@ const REVIEW_STATUS = ['pending' => ['Waiting for approval', 'amber'], 'approved
 
 // Raise ADMIN_RESET to reset the login once (saved password and email are cleared,
 // so the temporary password above and contact@qalbeabbas.com work again).
-const ADMIN_RESET = 'reset-1';
+const ADMIN_RESET = 'reset-2';
 function admin_data(): array {
     static $done = false;
     if (!$done) {

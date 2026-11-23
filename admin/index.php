@@ -539,6 +539,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             flash('All prices are back to the standard price list.'); go('tab=prices');
 
         case 'settings_save':
+            // An older Settings page (still open in a browser) may send Stripe keys here: save them too.
+            $legacy = ['sk' => trim((string)($_POST['stripeSecret'] ?? '')), 'wh' => trim((string)($_POST['stripeWebhook'] ?? ''))];
+            if (preg_match('/^(sk|rk)_(live|test)_[A-Za-z0-9]+$/', $legacy['sk']) || preg_match('/^whsec_[A-Za-z0-9]+$/', $legacy['wh'])) {
+                qa_update('settings', function (array $s) use ($legacy) {
+                    if (preg_match('/^(sk|rk)_(live|test)_[A-Za-z0-9]+$/', $legacy['sk'])) $s['stripeSecret'] = $legacy['sk'];
+                    if (preg_match('/^whsec_[A-Za-z0-9]+$/', $legacy['wh'])) $s['stripeWebhook'] = $legacy['wh'];
+                    return $s;
+                });
+            }
             qa_update('settings', function (array $s) {
                 $email = qa_text($_POST['notifyEmail'] ?? '', 200);
                 $s['notifyEmail'] = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : QA_ADMIN_EMAIL;
@@ -549,9 +558,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // --- Payments (owner only) ---
         case 'payments_save':
-            $pk = trim((string)($_POST['stripePublishable'] ?? ''));
-            $sk = trim((string)($_POST['stripeSecret'] ?? ''));
-            $wh = trim((string)($_POST['stripeWebhook'] ?? ''));
+            $clean = fn(string $k) => preg_replace('/\s+/', '', (string)($_POST[$k] ?? ''));
+            $pk = $clean('stripePublishable'); $sk = $clean('stripeSecret'); $wh = $clean('stripeWebhook');
             $bad = [];
             if ($pk !== '' && !preg_match('/^pk_(live|test)_[A-Za-z0-9]+$/', $pk)) $bad[] = 'The publishable key should start with pk_live_ or pk_test_.';
             if ($sk !== '' && !preg_match('/^(sk|rk)_(live|test)_[A-Za-z0-9]+$/', $sk)) $bad[] = 'The secret key should start with sk_live_ (or sk_test_ for testing).';

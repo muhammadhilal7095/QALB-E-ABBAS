@@ -64,6 +64,7 @@ function icon(string $n): string {
         'check' => '<path d="M20 6L9 17l-5-5"/>',
         'pen' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
         'search' => '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+        'key' => '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3"/><path d="m16 7 3 3"/><path d="m18 5 2 2"/>',
         'users' => '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 0 1 0 6M18.5 20c0-2.6-1.3-4.8-3.2-5.6"/>',
         'bot' => '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4.5V8M9 13v1.5M15 13v1.5M2 13v3M22 13v3"/><circle cx="12" cy="3.5" r="1"/>',
         'chat' => '<path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/>',
@@ -106,10 +107,55 @@ function check_password(string $p): bool {
     }
     return password_verify($p, $hash);
 }
-function logged_in(): bool {
-    return !empty($_SESSION['admin'])
-        && ($_SESSION['pwv'] ?? '') === pwv()
-        && (time() - (int)($_SESSION['since'] ?? 0)) < SESSION_HOURS * 3600;
+// ---------------------------------------------------------------------------
+// Team access: extra people who can sign in with their own email & password.
+// The owner (login above) manages them in "Team access" and chooses which
+// sections each person may open. Stored in qa-data/admin-team.json.
+// ---------------------------------------------------------------------------
+const TEAM_SECTIONS = ['orders' => 'Bookings & orders', 'enquiries' => 'Enquiries', 'reviews' => 'Reviews', 'prices' => 'Prices', 'members' => 'Members (Stock Club)', 'assistant' => 'Assistant', 'blog' => 'Blog', 'seo' => 'SEO'];
+function team_all(): array { return qa_read('admin-team'); }
+function team_find(string $id): ?array { return qa_find('admin-team', $id); }
+function team_by_email(string $email): ?array {
+    foreach (team_all() as $m) if (strtolower($m['email'] ?? '') === strtolower($email)) return $m;
+    return null;
+}
+function team_pwv(array $m): string { return substr(hash('sha256', ($m['passwordHash'] ?? '') . '|' . (empty($m['active']) ? '0' : '1')), 0, 16); }
+function session_ok(): bool { return (time() - (int)($_SESSION['since'] ?? 0)) < SESSION_HOURS * 3600; }
+function current_member(): ?array {
+    static $m = false;
+    if ($m !== false) return $m;
+    $m = null;
+    if (!empty($_SESSION['uid'])) {
+        $x = team_find((string)$_SESSION['uid']);
+        if ($x && !empty($x['active']) && !empty($x['passwordHash']) && ($_SESSION['upwv'] ?? '') === team_pwv($x)) $m = $x;
+    }
+    return $m;
+}
+function is_owner(): bool { return !empty($_SESSION['admin']) && ($_SESSION['pwv'] ?? '') === pwv() && session_ok(); }
+function logged_in(): bool { return is_owner() || (current_member() !== null && session_ok()); }
+/** Can the signed-in person open this section? Dashboard is for everyone; settings & team are owner-only. */
+function can(string $tab): bool {
+    if (is_owner()) return true;
+    $m = current_member();
+    if (!$m) return false;
+    if ($tab === 'dashboard' || $tab === 'account') return true;
+    return in_array($tab, (array)($m['perms'] ?? []), true);
+}
+function team_invite(array $m, bool $reset = false): void {
+    $token = bin2hex(random_bytes(24));
+    qa_patch('admin-team', $m['id'], function (array $x) use ($token, $reset) { $x['inviteHash'] = hash('sha256', $token); $x['inviteExpires'] = time() + ($reset ? 3600 : 48 * 3600); return $x; });
+    $link = QA_SITE . '/admin/?invite=' . $token;
+    $first = explode(' ', (string)$m['name'])[0];
+    qa_mail($m['email'], $reset ? 'Qalb-E-Abbas admin — reset your password' : 'You have been given access to the Qalb-E-Abbas admin',
+        $reset
+          ? "Hi $first,\n\nUse this link within 1 hour to choose a new password for the Qalb-E-Abbas admin:\n\n$link\n\nIf you didn't ask for this, ignore this email.\n"
+          : "Hi $first,\n\nYou've been given access to the Qalb-E-Abbas admin dashboard.\n\nOpen this link within 48 hours to choose your password:\n\n$link\n\nAfter that, sign in at " . QA_SITE . "/admin with this email address ({$m['email']}) and your password.\n");
+}
+function find_invite(string $token): ?array {
+    if ($token === '') return null;
+    $h = hash('sha256', $token);
+    foreach (team_all() as $m) if (!empty($m['inviteHash']) && hash_equals($m['inviteHash'], $h) && time() <= (int)($m['inviteExpires'] ?? 0) && !empty($m['active'])) return $m;
+    return null;
 }
 /** Max $max attempts per $seconds per IP for $bucket. Returns false when the limit is reached. */
 function allow(string $bucket, int $max, int $seconds): bool {
@@ -137,7 +183,7 @@ function strong_enough(string $p): ?string {
 // ---------------------------------------------------------------------------
 // Admin-only review photo
 // ---------------------------------------------------------------------------
-if (isset($_GET['photo']) && logged_in()) {
+if (isset($_GET['photo']) && logged_in() && (can('reviews') || can('enquiries'))) {
     $pid = preg_replace('/[^a-f0-9]/', '', (string)$_GET['photo']);
     $r = ($_GET['kind'] ?? '') === 'enquiry' ? qa_find('enquiries', $pid) : qa_find('reviews', $pid);
     $file = $r && !empty($r['photo']) ? qa_data_dir() . '/photos/' . basename($r['photo']) : '';
@@ -164,13 +210,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             qa_update('admin', function (array $x) { $x['lastLogin'] = qa_now(); return $x; });
             go();
         }
+        $m = $email !== '' ? team_by_email($email) : null;
+        if ($m && !empty($m['active']) && !empty($m['passwordHash']) && password_verify((string)($_POST['password'] ?? ''), $m['passwordHash'])) {
+            session_regenerate_id(true);
+            $_SESSION = ['uid' => $m['id'], 'upwv' => team_pwv($m), 'since' => time(), 'csrf' => bin2hex(random_bytes(16))];
+            qa_patch('admin-team', $m['id'], function (array $x) { $x['lastLogin'] = qa_now(); return $x; });
+            go();
+        }
         usleep(400000);
         flash('Wrong email or password.', 'err'); go();
     }
     if ($do === 'send_setup') {
-        if (allow('setup', 3, 3600)) send_setup_link();
-        flash('A password reset link has been sent to the admin email address. It works for 1 hour.');
+        $email = strtolower(trim((string)($_POST['email'] ?? '')));
+        if (allow('setup', 5, 3600)) {
+            if ($email === '' || $email === strtolower(admin_email())) send_setup_link();
+            elseif (($m = team_by_email($email)) && !empty($m['active'])) team_invite($m, true);
+        }
+        flash('If that email has admin access, a password link has been sent to it. It works for 1 hour.');
         go();
+    }
+    if ($do === 'team_set_password') {
+        $token = (string)($_POST['token'] ?? '');
+        $m = find_invite($token);
+        if (!$m) { flash('This link has expired. Ask the owner for a new invitation, or use "Forgot password".', 'err'); go(); }
+        $p = (string)($_POST['password'] ?? '');
+        if ($err = strong_enough($p)) { flash($err, 'err'); go('invite=' . urlencode($token)); }
+        if ($p !== (string)($_POST['password2'] ?? '')) { flash('The two passwords do not match.', 'err'); go('invite=' . urlencode($token)); }
+        $hash = password_hash($p, PASSWORD_DEFAULT);
+        qa_patch('admin-team', $m['id'], function (array $x) use ($hash) { $x['passwordHash'] = $hash; unset($x['inviteHash'], $x['inviteExpires']); $x['passwordSetAt'] = qa_now(); $x['lastLogin'] = qa_now(); return $x; });
+        $m = team_find($m['id']);
+        session_regenerate_id(true);
+        $_SESSION = ['uid' => $m['id'], 'upwv' => team_pwv($m), 'since' => time(), 'csrf' => bin2hex(random_bytes(16))];
+        flash('Password saved. Welcome to the dashboard!'); go();
     }
     if ($do === 'set_password') {
         $token = (string)($_POST['token'] ?? '');
@@ -189,6 +260,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!logged_in()) go();
+
+    // --- Permissions: each action belongs to a section; team members only run actions for sections they can open ---
+    if ($do !== 'logout' && $do !== 'my_password') {
+        $section = match (true) {
+            str_starts_with($do, 'order_') => 'orders',
+            str_starts_with($do, 'enquiry_') => 'enquiries',
+            str_starts_with($do, 'review_'), $do === 'samples_toggle' => 'reviews',
+            str_starts_with($do, 'prices_') => 'prices',
+            str_starts_with($do, 'member_'), $do === 'club_settings' => 'members',
+            str_starts_with($do, 'assistant_') => 'assistant',
+            str_starts_with($do, 'post_'), $do === 'blog_upload' => 'blog',
+            str_starts_with($do, 'seo_') => 'seo',
+            default => 'owner',
+        };
+        if ($section === 'owner' ? !is_owner() : !can($section)) { flash('You don\'t have access to that section.', 'err'); go(); }
+    }
 
     // --- Logged in ---
     $id = preg_replace('/[^a-f0-9]/', '', (string)($_POST['id'] ?? ''));
@@ -478,6 +565,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             qa_update('admin', function (array $x) use ($hash, $newEmail) { $x['passwordHash'] = $hash; $x['email'] = $newEmail; $x['passwordSetAt'] = qa_now(); return $x; });
             $_SESSION['pwv'] = pwv();
             flash('Login details saved. Other devices are signed out.'); go('tab=settings');
+
+        // --- Team access (owner only; checked above) ---
+        case 'team_add':
+            $name = qa_text($_POST['name'] ?? '', 80);
+            $email = strtolower(qa_text($_POST['email'] ?? '', 160));
+            $perms = array_values(array_intersect(array_keys(TEAM_SECTIONS), (array)($_POST['perms'] ?? [])));
+            if (mb_strlen($name) < 2 || !filter_var($email, FILTER_VALIDATE_EMAIL)) { flash('Please enter a name and a valid email.', 'err'); go('tab=team'); }
+            if ($email === strtolower(admin_email()) || team_by_email($email)) { flash('That email already has access.', 'err'); go('tab=team'); }
+            if (!$perms) { flash('Choose at least one section this person can open.', 'err'); go('tab=team'); }
+            $m = ['id' => qa_id(), 'name' => $name, 'email' => $email, 'perms' => $perms, 'active' => true, 'createdAt' => qa_now(), 'passwordHash' => null];
+            qa_insert('admin-team', $m);
+            team_invite($m);
+            flash("Invitation sent to $email. They have 48 hours to choose a password."); go('tab=team');
+
+        case 'team_update':
+            $perms = array_values(array_intersect(array_keys(TEAM_SECTIONS), (array)($_POST['perms'] ?? [])));
+            if (!$perms) { flash('Choose at least one section, or disable this person instead.', 'err'); go('tab=team&id=' . $id); }
+            qa_patch('admin-team', $id, function (array $x) use ($perms) { $x['perms'] = $perms; $x['name'] = qa_text($_POST['name'] ?? $x['name'], 80) ?: $x['name']; return $x; });
+            flash('Access updated.'); go('tab=team');
+
+        case 'team_toggle':
+            qa_patch('admin-team', $id, function (array $x) { $x['active'] = empty($x['active']); return $x; });
+            $m = team_find($id);
+            flash($m && !empty($m['active']) ? 'Access turned back on.' : 'Access turned off. They are signed out straight away.'); go('tab=team');
+
+        case 'team_resend':
+            $m = team_find($id);
+            if ($m && !empty($m['active'])) { team_invite($m, !empty($m['passwordHash'])); flash('Email sent to ' . $m['email'] . '.'); }
+            go('tab=team');
+
+        case 'team_delete':
+            qa_update('admin-team', fn(array $l) => array_values(array_filter($l, fn($x) => $x['id'] !== $id)));
+            flash('Removed. That person can no longer sign in.'); go('tab=team');
+
+        // --- Team member: change own password ---
+        case 'my_password':
+            $m = current_member();
+            if (!$m) go();
+            if (!password_verify((string)($_POST['current'] ?? ''), (string)$m['passwordHash'])) { flash('Your current password is wrong.', 'err'); go('tab=account'); }
+            $p = (string)($_POST['password'] ?? '');
+            if ($err = strong_enough($p)) { flash($err, 'err'); go('tab=account'); }
+            if ($p !== (string)($_POST['password2'] ?? '')) { flash('The two new passwords do not match.', 'err'); go('tab=account'); }
+            $hash = password_hash($p, PASSWORD_DEFAULT);
+            qa_patch('admin-team', $m['id'], function (array $x) use ($hash) { $x['passwordHash'] = $hash; $x['passwordSetAt'] = qa_now(); return $x; });
+            $_SESSION['upwv'] = team_pwv(team_find($m['id']));
+            flash('Password changed. Other devices are signed out.'); go('tab=account');
     }
     go();
 }
@@ -490,7 +623,7 @@ $flash = $_SESSION['flash'] ?? null; unset($_SESSION['flash']);
 function page_start(string $title, bool $app = true): void {
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
        . '<meta name="robots" content="noindex, nofollow"><meta name="qa-build" content="' . ADMIN_BUILD . '"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
-       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=5"></head><body class="' . ($app ? 'app' : 'auth') . '">';
+       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=6"></head><body class="' . ($app ? 'app' : 'auth') . '">';
 }
 function flash_html(?array $f): string { return $f ? '<div class="flash flash--' . h($f[1]) . '" role="status">' . icon($f[1] === 'err' ? 'warn' : 'check') . '<span>' . h($f[0]) . '</span></div>' : ''; }
 
@@ -498,9 +631,21 @@ function flash_html(?array $f): string { return $f ? '<div class="flash flash--'
 if (!logged_in()) {
     $a = admin_data();
     $token = (string)($_GET['setup'] ?? '');
+    $invite = (string)($_GET['invite'] ?? '');
     page_start('Sign in', false);
     echo '<main class="auth__box"><div class="auth__brand"><img src="/assets/img/logo-wordmark.webp" alt="Qalb-E-Abbas" width="176" height="36"><small>Admin</small></div>' . flash_html($flash);
-    if ($token !== '') {
+    if ($invite !== '') {
+        $im = find_invite($invite);
+        if ($im) {
+            echo '<h1>Welcome, ' . h(explode(' ', (string)$im['name'])[0]) . '</h1><p class="muted">Choose a password for <b>' . h($im['email']) . '</b>. At least 10 characters, with letters and numbers.</p>'
+               . '<form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="do" value="team_set_password"><input type="hidden" name="token" value="' . h($invite) . '">'
+               . '<label>New password<input type="password" name="password" autocomplete="new-password" required minlength="10"></label>'
+               . '<label>Repeat password<input type="password" name="password2" autocomplete="new-password" required minlength="10"></label>'
+               . '<button class="btn btn--primary btn--block">Save password &amp; sign in</button></form>';
+        } else {
+            echo '<h1>Link expired</h1><p class="muted">This invitation or reset link is no longer valid. Ask the owner to send a new invitation, or use "Forgot password" on the sign-in page.</p><a class="btn btn--ghost btn--block" href="/admin/">Back to sign in</a>';
+        }
+    } elseif ($token !== '') {
         $valid = !empty($a['setupHash']) && hash_equals($a['setupHash'], hash('sha256', $token)) && time() <= (int)($a['setupExpires'] ?? 0);
         if ($valid) {
             echo '<h1>Choose your password</h1><p class="muted">At least 10 characters, with letters and numbers.</p>'
@@ -513,12 +658,13 @@ if (!logged_in()) {
                . '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="send_setup"><button class="btn btn--primary btn--block">Email me a new setup link</button></form>';
         }
     } else {
-        echo '<h1>Sign in</h1><p class="muted">Use your admin email and password.</p>'
+        echo '<h1>Sign in</h1><p class="muted">Use your admin or team email and password.</p>'
            . '<form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="do" value="login">'
            . '<label>Email<input type="email" name="email" autocomplete="username" required autofocus></label>'
            . '<label>Password<input type="password" name="password" autocomplete="current-password" required></label>'
            . '<button class="btn btn--primary btn--block">Sign in</button></form>'
-           . '<form method="post" class="auth__forgot">' . csrf_field() . '<input type="hidden" name="do" value="send_setup"><button class="linkbtn">Forgot password? Email me a reset link</button></form>';
+           . '<details class="auth__forgot"><summary>Forgot password?</summary><form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="do" value="send_setup">'
+           . '<label>Your admin email<input type="email" name="email" autocomplete="username" required></label><button class="btn btn--ghost btn--block">Email me a reset link</button></form></details>';
     }
     echo '</main></body></html>';
     exit;
@@ -539,7 +685,11 @@ $members = qa_read('members');
 $count['members'] = count(array_filter($members, fn($m) => ($m['status'] ?? '') === 'active' && empty($m['joinedGroup'])));
 $count['assistant'] = count(array_filter($assistLog, fn($r) => ($r['hit'] ?? '') === '' && ($r['kind'] ?? '') === 'typed' && empty($r['handled']) && strtotime($r['at']) > time() - 30 * 86400));
 $nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'members' => ['Members', 'users'], 'assistant' => ['Assistant', 'bot'], 'blog' => ['Blog', 'pen'], 'seo' => ['SEO', 'search'], 'settings' => ['Settings', 'cog']];
+if (is_owner()) $nav['team'] = ['Team access', 'key'];
+else { unset($nav['settings']); $nav['account'] = ['My account', 'key']; }
+$nav = array_filter($nav, fn($k) => can($k) || ($k === 'team' && is_owner()), ARRAY_FILTER_USE_KEY);
 if (!isset($nav[$tab])) $tab = 'dashboard';
+$me = is_owner() ? ['name' => 'Owner', 'email' => admin_email()] : current_member();
 
 page_start($nav[$tab][0]);
 echo '<aside class="side"><div class="side__brand"><img src="/assets/img/logo-wordmark-light.webp" alt="Qalb-E-Abbas" width="150" height="31"><small>Admin</small></div><nav class="side__nav">';
@@ -547,7 +697,7 @@ foreach ($nav as $k => [$label, $ic]) {
     $n = $count[$k] ?? 0;
     echo '<a href="/admin/?tab=' . $k . '"' . ($k === $tab ? ' class="is-active" aria-current="page"' : '') . '>' . icon($ic) . '<span>' . h($label) . '</span>' . ($n ? '<em>' . $n . '</em>' : '') . '</a>';
 }
-echo '</nav><div class="side__foot"><a href="/" target="_blank" rel="noopener">' . icon('ext') . '<span>View website</span></a>'
+echo '</nav><div class="side__foot"><p class="side__me"><b>' . h($me['name'] ?? '') . '</b><small>' . h($me['email'] ?? '') . '</small></p><a href="/" target="_blank" rel="noopener">' . icon('ext') . '<span>View website</span></a>'
    . '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="logout"><button>' . icon('out') . '<span>Sign out</span></button></form></div></aside>';
 echo '<main class="main">' . flash_html($flash);
 
@@ -591,23 +741,25 @@ if ($tab === 'dashboard') {
     usort($upcoming, fn($a, $b) => strcmp($a['submission']['date'] . $a['submission']['time'], $b['submission']['date'] . $b['submission']['time']));
 
     echo '<header class="head"><div><h1>Dashboard</h1><p class="muted">' . h((new DateTimeImmutable('now', new DateTimeZone('Europe/London')))->format('l j F Y')) . ' · UK time</p></div></header>';
-    echo '<div class="stats">'
-       . '<a class="stat" href="/admin/?tab=orders&f=new"><span class="stat__ic stat__ic--blue">' . icon('cart') . '</span><span><b>' . $count['orders'] . '</b>New bookings &amp; orders</span></a>'
-       . '<a class="stat" href="/admin/?tab=orders&f=paid"><span class="stat__ic stat__ic--green">' . icon('money') . '</span><span><b>' . h($rev) . '</b>Paid this month</span></a>'
-       . '<a class="stat" href="/admin/?tab=enquiries&f=new"><span class="stat__ic stat__ic--teal">' . icon('mail') . '</span><span><b>' . $count['enquiries'] . '</b>New enquiries</span></a>'
-       . '<a class="stat" href="/admin/?tab=enquiries&f=manufacturing"><span class="stat__ic stat__ic--blue">' . icon('box') . '</span><span><b>' . $count['manufacturing'] . '</b>New manufacturing requests</span></a>'
-       . '<a class="stat" href="/admin/?tab=enquiries&f=investment"><span class="stat__ic stat__ic--green">' . icon('money') . '</span><span><b>' . $count['investment'] . '</b>New investment applications</span></a>'
-       . '<a class="stat" href="/admin/?tab=reviews&f=pending"><span class="stat__ic stat__ic--amber">' . icon('star') . '</span><span><b>' . $count['reviews'] . '</b>Reviews to approve</span></a>'
-       . '</div>';
+    $stats = [];
+    if (can('orders')) $stats[] = '<a class="stat" href="/admin/?tab=orders&f=new"><span class="stat__ic stat__ic--blue">' . icon('cart') . '</span><span><b>' . $count['orders'] . '</b>New bookings &amp; orders</span></a>';
+    if (can('orders')) $stats[] = '<a class="stat" href="/admin/?tab=orders&f=paid"><span class="stat__ic stat__ic--green">' . icon('money') . '</span><span><b>' . h($rev) . '</b>Paid this month</span></a>';
+    if (can('enquiries')) $stats[] = '<a class="stat" href="/admin/?tab=enquiries&f=new"><span class="stat__ic stat__ic--teal">' . icon('mail') . '</span><span><b>' . $count['enquiries'] . '</b>New enquiries</span></a>';
+    if (can('enquiries')) $stats[] = '<a class="stat" href="/admin/?tab=enquiries&f=manufacturing"><span class="stat__ic stat__ic--blue">' . icon('box') . '</span><span><b>' . $count['manufacturing'] . '</b>New manufacturing requests</span></a>';
+    if (can('enquiries')) $stats[] = '<a class="stat" href="/admin/?tab=enquiries&f=investment"><span class="stat__ic stat__ic--green">' . icon('money') . '</span><span><b>' . $count['investment'] . '</b>New investment applications</span></a>';
+    if (can('reviews')) $stats[] = '<a class="stat" href="/admin/?tab=reviews&f=pending"><span class="stat__ic stat__ic--amber">' . icon('star') . '</span><span><b>' . $count['reviews'] . '</b>Reviews to approve</span></a>';
+    if ($stats) echo '<div class="stats">' . implode('', $stats) . '</div>';
 
     $todo = [];
-    if (using_temp_password()) $todo[] = '<b>You are using the temporary password.</b> <a href="/admin/?tab=settings#login">Choose your own password</a> now.';
-    if (!$settings['stripeSecret']) $todo[] = 'Card payments are off. Add your Stripe secret key in <a href="/admin/?tab=settings">Settings</a> to take payments online' . ($settings['manualPayments'] ? ' (until then, clients can send a request and you email them a payment link).' : '.');
+    if (is_owner() && using_temp_password()) $todo[] = '<b>You are using the temporary password.</b> <a href="/admin/?tab=settings#login">Choose your own password</a> now.';
+    if (!is_owner()) {}
+    elseif (!$settings['stripeSecret']) $todo[] = 'Card payments are off. Add your Stripe secret key in <a href="/admin/?tab=settings">Settings</a> to take payments online' . ($settings['manualPayments'] ? ' (until then, clients can send a request and you email them a payment link).' : '.');
     elseif (!$settings['stripeWebhook']) $todo[] = 'Add the Stripe webhook signing secret in <a href="/admin/?tab=settings">Settings</a> so payments are confirmed automatically.';
-    if ($awaiting) $todo[] = "$awaiting order" . ($awaiting > 1 ? 's are' : ' is') . ' waiting for payment — <a href="/admin/?tab=orders&f=awaiting">send payment links</a>.';
+    if ($awaiting && can('orders')) $todo[] = "$awaiting order" . ($awaiting > 1 ? 's are' : ' is') . ' waiting for payment — <a href="/admin/?tab=orders&f=awaiting">send payment links</a>.';
     if ($todo) echo '<div class="notice">' . icon('warn') . '<ul><li>' . implode('</li><li>', $todo) . '</li></ul></div>';
 
-    echo '<div class="grid2"><section class="card"><div class="card__head"><h2>Upcoming consultations</h2><a href="/admin/?tab=orders&f=booking">All bookings</a></div>';
+    echo '<div class="grid2">';
+    if (can('orders')) { echo '<section class="card"><div class="card__head"><h2>Upcoming consultations</h2><a href="/admin/?tab=orders&f=booking">All bookings</a></div>';
     if (!$upcoming) echo empty_state('No upcoming consultations.');
     else {
         echo '<ul class="list">';
@@ -617,7 +769,8 @@ if ($tab === 'dashboard') {
         }
         echo '</ul>';
     }
-    echo '</section><section class="card"><div class="card__head"><h2>Latest enquiries</h2><a href="/admin/?tab=enquiries">All enquiries</a></div>';
+    echo '</section>'; }
+    if (can('enquiries')) { echo '<section class="card"><div class="card__head"><h2>Latest enquiries</h2><a href="/admin/?tab=enquiries">All enquiries</a></div>';
     if (!$enquiries) echo empty_state('No enquiries yet.');
     else {
         echo '<ul class="list">';
@@ -626,9 +779,11 @@ if ($tab === 'dashboard') {
         }
         echo '</ul>';
     }
-    echo '</section></div>';
+    echo '</section>'; }
+    echo '</div>';
+    if (!can('orders') && !can('enquiries')) echo '<section class="card"><h2>Welcome, ' . h(explode(' ', (string)($me['name'] ?? ''))[0]) . '</h2><p class="muted">Use the menu on the left to open the sections you have access to.</p></section>';
 
-    echo '<section class="card"><div class="card__head"><h2>Latest orders</h2><a href="/admin/?tab=orders">All orders</a></div>';
+    if (can('orders')) { echo '<section class="card"><div class="card__head"><h2>Latest orders</h2><a href="/admin/?tab=orders">All orders</a></div>';
     $recent = array_slice($orders, 0, 6);
     if (!$recent) echo empty_state('No bookings or orders yet.');
     else {
@@ -638,7 +793,7 @@ if ($tab === 'dashboard') {
         }
         echo '</tbody></table></div>';
     }
-    echo '</section>';
+    echo '</section>'; }
 }
 
 // ===========================================================================
@@ -1225,6 +1380,59 @@ if ($tab === 'settings') {
        . '<label>Current password<input type="password" name="current" autocomplete="current-password" required></label>'
        . '<div class="row2"><label>New password<input type="password" name="password" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label><label>Repeat new password<input type="password" name="password2" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label></div>'
        . '<button class="btn btn--primary">Save login details</button></form>';
+}
+
+// ===========================================================================
+// TEAM ACCESS (owner only) & MY ACCOUNT (team members)
+// ===========================================================================
+if ($tab === 'team' && is_owner()) {
+    $team = team_all();
+    $permBoxes = function (array $on) {
+        $o = '<div class="perm-grid">';
+        foreach (TEAM_SECTIONS as $k => $label) $o .= '<label class="check"><input type="checkbox" name="perms[]" value="' . $k . '"' . (in_array($k, $on, true) ? ' checked' : '') . '> ' . h($label) . '</label>';
+        return $o . '</div>';
+    };
+    if ($id && ($m = team_find($id))) {
+        echo '<a class="back" href="/admin/?tab=team">' . icon('back') . 'Team access</a>';
+        echo '<header class="head"><div><h1>' . h($m['name']) . '</h1><p class="muted">' . h($m['email']) . '</p></div></header>';
+        echo '<form method="post" class="card stack narrow">' . csrf_field() . '<input type="hidden" name="do" value="team_update"><input type="hidden" name="id" value="' . h($m['id']) . '">'
+           . '<label>Name<input name="name" value="' . h($m['name']) . '" maxlength="80" required></label>'
+           . '<fieldset class="perm"><legend>Sections they can open</legend>' . $permBoxes((array)($m['perms'] ?? [])) . '<p class="muted">Everyone can see the dashboard (only the parts for their sections). Settings and Team access are for the owner only.</p></fieldset>'
+           . '<button class="btn btn--primary">Save access</button></form>';
+    } else {
+        echo '<header class="head"><div><h1>Team access</h1><p class="muted">Give team members their own login and choose what each person can open.</p></div></header>';
+        echo '<div class="grid2 grid2--wide"><section class="card card--flush">';
+        if (!$team) echo '<div class="card" style="border:0">' . empty_state('No team members yet. Add the first one using the form.') . '</div>';
+        else {
+            echo '<div class="table"><table><thead><tr><th>Person</th><th>Access</th><th>Status</th><th>Last sign-in</th><th></th></tr></thead><tbody>';
+            foreach ($team as $m) {
+                $status = empty($m['active']) ? ['Turned off', 'grey'] : (empty($m['passwordHash']) ? ['Invited', 'amber'] : ['Active', 'green']);
+                $labels = array_map(fn($k) => TEAM_SECTIONS[$k] ?? $k, (array)($m['perms'] ?? []));
+                echo '<tr><td><a href="/admin/?tab=team&id=' . h($m['id']) . '"><b>' . h($m['name']) . '</b></a><small>' . h($m['email']) . '</small></td>'
+                   . '<td><small class="perm-list">' . h(implode(', ', $labels)) . '</small></td>'
+                   . '<td><span class="badge badge--' . $status[1] . '">' . $status[0] . '</span></td>'
+                   . '<td>' . (!empty($m['lastLogin']) ? ago($m['lastLogin']) : '—') . '</td>'
+                   . '<td class="row-actions"><a class="btn btn--ghost btn--sm" href="/admin/?tab=team&id=' . h($m['id']) . '">Edit</a>'
+                   . (!empty($m['active']) ? '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="team_resend"><input type="hidden" name="id" value="' . h($m['id']) . '"><button class="btn btn--ghost btn--sm" title="' . (empty($m['passwordHash']) ? 'Send the invitation again' : 'Send a password reset link') . '">' . (empty($m['passwordHash']) ? 'Resend invite' : 'Reset password') . '</button></form>' : '')
+                   . '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="team_toggle"><input type="hidden" name="id" value="' . h($m['id']) . '"><button class="btn btn--ghost btn--sm">' . (empty($m['active']) ? 'Turn on' : 'Turn off') . '</button></form>'
+                   . '<form method="post" onsubmit="return confirm(\'Remove ' . h(addslashes($m['name'])) . ' permanently?\')">' . csrf_field() . '<input type="hidden" name="do" value="team_delete"><input type="hidden" name="id" value="' . h($m['id']) . '"><button class="linkbtn linkbtn--danger">Remove</button></form></td></tr>';
+            }
+            echo '</tbody></table></div>';
+        }
+        echo '</section><form method="post" class="card stack">' . csrf_field() . '<input type="hidden" name="do" value="team_add"><h2>Add a team member</h2>'
+           . '<label>Full name<input name="name" maxlength="80" required></label>'
+           . '<label>Email<input type="email" name="email" maxlength="160" required><small>They get an email to choose their own password (link valid for 48 hours).</small></label>'
+           . '<fieldset class="perm"><legend>Sections they can open</legend>' . $permBoxes(['orders', 'enquiries']) . '</fieldset>'
+           . '<button class="btn btn--primary">Send invitation</button></form></div>';
+    }
+}
+if ($tab === 'account' && ($m = current_member())) {
+    $labels = array_map(fn($k) => TEAM_SECTIONS[$k] ?? $k, (array)($m['perms'] ?? []));
+    echo '<header class="head"><div><h1>My account</h1><p class="muted">' . h($m['email']) . ' · Access: ' . h(implode(', ', $labels)) . '</p></div></header>';
+    echo '<form method="post" class="card stack narrow">' . csrf_field() . '<input type="hidden" name="do" value="my_password"><h2>Change password</h2>'
+       . '<label>Current password<input type="password" name="current" autocomplete="current-password" required></label>'
+       . '<div class="row2"><label>New password<input type="password" name="password" autocomplete="new-password" minlength="10" required></label><label>Repeat new password<input type="password" name="password2" autocomplete="new-password" minlength="10" required></label></div>'
+       . '<button class="btn btn--primary">Save password</button></form>';
 }
 
 echo '</main><script src="/assets/js/photo-crop.js?v=1" defer></script><script src="/admin/upload.js?v=2" defer></script></body></html>';

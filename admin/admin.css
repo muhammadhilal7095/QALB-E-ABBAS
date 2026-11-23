@@ -398,3 +398,21 @@ td { vertical-align: middle; }
 .grid2 > .card, .grid2 > section { height: auto; }
 .main:has(> .stats) .grid2 { align-items: stretch; }
 .main:has(> .stats) .grid2 > .card, .main:has(> .stats) .grid2 > section { height: 100%; }
+
+/* Team access */
+.stats { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.perm { margin: 0; padding: 0; border: 0; }
+.perm legend { margin-bottom: 8px; font-weight: 600; font-size: .88rem; color: var(--ink); }
+.perm-grid { display: grid; gap: 8px 16px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.perm-grid .check { font-size: .875rem; }
+.perm-list { display: block; max-width: 280px; color: var(--text); }
+td.row-actions { white-space: nowrap; text-align: right; }
+td.row-actions form { display: inline-block; margin-left: 6px; }
+td.row-actions .linkbtn { font-size: .82rem; }
+.side__me { margin: 0 0 6px; padding: 8px 10px 10px; border-bottom: 1px solid rgba(255, 255, 255, .07); }
+.side__me b { display: block; color: #fff; font-size: .85rem; font-weight: 600; }
+.side__me small { display: block; color: #7D89A1; font-size: .75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.auth__forgot summary { cursor: pointer; text-align: center; color: var(--brand); font-size: .875rem; list-style: none; }
+.auth__forgot summary::-webkit-details-marker { display: none; }
+.auth__forgot[open] summary { margin-bottom: 12px; }
+@media (max-width: 900px) { .side__me { display: none; } td.row-actions { white-space: normal; } }

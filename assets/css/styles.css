@@ -6671,3 +6671,35 @@ html.mfg-lock { overflow: hidden; }
   .uc--tile .uct__price { padding: 11px 14px; }
   .uc--tile .uct__price b { font-size: 1.6rem; }
 }
+
+/* Team cards v4: aligned rows, tighter photos, cleaner details */
+#team { background: linear-gradient(180deg, #fff 0, #F6F8FB 520px, #F6F8FB 100%); }
+.tm3-grid { gap: 24px !important; }
+.tm3 { border-radius: 18px !important; border-color: #E1E7F0 !important; box-shadow: 0 1px 2px rgba(11, 27, 54, .05), 0 12px 28px -24px rgba(11, 27, 54, .45) !important; }
+.tm3__media { aspect-ratio: 5 / 4 !important; }
+.tm3__media img { object-position: center 16% !important; }
+.tm3__media::after { height: 45%; background: linear-gradient(180deg, transparent, rgba(11, 27, 54, .45)); }
+.tm3__body { padding: 20px 22px 0 !important; }
+.tm3__name { font-size: 1.15rem !important; letter-spacing: -.01em; }
+.tm3__role { margin-bottom: 14px !important; font-size: .86rem !important; }
+.tm3__facts { margin-bottom: 18px !important; padding-top: 14px !important; }
+.tm3__facts li { font-size: .86rem !important; }
+.tm3__facts--empty { margin-bottom: 0 !important; padding-top: 0 !important; }
+.tm3__link { margin: auto -22px 0 !important; padding: 14px 22px !important; }
+.tm3__mono span { width: 104px !important; height: 104px !important; font-size: 1.9rem !important; border-color: rgba(233, 199, 123, .55) !important; color: #E9C77B !important; }
+@media (hover: none) { .tm3:hover { transform: none !important; } .tm3:hover .tm3__media img { transform: none; } }
+@media (min-width: 1000px) and (max-width: 1199px) { .tm3-grid { gap: 18px !important; } .tm3__body { padding: 18px 18px 0 !important; } .tm3__link { margin: auto -18px 0 !important; padding: 13px 18px !important; } }
+@media (max-width: 599px) {
+  .tm3-grid { gap: 16px !important; }
+  .tm3 { display: grid !important; grid-template-columns: 112px minmax(0, 1fr); grid-template-rows: auto !important; }
+  .tm3__media { aspect-ratio: auto !important; height: 100%; min-height: 150px; }
+  .tm3__dept { display: none; }
+  .tm3__body { padding: 14px 14px 0 !important; }
+  .tm3__name { font-size: 1.02rem !important; }
+  .tm3__role { margin-bottom: 10px !important; font-size: .8rem !important; }
+  .tm3__facts { margin-bottom: 12px !important; padding-top: 10px !important; gap: 5px !important; }
+  .tm3__facts li { font-size: .8rem !important; }
+  .tm3__link { margin: auto -14px 0 !important; padding: 11px 14px !important; font-size: .84rem !important; }
+  .tm3__mono span { width: 64px !important; height: 64px !important; font-size: 1.2rem !important; box-shadow: none !important; }
+}
+@media (max-width: 599px) { .tm-filter { flex-wrap: nowrap !important; justify-content: flex-start !important; overflow-x: auto; margin-inline: calc(-1 * var(--gutter, 16px)); padding: 2px var(--gutter, 16px) 8px; scrollbar-width: none; } .tm-filter::-webkit-scrollbar { display: none; } .tm-filter__btn { flex: none; white-space: nowrap; } }

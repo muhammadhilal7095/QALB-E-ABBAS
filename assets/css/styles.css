@@ -6704,3 +6704,24 @@ html.mfg-lock { overflow: hidden; }
 }
 @media (max-width: 599px) { .tm-filter { flex-wrap: nowrap !important; justify-content: flex-start !important; overflow-x: auto; margin-inline: calc(-1 * var(--gutter, 16px)); padding: 2px var(--gutter, 16px) 8px; scrollbar-width: none; } .tm-filter::-webkit-scrollbar { display: none; } .tm-filter__btn { flex: none; white-space: nowrap; } }
 .rv-note { margin: 10px 0 0; text-align: center; font-size: .76rem; color: #94A3B8; } .se-dark .rv-note { color: #6B7A90; }
+
+/* Stock exchange: live market alert bar + economic calendar */
+.se-alert { display: flex; align-items: center; gap: 0; min-height: 50px; background: #050B17; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.se-alert__label { display: flex; align-items: center; gap: 8px; flex: none; height: 50px; padding: 0 16px 0 max(16px, calc((100vw - var(--container, 1200px)) / 2)); background: #0B1628; border-right: 1px solid rgba(255, 255, 255, .08); }
+.se-alert__label b { color: #fff; font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+.se-alert__label small { color: #8A97AB; font-size: .76rem; white-space: nowrap; }
+.se-alert__dot { width: 8px; height: 8px; border-radius: 50%; background: #EF4444; box-shadow: 0 0 0 0 rgba(239, 68, 68, .6); animation: se-pulse-red 1.8s infinite; }
+@keyframes se-pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, .55); } 70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+@media (prefers-reduced-motion: reduce) { .se-alert__dot { animation: none; } }
+.se-alert__tape { position: relative; flex: 1; min-width: 0; height: 50px; overflow: hidden; }
+.se-alert__tape .tradingview-widget-container, .se-alert__tape .tradingview-widget-container__widget { height: 50px !important; }
+.se-alert__tape .tradingview-widget-copyright { display: none; }
+.se-alert__wait { margin: 0; line-height: 50px; padding-left: 16px; color: #8A97AB; font-size: .82rem; }
+.se-alert__cal { display: flex; align-items: center; gap: 6px; flex: none; height: 50px; padding: 0 max(16px, calc((100vw - var(--container, 1200px)) / 2)) 0 16px; border-left: 1px solid rgba(255, 255, 255, .08); color: #E9EEF6; font-size: .82rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.se-alert__cal:hover { color: #7DB3FF; }
+.se-alert__cal .icon { width: 16px; height: 16px; color: #7DB3FF; }
+@media (max-width: 700px) { .se-alert__label small, .se-alert__cal span { display: none; } .se-alert__label { padding-left: 12px; padding-right: 10px; } .se-alert__cal { padding: 0 12px; } }
+.se-cal { overflow: hidden; }
+.se-tv--cal { height: 560px; }
+.se-tv--cal .tradingview-widget-container, .se-tv--cal .tradingview-widget-container__widget { height: 100% !important; }
+#economic-calendar { scroll-margin-top: 90px; }

@@ -26,9 +26,9 @@
   <link rel="preload" as="image" href="assets/img/services/sv-tablet-charts.webp" imagesrcset="assets/img/services/sv-tablet-charts-800.webp 800w, assets/img/services/sv-tablet-charts.webp 1280w, assets/img/services/sv-tablet-charts-1920.webp 1920w" imagesizes="100vw" fetchpriority="high">
   <!-- SEO:END -->
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.min.css?v=f862f160">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=58a70578">
   <script src="assets/js/site-config.min.js?v=c30d972a" defer></script>
-  <script src="assets/js/se-charts.min.js?v=d9288f86" defer></script>
+  <script src="assets/js/se-charts.min.js?v=d7ccb98a" defer></script>
   <script src="assets/js/site.min.js?v=df0b7f9e" defer></script>
   <script src="assets/js/carousel.min.js?v=98429f60" defer></script>
   <script src="assets/js/reviews-data.min.js?v=029b3698" defer></script>
@@ -247,6 +247,13 @@
   <div id="header-mount" class="header-placeholder"></div>
 
   <main id="main" class="svcx se-dark">
+    <!-- LIVE MARKET ALERT BAR (TradingView ticker: today's moves, green = up, red = down) -->
+    <section class="se-alert" aria-label="Live market update">
+      <div class="se-alert__label"><span class="se-alert__dot" aria-hidden="true"></span><b>Live markets</b><small>Today's move</small></div>
+      <div class="se-alert__tape se-tv" data-tv="alert"><p class="se-alert__wait">Loading live prices…</p></div>
+      <a class="se-alert__cal" href="#economic-calendar"><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><span>Today's news</span></a>
+    </section>
+
     <!-- HERO -->
     <section class="svcx-hero" aria-labelledby="svc-h1">
       <img class="svcx-hero__bg" src="assets/img/services/sv-tablet-charts.webp" srcset="assets/img/services/sv-tablet-charts-800.webp 800w, assets/img/services/sv-tablet-charts.webp 1280w, assets/img/services/sv-tablet-charts-1920.webp 1920w" sizes="100vw" alt="Investor reviewing stock market charts on a tablet" title="Investor reviewing stock market charts on a tablet" width="1280" height="853" fetchpriority="high" decoding="async">
@@ -286,12 +293,6 @@
         <ul class="svcx-proof__list"><li><strong>NYSE · NASDAQ · LSE</strong><span>Markets we cover</span></li><li><strong>Learn first</strong><span>Education-led investing</span></li><li><strong>Licensed</strong><span>Regulated brokers only</span></li><li><strong>Worldwide</strong><span>Clients supported</span></li></ul>
         <p class="svcx-proof__note">Every client starts with a 1-to-1 consultation: <a href="/book-consultation?topic=stock-exchange">book yours</a>.</p>
       </div>
-    </section>
-
-    <!-- MARKETS TAPE -->
-    <section class="se-tape" aria-label="Markets and indices we cover">
-      <div class="se-tape__live" data-tv="tape"></div>
-      <div class="se-tape__track"><ul><li><img src="assets/img/platforms/flag-us.svg?v=897d704c" alt="United States" width="28" height="28"><b>S&amp;P 500</b><small>US large companies</small></li><li><img src="assets/img/platforms/flag-us.svg?v=897d704c" alt="United States" width="28" height="28"><b>NASDAQ-100</b><small>US technology &amp; growth</small></li><li><img src="assets/img/platforms/flag-us.svg?v=897d704c" alt="United States" width="28" height="28"><b>Dow Jones</b><small>30 US blue chips</small></li><li><img src="assets/img/platforms/flag-uk.svg?v=26e2e1d4" alt="United Kingdom" width="28" height="28"><b>FTSE 100</b><small>London Stock Exchange</small></li><li><img src="assets/img/platforms/flag-uk.svg?v=26e2e1d4" alt="United Kingdom" width="28" height="28"><b>FTSE 250</b><small>UK mid-size companies</small></li><li><span class="se-tape__ic"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg></span><b>ETFs &amp; funds</b><small>Diversified in one step</small></li></ul><ul aria-hidden="true"><li><img src="assets/img/platforms/flag-us.svg?v=897d704c" alt="" width="28" height="28"><b>S&amp;P 500</b><small>US large companies</small></li><li><img src="assets/img/platforms/flag-us.svg?v=897d704c" alt="" width="28" height="28"><b>NASDAQ-100</b><small>US technology &amp; growth</small></li><li><img src="assets/img/platforms/flag-us.svg?v=897d704c" alt="" width="28" height="28"><b>Dow Jones</b><small>30 US blue chips</small></li><li><img src="assets/img/platforms/flag-uk.svg?v=26e2e1d4" alt="" width="28" height="28"><b>FTSE 100</b><small>London Stock Exchange</small></li><li><img src="assets/img/platforms/flag-uk.svg?v=26e2e1d4" alt="" width="28" height="28"><b>FTSE 250</b><small>UK mid-size companies</small></li><li><span class="se-tape__ic"><svg class="icon" aria-hidden="true"><use href="#i-layers"></use></svg></span><b>ETFs &amp; funds</b><small>Diversified in one step</small></li></ul></div>
     </section>
 
     <!-- HOW IT WORKS -->
@@ -338,6 +339,15 @@
           </div>
         </div>
         <p class="se-live__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg> Live data is provided by TradingView and may be delayed by some exchanges. Prices are for information only and are not investment advice.</p>
+      </div>
+    </section>
+
+    <!-- ECONOMIC CALENDAR (TradingView events: market-moving news by impact) -->
+    <section class="section se-cal-sec" id="economic-calendar" aria-labelledby="cal-title">
+      <div class="container">
+        <header class="section-head"><h2 id="cal-title" class="section-title">Economic calendar</h2><p class="section-sub">Today's and this week's market-moving news: interest rate decisions, inflation, jobs and GDP figures. High-impact events can move prices sharply.</p></header>
+        <div class="se-panel se-cal"><div class="se-tv se-tv--cal" data-tv="calendar"><p class="se-tv__wait">Loading economic calendar…</p></div></div>
+        <p class="se-live__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg> Times show in your own time zone. Data by TradingView, for information only, not investment advice.</p>
       </div>
     </section>
 

@@ -168,6 +168,14 @@
         plotLineColorGrowing: GREEN, plotLineColorFalling: RED, gridLineColor: "rgba(255, 255, 255, 0.06)", scaleFontColor: "rgba(180, 192, 211, 1)",
         belowLineFillColorGrowing: "rgba(34, 197, 94, 0.12)", belowLineFillColorFalling: "rgba(239, 68, 68, 0.12)", belowLineFillColorGrowingBottom: "rgba(34, 197, 94, 0)", belowLineFillColorFallingBottom: "rgba(239, 68, 68, 0)", symbolActiveColor: "rgba(34, 197, 94, 0.12)" }];
     },
+    alert: function () {
+      var syms = [{ s: "FOREXCOM:SPXUSD", d: "S&P 500" }, { s: "FOREXCOM:NSXUSD", d: "NASDAQ 100" }, { s: "FOREXCOM:DJI", d: "Dow 30" }, { s: "FOREXCOM:UKXGBP", d: "FTSE 100" },
+        { s: "OANDA:XAUUSD", d: "Gold" }, { s: "BLACKBULL:WTI", d: "Crude oil" }, { s: "BINANCE:BTCUSDT", d: "Bitcoin" }, { s: "FX:EURUSD", d: "EUR/USD" }, { s: "FX:GBPUSD", d: "GBP/USD" }];
+      return ["ticker-tape", { symbols: syms.map(function (x) { return { proName: x.s, title: x.d }; }), showSymbolLogo: true, isTransparent: true, displayMode: "adaptive", colorTheme: "dark", locale: "en" }];
+    },
+    calendar: function () {
+      return ["events", { colorTheme: "dark", isTransparent: true, width: "100%", height: "100%", locale: "en", importanceFilter: "0,1", countryFilter: "us,eu,gb,jp,cn,ca,au" }];
+    },
     mini: function (box) {
       return ["mini-symbol-overview", { symbol: box.getAttribute("data-symbol"), width: "100%", height: "100%", locale: "en", dateRange: "1D", colorTheme: "dark", isTransparent: true, autosize: true, largeChartUrl: "", chartOnly: false, noTimeScale: false,
         trendLineColor: "rgba(41, 98, 255, 1)", underLineColor: "rgba(41, 98, 255, 0.18)", underLineBottomColor: "rgba(41, 98, 255, 0)" }];

@@ -490,7 +490,7 @@ $flash = $_SESSION['flash'] ?? null; unset($_SESSION['flash']);
 function page_start(string $title, bool $app = true): void {
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
        . '<meta name="robots" content="noindex, nofollow"><meta name="qa-build" content="' . ADMIN_BUILD . '"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
-       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=3"></head><body class="' . ($app ? 'app' : 'auth') . '">';
+       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=4"></head><body class="' . ($app ? 'app' : 'auth') . '">';
 }
 function flash_html(?array $f): string { return $f ? '<div class="flash flash--' . h($f[1]) . '" role="status">' . icon($f[1] === 'err' ? 'warn' : 'check') . '<span>' . h($f[0]) . '</span></div>' : ''; }
 
@@ -499,7 +499,7 @@ if (!logged_in()) {
     $a = admin_data();
     $token = (string)($_GET['setup'] ?? '');
     page_start('Sign in', false);
-    echo '<main class="auth__box"><div class="auth__brand"><span class="logo">Q</span><div><b>Qalb-E-Abbas</b><small>Admin dashboard</small></div></div>' . flash_html($flash);
+    echo '<main class="auth__box"><div class="auth__brand"><img src="/assets/img/logo-wordmark.webp" alt="Qalb-E-Abbas" width="176" height="36"><small>Admin</small></div>' . flash_html($flash);
     if ($token !== '') {
         $valid = !empty($a['setupHash']) && hash_equals($a['setupHash'], hash('sha256', $token)) && time() <= (int)($a['setupExpires'] ?? 0);
         if ($valid) {
@@ -542,7 +542,7 @@ $nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 
 if (!isset($nav[$tab])) $tab = 'dashboard';
 
 page_start($nav[$tab][0]);
-echo '<aside class="side"><div class="side__brand"><span class="logo">Q</span><div><b>Qalb-E-Abbas</b><small>Admin</small></div></div><nav class="side__nav">';
+echo '<aside class="side"><div class="side__brand"><img src="/assets/img/logo-wordmark-light.webp" alt="Qalb-E-Abbas" width="150" height="31"><small>Admin</small></div><nav class="side__nav">';
 foreach ($nav as $k => [$label, $ic]) {
     $n = $count[$k] ?? 0;
     echo '<a href="/admin/?tab=' . $k . '"' . ($k === $tab ? ' class="is-active" aria-current="page"' : '') . '>' . icon($ic) . '<span>' . h($label) . '</span>' . ($n ? '<em>' . $n . '</em>' : '') . '</a>';

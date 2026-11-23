@@ -268,6 +268,35 @@
       .catch(function () { events = []; render(); });
   }
 
+  // Calendar slider under the alert bar: upcoming events (today first), looping like a news ticker.
+  function initFFSlider() {
+    var bar = document.querySelector("[data-ffslider]"); if (!bar || !window.fetch) return;
+    var track = bar.querySelector("[data-ffs-track]");
+    var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var fmt = function (d) {
+      var h = d.getHours(), m = d.getMinutes(), today = new Date();
+      var t = ((h % 12) || 12) + ":" + (m < 10 ? "0" : "") + m + (h < 12 ? "am" : "pm");
+      return d.toDateString() === today.toDateString() ? "Today " + t : d.toLocaleDateString("en-GB", { weekday: "short" }) + " " + t;
+    };
+    fetch(bar.getAttribute("data-src"), { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var now = Date.now() / 1000 - 3600;
+        var list = ((j && j.events) || []).filter(function (e) { return e.t >= now && (e.i === "High" || e.i === "Medium"); }).slice(0, 24);
+        if (!list.length) return;
+        var item = function (e) {
+          return '<span class="ffs__item"><i class="ffc__imp ffc__imp--' + esc(e.i) + '" title="' + esc(e.i) + ' impact"></i>' +
+            '<b class="ffs__cur">' + esc(e.c) + '</b><span class="ffs__time">' + fmt(new Date(e.t * 1000)) + '</span><span class="ffs__ev">' + esc(e.e) + "</span>" +
+            (e.f ? '<span class="ffs__num">F: ' + esc(e.f) + "</span>" : "") + (e.p ? '<span class="ffs__num">P: ' + esc(e.p) + "</span>" : "") + "</span>";
+        };
+        var html = list.map(item).join("");
+        track.innerHTML = '<div class="ffs__group">' + html + '</div><div class="ffs__group" aria-hidden="true">' + html + "</div>";
+        track.style.setProperty("--ffs-dur", Math.max(40, list.length * 7) + "s");
+        bar.hidden = false;
+      })
+      .catch(function () {});
+  }
+
   // Live price boxes: All / Commodities / Crypto / Big companies filter.
   function initQuoteFilter() {
     var bar = document.querySelector(".se-qfilter"); if (!bar) return;
@@ -293,6 +322,7 @@
     initWidgets();
     initQuoteFilter();
     initFFCal();
+    initFFSlider();
     Array.prototype.forEach.call(document.querySelectorAll("[data-se-chart]"), mainChart);
     Array.prototype.forEach.call(document.querySelectorAll("[data-se-mini]"), function (box) {
       var f = MINI[box.getAttribute("data-se-mini")]; if (!f) return;

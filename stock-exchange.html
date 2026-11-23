@@ -26,9 +26,9 @@
   <link rel="preload" as="image" href="assets/img/services/sv-tablet-charts.webp" imagesrcset="assets/img/services/sv-tablet-charts-800.webp 800w, assets/img/services/sv-tablet-charts.webp 1280w, assets/img/services/sv-tablet-charts-1920.webp 1920w" imagesizes="100vw" fetchpriority="high">
   <!-- SEO:END -->
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.min.css?v=257c4498">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=8ec82ac4">
   <script src="assets/js/site-config.min.js?v=c30d972a" defer></script>
-  <script src="assets/js/se-charts.min.js?v=d8585ee7" defer></script>
+  <script src="assets/js/se-charts.min.js?v=490c2c28" defer></script>
   <script src="assets/js/site.min.js?v=df0b7f9e" defer></script>
   <script src="assets/js/carousel.min.js?v=98429f60" defer></script>
   <script src="assets/js/reviews-data.min.js?v=029b3698" defer></script>
@@ -252,6 +252,11 @@
       <div class="se-alert__label"><span class="se-alert__dot" aria-hidden="true"></span><b>Live markets</b><small>Today's move</small></div>
       <div class="se-alert__tape se-tv" data-tv="alert"><p class="se-alert__wait">Loading live prices…</p></div>
       <a class="se-alert__cal" href="#economic-calendar"><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><span data-ffc-next>Today's news</span></a>
+    </section>
+    <!-- ECONOMIC CALENDAR SLIDER (moving list of upcoming events from api/calendar.php) -->
+    <section class="ffs" aria-label="Economic calendar: upcoming events" data-ffslider data-src="/api/calendar.php" hidden>
+      <a class="ffs__label" href="#economic-calendar"><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><b>Calendar</b></a>
+      <div class="ffs__viewport"><div class="ffs__track" data-ffs-track></div></div>
     </section>
 
     <!-- HERO -->

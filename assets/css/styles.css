@@ -6780,3 +6780,23 @@ html.mfg-lock { overflow: hidden; }
   .ffc__table th { font-size: .62rem; letter-spacing: .02em; }
   .ffc__table th:nth-child(3), .ffc__table th:nth-child(4) { font-size: 0; }
 }
+
+/* Economic calendar slider (top of the stock exchange page) */
+.ffs { display: flex; align-items: stretch; height: 42px; background: #0A1424; border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.ffs[hidden] { display: none; }
+.ffs__label { display: flex; align-items: center; gap: 8px; flex: none; padding: 0 16px 0 max(16px, calc((100vw - var(--container, 1200px)) / 2)); background: #0F1D33; border-right: 1px solid rgba(255, 255, 255, .08); color: #fff; text-decoration: none; }
+.ffs__label b { font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.ffs__label .icon { width: 16px; height: 16px; color: #F2952A; }
+.ffs__label:hover b { color: #7DB3FF; }
+.ffs__viewport { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent); mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent); }
+.ffs__track { display: flex; width: max-content; height: 100%; animation: ffs-move var(--ffs-dur, 120s) linear infinite; }
+.ffs:hover .ffs__track { animation-play-state: paused; }
+.ffs__group { display: flex; align-items: center; }
+.ffs__item { display: inline-flex; align-items: center; gap: 8px; padding: 0 22px; height: 100%; border-right: 1px solid rgba(255, 255, 255, .07); white-space: nowrap; font-size: .84rem; color: #C9D3E3; }
+.ffs__cur { color: #fff; font-weight: 700; }
+.ffs__time { color: #8A97AB; font-variant-numeric: tabular-nums; }
+.ffs__ev { color: #fff; }
+.ffs__num { color: #8A97AB; font-size: .78rem; font-variant-numeric: tabular-nums; }
+@keyframes ffs-move { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ffs__track { animation: none; } .ffs__viewport { overflow-x: auto; } .ffs__group[aria-hidden] { display: none; } }
+@media (max-width: 700px) { .ffs__label b { display: none; } .ffs__label { padding: 0 12px; } .ffs__item { padding: 0 14px; font-size: .8rem; } }

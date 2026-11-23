@@ -127,8 +127,8 @@ window.SITE_CONFIG = {
       items: [["Study in Malta", "education-consultancy", "/education-consultancy", "flag-mt"]]
     },
     {
-      id: "sourcing", title: "Product Sourcing", icon: "box", desc: "Source products from China, Pakistan and Turkey: suppliers, quality checks and shipping.",
-      items: [["China", "china-sourcing", "/china-sourcing", "flag-cn"], ["Pakistan", "pakistan-sourcing", "/pakistan-sourcing", "flag-pk"], ["Turkey", "turkey-sourcing", "/turkey-sourcing", "flag-tr"]]
+      id: "sourcing", title: "Product Sourcing", icon: "box", desc: "Source products from Pakistan, Turkey and China: suppliers, quality checks and shipping.",
+      items: [["Pakistan", "pakistan-sourcing", "/pakistan-sourcing", "flag-pk"], ["Turkey", "turkey-sourcing", "/turkey-sourcing", "flag-tr"], ["China", "china-sourcing", "/china-sourcing", "flag-cn"]]
     },
     {
       id: "stock-exchange", title: "Stock Exchange & Investing", icon: "trending-up", desc: "Learn, open an account and invest in US & UK markets.",

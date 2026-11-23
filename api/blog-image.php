@@ -4,10 +4,10 @@ declare(strict_types=1);
 require __DIR__ . '/_blog.php';
 
 $f = basename((string)($_GET['f'] ?? ''));
-if (!preg_match('/^[a-z0-9-]+\.(webp|jpg|jpeg|png|gif)$/', $f)) { http_response_code(404); exit; }
+if (!preg_match('/^[a-z0-9-]+\.(webp|jpg|jpeg|png|gif|pdf)$/', $f)) { http_response_code(404); exit; }
 $path = blog_dir() . '/' . $f;
 if (!is_file($path)) { http_response_code(404); exit; }
-$types = ['webp' => 'image/webp', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
+$types = ['webp' => 'image/webp', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif', 'pdf' => 'application/pdf'];
 header('Content-Type: ' . $types[pathinfo($f, PATHINFO_EXTENSION)]);
 header('Content-Length: ' . filesize($path));
 header('Cache-Control: public, max-age=31536000, immutable');

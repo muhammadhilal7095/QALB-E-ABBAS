@@ -8,6 +8,7 @@
    ========================================================================== */
 declare(strict_types=1);
 require __DIR__ . '/../api/_blog.php';
+require __DIR__ . '/../api/_seo.php';
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
@@ -64,6 +65,7 @@ function icon(string $n): string {
         'check' => '<path d="M20 6L9 17l-5-5"/>',
         'pen' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
         'search' => '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+        'image' => '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/>',
         'key' => '<circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3"/><path d="m16 7 3 3"/><path d="m18 5 2 2"/>',
         'users' => '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 0 1 0 6M18.5 20c0-2.6-1.3-4.8-3.2-5.6"/>',
         'bot' => '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4.5V8M9 13v1.5M15 13v1.5M2 13v3M22 13v3"/><circle cx="12" cy="3.5" r="1"/>',
@@ -112,7 +114,7 @@ function check_password(string $p): bool {
 // The owner (login above) manages them in "Team access" and chooses which
 // sections each person may open. Stored in qa-data/admin-team.json.
 // ---------------------------------------------------------------------------
-const TEAM_SECTIONS = ['orders' => 'Bookings & orders', 'enquiries' => 'Enquiries', 'reviews' => 'Reviews', 'prices' => 'Prices', 'members' => 'Members (Stock Club)', 'assistant' => 'Assistant', 'blog' => 'Blog', 'seo' => 'SEO'];
+const TEAM_SECTIONS = ['orders' => 'Bookings & orders', 'enquiries' => 'Enquiries', 'reviews' => 'Reviews', 'prices' => 'Prices', 'members' => 'Members (Stock Club)', 'assistant' => 'Assistant', 'blog' => 'Blog', 'media' => 'Media library', 'seo' => 'SEO'];
 function team_all(): array { return qa_read('admin-team'); }
 function team_find(string $id): ?array { return qa_find('admin-team', $id); }
 function team_by_email(string $email): ?array {
@@ -272,6 +274,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             str_starts_with($do, 'assistant_') => 'assistant',
             str_starts_with($do, 'post_'), $do === 'blog_upload' => 'blog',
             str_starts_with($do, 'seo_') => 'seo',
+            str_starts_with($do, 'media_') => 'media',
             default => 'owner',
         };
         if ($section === 'owner' ? !is_owner() : !can($section)) { flash('You don\'t have access to that section.', 'err'); go(); }
@@ -566,6 +569,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['pwv'] = pwv();
             flash('Login details saved. Other devices are signed out.'); go('tab=settings');
 
+        // --- Page SEO (Admin → SEO → Page SEO) ---
+        case 'seo_page_save':
+            $slug = preg_replace('/[^a-z0-9-]/', '', (string)($_POST['page'] ?? ''));
+            if (!isset(seo_pages()[$slug])) { flash('Page not found.', 'err'); go('tab=seo'); }
+            $img = qa_text($_POST['ogImage'] ?? '', 500);
+            if ($img !== '' && !preg_match('#^(/[\w./-]+|https://[^\s"<>]+)$#', $img)) { flash('The share image must be a link starting with / or https://', 'err'); go('tab=seo&page=' . $slug); }
+            $row = [
+                'title' => qa_text($_POST['title'] ?? '', 120), 'description' => qa_text($_POST['description'] ?? '', 320),
+                'ogTitle' => qa_text($_POST['ogTitle'] ?? '', 120), 'ogDescription' => qa_text($_POST['ogDescription'] ?? '', 320),
+                'ogImage' => $img, 'ogImageAlt' => qa_text($_POST['ogImageAlt'] ?? '', 200),
+                'keyword' => qa_text($_POST['keyword'] ?? '', 80), 'noindex' => !empty($_POST['noindex']), 'updatedAt' => qa_now(),
+            ];
+            qa_update('seo-pages', function (array $all) use ($slug, $row) { $all[$slug] = $row; return $all; });
+            flash('Saved. The live page uses the new SEO straight away.'); go('tab=seo&page=' . $slug);
+
+        case 'seo_page_reset':
+            $slug = preg_replace('/[^a-z0-9-]/', '', (string)($_POST['page'] ?? ''));
+            qa_update('seo-pages', function (array $all) use ($slug) { unset($all[$slug]); return $all; });
+            flash('Back to the original SEO for this page.'); go('tab=seo&page=' . $slug);
+
+        // --- Media library ---
+        case 'media_upload':
+            $files = $_FILES['files'] ?? null;
+            $added = 0; $errors = [];
+            if ($files && is_array($files['name'])) {
+                foreach ($files['name'] as $i => $orig) {
+                    if (($files['error'][$i] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file($files['tmp_name'][$i])) { if (($files['error'][$i] ?? 0) !== UPLOAD_ERR_NO_FILE) $errors[] = $orig; continue; }
+                    if ($files['size'][$i] > 15 * 1024 * 1024) { $errors[] = "$orig (over 15 MB)"; continue; }
+                    $tmp = $files['tmp_name'][$i];
+                    $isPdf = strtolower(pathinfo((string)$orig, PATHINFO_EXTENSION)) === 'pdf' && str_starts_with((string)@file_get_contents($tmp, false, null, 0, 5), '%PDF');
+                    if ($isPdf) {
+                        $name = date('Ymd') . '-' . bin2hex(random_bytes(5)) . '.pdf';
+                        $url = @move_uploaded_file($tmp, blog_dir() . '/' . $name) ? '/blog-img/' . $name : null;
+                        $kind = 'pdf'; $w = $h = null;
+                    } else {
+                        $info = @getimagesize($tmp);
+                        $url = blog_store_image($tmp); $kind = 'image';
+                        $w = $info[0] ?? null; $h = $info[1] ?? null;
+                        if ($w && $w > 1600) { $h = (int)round($h * 1600 / $w); $w = 1600; }
+                    }
+                    if (!$url) { $errors[] = "$orig (use JPG, PNG, WebP, GIF or PDF)"; continue; }
+                    $base = pathinfo((string)$orig, PATHINFO_FILENAME);
+                    qa_insert('media', ['id' => qa_id(), 'url' => $url, 'kind' => $kind, 'name' => qa_text($base, 120), 'alt' => $kind === 'image' ? qa_text(ucfirst(str_replace(['-', '_'], ' ', $base)), 200) : '',
+                        'width' => $w, 'height' => $h, 'size' => (int)@filesize(blog_dir() . '/' . basename($url)), 'createdAt' => qa_now()]);
+                    $added++;
+                }
+            }
+            flash($added ? "$added file" . ($added > 1 ? 's' : '') . ' added.' . ($errors ? ' Not added: ' . implode(', ', $errors) : '') : 'Nothing was uploaded. ' . ($errors ? 'Problem with: ' . implode(', ', $errors) : 'Choose at least one file.'), $added ? 'ok' : 'err');
+            go('tab=media');
+
+        case 'media_update':
+            qa_patch('media', $id, function (array $m) { $m['alt'] = qa_text($_POST['alt'] ?? '', 200); $m['name'] = qa_text($_POST['name'] ?? $m['name'], 120) ?: $m['name']; return $m; });
+            flash('Saved.'); go('tab=media');
+
+        case 'media_delete':
+            $m = qa_find('media', $id);
+            if ($m) @unlink(blog_dir() . '/' . basename((string)$m['url']));
+            qa_update('media', fn(array $l) => array_values(array_filter($l, fn($x) => $x['id'] !== $id)));
+            flash('File deleted. Pages or posts that used it will no longer show it.'); go('tab=media');
+
         // --- Team access (owner only; checked above) ---
         case 'team_add':
             $name = qa_text($_POST['name'] ?? '', 80);
@@ -623,7 +686,7 @@ $flash = $_SESSION['flash'] ?? null; unset($_SESSION['flash']);
 function page_start(string $title, bool $app = true): void {
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
        . '<meta name="robots" content="noindex, nofollow"><meta name="qa-build" content="' . ADMIN_BUILD . '"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
-       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=6"></head><body class="' . ($app ? 'app' : 'auth') . '">';
+       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=7"></head><body class="' . ($app ? 'app' : 'auth') . '">';
 }
 function flash_html(?array $f): string { return $f ? '<div class="flash flash--' . h($f[1]) . '" role="status">' . icon($f[1] === 'err' ? 'warn' : 'check') . '<span>' . h($f[0]) . '</span></div>' : ''; }
 
@@ -684,7 +747,7 @@ $assistLog = qa_read('assistant-log');
 $members = qa_read('members');
 $count['members'] = count(array_filter($members, fn($m) => ($m['status'] ?? '') === 'active' && empty($m['joinedGroup'])));
 $count['assistant'] = count(array_filter($assistLog, fn($r) => ($r['hit'] ?? '') === '' && ($r['kind'] ?? '') === 'typed' && empty($r['handled']) && strtotime($r['at']) > time() - 30 * 86400));
-$nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'members' => ['Members', 'users'], 'assistant' => ['Assistant', 'bot'], 'blog' => ['Blog', 'pen'], 'seo' => ['SEO', 'search'], 'settings' => ['Settings', 'cog']];
+$nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'members' => ['Members', 'users'], 'assistant' => ['Assistant', 'bot'], 'blog' => ['Blog', 'pen'], 'media' => ['Media library', 'image'], 'seo' => ['SEO', 'search'], 'settings' => ['Settings', 'cog']];
 if (is_owner()) $nav['team'] = ['Team access', 'key'];
 else { unset($nav['settings']); $nav['account'] = ['My account', 'key']; }
 $nav = array_filter($nav, fn($k) => can($k) || ($k === 'team' && is_owner()), ARRAY_FILTER_USE_KEY);
@@ -1309,9 +1372,64 @@ if ($tab === 'assistant') {
 // ===========================================================================
 // SEO
 // ===========================================================================
-if ($tab === 'seo') {
+if ($tab === 'seo' && isset($_GET['page'])) {
+    $slug = preg_replace('/[^a-z0-9-]/', '', (string)$_GET['page']);
+    $pages = seo_pages();
+    if (!isset($pages[$slug])) { echo empty_state('Page not found.'); }
+    else {
+        $html = (string)file_get_contents($pages[$slug]);
+        $def = seo_defaults($html);
+        $o = seo_overrides()[$slug] ?? [];
+        $e = seo_effective($def, $o);
+        $checks = seo_checks($html, $e);
+        $score = seo_score($checks);
+        $url = seo_url($slug);
+        $imgs = array_filter(qa_read('media'), fn($m) => ($m['kind'] ?? '') === 'image');
+        echo '<a class="back" href="/admin/?tab=seo">' . icon('back') . 'All pages</a>';
+        echo '<header class="head"><div><h1>' . h($slug === 'index' ? 'Home page' : ucwords(str_replace('-', ' ', $slug))) . '</h1><p class="muted"><a href="' . h($url) . '" target="_blank" rel="noopener">' . h($url) . '</a></p></div><div class="head__badges">' . score_badge($score) . ($o ? '<span class="badge badge--blue">Edited</span>' : '<span class="badge badge--grey">Original</span>') . '</div></header>';
+        echo '<div class="grid2 grid2--wide"><form method="post" class="card stack seo-form">' . csrf_field() . '<input type="hidden" name="do" value="seo_page_save"><input type="hidden" name="page" value="' . h($slug) . '">'
+           . '<h2>Google search result</h2>'
+           . '<div class="serp"><span class="serp__url">' . h(preg_replace('#^https://#', '', $url)) . '</span><span class="serp__title" data-serp-title>' . h($e['title']) . '</span><span class="serp__desc" data-serp-desc>' . h($e['description']) . '</span></div>'
+           . '<label>Focus keyword <small>The main search phrase this page should rank for (used for the checks).</small><input name="keyword" value="' . h($e['keyword']) . '" maxlength="80" placeholder="e.g. Amazon FBA services UK"></label>'
+           . '<label>SEO title <small data-count="title">' . mb_strlen($e['title']) . ' / 60</small><input name="title" value="' . h($e['title']) . '" maxlength="120" data-max="60" data-serp="title" placeholder="' . h($def['title']) . '"></label>'
+           . '<label>Meta description <small data-count="description">' . mb_strlen($e['description']) . ' / 160</small><textarea name="description" rows="3" maxlength="320" data-max="160" data-serp="desc" placeholder="' . h($def['description']) . '">' . h($e['description']) . '</textarea></label>'
+           . '<h2 style="margin-top:8px">Social sharing (Facebook, WhatsApp, LinkedIn, X)</h2>'
+           . '<label>Share title <small>Leave empty to use the SEO title.</small><input name="ogTitle" value="' . h($o['ogTitle'] ?? '') . '" maxlength="120"></label>'
+           . '<label>Share description <small>Leave empty to use the meta description.</small><textarea name="ogDescription" rows="2" maxlength="320">' . h($o['ogDescription'] ?? '') . '</textarea></label>'
+           . '<label>Share image <small>1200×630 works best. Pick from the media library or paste a link.</small>';
+        if ($imgs) {
+            echo '<select data-pick-image><option value="">Choose from the media library…</option>';
+            foreach ($imgs as $m) echo '<option value="' . h($m['url']) . '" data-alt="' . h($m['alt'] ?? '') . '"' . (($o['ogImage'] ?? '') === $m['url'] ? ' selected' : '') . '>' . h($m['name']) . '</option>';
+            echo '</select>';
+        }
+        echo '<input name="ogImage" value="' . h($o['ogImage'] ?? '') . '" maxlength="500" placeholder="' . h($def['ogImage']) . '"></label>'
+           . ($e['ogImage'] ? '<img class="seo-share" src="' . h($e['ogImage']) . '" alt="">' : '')
+           . '<label>Share image description (alt text)<input name="ogImageAlt" value="' . h($o['ogImageAlt'] ?? '') . '" maxlength="200" placeholder="' . h($def['ogImageAlt']) . '"></label>'
+           . '<label class="check"><input type="checkbox" name="noindex" value="1"' . ($e['noindex'] ? ' checked' : '') . '> Hide this page from Google (noindex) and remove it from the sitemap</label>'
+           . '<div class="btn-row"><button class="btn btn--primary">Save SEO</button><a class="btn btn--ghost" href="' . h($url) . '" target="_blank" rel="noopener">View page</a></div></form>';
+        echo '<section class="card"><div class="card__head"><h2>Page check</h2>' . score_badge($score) . '</div><ul class="checks">';
+        foreach ($checks as [$label, $ok, $detail]) echo '<li class="' . ($ok ? 'is-ok' : 'is-no') . '"><b>' . h($label) . '</b>' . ($detail !== '' ? ' — <small class="muted">' . h($detail) . '</small>' : '') . '</li>';
+        echo '</ul><p class="muted" style="margin:12px 0 0"><small>Headings, text, images and links come from the page itself. Title, description, share details and Google visibility are what you set here.</small></p>';
+        if ($o) echo '<form method="post" style="margin-top:14px" onsubmit="return confirm(\'Go back to the original SEO for this page?\')">' . csrf_field() . '<input type="hidden" name="do" value="seo_page_reset"><input type="hidden" name="page" value="' . h($slug) . '"><button class="linkbtn linkbtn--danger">Reset to original</button></form>';
+        echo '</section></div>';
+        echo '<script>(function(){var f=document.querySelector(".seo-form");if(!f)return;'
+           . 'f.querySelectorAll("[data-max]").forEach(function(el){var c=f.querySelector("[data-count=\'"+el.name+"\']"),t=f.querySelector(el.dataset.serp==="title"?"[data-serp-title]":"[data-serp-desc]");function u(){var v=el.value||el.placeholder;c.textContent=v.length+" / "+el.dataset.max;c.className=v.length>el.dataset.max*1.05?"bad":"";t.textContent=v;}el.addEventListener("input",u);u();});'
+           . 'var p=f.querySelector("[data-pick-image]");if(p)p.addEventListener("change",function(){if(!p.value)return;f.ogImage.value=p.value;var a=p.options[p.selectedIndex].dataset.alt;if(a&&!f.ogImageAlt.value)f.ogImageAlt.value=a;});})();</script>';
+    }
+} elseif ($tab === 'seo') {
     $posts = array_filter(blog_posts(), 'blog_is_live');
-    echo '<header class="head"><div><h1>SEO</h1><p class="muted">Google &amp; Bing setup, sitemaps and the SEO health of your blog.</p></div></header>';
+    echo '<header class="head"><div><h1>SEO</h1><p class="muted">Page titles &amp; descriptions, Google &amp; Bing setup, sitemaps and the SEO health of your blog.</p></div></header>';
+    $ov = seo_overrides();
+    echo '<section class="card card--flush"><div class="card__head" style="padding:16px 20px 12px;margin:0"><h2>Page SEO</h2><small class="muted">Click a page to edit its Google title, description, share image and visibility</small></div><div class="table"><table><thead><tr><th>Page</th><th>SEO title</th><th>Score</th><th>Status</th></tr></thead><tbody>';
+    foreach (seo_pages() as $slug => $file) {
+        $html = (string)@file_get_contents($file);
+        $o = $ov[$slug] ?? [];
+        $e = seo_effective(seo_defaults($html), $o);
+        $sc = seo_score(seo_checks($html, $e));
+        $st = $e['noindex'] ? '<span class="badge badge--grey">Hidden</span>' : ($o ? '<span class="badge badge--blue">Edited</span>' : '<span class="badge badge--grey">Original</span>');
+        echo '<tr onclick="location=\'/admin/?tab=seo&page=' . h($slug) . '\'"><td><a href="/admin/?tab=seo&page=' . h($slug) . '">' . h($slug === 'index' ? 'Home page' : '/' . $slug) . '</a></td><td><small style="color:var(--ink)">' . h(mb_strimwidth($e['title'], 0, 70, '…')) . '</small></td><td>' . score_badge($sc) . '</td><td>' . $st . '</td></tr>';
+    }
+    echo '</tbody></table></div></section>';
     echo '<div class="grid2">';
     echo '<section class="card stack"><h2>1. Connect Google Search Console</h2><ol class="steps"><li>Open <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a> → Add property → <b>URL prefix</b> → <code>' . h(QA_SITE) . '</code>.</li>'
        . '<li>Choose <b>HTML file</b> verification and download the file (e.g. <code>google1a2b3c.html</code>).</li><li>Open the file, copy its text, and add it below. Then press <b>Verify</b> in Google.</li>'
@@ -1380,6 +1498,37 @@ if ($tab === 'settings') {
        . '<label>Current password<input type="password" name="current" autocomplete="current-password" required></label>'
        . '<div class="row2"><label>New password<input type="password" name="password" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label><label>Repeat new password<input type="password" name="password2" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label></div>'
        . '<button class="btn btn--primary">Save login details</button></form>';
+}
+
+// ===========================================================================
+// MEDIA LIBRARY
+// ===========================================================================
+if ($tab === 'media') {
+    $media = qa_read('media');
+    $fmt = fn(int $b) => $b >= 1048576 ? round($b / 1048576, 1) . ' MB' : max(1, (int)round($b / 1024)) . ' KB';
+    echo '<header class="head"><div><h1>Media library</h1><p class="muted">Upload images and PDFs once, then use them in blog posts, pages and as share images.</p></div></header>';
+    echo '<form method="post" enctype="multipart/form-data" class="card upload-box">' . csrf_field() . '<input type="hidden" name="do" value="media_upload">'
+       . '<label class="upload-drop">' . icon('image') . '<span><b>Choose files to upload</b><small>JPG, PNG, WebP, GIF or PDF · up to 15 MB each · images are resized to 1600px and converted to WebP</small></span><input type="file" name="files[]" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" multiple required></label>'
+       . '<button class="btn btn--primary">Upload</button></form>';
+    if (!$media) echo empty_state('No files yet. Upload your first image or PDF above.');
+    else {
+        echo '<div class="media-grid">';
+        foreach ($media as $m) {
+            $abs = QA_SITE . $m['url'];
+            $isImg = ($m['kind'] ?? '') === 'image';
+            $snippet = $isImg ? '<img src="' . $m['url'] . '" alt="' . ($m['alt'] ?? '') . '"' . (!empty($m['width']) ? ' width="' . (int)$m['width'] . '" height="' . (int)$m['height'] . '"' : '') . ' loading="lazy">' : '<a href="' . $m['url'] . '" target="_blank" rel="noopener">' . ($m['name'] ?? 'Download PDF') . '</a>';
+            echo '<article class="media-item"><a class="media-item__thumb" href="' . h($m['url']) . '" target="_blank" rel="noopener">' . ($isImg ? '<img src="' . h($m['url']) . '" alt="" loading="lazy">' : '<span class="media-item__pdf">PDF</span>') . '</a>'
+               . '<form method="post" class="media-item__body">' . csrf_field() . '<input type="hidden" name="do" value="media_update"><input type="hidden" name="id" value="' . h($m['id']) . '">'
+               . '<input class="media-item__name" name="name" value="' . h($m['name'] ?? '') . '" aria-label="File name">'
+               . '<small class="muted">' . ($isImg && !empty($m['width']) ? (int)$m['width'] . '×' . (int)$m['height'] . ' · ' : 'PDF · ') . $fmt((int)($m['size'] ?? 0)) . ' · ' . ago($m['createdAt'] ?? null) . '</small>'
+               . ($isImg ? '<label>Alt text <small>Describe the image for Google and screen readers</small><input name="alt" value="' . h($m['alt'] ?? '') . '" maxlength="200"></label>' : '')
+               . '<label>Link<input readonly value="' . h($abs) . '" onclick="this.select()"></label>'
+               . '<label>HTML to paste<input readonly value="' . h($snippet) . '" onclick="this.select()"></label>'
+               . '<div class="media-item__actions"><button class="btn btn--ghost btn--sm">Save</button></div></form>'
+               . '<form method="post" class="media-item__del" onsubmit="return confirm(\'Delete this file permanently?\')">' . csrf_field() . '<input type="hidden" name="do" value="media_delete"><input type="hidden" name="id" value="' . h($m['id']) . '"><button class="linkbtn linkbtn--danger">Delete</button></form></article>';
+        }
+        echo '</div>';
+    }
 }
 
 // ===========================================================================

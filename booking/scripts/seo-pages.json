@@ -270,5 +270,20 @@
     "title": "Product Sourcing from Turkey | Clothing, Textiles & More",
     "description": "Source clothing, towels, home textiles, ceramics and furniture from Turkey: checked manufacturers, samples, inspection and fast shipping to the UK and EU.",
     "priority": "0.8"
+  },
+  "aliexpress": {
+    "title": "AliExpress Dropshipping & Seller Services | Qalb-E-Abbas",
+    "description": "AliExpress dropshipping and seller services: product research, supplier checks, Shopify store setup, DSers order automation and seller account guidance.",
+    "priority": "0.8"
+  },
+  "pakistan-company-formation": {
+    "title": "Pakistan Company Registration (SECP) | Qalb-E-Abbas",
+    "description": "Register a company in Pakistan with the SECP: Private Limited, SMC or LLP, name approval, incorporation, NTN, sales tax and bank account support.",
+    "priority": "0.8"
+  },
+  "pakistan-tax-filing": {
+    "title": "Pakistan Tax Return Filing (FBR) | Qalb-E-Abbas",
+    "description": "File your income tax return in Pakistan with FBR: NTN registration, IRIS filing, wealth statement, sales tax returns and Active Taxpayers List status.",
+    "priority": "0.8"
   }
 }

@@ -103,14 +103,23 @@ window.SITE_CONFIG = {
       id: "ecommerce", title: "E-commerce Services", icon: "cart", desc: "Launch and scale on the world's top marketplaces.",
       items: [
         ["Amazon", "amazon", "/amazon-fba", "amazon"], ["TikTok Shop", "tiktok-shop", "/tiktok-shop", "tiktok"], ["eBay", "ebay", "/ebay", "ebay"],
-        ["Walmart", "walmart", "/walmart", "walmart"], ["Etsy", "etsy", "/etsy", "etsy"], ["Shopify", "shopify", "/shopify-development", "shopify"]
+        ["Walmart", "walmart", "/walmart", "walmart"], ["Etsy", "etsy", "/etsy", "etsy"], ["Shopify", "shopify", "/shopify-development", "shopify"],
+        ["AliExpress", "aliexpress", "/aliexpress", "aliexpress"]
       ]
     },
     {
       id: "formation", title: "Company Formation", icon: "building", desc: "Register your company and stay compliant.",
       items: [
         ["UK", "uk-company-formation", "/uk-ltd-formation", "flag-uk"], ["USA", "usa-company-formation", "/us-llc-formation", "flag-us"],
-        ["UAE", "uae-company-formation", "/uae-company-formation", "flag-ae"], ["Malta", "malta-company-formation", "/malta-company-formation", "flag-mt"]
+        ["UAE", "uae-company-formation", "/uae-company-formation", "flag-ae"], ["Malta", "malta-company-formation", "/malta-company-formation", "flag-mt"],
+        ["Pakistan", "pakistan-company-formation", "/pakistan-company-formation", "flag-pk"]
+      ]
+    },
+    {
+      id: "tax", title: "Tax Filing", icon: "receipt", desc: "Tax returns and compliance in the UK, USA and Pakistan.",
+      items: [
+        ["UK", "uk-tax-filing", "/taxation", "flag-uk"], ["USA", "usa-tax-filing", "/taxation", "flag-us"],
+        ["Pakistan", "pakistan-tax-filing", "/pakistan-tax-filing", "flag-pk"]
       ]
     },
     {
@@ -159,11 +168,14 @@ window.SITE_CONFIG = {
     // "Services" column
     serviceLinks: [
       ["E-commerce Services", "/services#ecommerce"],
+      ["AliExpress", "/aliexpress"],
       ["Product Sourcing (China)", "/china-sourcing"],
       ["Product Sourcing (Pakistan)", "/pakistan-sourcing"],
       ["Product Sourcing (Turkey)", "/turkey-sourcing"],
       ["Company Formation", "/services#formation"],
-      ["Taxation Services", "/taxation"],
+      ["Company Formation (Pakistan)", "/pakistan-company-formation"],
+      ["Taxation Services (UK & USA)", "/taxation"],
+      ["Tax Filing (Pakistan)", "/pakistan-tax-filing"],
       ["Education Consultancy", "/services#education"],
       ["Real Estate (Pakistan)", "/real-estate"],
       ["Stock Exchange & Investing", "/stock-exchange"],

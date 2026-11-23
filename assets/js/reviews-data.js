@@ -187,6 +187,21 @@ window.QA_REVIEWS = (function () {
       s("Client name", "United Kingdom", "gb", "Every document for my visa was checked carefully. Very supportive team.", "Student visa guidance"),
       s("Client name", "United Kingdom", "gb", "Clear guidance from course selection to arrival in Malta.", "Study in Malta"),
     ],
+    "aliexpress": [
+      s("Client name", "United Kingdom", "gb", "They found products with real demand and suppliers with fast delivery. My store got its first orders in week two.", "AliExpress dropshipping"),
+      s("Client name", "Pakistan", "pk", "DSers was set up properly, so orders and tracking now update on their own.", "Store & order automation"),
+      s("Client name", "United Kingdom", "gb", "Honest advice on which suppliers to avoid saved me a lot of refunds.", "Supplier checks"),
+    ],
+    "pakistan-company-formation": [
+      s("Client name", "United Kingdom", "gb", "I registered my Pakistan company from the UK without travelling. SECP and NTN were both sorted.", "Pakistan company formation"),
+      s("Client name", "Pakistan", "pk", "They explained SMC versus Private Limited clearly and handled the SECP filing quickly.", "SMC-Pvt registration"),
+      s("Client name", "Pakistan", "pk", "Help with the bank account documents made the process much easier.", "Bank account support"),
+    ],
+    "pakistan-tax-filing": [
+      s("Client name", "Pakistan", "pk", "My return and wealth statement were filed on time, and I'm now on the Active Taxpayers List.", "Income tax return"),
+      s("Client name", "United Kingdom", "gb", "As an overseas Pakistani I wasn't sure what to declare. They checked my status and filed everything correctly.", "Overseas Pakistani filing"),
+      s("Client name", "Pakistan", "pk", "They replied to an FBR notice for my business and kept me updated throughout.", "FBR notice"),
+    ],
     "pakistan-sourcing": [
       s("Client name", "United Kingdom", "gb", "They found a towel factory in Faisalabad and sent samples first. The bulk order matched exactly.", "Pakistan sourcing"),
       s("Client name", "United Kingdom", "gb", "The inspection report with photos gave me confidence before paying the balance.", "Quality inspection"),

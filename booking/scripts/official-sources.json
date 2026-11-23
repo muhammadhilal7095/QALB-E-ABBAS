@@ -149,5 +149,43 @@
       "Import goods into the UK (GOV.UK)",
       "https://www.gov.uk/import-goods-into-uk"
     ]
+  ],
+  "aliexpress": [
+    [
+      "AliExpress Seller Center",
+      "https://sell.aliexpress.com/"
+    ],
+    [
+      "DSers: official AliExpress dropshipping partner",
+      "https://www.dsers.com/"
+    ]
+  ],
+  "pakistan-company-formation": [
+    [
+      "Securities and Exchange Commission of Pakistan (SECP)",
+      "https://www.secp.gov.pk/"
+    ],
+    [
+      "SECP eServices: online company registration",
+      "https://eservices.secp.gov.pk/"
+    ],
+    [
+      "Federal Board of Revenue (FBR)",
+      "https://www.fbr.gov.pk/"
+    ]
+  ],
+  "pakistan-tax-filing": [
+    [
+      "Federal Board of Revenue (FBR)",
+      "https://www.fbr.gov.pk/"
+    ],
+    [
+      "FBR IRIS: online tax filing",
+      "https://iris.fbr.gov.pk/"
+    ],
+    [
+      "FBR Active Taxpayers List",
+      "https://www.fbr.gov.pk/ActiveTaxpayerList/"
+    ]
   ]
 }

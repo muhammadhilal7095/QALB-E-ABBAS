@@ -5,8 +5,8 @@
    ========================================================================== */
 (function () {
   "use strict";
-  var LOGO_V = "36991735"; // logo version, set by `npm run assets:build`
-  var ASSIST_V = "7966f194"; // website assistant version, set by `npm run assets:build`
+  var LOGO_V = "fe67380e"; // logo version, set by `npm run assets:build`
+  var ASSIST_V = "dca58148"; // website assistant version, set by `npm run assets:build`
 
   var CFG = window.SITE_CONFIG;
   var DESKTOP_MQ = window.matchMedia("(min-width: 1200px)");
@@ -148,7 +148,7 @@
     var MAP = {
       "/amazon-fba": "amazon", "/ebay": "ebay", "/walmart": "walmart", "/tiktok-shop": "tiktok", "/etsy": "etsy",
       "/shopify-development": "shopify", "/uk-ltd-formation": "company", "/us-llc-formation": "company",
-      "/uae-company-formation": "company", "/malta-company-formation": "company", "/trademark-registration": "company",
+      "/uae-company-formation": "company", "/malta-company-formation": "company", "/pakistan-company-formation": "company", "/pakistan-tax-filing": "tax", "/trademark-registration": "company",
       "/taxation": "tax", "/digital-marketing": "marketing", "/seo": "marketing", "/social-media-marketing": "marketing",
       "/email-marketing": "marketing", "/influencer-marketing": "marketing", "/affiliate-marketing": "marketing",
       "/education-consultancy": "malta", "/real-estate": "realestate"

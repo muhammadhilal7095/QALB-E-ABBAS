@@ -26,7 +26,8 @@ const EXTRA = {
   automation: ["/crm-development", "/social-media-marketing"],
   development: ["/seo", "/digital-marketing"],
   marketing: ["/website-development", "/shopify-development"],
-  formation: ["/taxation", "/trademark-registration"],
+  formation: ["/taxation", "/pakistan-tax-filing", "/trademark-registration"],
+  tax: ["/uk-ltd-formation", "/us-llc-formation", "/pakistan-company-formation"],
   education: ["/malta-company-formation", "/university"],
   sourcing: ["/amazon-fba", "/shopify-development", "/tiktok-shop", "/walmart", "/trademark-registration"],
   "real-estate": ["/digital-marketing", "/social-media-marketing", "/website-development", "/uae-company-formation"],
@@ -35,7 +36,7 @@ const EXTRA = {
 // Pages that should NOT show the "Related services & official sources" block.
 const SKIP = new Set(["/stock-exchange"]);
 // Pages that are not in the Services menu but should link like a category.
-const EXTRA_PAGES = { "/taxation": "formation", "/trademark-registration": "formation", "/tiktok-shop": "ecommerce" };
+const EXTRA_PAGES = { "/taxation": "tax", "/trademark-registration": "formation", "/tiktok-shop": "ecommerce" };
 
 // Every service page in the menu: path -> { name, category }
 const all = new Map();

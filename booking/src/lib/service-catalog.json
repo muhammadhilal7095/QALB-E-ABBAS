@@ -988,6 +988,12 @@
               "note": "24 live classes · 1 hour a day, 5 days a week"
             },
             {
+              "sku": "course-aliexpress",
+              "name": "AliExpress dropshipping programme (course)",
+              "price": 300,
+              "note": "24 live classes · 1 hour a day, 5 days a week"
+            },
+            {
               "sku": "course-shopify",
               "name": "Shopify store programme (course)",
               "price": 250,
@@ -1025,7 +1031,7 @@
         "minutes": 60,
         "price": 50,
         "currency": "USD",
-        "desc": "Amazon, eBay, TikTok Shop, Walmart, Etsy or Shopify: plan your e-commerce business in the right order.",
+        "desc": "Amazon, eBay, TikTok Shop, Walmart, Etsy, Shopify or AliExpress: plan your e-commerce business in the right order.",
         "topics": [
           "amazon",
           "ebay",
@@ -1033,6 +1039,7 @@
           "etsy",
           "tiktok-shop",
           "shopify",
+          "aliexpress",
           "china-sourcing",
           "pakistan-sourcing",
           "turkey-sourcing",
@@ -1113,12 +1120,13 @@
         "minutes": 30,
         "price": 50,
         "currency": "USD",
-        "desc": "UK LTD, US LLC, Malta or UAE company formation and trademarks: structure, documents and compliance.",
+        "desc": "UK LTD, US LLC, Malta, UAE or Pakistan company formation and trademarks: structure, documents and compliance.",
         "topics": [
           "uk-company-formation",
           "usa-company-formation",
           "malta-company-formation",
           "uae-company-formation",
+          "pakistan-company-formation",
           "company-registration",
           "trademark-registration"
         ]
@@ -1129,12 +1137,13 @@
         "minutes": 30,
         "price": 50,
         "currency": "USD",
-        "desc": "US and UK corporate tax, IRS Form 5472, HMRC and VAT questions, plus Malta tax filing.",
+        "desc": "US and UK corporate tax, IRS Form 5472, HMRC and VAT questions, plus Malta and Pakistan (FBR) tax filing.",
         "topics": [
           "taxation",
           "uk-tax-filing",
           "usa-tax-filing",
-          "malta-tax-filing"
+          "malta-tax-filing",
+          "pakistan-tax-filing"
         ]
       },
       {

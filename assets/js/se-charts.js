@@ -215,6 +215,59 @@
     });
   }
 
+  // Economic calendar table (Forex Factory-style): /api/calendar.php → grouped by day in the visitor's time zone.
+  function initFFCal() {
+    var root = document.querySelector("[data-ffcal]"); if (!root || !window.fetch) return;
+    var body = root.querySelector("[data-ffc-body]"), nextEl = document.querySelector("[data-ffc-next]");
+    var events = [], day = "today";
+    var dayKey = function (d) { return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(); };
+    var fmtTime = function (d) { var h = d.getHours(), m = d.getMinutes(); return ((h % 12) || 12) + ":" + (m < 10 ? "0" : "") + m + (h < 12 ? "am" : "pm"); };
+    var fmtDay = function (d) { return d.toLocaleDateString("en-GB", { weekday: "short" }) + "<br>" + d.toLocaleDateString("en-GB", { month: "short", day: "numeric" }); };
+    var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    function render() {
+      var imp = Array.prototype.map.call(root.querySelectorAll(".ffc__impacts input:checked"), function (i) { return i.value; });
+      var today = dayKey(new Date()), now = Date.now() / 1000;
+      var list = events.filter(function (e) { return (imp.indexOf(e.i) >= 0 || e.i === "Holiday") && (day === "week" || dayKey(new Date(e.t * 1000)) === today); });
+      if (!list.length) { body.innerHTML = '<tr><td colspan="7" class="ffc__msg">' + (events.length ? (day === "today" ? "No events today with these impact levels. Try “This week”." : "No events with these impact levels.") : "The calendar is not available right now. Please try again later.") + "</td></tr>"; return; }
+      var nextIdx = -1;
+      for (var i = 0; i < list.length; i++) if (list[i].t >= now) { nextIdx = i; break; }
+      var html = "", lastDay = "", lastTime = -1;
+      list.forEach(function (e, i) {
+        var d = new Date(e.t * 1000), k = dayKey(d), newDay = k !== lastDay, sameTime = !newDay && e.t === lastTime;
+        if (newDay) html += '<tr class="ffc__dayrow"><td colspan="7">' + d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "short" }) + "</td></tr>";
+        html += '<tr class="' + (newDay ? "ffc__day-start " : "") + (e.t < now ? "is-past " : "") + (i === nextIdx ? "is-next" : "") + '">' +
+          '<td class="ffc__date">' + (newDay ? fmtDay(d) : "") + "</td>" +
+          '<td class="ffc__time">' + (sameTime ? "" : (i === nextIdx ? '<span class="ffc__nextmark" aria-label="Next">▸</span>' : "") + (e.i === "Holiday" ? "All day" : fmtTime(d))) + "</td>" +
+          '<td class="ffc__cur">' + esc(e.c) + "</td>" +
+          '<td><i class="ffc__imp ffc__imp--' + esc(e.i) + '" title="' + esc(e.i) + ' impact"></i></td>' +
+          '<td class="ffc__event">' + esc(e.e) + "</td>" +
+          '<td class="ffc__num">' + esc(e.f) + "</td>" +
+          '<td class="ffc__num">' + esc(e.p) + "</td></tr>";
+        lastDay = k; lastTime = e.t;
+      });
+      body.innerHTML = html;
+    }
+    root.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-ffc-day]"); if (!b) return;
+      day = b.getAttribute("data-ffc-day");
+      root.querySelectorAll("[data-ffc-day]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      render();
+    });
+    root.addEventListener("change", render);
+    fetch(root.getAttribute("data-src"), { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        events = (j && j.events) || [];
+        render();
+        // Alert bar: the next high-impact event
+        if (nextEl) {
+          var now = Date.now() / 1000, n = events.filter(function (e) { return e.i === "High" && e.t >= now; })[0];
+          if (n) { var d = new Date(n.t * 1000); nextEl.innerHTML = '<i class="ffc__imp ffc__imp--High"></i>Next: ' + esc(n.c) + " " + esc(n.e) + " · " + (dayKey(d) === dayKey(new Date()) ? "" : d.toLocaleDateString("en-GB", { weekday: "short" }) + " ") + fmtTime(d); }
+        }
+      })
+      .catch(function () { events = []; render(); });
+  }
+
   // Live price boxes: All / Commodities / Crypto / Big companies filter.
   function initQuoteFilter() {
     var bar = document.querySelector(".se-qfilter"); if (!bar) return;
@@ -239,6 +292,7 @@
     initClubPrice();
     initWidgets();
     initQuoteFilter();
+    initFFCal();
     Array.prototype.forEach.call(document.querySelectorAll("[data-se-chart]"), mainChart);
     Array.prototype.forEach.call(document.querySelectorAll("[data-se-mini]"), function (box) {
       var f = MINI[box.getAttribute("data-se-mini")]; if (!f) return;

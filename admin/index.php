@@ -575,6 +575,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
             flash('Payment settings saved.' . ($sk !== '' ? ' Press "Test connection" to check the key.' : '')); go('tab=payments');
 
+        // --- Simple payment keys: one API key + one Secret key (Stripe or PayPal, detected automatically) ---
+        case 'keys_save':
+            $api = preg_replace('/\s+/', '', (string)($_POST['apiKey'] ?? ''));
+            $sec = preg_replace('/\s+/', '', (string)($_POST['secretKey'] ?? ''));
+            if (!empty($_POST['removeKeys'])) {
+                qa_update('settings', function (array $s) { foreach (['stripeSecret', 'stripePublishable', 'stripeWebhook', 'paypalClientId', 'paypalSecret'] as $k) $s[$k] = ''; return $s; });
+                flash('Payment keys removed. Card payments are off.'); go('tab=payments');
+            }
+            if ($api === '' || $sec === '') { flash('Please paste both the API key and the Secret key.', 'err'); go('tab=payments'); }
+            if (preg_match('/^(sk|rk)_(live|test)_[A-Za-z0-9]+$/', $sec)) {
+                // Stripe
+                qa_update('settings', function (array $s) use ($api, $sec) {
+                    $s['stripeSecret'] = $sec; $s['stripePublishable'] = preg_match('/^pk_(live|test)_/', $api) ? $api : '';
+                    $s['paypalClientId'] = ''; $s['paypalSecret'] = ''; return $s;
+                });
+                try { $b = qa_stripe('GET', 'balance'); flash('Connected to Stripe' . (!empty($b['livemode']) ? ' (live). Card payments are on.' : ' (test mode: no real money is taken).')); }
+                catch (Throwable $e) { flash('Saved, but Stripe did not accept the Secret key. Please copy it again.', 'err'); }
+                go('tab=payments');
+            }
+            if (!preg_match('/^[A-Za-z0-9_-]{40,128}$/', $api) || !preg_match('/^[A-Za-z0-9_-]{40,128}$/', $sec)) { flash('These keys were not recognised. Please copy them again.', 'err'); go('tab=payments'); }
+            // PayPal: try Live first, then Sandbox (test)
+            $mode = null;
+            foreach (['live' => 'https://api-m.paypal.com', 'sandbox' => 'https://api-m.sandbox.paypal.com'] as $m => $base) {
+                $ch = curl_init($base . '/v1/oauth2/token');
+                curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 20, CURLOPT_POST => true, CURLOPT_USERPWD => $api . ':' . $sec, CURLOPT_POSTFIELDS => 'grant_type=client_credentials', CURLOPT_HTTPHEADER => ['Accept: application/json']]);
+                $res = json_decode((string)curl_exec($ch), true); $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+                if ($code === 200 && !empty($res['access_token'])) { $mode = $m; break; }
+            }
+            if (!$mode) { flash('PayPal did not accept these keys. Check you copied the Client ID as the API key and the Secret as the Secret key.', 'err'); go('tab=payments'); }
+            qa_update('settings', function (array $s) use ($api, $sec, $mode) {
+                $s['paypalClientId'] = $api; $s['paypalSecret'] = $sec; $s['paypalMode'] = $mode;
+                $s['stripeSecret'] = ''; $s['stripePublishable'] = ''; $s['stripeWebhook'] = ''; return $s;
+            });
+            flash($mode === 'live' ? 'Connected to PayPal (live). Card payments are on.' : 'Connected to PayPal in test mode (sandbox): no real money is taken. Use live keys for real payments.');
+            go('tab=payments');
+
         case 'paypal_save':
             $cid = preg_replace('/\s+/', '', (string)($_POST['paypalClientId'] ?? ''));
             $sec = preg_replace('/\s+/', '', (string)($_POST['paypalSecret'] ?? ''));
@@ -1556,39 +1592,21 @@ if ($tab === 'settings') {
 // PAYMENTS (owner only): Stripe API keys, webhook, pay-by-link
 // ===========================================================================
 if ($tab === 'payments' && is_owner()) {
-    $mask = fn(string $v) => $v ? substr($v, 0, 8) . '••••••••' . substr($v, -4) : '';
-    $sk = (string)$settings['stripeSecret']; $pk = (string)($settings['stripePublishable'] ?? ''); $wh = (string)$settings['stripeWebhook'];
-    $mode = $sk === '' ? null : (str_contains($sk, '_live_') ? 'live' : 'test');
-    $hook = QA_SITE . '/api/stripe-webhook.php';
-    echo '<header class="head"><div><h1>Payments</h1><p class="muted">Connect Stripe or PayPal to take card payments on bookings, the cart, course enrolments and club sign-ups.</p></div><div class="head__badges">'
-       . ($mode === 'live' ? '<span class="badge badge--green">Stripe connected · Live</span>' : ($mode === 'test' ? '<span class="badge badge--amber">Stripe connected · Test mode</span>' : '')) . (!empty($settings['paypalClientId']) && !empty($settings['paypalSecret']) ? '<span class="badge badge--green">PayPal connected · ' . (($settings['paypalMode'] ?? 'live') === 'sandbox' ? 'Sandbox' : 'Live') . '</span>' : '') . (!$mode && (empty($settings['paypalClientId']) || empty($settings['paypalSecret'])) ? '<span class="badge badge--grey">Card payments off</span>' : '') . '</div></header>';
-    echo '<div class="grid2 grid2--wide"><form method="post" class="card stack">' . csrf_field() . '<input type="hidden" name="do" value="payments_save"><h2>Stripe</h2><p class="muted">Keys start with <code>pk_live_</code> and <code>sk_live_</code>. Skip this if you use PayPal.</p>'
-       . '<label>Publishable key <small>' . ($pk ? 'saved: ' . h($mask($pk)) : 'optional · starts with pk_live_') . '</small><input name="stripePublishable" placeholder="' . ($pk ? 'Leave empty to keep the saved key' : 'pk_live_…') . '" autocomplete="off" spellcheck="false"></label>'
-       . '<label>Secret key <small' . ($sk ? ' class="ok">saved: ' . h($mask($sk)) : '>required for card payments · starts with sk_live_') . '</small><input type="password" name="stripeSecret" placeholder="' . ($sk ? 'Leave empty to keep the saved key' : 'sk_live_…') . '" autocomplete="off" spellcheck="false"></label>'
-       . '<label>Webhook signing secret <small' . ($wh ? ' class="ok">saved: ' . h($mask($wh)) : '>confirms payments automatically · starts with whsec_') . '</small><input type="password" name="stripeWebhook" placeholder="' . ($wh ? 'Leave empty to keep the saved secret' : 'whsec_…') . '" autocomplete="off" spellcheck="false"></label>'
-       . '<label>Webhook endpoint URL <small>Paste this into Stripe when you add the webhook</small><input readonly value="' . h($hook) . '" onclick="this.select()"></label>'
-       . '<label class="check"><input type="checkbox" name="manualPayments" value="1"' . ($settings['manualPayments'] ? ' checked' : '') . '> Also offer “Request now, pay by link” (you email the client a payment link)</label>'
-       . ($sk ? '<label class="check"><input type="checkbox" name="clearStripe" value="1"> Remove all saved Stripe keys (turns card payments off)</label>' : '')
-       . '<div class="btn-row"><button class="btn btn--primary">Save payment settings</button></div></form>';
-    $pc = (string)($settings['paypalClientId'] ?? ''); $ps = (string)($settings['paypalSecret'] ?? ''); $pm = (string)($settings['paypalMode'] ?? 'live');
-    echo '<form method="post" class="card stack" style="grid-column:1">' . csrf_field() . '<input type="hidden" name="do" value="paypal_save"><div class="card__head"><h2>PayPal (card or PayPal account)</h2>'
-       . ($pc && $ps ? '<span class="badge badge--green">Connected · ' . ($pm === 'sandbox' ? 'Sandbox' : 'Live') . '</span>' : '<span class="badge badge--grey">Off</span>') . '</div>'
-       . '<p class="muted">Customers pay by debit/credit card or with their PayPal account on PayPal\'s secure page. No PayPal account needed to pay by card.</p>'
-       . '<label>Client ID <small' . ($pc ? ' class="ok">saved: ' . h($mask($pc)) : '>from PayPal → Apps &amp; Credentials') . '</small><input name="paypalClientId" placeholder="' . ($pc ? 'Leave empty to keep the saved Client ID' : 'Client ID') . '" autocomplete="off" spellcheck="false"></label>'
-       . '<label>Secret <small' . ($ps ? ' class="ok">saved: ' . h($mask($ps)) : '>“Secret key 1” in the same app') . '</small><input type="password" name="paypalSecret" placeholder="' . ($ps ? 'Leave empty to keep the saved Secret' : 'Secret') . '" autocomplete="off" spellcheck="false"></label>'
-       . '<label>Mode<select name="paypalMode"><option value="live"' . ($pm === 'live' ? ' selected' : '') . '>Live: real payments</option><option value="sandbox"' . ($pm === 'sandbox' ? ' selected' : '') . '>Sandbox: test payments only</option></select></label>'
-       . ($pc ? '<label class="check"><input type="checkbox" name="clearPaypal" value="1"> Remove the saved PayPal details (turns PayPal off)</label>' : '')
-       . '<div class="btn-row"><button class="btn btn--primary">Save PayPal settings</button></div></form>'
-       . ($pc && $ps ? '<form method="post" class="card" style="grid-column:1">' . csrf_field() . '<input type="hidden" name="do" value="paypal_test"><button class="btn btn--ghost btn--block">Test PayPal connection</button></form>' : '');
-    echo '<section class="card stack pay-status"><h2>Status</h2><ul class="checks">'
-       . '<li class="' . (!empty($settings['paypalClientId']) && !empty($settings['paypalSecret']) ? 'is-ok' : 'is-no') . '"><b>PayPal</b> — <small class="muted">' . (!empty($settings['paypalClientId']) && !empty($settings['paypalSecret']) ? 'Connected (' . (($settings['paypalMode'] ?? 'live') === 'sandbox' ? 'sandbox' : 'live') . ')' : 'Not added') . '</small></li>'
-       . '<li class="' . ($sk ? 'is-ok' : 'is-no') . '"><b>Stripe secret key</b> — <small class="muted">' . ($sk ? ($mode === 'live' ? 'Live: real payments' : 'Test: no real money') : 'Not added yet') . '</small></li>'
-       . '<li class="' . ($wh ? 'is-ok' : 'is-no') . '"><b>Webhook</b> — <small class="muted">' . ($wh ? 'Payments are confirmed automatically' : 'Not added: payments are confirmed when the client returns to the site') . '</small></li>'
-       . '<li class="' . (function_exists('curl_init') ? 'is-ok' : 'is-no') . '"><b>Server can reach Stripe</b> — <small class="muted">cURL ' . (function_exists('curl_init') ? 'available' : 'missing') . '</small></li>'
-       . '<li class="' . ($settings['manualPayments'] ? 'is-ok' : 'is-no') . '"><b>Pay by link</b> — <small class="muted">' . ($settings['manualPayments'] ? 'On' : 'Off') . '</small></li></ul>'
-       . ($sk ? '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="payments_test"><button class="btn btn--ghost btn--block">Test connection</button></form>' : '')
-       . '<h2 style="margin-top:6px">Where to find the keys</h2><ol class="steps"><li>Sign in at <a href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noopener">dashboard.stripe.com → Developers → API keys</a>.</li><li>Copy the <b>Publishable key</b> (pk_live_…) and the <b>Secret key</b> (sk_live_…, press “Reveal”). Paste them here and save.</li><li>Go to <a href="https://dashboard.stripe.com/webhooks" target="_blank" rel="noopener">Developers → Webhooks</a> → <b>Add endpoint</b>, paste the endpoint URL from this page and choose the event <code>checkout.session.completed</code>.</li><li>Open the new webhook, reveal the <b>Signing secret</b> (whsec_…), paste it here and save.</li><li>Press <b>Test connection</b>.</li></ol>'
-       . '<p class="muted"><small>Keys are stored privately on your server (never in the website files) and are only shown partly here.</small></p></section></div>';
+    $mask = fn(string $v) => $v ? substr($v, 0, 6) . '••••••••' . substr($v, -4) : '';
+    $stripeOn = (string)$settings['stripeSecret'] !== '';
+    $paypalOn = !empty($settings['paypalClientId']) && !empty($settings['paypalSecret']);
+    $live = $stripeOn ? str_contains((string)$settings['stripeSecret'], '_live_') : (($settings['paypalMode'] ?? 'live') === 'live');
+    $provider = $stripeOn ? 'Stripe' : ($paypalOn ? 'PayPal' : '');
+    $savedApi = $stripeOn ? (string)($settings['stripePublishable'] ?? '') : (string)($settings['paypalClientId'] ?? '');
+    $savedSec = $stripeOn ? (string)$settings['stripeSecret'] : (string)($settings['paypalSecret'] ?? '');
+    echo '<header class="head"><div><h1>Payments</h1><p class="muted">Paste your API key and Secret key to take card payments.</p></div></header>';
+    echo '<form method="post" class="card stack narrow">' . csrf_field() . '<input type="hidden" name="do" value="keys_save">'
+       . '<div class="card__head"><h2>Card payments</h2>' . ($provider ? '<span class="badge badge--' . ($live ? 'green' : 'amber') . '">' . $provider . ' · ' . ($live ? 'Live' : 'Test mode') . '</span>' : '<span class="badge badge--grey">Off</span>') . '</div>'
+       . '<label>API key' . ($savedApi ? ' <small class="ok">saved: ' . h($mask($savedApi)) . '</small>' : '') . '<input name="apiKey" autocomplete="off" spellcheck="false" placeholder="' . ($savedApi ? 'Paste a new key to replace it' : 'Paste your API key') . '" required></label>'
+       . '<label>Secret key' . ($savedSec ? ' <small class="ok">saved: ' . h($mask($savedSec)) . '</small>' : '') . '<input type="password" name="secretKey" autocomplete="off" spellcheck="false" placeholder="' . ($savedSec ? 'Paste a new key to replace it' : 'Paste your Secret key') . '" required></label>'
+       . '<button class="btn btn--primary">Save &amp; connect</button>'
+       . '<p class="muted"><small>Works with Stripe or PayPal keys; the site detects which one and checks the keys when you save.</small></p></form>';
+    if ($provider) echo '<form method="post" class="narrow" onsubmit="return confirm(\'Remove the payment keys and turn card payments off?\')">' . csrf_field() . '<input type="hidden" name="do" value="keys_save"><input type="hidden" name="removeKeys" value="1"><button class="linkbtn linkbtn--danger">Remove keys</button></form>';
 }
 
 // ===========================================================================

@@ -542,16 +542,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             qa_update('settings', function (array $s) {
                 $email = qa_text($_POST['notifyEmail'] ?? '', 200);
                 $s['notifyEmail'] = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : QA_ADMIN_EMAIL;
-                $sk = trim((string)($_POST['stripeSecret'] ?? ''));
-                if ($sk !== '' && preg_match('/^(sk|rk)_(live|test)_[A-Za-z0-9]+$/', $sk)) $s['stripeSecret'] = $sk;
-                $wh = trim((string)($_POST['stripeWebhook'] ?? ''));
-                if ($wh !== '' && preg_match('/^whsec_[A-Za-z0-9]+$/', $wh)) $s['stripeWebhook'] = $wh;
-                if (!empty($_POST['clearStripe'])) { $s['stripeSecret'] = ''; $s['stripeWebhook'] = ''; }
-                $s['manualPayments'] = !empty($_POST['manualPayments']);
                 $s['hideSamples'] = !empty($_POST['hideSamples']);
                 return $s;
             });
             flash('Settings saved.'); go('tab=settings');
+
+        // --- Payments (owner only) ---
+        case 'payments_save':
+            $pk = trim((string)($_POST['stripePublishable'] ?? ''));
+            $sk = trim((string)($_POST['stripeSecret'] ?? ''));
+            $wh = trim((string)($_POST['stripeWebhook'] ?? ''));
+            $bad = [];
+            if ($pk !== '' && !preg_match('/^pk_(live|test)_[A-Za-z0-9]+$/', $pk)) $bad[] = 'The publishable key should start with pk_live_ or pk_test_.';
+            if ($sk !== '' && !preg_match('/^(sk|rk)_(live|test)_[A-Za-z0-9]+$/', $sk)) $bad[] = 'The secret key should start with sk_live_ (or sk_test_ for testing).';
+            if ($wh !== '' && !preg_match('/^whsec_[A-Za-z0-9]+$/', $wh)) $bad[] = 'The webhook signing secret should start with whsec_.';
+            if ($bad) { flash(implode(' ', $bad) . ' Nothing was saved.', 'err'); go('tab=payments'); }
+            qa_update('settings', function (array $s) use ($pk, $sk, $wh) {
+                if ($pk !== '') $s['stripePublishable'] = $pk;
+                if ($sk !== '') $s['stripeSecret'] = $sk;
+                if ($wh !== '') $s['stripeWebhook'] = $wh;
+                if (!empty($_POST['clearStripe'])) { $s['stripeSecret'] = ''; $s['stripeWebhook'] = ''; $s['stripePublishable'] = ''; }
+                $s['manualPayments'] = !empty($_POST['manualPayments']);
+                return $s;
+            });
+            flash('Payment settings saved.' . ($sk !== '' ? ' Press "Test connection" to check the key.' : '')); go('tab=payments');
+
+        case 'payments_test':
+            try {
+                $b = qa_stripe('GET', 'balance');
+                $live = !empty($b['livemode']);
+                flash('Connected to Stripe' . ($live ? ' (live mode: real payments).' : ' (test mode: no real money is taken).'));
+            } catch (Throwable $e) {
+                flash('Stripe did not accept this secret key. Copy it again from Stripe → Developers → API keys and save it.', 'err');
+            }
+            go('tab=payments');
 
         case 'password_change':
             if (!check_password((string)($_POST['current'] ?? ''))) { flash('Your current password is wrong.', 'err'); go('tab=settings'); }
@@ -748,9 +772,9 @@ $members = qa_read('members');
 $count['members'] = count(array_filter($members, fn($m) => ($m['status'] ?? '') === 'active' && empty($m['joinedGroup'])));
 $count['assistant'] = count(array_filter($assistLog, fn($r) => ($r['hit'] ?? '') === '' && ($r['kind'] ?? '') === 'typed' && empty($r['handled']) && strtotime($r['at']) > time() - 30 * 86400));
 $nav = ['dashboard' => ['Dashboard', 'home'], 'orders' => ['Bookings & orders', 'cart'], 'enquiries' => ['Enquiries', 'mail'], 'reviews' => ['Reviews', 'star'], 'prices' => ['Prices', 'tag'], 'members' => ['Members', 'users'], 'assistant' => ['Assistant', 'bot'], 'blog' => ['Blog', 'pen'], 'media' => ['Media library', 'image'], 'seo' => ['SEO', 'search'], 'settings' => ['Settings', 'cog']];
-if (is_owner()) $nav['team'] = ['Team access', 'key'];
+if (is_owner()) { $nav = array_slice($nav, 0, -1, true) + ['payments' => ['Payments', 'money']] + array_slice($nav, -1, null, true); $nav['team'] = ['Team access', 'key']; }
 else { unset($nav['settings']); $nav['account'] = ['My account', 'key']; }
-$nav = array_filter($nav, fn($k) => can($k) || ($k === 'team' && is_owner()), ARRAY_FILTER_USE_KEY);
+$nav = array_filter($nav, fn($k) => can($k) || (in_array($k, ['team', 'payments'], true) && is_owner()), ARRAY_FILTER_USE_KEY);
 if (!isset($nav[$tab])) $tab = 'dashboard';
 $me = is_owner() ? ['name' => 'Owner', 'email' => admin_email()] : current_member();
 
@@ -816,8 +840,8 @@ if ($tab === 'dashboard') {
     $todo = [];
     if (is_owner() && using_temp_password()) $todo[] = '<b>You are using the temporary password.</b> <a href="/admin/?tab=settings#login">Choose your own password</a> now.';
     if (!is_owner()) {}
-    elseif (!$settings['stripeSecret']) $todo[] = 'Card payments are off. Add your Stripe secret key in <a href="/admin/?tab=settings">Settings</a> to take payments online' . ($settings['manualPayments'] ? ' (until then, clients can send a request and you email them a payment link).' : '.');
-    elseif (!$settings['stripeWebhook']) $todo[] = 'Add the Stripe webhook signing secret in <a href="/admin/?tab=settings">Settings</a> so payments are confirmed automatically.';
+    elseif (!$settings['stripeSecret']) $todo[] = 'Card payments are off. Add your Stripe API keys in <a href="/admin/?tab=payments">Payments</a> to take payments online' . ($settings['manualPayments'] ? ' (until then, clients can send a request and you email them a payment link).' : '.');
+    elseif (!$settings['stripeWebhook']) $todo[] = 'Add the Stripe webhook signing secret in <a href="/admin/?tab=payments">Payments</a> so payments are confirmed automatically.';
     if ($awaiting && can('orders')) $todo[] = "$awaiting order" . ($awaiting > 1 ? 's are' : ' is') . ' waiting for payment — <a href="/admin/?tab=orders&f=awaiting">send payment links</a>.';
     if ($todo) echo '<div class="notice">' . icon('warn') . '<ul><li>' . implode('</li><li>', $todo) . '</li></ul></div>';
 
@@ -1476,13 +1500,7 @@ if ($tab === 'settings') {
     $a = admin_data();
     echo '<header class="head"><div><h1>Settings</h1><p class="muted">Payments, notifications and your password.</p></div></header>';
     echo '<form method="post" class="grid2">' . csrf_field() . '<input type="hidden" name="do" value="settings_save">';
-    echo '<section class="card stack"><h2>Card payments (Stripe)</h2>'
-       . '<p class="muted">Stripe Dashboard → Developers → API keys → <b>Secret key</b>. Then Developers → Webhooks → add endpoint <code>' . h(QA_SITE) . '/api/stripe-webhook.php</code> with event <code>checkout.session.completed</code> and paste its <b>signing secret</b>.</p>'
-       . '<label>Secret key ' . ($settings['stripeSecret'] ? '<small class="ok">saved: ' . h($mask($settings['stripeSecret'])) . '</small>' : '<small>not set</small>') . '<input type="password" name="stripeSecret" placeholder="' . ($settings['stripeSecret'] ? 'Leave empty to keep the saved key' : 'sk_live_…') . '" autocomplete="off"></label>'
-       . '<label>Webhook signing secret ' . ($settings['stripeWebhook'] ? '<small class="ok">saved: ' . h($mask($settings['stripeWebhook'])) . '</small>' : '<small>not set</small>') . '<input type="password" name="stripeWebhook" placeholder="' . ($settings['stripeWebhook'] ? 'Leave empty to keep the saved secret' : 'whsec_…') . '" autocomplete="off"></label>'
-       . ($settings['stripeSecret'] ? '<label class="check"><input type="checkbox" name="clearStripe" value="1"> Remove the saved Stripe keys</label>' : '')
-       . '<label class="check"><input type="checkbox" name="manualPayments" value="1"' . ($settings['manualPayments'] ? ' checked' : '') . '> Also allow “Request now, pay by link/invoice” (you email the client a payment link)</label>'
-       . '</section>';
+    echo '<section class="card stack"><h2>Payments</h2><p class="muted">Stripe API keys, the webhook and pay-by-link now have their own page.</p><a class="btn btn--ghost" href="/admin/?tab=payments">Open payment settings</a></section>';
     echo '<section class="card stack"><h2>Notifications &amp; website</h2>'
        . '<label>Send notifications to<input type="email" name="notifyEmail" value="' . h($settings['notifyEmail']) . '" required></label>'
        . '<label class="check"><input type="checkbox" name="hideSamples" value="1"' . ($settings['hideSamples'] ? ' checked' : '') . '> Hide all sample reviews on the website (show only approved real reviews)</label>'
@@ -1498,6 +1516,34 @@ if ($tab === 'settings') {
        . '<label>Current password<input type="password" name="current" autocomplete="current-password" required></label>'
        . '<div class="row2"><label>New password<input type="password" name="password" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label><label>Repeat new password<input type="password" name="password2" autocomplete="new-password" minlength="10"' . ($temp ? ' required' : '') . '></label></div>'
        . '<button class="btn btn--primary">Save login details</button></form>';
+}
+
+// ===========================================================================
+// PAYMENTS (owner only): Stripe API keys, webhook, pay-by-link
+// ===========================================================================
+if ($tab === 'payments' && is_owner()) {
+    $mask = fn(string $v) => $v ? substr($v, 0, 8) . '••••••••' . substr($v, -4) : '';
+    $sk = (string)$settings['stripeSecret']; $pk = (string)($settings['stripePublishable'] ?? ''); $wh = (string)$settings['stripeWebhook'];
+    $mode = $sk === '' ? null : (str_contains($sk, '_live_') ? 'live' : 'test');
+    $hook = QA_SITE . '/api/stripe-webhook.php';
+    echo '<header class="head"><div><h1>Payments</h1><p class="muted">Connect Stripe to take card payments on bookings, the cart and course enrolments.</p></div><div class="head__badges">'
+       . ($mode === 'live' ? '<span class="badge badge--green">Stripe connected · Live</span>' : ($mode === 'test' ? '<span class="badge badge--amber">Stripe connected · Test mode</span>' : '<span class="badge badge--grey">Card payments off</span>')) . '</div></header>';
+    echo '<div class="grid2 grid2--wide"><form method="post" class="card stack">' . csrf_field() . '<input type="hidden" name="do" value="payments_save"><h2>Stripe API keys</h2>'
+       . '<label>Publishable key <small>' . ($pk ? 'saved: ' . h($mask($pk)) : 'optional · starts with pk_live_') . '</small><input name="stripePublishable" placeholder="' . ($pk ? 'Leave empty to keep the saved key' : 'pk_live_…') . '" autocomplete="off" spellcheck="false"></label>'
+       . '<label>Secret key <small' . ($sk ? ' class="ok">saved: ' . h($mask($sk)) : '>required for card payments · starts with sk_live_') . '</small><input type="password" name="stripeSecret" placeholder="' . ($sk ? 'Leave empty to keep the saved key' : 'sk_live_…') . '" autocomplete="off" spellcheck="false"></label>'
+       . '<label>Webhook signing secret <small' . ($wh ? ' class="ok">saved: ' . h($mask($wh)) : '>confirms payments automatically · starts with whsec_') . '</small><input type="password" name="stripeWebhook" placeholder="' . ($wh ? 'Leave empty to keep the saved secret' : 'whsec_…') . '" autocomplete="off" spellcheck="false"></label>'
+       . '<label>Webhook endpoint URL <small>Paste this into Stripe when you add the webhook</small><input readonly value="' . h($hook) . '" onclick="this.select()"></label>'
+       . '<label class="check"><input type="checkbox" name="manualPayments" value="1"' . ($settings['manualPayments'] ? ' checked' : '') . '> Also offer “Request now, pay by link” (you email the client a payment link)</label>'
+       . ($sk ? '<label class="check"><input type="checkbox" name="clearStripe" value="1"> Remove all saved Stripe keys (turns card payments off)</label>' : '')
+       . '<div class="btn-row"><button class="btn btn--primary">Save payment settings</button></div></form>';
+    echo '<section class="card stack"><h2>Status</h2><ul class="checks">'
+       . '<li class="' . ($sk ? 'is-ok' : 'is-no') . '"><b>Secret key</b> — <small class="muted">' . ($sk ? ($mode === 'live' ? 'Live: real payments' : 'Test: no real money') : 'Not added yet') . '</small></li>'
+       . '<li class="' . ($wh ? 'is-ok' : 'is-no') . '"><b>Webhook</b> — <small class="muted">' . ($wh ? 'Payments are confirmed automatically' : 'Not added: payments are confirmed when the client returns to the site') . '</small></li>'
+       . '<li class="' . (function_exists('curl_init') ? 'is-ok' : 'is-no') . '"><b>Server can reach Stripe</b> — <small class="muted">cURL ' . (function_exists('curl_init') ? 'available' : 'missing') . '</small></li>'
+       . '<li class="' . ($settings['manualPayments'] ? 'is-ok' : 'is-no') . '"><b>Pay by link</b> — <small class="muted">' . ($settings['manualPayments'] ? 'On' : 'Off') . '</small></li></ul>'
+       . ($sk ? '<form method="post">' . csrf_field() . '<input type="hidden" name="do" value="payments_test"><button class="btn btn--ghost btn--block">Test connection</button></form>' : '')
+       . '<h2 style="margin-top:6px">Where to find the keys</h2><ol class="steps"><li>Sign in at <a href="https://dashboard.stripe.com/apikeys" target="_blank" rel="noopener">dashboard.stripe.com → Developers → API keys</a>.</li><li>Copy the <b>Publishable key</b> (pk_live_…) and the <b>Secret key</b> (sk_live_…, press “Reveal”). Paste them here and save.</li><li>Go to <a href="https://dashboard.stripe.com/webhooks" target="_blank" rel="noopener">Developers → Webhooks</a> → <b>Add endpoint</b>, paste the endpoint URL from this page and choose the event <code>checkout.session.completed</code>.</li><li>Open the new webhook, reveal the <b>Signing secret</b> (whsec_…), paste it here and save.</li><li>Press <b>Test connection</b>.</li></ol>'
+       . '<p class="muted"><small>Keys are stored privately on your server (never in the website files) and are only shown partly here.</small></p></section></div>';
 }
 
 // ===========================================================================

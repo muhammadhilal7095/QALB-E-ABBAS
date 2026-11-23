@@ -99,6 +99,7 @@ function qa_settings(): array {
     return qa_read('settings') + [
         'notifyEmail'    => QA_ADMIN_EMAIL,
         'stripeSecret'   => '',
+        'stripePublishable' => '',
         'stripeWebhook'  => '',
         'manualPayments' => true,
         'hideSamples'    => false,

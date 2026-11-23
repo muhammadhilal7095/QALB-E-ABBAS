@@ -13,6 +13,9 @@ RewriteRule ^ https://www.%1%{REQUEST_URI} [R=301,L,NE]
 
 # Blog posts written in the admin dashboard, their images, the blog sitemap and
 # search-engine verification files (Admin → SEO) are served by PHP.
+# Renamed pages
+RewriteRule ^aliexpress(\.html)?/?$ /aliexpo [R=301,L]
+
 RewriteRule ^blog/([a-z0-9-]+)/?$ api/blog-post.php?slug=$1 [L,QSA]
 RewriteRule ^blog-img/([a-z0-9.-]+)$ api/blog-image.php?f=$1 [L]
 RewriteRule ^sitemap-blog\.xml$ api/sitemap-blog.php [L]

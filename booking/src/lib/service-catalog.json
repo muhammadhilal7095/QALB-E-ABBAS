@@ -988,8 +988,8 @@
               "note": "24 live classes · 1 hour a day, 5 days a week"
             },
             {
-              "sku": "course-aliexpress",
-              "name": "AliExpress dropshipping programme (course)",
+              "sku": "course-aliexpo",
+              "name": "Ali Expo dropshipping programme (course)",
               "price": 300,
               "note": "24 live classes · 1 hour a day, 5 days a week"
             },
@@ -1031,7 +1031,7 @@
         "minutes": 60,
         "price": 50,
         "currency": "USD",
-        "desc": "Amazon, eBay, TikTok Shop, Walmart, Etsy, Shopify or AliExpress: plan your e-commerce business in the right order.",
+        "desc": "Amazon, eBay, TikTok Shop, Walmart, Etsy, Shopify or Ali Expo: plan your e-commerce business in the right order.",
         "topics": [
           "amazon",
           "ebay",
@@ -1039,7 +1039,7 @@
           "etsy",
           "tiktok-shop",
           "shopify",
-          "aliexpress",
+          "aliexpo",
           "china-sourcing",
           "pakistan-sourcing",
           "turkey-sourcing",

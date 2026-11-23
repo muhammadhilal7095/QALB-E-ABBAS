@@ -298,7 +298,7 @@ function qa_price_submission(array $sub, bool $checkDate = true): array {
         if ($checkDate) qa_check_availability($date, $time, (int)$c['minutes']);
         $cents = (int)round($c['price'] * 100);
         // Booked from a platform page (e.g. Amazon): name it "Amazon consultation".
-        $platform = ['amazon' => 'Amazon', 'ebay' => 'eBay', 'walmart' => 'Walmart', 'etsy' => 'Etsy', 'tiktok-shop' => 'TikTok Shop', 'shopify' => 'Shopify', 'aliexpress' => 'AliExpress', 'china-sourcing' => 'China sourcing', 'pakistan-sourcing' => 'Pakistan sourcing', 'turkey-sourcing' => 'Turkey sourcing'][(string)($sub['topic'] ?? '')] ?? null;
+        $platform = ['amazon' => 'Amazon', 'ebay' => 'eBay', 'walmart' => 'Walmart', 'etsy' => 'Etsy', 'tiktok-shop' => 'TikTok Shop', 'shopify' => 'Shopify', 'aliexpo' => 'Ali Expo', 'china-sourcing' => 'China sourcing', 'pakistan-sourcing' => 'Pakistan sourcing', 'turkey-sourcing' => 'Turkey sourcing'][(string)($sub['topic'] ?? '')] ?? null;
         if ($platform && in_array($sub['topic'], (array)($c['topics'] ?? []), true)) $c['name'] = "$platform consultation";
         return ['currency' => $c['currency'], 'title' => $c['name'], 'totalCents' => $cents,
                 'lines' => [['name' => "{$c['name']} ({$c['minutes']} min)", 'unitCents' => $cents, 'quantity' => 1, 'lineCents' => $cents, 'note' => null]]];
@@ -548,7 +548,7 @@ function qa_activate_member(array $order): void {
 // ---------------------------------------------------------------------------
 const QA_REVIEW_KEYS = [
     'students' => 'Home page & University (students)', 'amazon' => 'Amazon FBA', 'ebay' => 'eBay', 'tiktok' => 'TikTok Shop',
-    'walmart' => 'Walmart', 'etsy' => 'Etsy', 'shopify' => 'Shopify', 'aliexpress' => 'AliExpress', 'us-llc-formation' => 'US LLC formation',
+    'walmart' => 'Walmart', 'etsy' => 'Etsy', 'shopify' => 'Shopify', 'aliexpo' => 'Ali Expo', 'us-llc-formation' => 'US LLC formation',
     'uk-ltd-formation' => 'UK LTD formation', 'uae-company-formation' => 'UAE company formation', 'malta-company-formation' => 'Malta company formation', 'pakistan-company-formation' => 'Pakistan company formation',
     'taxation' => 'Taxation', 'pakistan-tax-filing' => 'Pakistan tax filing', 'trademark-registration' => 'Trademark registration', 'education-consultancy' => 'Education consultancy',
     'real-estate' => 'Real estate (Pakistan)', 'china-sourcing' => 'China sourcing', 'pakistan-sourcing' => 'Pakistan sourcing', 'turkey-sourcing' => 'Turkey sourcing', 'stock-exchange' => 'Stock exchange & investing', 'digital-marketing' => 'Digital marketing', 'seo' => 'SEO', 'social-media-marketing' => 'Social media marketing',
@@ -561,7 +561,7 @@ const QA_REVIEW_KEYS = [
 /** Best guess of the review section for the "Service or course" the reviewer chose. */
 function qa_review_key_for(string $service): string {
     $map = [
-        'Amazon FBA' => 'amazon', 'eBay' => 'ebay', 'Walmart' => 'walmart', 'TikTok Shop' => 'tiktok', 'Etsy' => 'etsy', 'Shopify' => 'shopify', 'AliExpress' => 'aliexpress',
+        'Amazon FBA' => 'amazon', 'eBay' => 'ebay', 'Walmart' => 'walmart', 'TikTok Shop' => 'tiktok', 'Etsy' => 'etsy', 'Shopify' => 'shopify', 'Ali Expo' => 'aliexpo',
         'Qalb-E-Abbas University course' => 'students', 'US LLC formation' => 'us-llc-formation', 'UK LTD formation' => 'uk-ltd-formation',
         'UAE company formation' => 'uae-company-formation', 'Malta company formation' => 'malta-company-formation', 'Pakistan company formation' => 'pakistan-company-formation', 'Taxation' => 'taxation', 'Pakistan tax filing' => 'pakistan-tax-filing',
         'Trademark registration' => 'trademark-registration', 'Education consultancy (Malta)' => 'education-consultancy', 'Real estate (Pakistan)' => 'real-estate', 'China sourcing' => 'china-sourcing', 'Pakistan sourcing' => 'pakistan-sourcing', 'Turkey sourcing' => 'turkey-sourcing', 'Stock exchange & investing' => 'stock-exchange',

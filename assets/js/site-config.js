@@ -104,7 +104,7 @@ window.SITE_CONFIG = {
       items: [
         ["Amazon", "amazon", "/amazon-fba", "amazon"], ["TikTok Shop", "tiktok-shop", "/tiktok-shop", "tiktok"], ["eBay", "ebay", "/ebay", "ebay"],
         ["Walmart", "walmart", "/walmart", "walmart"], ["Etsy", "etsy", "/etsy", "etsy"], ["Shopify", "shopify", "/shopify-development", "shopify"],
-        ["AliExpress", "aliexpress", "/aliexpress", "aliexpress"]
+        ["Ali Expo", "aliexpo", "/aliexpo", "aliexpo"]
       ]
     },
     {
@@ -168,7 +168,7 @@ window.SITE_CONFIG = {
     // "Services" column
     serviceLinks: [
       ["E-commerce Services", "/services#ecommerce"],
-      ["AliExpress", "/aliexpress"],
+      ["Ali Expo", "/aliexpo"],
       ["Product Sourcing (China)", "/china-sourcing"],
       ["Product Sourcing (Pakistan)", "/pakistan-sourcing"],
       ["Product Sourcing (Turkey)", "/turkey-sourcing"],

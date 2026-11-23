@@ -187,9 +187,9 @@ window.QA_REVIEWS = (function () {
       s("Client name", "United Kingdom", "gb", "Every document for my visa was checked carefully. Very supportive team.", "Student visa guidance"),
       s("Client name", "United Kingdom", "gb", "Clear guidance from course selection to arrival in Malta.", "Study in Malta"),
     ],
-    "aliexpress": [
-      s("Client name", "United Kingdom", "gb", "They found products with real demand and suppliers with fast delivery. My store got its first orders in week two.", "AliExpress dropshipping"),
-      s("Client name", "Pakistan", "pk", "DSers was set up properly, so orders and tracking now update on their own.", "Store & order automation"),
+    "aliexpo": [
+      s("Client name", "United Kingdom", "gb", "They found products with real demand and suppliers with fast delivery. My store got its first orders in week two.", "Ali Expo dropshipping"),
+      s("Client name", "Pakistan", "pk", "Order automation was set up properly, so orders and tracking now update on their own.", "Store & order automation"),
       s("Client name", "United Kingdom", "gb", "Honest advice on which suppliers to avoid saved me a lot of refunds.", "Supplier checks"),
     ],
     "pakistan-company-formation": [

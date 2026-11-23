@@ -150,9 +150,9 @@
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/walmart/wm-checkout.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/walmart/wm-seller-phone.webp</image:loc></image:image>
   </url>
-  <url><loc>https://www.qalbeabbas.com/aliexpress</loc><lastmod>2026-11-23</lastmod><priority>0.8</priority>
+  <url><loc>https://www.qalbeabbas.com/aliexpo</loc><lastmod>2026-11-23</lastmod><priority>0.8</priority>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/ebay/eb-seller-parcel.webp</image:loc></image:image>
-    <image:image><image:loc>https://www.qalbeabbas.com/assets/img/tiktok/tts-shop-app.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.qalbeabbas.com/assets/img/ebay/eb-flatlay.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/walmart/wm-seller-desk.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/ebay/eb-products.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/ebay/eb-analytics.webp</image:loc></image:image>
@@ -318,6 +318,7 @@
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/walmart/wm-website.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/etsy/et-maker.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/shopify/sh-store.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.qalbeabbas.com/assets/img/ebay/eb-packing.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/services/sv-dashboard.webp</image:loc></image:image>
     <image:image><image:loc>https://www.qalbeabbas.com/assets/img/services/sv-graduates.webp</image:loc></image:image>
   </url>

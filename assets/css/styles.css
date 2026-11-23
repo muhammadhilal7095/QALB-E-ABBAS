@@ -6722,6 +6722,7 @@ html.mfg-lock { overflow: hidden; }
 .se-alert__cal .icon { width: 16px; height: 16px; color: #7DB3FF; }
 @media (max-width: 700px) { .se-alert__label small, .se-alert__cal span { display: none; } .se-alert__label { padding-left: 12px; padding-right: 10px; } .se-alert__cal { padding: 0 12px; } }
 .se-cal { overflow: hidden; }
-.se-tv--cal { height: 560px; }
+.se-tv--cal { height: 760px; }
 .se-tv--cal .tradingview-widget-container, .se-tv--cal .tradingview-widget-container__widget { height: 100% !important; }
 #economic-calendar { scroll-margin-top: 90px; }
+@media (max-width: 700px) { .se-tv--cal { height: 640px; } }

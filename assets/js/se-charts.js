@@ -174,7 +174,7 @@
       return ["ticker-tape", { symbols: syms.map(function (x) { return { proName: x.s, title: x.d }; }), showSymbolLogo: true, isTransparent: true, displayMode: "adaptive", colorTheme: "dark", locale: "en" }];
     },
     calendar: function () {
-      return ["events", { colorTheme: "dark", isTransparent: true, width: "100%", height: "100%", locale: "en", importanceFilter: "0,1", countryFilter: "us,eu,gb,jp,cn,ca,au" }];
+      return ["events", { colorTheme: "dark", isTransparent: true, width: "100%", height: "100%", locale: "en", importanceFilter: "-1,0,1", countryFilter: "us,eu,gb,de,fr,jp,cn,ca,au,nz,ch" }];
     },
     mini: function (box) {
       return ["mini-symbol-overview", { symbol: box.getAttribute("data-symbol"), width: "100%", height: "100%", locale: "en", dateRange: "1D", colorTheme: "dark", isTransparent: true, autosize: true, largeChartUrl: "", chartOnly: false, noTimeScale: false,

@@ -124,7 +124,7 @@ window.SITE_CONFIG = {
     },
     {
       id: "education", title: "Education Consultancy", icon: "graduation", desc: "Study in Malta: admissions, visas and pre-departure support.",
-      items: [["Study in Malta", "education-consultancy", "/education-consultancy", "icon:graduation"]]
+      items: [["Study in Malta", "education-consultancy", "/education-consultancy", "flag-mt"]]
     },
     {
       id: "sourcing", title: "Product Sourcing", icon: "box", desc: "Source products from China, Pakistan and Turkey: suppliers, quality checks and shipping.",
@@ -132,7 +132,7 @@ window.SITE_CONFIG = {
     },
     {
       id: "stock-exchange", title: "Stock Exchange & Investing", icon: "trending-up", desc: "Learn, open an account and invest in US & UK markets.",
-      items: [["US · UK Stocks", "stock-exchange", "/stock-exchange", "icon:trending-up"]]
+      items: [["US Stocks", "stock-exchange", "/stock-exchange", "flag-us"], ["UK Stocks", "stock-exchange", "/stock-exchange", "flag-uk"]]
     },
     {
       id: "real-estate", title: "Real Estate", icon: "building", desc: "Buy, sell, rent and invest in property in Pakistan.",
@@ -156,8 +156,8 @@ window.SITE_CONFIG = {
     {
       id: "development", title: "Web & Software Development", icon: "code", desc: "Websites, stores, apps and CRMs built to convert.",
       items: [
-        ["Shopify Stores", "shopify-development", "/shopify-development", "icon:code"], ["Websites", "website-development", "/website-development", "icon:monitor"],
-        ["CRM Systems", "crm-development", "/crm-development", "icon:users"], ["Mobile Apps", "app-development", "/app-development", "icon:smartphone"]
+        ["Shopify Stores", "shopify-development", "/shopify-development", "shopify"], ["Websites", "website-development", "/website-development", "wordpress"],
+        ["CRM Systems", "crm-development", "/crm-development", "hubspot"], ["Mobile Apps", "app-development", "/app-development", "mobile-apps"]
       ]
     }
   ],

@@ -6821,3 +6821,4 @@ html.mfg-lock { overflow: hidden; }
 
 /* Category icon boxes (Services menu + Services page sections): site blue instead of navy */
 .mega__icon, .svc-sec__icon { background: #1F55E0 !important; color: #fff !important; }
+.mega__mark img[src*="mobile-apps"] { width: 19px !important; height: 10px !important; }

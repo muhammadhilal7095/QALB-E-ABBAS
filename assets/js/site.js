@@ -5,7 +5,7 @@
    ========================================================================== */
 (function () {
   "use strict";
-  var LOGO_V = "7ffbe260"; // logo version, set by `npm run assets:build`
+  var LOGO_V = "251c02c7"; // logo version, set by `npm run assets:build`
   var ASSIST_V = "a38e0316"; // website assistant version, set by `npm run assets:build`
 
   var CFG = window.SITE_CONFIG;

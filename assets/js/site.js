@@ -6,7 +6,7 @@
 (function () {
   "use strict";
   var LOGO_V = "251c02c7"; // logo version, set by `npm run assets:build`
-  var ASSIST_V = "a38e0316"; // website assistant version, set by `npm run assets:build`
+  var ASSIST_V = "7c2f9f2e"; // website assistant version, set by `npm run assets:build`
 
   var CFG = window.SITE_CONFIG;
   var DESKTOP_MQ = window.matchMedia("(min-width: 1200px)");

@@ -286,13 +286,25 @@
       </div>
     </section>
 
-    <!-- ECONOMIC CALENDAR SLIDER (moving list of upcoming events from api/calendar.php) -->
-    <section class="ffs" aria-label="Economic calendar: upcoming events" data-ffslider data-src="/api/calendar.php" hidden>
-      <a class="ffs__label" href="#economic-calendar"><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><b>Calendar</b></a>
-      <div class="ffs__viewport"><div class="ffs__track" data-ffs-track></div></div>
-      <div class="ffs__nav"><button type="button" class="ffs__btn" data-ffs-prev aria-label="Previous events"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"></use></svg></button><span class="ffs__count" data-ffs-count></span><button type="button" class="ffs__btn" data-ffs-next aria-label="Next events"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button></div>
+    <!-- ECONOMIC CALENDAR: Forex Factory-style table (api/calendar.php) + TradingView live results -->
+    <section class="section se-cal-sec" id="economic-calendar" aria-labelledby="cal-title">
+      <div class="container">
+        <header class="section-head"><h2 id="cal-title" class="section-title">Economic calendar</h2><p class="section-sub">This week's market-moving news by time, currency and impact, with the forecast and previous figures. Times show in your own time zone.</p></header>
+        <div class="ffc" data-ffcal data-src="/api/calendar.php">
+          <div class="ffc__bar">
+            <div class="se-term__seg" role="group" aria-label="Show"><button type="button" data-ffc-day="today" aria-pressed="true">Today</button><button type="button" data-ffc-day="week" aria-pressed="false">This week</button></div>
+            <div class="ffc__impacts" role="group" aria-label="Impact"><label><input type="checkbox" value="High" checked><i class="ffc__imp ffc__imp--High"></i>High</label><label><input type="checkbox" value="Medium" checked><i class="ffc__imp ffc__imp--Medium"></i>Medium</label><label><input type="checkbox" value="Low"><i class="ffc__imp ffc__imp--Low"></i>Low</label></div>
+          </div>
+          <div class="ffc__wrap"><table class="ffc__table"><thead><tr><th>Date</th><th>Time</th><th>Cur.</th><th>Impact</th><th>Event</th><th>Forecast</th><th>Previous</th></tr></thead><tbody data-ffc-body><tr><td colspan="7" class="ffc__msg">Loading calendar…</td></tr></tbody></table></div>
+          <p class="ffc__src">Schedule, forecasts and previous figures: <a href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener">Forex Factory</a> calendar export, updated every 30 minutes.</p>
+        </div>
+        <details class="ffc-live">
+          <summary><svg class="icon" aria-hidden="true"><use href="#i-chart"></use></svg><span>Live results with <b>actual</b> figures</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg></summary>
+          <div class="se-panel se-cal"><div class="se-tv se-tv--cal" data-tv="calendar"><p class="se-tv__wait">Loading live results…</p></div></div>
+          <p class="se-live__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg> Actual results by TradingView, for information only, not investment advice.</p>
+        </details>
+      </div>
     </section>
-
     <!-- KEY FACTS STRIP -->
     <section class="svcx-proof" aria-label="Key facts">
       <div class="container">
@@ -345,26 +357,6 @@
           </div>
         </div>
         <p class="se-live__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg> Live data is provided by TradingView and may be delayed by some exchanges. Prices are for information only and are not investment advice.</p>
-      </div>
-    </section>
-
-    <!-- ECONOMIC CALENDAR: Forex Factory-style table (api/calendar.php) + TradingView live results -->
-    <section class="section se-cal-sec" id="economic-calendar" aria-labelledby="cal-title">
-      <div class="container">
-        <header class="section-head"><h2 id="cal-title" class="section-title">Economic calendar</h2><p class="section-sub">This week's market-moving news by time, currency and impact, with the forecast and previous figures. Times show in your own time zone.</p></header>
-        <div class="ffc" data-ffcal data-src="/api/calendar.php">
-          <div class="ffc__bar">
-            <div class="se-term__seg" role="group" aria-label="Show"><button type="button" data-ffc-day="today" aria-pressed="true">Today</button><button type="button" data-ffc-day="week" aria-pressed="false">This week</button></div>
-            <div class="ffc__impacts" role="group" aria-label="Impact"><label><input type="checkbox" value="High" checked><i class="ffc__imp ffc__imp--High"></i>High</label><label><input type="checkbox" value="Medium" checked><i class="ffc__imp ffc__imp--Medium"></i>Medium</label><label><input type="checkbox" value="Low"><i class="ffc__imp ffc__imp--Low"></i>Low</label></div>
-          </div>
-          <div class="ffc__wrap"><table class="ffc__table"><thead><tr><th>Date</th><th>Time</th><th>Cur.</th><th>Impact</th><th>Event</th><th>Forecast</th><th>Previous</th></tr></thead><tbody data-ffc-body><tr><td colspan="7" class="ffc__msg">Loading calendar…</td></tr></tbody></table></div>
-          <p class="ffc__src">Schedule, forecasts and previous figures: <a href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener">Forex Factory</a> calendar export, updated every 30 minutes.</p>
-        </div>
-        <details class="ffc-live">
-          <summary><svg class="icon" aria-hidden="true"><use href="#i-chart"></use></svg><span>Live results with <b>actual</b> figures</span><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg></summary>
-          <div class="se-panel se-cal"><div class="se-tv se-tv--cal" data-tv="calendar"><p class="se-tv__wait">Loading live results…</p></div></div>
-          <p class="se-live__note"><svg class="icon" aria-hidden="true"><use href="#i-info"></use></svg> Actual results by TradingView, for information only, not investment advice.</p>
-        </details>
       </div>
     </section>
 

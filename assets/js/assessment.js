@@ -13,7 +13,7 @@
    ========================================================================== */
 (function () {
   "use strict";
-  var LOGO_V = "58cf2050"; // logo version, set by `npm run assets:build`
+  var LOGO_V = "36991735"; // logo version, set by `npm run assets:build`
 
   var root = document.getElementById("sra");
   var ALL = window.QA_ASSESSMENTS;

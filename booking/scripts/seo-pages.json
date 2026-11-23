@@ -260,5 +260,15 @@
     "title": "Join the Stock Market Club | Qalb-E-Abbas",
     "description": "Join the Qalb-E-Abbas Stock Market Club: create a member account, pay a one-time fee and join our WhatsApp group for US and UK markets.",
     "priority": "0.6"
+  },
+  "pakistan-sourcing": {
+    "title": "Product Sourcing from Pakistan | Textiles, Leather & More",
+    "description": "Source textiles, towels, leather, sports goods and Himalayan salt from Pakistan: checked suppliers, samples, inspection and shipping to the UK, US and UAE.",
+    "priority": "0.8"
+  },
+  "turkey-sourcing": {
+    "title": "Product Sourcing from Turkey | Clothing, Textiles & More",
+    "description": "Source clothing, towels, home textiles, ceramics and furniture from Turkey: checked manufacturers, samples, inspection and fast shipping to the UK and EU.",
+    "priority": "0.8"
   }
 }

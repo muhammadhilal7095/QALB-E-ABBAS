@@ -67,6 +67,8 @@ const KEYWORDS = {
   "crm-development": "crm customer management software system portal",
   "education-consultancy": "study abroad malta university admission student education parhai",
   "stock-exchange": "stock stocks exchange psx kse kse100 kmi share shares trading trade invest investment investing investor nasdaq nyse lse ftse etf etfs mutual fund funds broker cdc roshan digital portfolio dividend dividends market",
+  "pakistan-sourcing": "pakistan sourcing supplier manufacturer factory sialkot faisalabad karachi lahore textiles towels leather sports goods surgical instruments himalayan salt import",
+  "turkey-sourcing": "turkey turkiye turkish sourcing supplier manufacturer factory istanbul bursa denizli izmir clothing textiles towels denim ceramics furniture import",
   "china-sourcing": "china sourcing supplier suppliers factory manufacturer alibaba 1688 import importing samples moq inspection qc private label freight shipping cheen maal",
   "real-estate": "property real estate plot house flat apartment rent invest pakistan lahore islamabad karachi zameen ghar makan",
 };
@@ -79,7 +81,7 @@ const LABELS = {
   "influencer-marketing": "Influencer Marketing", "affiliate-marketing": "Affiliate Marketing", "facebook-automation": "Facebook Automation",
   "instagram-automation": "Instagram Automation", "whatsapp-automation": "WhatsApp Automation", "tiktok-automation": "TikTok Automation",
   "website-development": "Website Development", "app-development": "Mobile App Development", "crm-development": "CRM Development",
-  "shopify-development": "Shopify Store", "real-estate": "Pakistan Real Estate", "china-sourcing": "China Product Sourcing", "stock-exchange": "Stock Exchange & Investing", "education-consultancy": "Study in Malta", "amazon-fba": "Amazon FBA",
+  "shopify-development": "Shopify Store", "real-estate": "Pakistan Real Estate", "china-sourcing": "China Product Sourcing", "pakistan-sourcing": "Pakistan Product Sourcing", "turkey-sourcing": "Turkey Product Sourcing", "stock-exchange": "Stock Exchange & Investing", "education-consultancy": "Study in Malta", "amazon-fba": "Amazon FBA",
 };
 const services = [];
 for (const slug of Object.keys(faqs).filter((k) => k !== "_readme")) {

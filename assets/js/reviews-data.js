@@ -187,6 +187,16 @@ window.QA_REVIEWS = (function () {
       s("Client name", "United Kingdom", "gb", "Every document for my visa was checked carefully. Very supportive team.", "Student visa guidance"),
       s("Client name", "United Kingdom", "gb", "Clear guidance from course selection to arrival in Malta.", "Study in Malta"),
     ],
+    "pakistan-sourcing": [
+      s("Client name", "United Kingdom", "gb", "They found a towel factory in Faisalabad and sent samples first. The bulk order matched exactly.", "Pakistan sourcing"),
+      s("Client name", "United Kingdom", "gb", "The inspection report with photos gave me confidence before paying the balance.", "Quality inspection"),
+      s("Client name", "United Kingdom", "gb", "Leather products arrived branded and FBA-ready, with clear updates throughout.", "Private label & FBA prep"),
+    ],
+    "turkey-sourcing": [
+      s("Client name", "United Kingdom", "gb", "They compared three clothing manufacturers in Istanbul and negotiated a small first order for us.", "Turkey sourcing"),
+      s("Client name", "United Kingdom", "gb", "Samples were checked before production, and the goods reached the UK in under two weeks.", "Samples & shipping"),
+      s("Client name", "United Kingdom", "gb", "Clear quote, honest advice on duty and a smooth delivery to our warehouse.", "Freight & delivery"),
+    ],
     "china-sourcing": [
       s("Client name", "United Kingdom", "gb", "They checked three factories and sent samples before I paid anything. The final order matched the sample exactly.", "China sourcing"),
       s("Client name", "United Kingdom", "gb", "The pre-shipment inspection caught a packaging problem early, so it was fixed before the goods left China.", "Quality inspection"),

@@ -17,6 +17,7 @@ $country = qa_text($_POST['country'] ?? '', 60);
 $email   = qa_text($_POST['email'] ?? '', 200);
 $title   = qa_text($_POST['product'] ?? '', 160);
 $desc    = qa_text($_POST['description'] ?? '', 4000);
+$origin  = in_array($_POST['origin'] ?? '', ['Pakistan', 'Turkey'], true) ? $_POST['origin'] : 'China';
 
 $errors = [];
 if (mb_strlen($name) < 2) $errors[] = 'Please enter your name.';
@@ -38,22 +39,22 @@ if (!$res || isset($res['error'])) qa_json(422, ['ok' => false, 'error' => $res[
 qa_insert('enquiries', [
     'id' => $id, 'ref' => $ref, 'createdAt' => qa_now(), 'status' => 'new', 'type' => 'manufacturing',
     'source' => 'Product manufacturing request', 'name' => $name, 'email' => $email, 'phone' => $phone,
-    'country' => $country, 'topic' => 'China sourcing', 'subject' => 'Manufacturing: ' . $title,
+    'country' => $country, 'topic' => "$origin sourcing", 'origin' => $origin, 'subject' => "Manufacturing ($origin): " . $title,
     'product' => $title, 'message' => $desc, 'photo' => $res['file'], 'photoMime' => $res['mime'],
 ]);
 
 $attachment = ['name' => $res['file'], 'mime' => $res['mime'], 'data' => (string)@file_get_contents(qa_data_dir() . '/photos/' . $res['file'])];
-qa_notify("Product manufacturing request: $title — $name ($ref)",
+qa_notify("Product manufacturing request ($origin): $title — $name ($ref)",
     "New product manufacturing request from qalbeabbas.com ($ref)\n\n"
     . "Name:    $name\nPhone:   $phone\nCountry: $country\nEmail:   $email\n\n"
-    . "Product: $title\n\nDescription:\n$desc\n\nProduct picture: attached\n\n"
+    . "Make in: $origin\nProduct: $title\n\nDescription:\n$desc\n\nProduct picture: attached\n\n"
     . "Reply to this email to answer the customer. Admin: " . QA_SITE . "/admin/?tab=enquiries&id=$id\n",
     $email, $attachment);
 
 $first = explode(' ', $name)[0];
 qa_mail($email, "We've received your manufacturing request ($ref)",
     "Hi $first,\n\nThank you for your product manufacturing request. Our sourcing team will review it and reply within one working day (Monday–Friday, 10:00–18:00 UK time).\n\n"
-    . "Your reference: $ref\nProduct: $title\n\nQalb-E-Abbas\n" . QA_SITE . "/china-sourcing\n",
+    . "Your reference: $ref\nProduct: $title\n\nQalb-E-Abbas\n" . QA_SITE . "/" . strtolower($origin) . "-sourcing\n",
     qa_settings()['notifyEmail'] ?: QA_ADMIN_EMAIL);
 
 qa_json(200, ['ok' => true, 'ref' => $ref]);

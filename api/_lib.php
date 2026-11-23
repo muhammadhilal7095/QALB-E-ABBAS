@@ -298,7 +298,7 @@ function qa_price_submission(array $sub, bool $checkDate = true): array {
         if ($checkDate) qa_check_availability($date, $time, (int)$c['minutes']);
         $cents = (int)round($c['price'] * 100);
         // Booked from a platform page (e.g. Amazon): name it "Amazon consultation".
-        $platform = ['amazon' => 'Amazon', 'ebay' => 'eBay', 'walmart' => 'Walmart', 'etsy' => 'Etsy', 'tiktok-shop' => 'TikTok Shop', 'shopify' => 'Shopify', 'china-sourcing' => 'China sourcing'][(string)($sub['topic'] ?? '')] ?? null;
+        $platform = ['amazon' => 'Amazon', 'ebay' => 'eBay', 'walmart' => 'Walmart', 'etsy' => 'Etsy', 'tiktok-shop' => 'TikTok Shop', 'shopify' => 'Shopify', 'china-sourcing' => 'China sourcing', 'pakistan-sourcing' => 'Pakistan sourcing', 'turkey-sourcing' => 'Turkey sourcing'][(string)($sub['topic'] ?? '')] ?? null;
         if ($platform && in_array($sub['topic'], (array)($c['topics'] ?? []), true)) $c['name'] = "$platform consultation";
         return ['currency' => $c['currency'], 'title' => $c['name'], 'totalCents' => $cents,
                 'lines' => [['name' => "{$c['name']} ({$c['minutes']} min)", 'unitCents' => $cents, 'quantity' => 1, 'lineCents' => $cents, 'note' => null]]];
@@ -551,7 +551,7 @@ const QA_REVIEW_KEYS = [
     'walmart' => 'Walmart', 'etsy' => 'Etsy', 'shopify' => 'Shopify', 'us-llc-formation' => 'US LLC formation',
     'uk-ltd-formation' => 'UK LTD formation', 'uae-company-formation' => 'UAE company formation', 'malta-company-formation' => 'Malta company formation',
     'taxation' => 'Taxation', 'trademark-registration' => 'Trademark registration', 'education-consultancy' => 'Education consultancy',
-    'real-estate' => 'Real estate (Pakistan)', 'china-sourcing' => 'China sourcing', 'stock-exchange' => 'Stock exchange & investing', 'digital-marketing' => 'Digital marketing', 'seo' => 'SEO', 'social-media-marketing' => 'Social media marketing',
+    'real-estate' => 'Real estate (Pakistan)', 'china-sourcing' => 'China sourcing', 'pakistan-sourcing' => 'Pakistan sourcing', 'turkey-sourcing' => 'Turkey sourcing', 'stock-exchange' => 'Stock exchange & investing', 'digital-marketing' => 'Digital marketing', 'seo' => 'SEO', 'social-media-marketing' => 'Social media marketing',
     'email-marketing' => 'Email marketing', 'influencer-marketing' => 'Influencer marketing', 'affiliate-marketing' => 'Affiliate marketing',
     'website-development' => 'Website development', 'app-development' => 'App development', 'crm-development' => 'CRM development',
     'facebook-automation' => 'Facebook automation', 'instagram-automation' => 'Instagram automation', 'whatsapp-automation' => 'WhatsApp automation',
@@ -564,7 +564,7 @@ function qa_review_key_for(string $service): string {
         'Amazon FBA' => 'amazon', 'eBay' => 'ebay', 'Walmart' => 'walmart', 'TikTok Shop' => 'tiktok', 'Etsy' => 'etsy', 'Shopify' => 'shopify',
         'Qalb-E-Abbas University course' => 'students', 'US LLC formation' => 'us-llc-formation', 'UK LTD formation' => 'uk-ltd-formation',
         'UAE company formation' => 'uae-company-formation', 'Malta company formation' => 'malta-company-formation', 'Taxation' => 'taxation',
-        'Trademark registration' => 'trademark-registration', 'Education consultancy (Malta)' => 'education-consultancy', 'Real estate (Pakistan)' => 'real-estate', 'China sourcing' => 'china-sourcing', 'Stock exchange & investing' => 'stock-exchange',
+        'Trademark registration' => 'trademark-registration', 'Education consultancy (Malta)' => 'education-consultancy', 'Real estate (Pakistan)' => 'real-estate', 'China sourcing' => 'china-sourcing', 'Pakistan sourcing' => 'pakistan-sourcing', 'Turkey sourcing' => 'turkey-sourcing', 'Stock exchange & investing' => 'stock-exchange',
         'Digital marketing / ads' => 'digital-marketing', 'SEO' => 'seo', 'Social media marketing' => 'social-media-marketing',
         'Website or app development' => 'website-development', 'WhatsApp / social automation' => 'whatsapp-automation',
     ];

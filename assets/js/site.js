@@ -5,8 +5,8 @@
    ========================================================================== */
 (function () {
   "use strict";
-  var LOGO_V = "58cf2050"; // logo version, set by `npm run assets:build`
-  var ASSIST_V = "0dcb4f3e"; // website assistant version, set by `npm run assets:build`
+  var LOGO_V = "36991735"; // logo version, set by `npm run assets:build`
+  var ASSIST_V = "7966f194"; // website assistant version, set by `npm run assets:build`
 
   var CFG = window.SITE_CONFIG;
   var DESKTOP_MQ = window.matchMedia("(min-width: 1200px)");

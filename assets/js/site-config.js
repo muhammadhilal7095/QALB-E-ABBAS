@@ -107,10 +107,6 @@ window.SITE_CONFIG = {
       ]
     },
     {
-      id: "sourcing", title: "Product Sourcing", icon: "box", desc: "Source products from China: suppliers, quality checks and shipping.",
-      items: [["China Sourcing", "china-sourcing", "/china-sourcing", "icon:box"]]
-    },
-    {
       id: "formation", title: "Company Formation", icon: "building", desc: "Register your company and stay compliant.",
       items: [
         ["UK", "uk-company-formation", "/uk-ltd-formation", "flag-uk"], ["USA", "usa-company-formation", "/us-llc-formation", "flag-us"],
@@ -122,12 +118,16 @@ window.SITE_CONFIG = {
       items: [["Study in Malta", "education-consultancy", "/education-consultancy", "icon:graduation"]]
     },
     {
-      id: "real-estate", title: "Real Estate", icon: "building", desc: "Buy, sell, rent and invest in property in Pakistan.",
-      items: [["Pakistan Property", "real-estate", "/real-estate", "flag-pk"]]
+      id: "sourcing", title: "Product Sourcing", icon: "box", desc: "Source products from China, Pakistan and Turkey: suppliers, quality checks and shipping.",
+      items: [["China", "china-sourcing", "/china-sourcing", "flag-cn"], ["Pakistan", "pakistan-sourcing", "/pakistan-sourcing", "flag-pk"], ["Turkey", "turkey-sourcing", "/turkey-sourcing", "flag-tr"]]
     },
     {
       id: "stock-exchange", title: "Stock Exchange & Investing", icon: "trending-up", desc: "Learn, open an account and invest in US & UK markets.",
       items: [["US · UK Stocks", "stock-exchange", "/stock-exchange", "icon:trending-up"]]
+    },
+    {
+      id: "real-estate", title: "Real Estate", icon: "building", desc: "Buy, sell, rent and invest in property in Pakistan.",
+      items: [["Pakistan Property", "real-estate", "/real-estate", "flag-pk"]]
     },
     {
       id: "marketing", title: "Marketing & Business Growth", icon: "megaphone", desc: "Paid ads, SEO and campaigns that drive sales.",
@@ -160,6 +160,8 @@ window.SITE_CONFIG = {
     serviceLinks: [
       ["E-commerce Services", "/services#ecommerce"],
       ["Product Sourcing (China)", "/china-sourcing"],
+      ["Product Sourcing (Pakistan)", "/pakistan-sourcing"],
+      ["Product Sourcing (Turkey)", "/turkey-sourcing"],
       ["Company Formation", "/services#formation"],
       ["Taxation Services", "/taxation"],
       ["Education Consultancy", "/services#education"],

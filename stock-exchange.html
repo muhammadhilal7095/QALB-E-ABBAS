@@ -26,7 +26,7 @@
   <link rel="preload" as="image" href="assets/img/services/sv-tablet-charts.webp" imagesrcset="assets/img/services/sv-tablet-charts-800.webp 800w, assets/img/services/sv-tablet-charts.webp 1280w, assets/img/services/sv-tablet-charts-1920.webp 1920w" imagesizes="100vw" fetchpriority="high">
   <!-- SEO:END -->
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/styles.min.css?v=fcef99e1">
+  <link rel="stylesheet" href="assets/css/styles.min.css?v=747a11b2">
   <script src="assets/js/site-config.min.js?v=c30d972a" defer></script>
   <script src="assets/js/se-charts.min.js?v=f6dc23ee" defer></script>
   <script src="assets/js/site.min.js?v=df0b7f9e" defer></script>
@@ -253,13 +253,6 @@
       <div class="se-alert__tape se-tv" data-tv="alert"><p class="se-alert__wait">Loading live prices…</p></div>
       <a class="se-alert__cal" href="#economic-calendar"><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><span data-ffc-next>Today's news</span></a>
     </section>
-    <!-- ECONOMIC CALENDAR SLIDER (moving list of upcoming events from api/calendar.php) -->
-    <section class="ffs" aria-label="Economic calendar: upcoming events" data-ffslider data-src="/api/calendar.php" hidden>
-      <a class="ffs__label" href="#economic-calendar"><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><b>Calendar</b></a>
-      <div class="ffs__viewport"><div class="ffs__track" data-ffs-track></div></div>
-      <div class="ffs__nav"><button type="button" class="ffs__btn" data-ffs-prev aria-label="Previous events"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"></use></svg></button><span class="ffs__count" data-ffs-count></span><button type="button" class="ffs__btn" data-ffs-next aria-label="Next events"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button></div>
-    </section>
-
     <!-- HERO -->
     <section class="svcx-hero" aria-labelledby="svc-h1">
       <img class="svcx-hero__bg" src="assets/img/services/sv-tablet-charts.webp" srcset="assets/img/services/sv-tablet-charts-800.webp 800w, assets/img/services/sv-tablet-charts.webp 1280w, assets/img/services/sv-tablet-charts-1920.webp 1920w" sizes="100vw" alt="Investor reviewing stock market charts on a tablet" title="Investor reviewing stock market charts on a tablet" width="1280" height="853" fetchpriority="high" decoding="async">
@@ -291,6 +284,13 @@
           <p class="se-term__note">Illustrative chart for learning, not live or historical market data.</p>
         </aside>
       </div>
+    </section>
+
+    <!-- ECONOMIC CALENDAR SLIDER (moving list of upcoming events from api/calendar.php) -->
+    <section class="ffs" aria-label="Economic calendar: upcoming events" data-ffslider data-src="/api/calendar.php" hidden>
+      <a class="ffs__label" href="#economic-calendar"><svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg><b>Calendar</b></a>
+      <div class="ffs__viewport"><div class="ffs__track" data-ffs-track></div></div>
+      <div class="ffs__nav"><button type="button" class="ffs__btn" data-ffs-prev aria-label="Previous events"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"></use></svg></button><span class="ffs__count" data-ffs-count></span><button type="button" class="ffs__btn" data-ffs-next aria-label="Next events"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"></use></svg></button></div>
     </section>
 
     <!-- KEY FACTS STRIP -->

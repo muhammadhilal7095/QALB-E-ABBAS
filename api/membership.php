@@ -92,7 +92,7 @@ $customer = ['name' => $name, 'email' => $email, 'phone' => $whatsapp, 'country'
 $notes = "Stock Market Club membership\nMember ID: $memberId\nCity: " . ($city ?: '—') . "\nExperience: " . ($experience ?: '—') . "\nMarkets: " . (implode(', ', $markets) ?: '—') . "\nGoal: " . ($goal ?: '—');
 $order = [
     'id' => qa_id(), 'ref' => $ref, 'createdAt' => qa_now(), 'kind' => 'order', 'status' => 'new', 'membership' => true,
-    'payment' => $gateway === 'STRIPE' ? 'pending' : 'awaiting', 'gateway' => $gateway,
+    'payment' => in_array($gateway, ['STRIPE', 'PAYPAL'], true) ? 'pending' : 'awaiting', 'gateway' => $gateway,
     'submission' => ['kind' => 'order', 'items' => [['sku' => QA_CLUB_SKU, 'quantity' => 1]], 'customer' => $customer, 'notes' => $notes],
     'priced' => $priced, 'note' => '', 'log' => [['at' => qa_now(), 'text' => 'Club sign-up (' . $gateway . ')']],
 ];
@@ -124,6 +124,18 @@ if ($gateway === 'STRIPE') {
     qa_insert('orders', $order);
     qa_insert('members', $member);
     qa_json(200, ['ok' => true, 'reference' => $ref, 'memberId' => $memberId, 'redirectUrl' => $session['url']]);
+}
+
+if ($gateway === 'PAYPAL') {
+    try {
+        $pp = qa_paypal_start($priced, $ref, QA_SITE . '/stock-exchange-join?cancelled=1');
+    } catch (QaUserError $e) {
+        qa_json(502, ['ok' => false, 'error' => $e->getMessage()]);
+    }
+    $order['paypalOrder'] = $pp['id'];
+    qa_insert('orders', $order);
+    qa_insert('members', $member);
+    qa_json(200, ['ok' => true, 'reference' => $ref, 'memberId' => $memberId, 'redirectUrl' => $pp['url']]);
 }
 
 // MANUAL: the team emails a payment link; marking the order "Paid" in the admin activates the member.

@@ -10,6 +10,7 @@
   var gwEl = form.querySelector("[data-en-gw]"), btn = form.querySelector("[data-en-submit]"), errEl = form.querySelector(".cart-error");
   var LABEL = {
     STRIPE: ["Card payment", "Visa, Mastercard, Amex, Apple Pay & Google Pay, processed securely by Stripe."],
+    PAYPAL: ["Debit / credit card or PayPal", "Pay securely by card or with your PayPal account, processed by PayPal. No PayPal account needed."],
     MANUAL: ["Request now, pay by secure link", "We email you a secure payment link or bank details within one working day."],
     TEST: ["Test payment", "Development only, no real money is taken."]
   };

@@ -100,6 +100,9 @@ function qa_settings(): array {
         'notifyEmail'    => QA_ADMIN_EMAIL,
         'stripeSecret'   => '',
         'stripePublishable' => '',
+        'paypalClientId' => '',
+        'paypalSecret'   => '',
+        'paypalMode'     => 'live',   // 'live' or 'sandbox'
         'stripeWebhook'  => '',
         'manualPayments' => true,
         'hideSamples'    => false,
@@ -376,8 +379,71 @@ function qa_gateways(): array {
     $s = qa_settings();
     $g = [];
     if ($s['stripeSecret'] && function_exists('curl_init')) $g[] = 'STRIPE';
+    if ($s['paypalClientId'] && $s['paypalSecret'] && function_exists('curl_init')) $g[] = 'PAYPAL';
     if ($s['manualPayments']) $g[] = 'MANUAL';
     return $g;
+}
+
+// ---------------------------------------------------------------------------
+// PayPal (Orders v2): customers pay by debit/credit card or with a PayPal account
+// on PayPal's secure page, then return to api/paypal-return.php, which captures the
+// payment and marks the order paid. Keys are set in Admin → Payments.
+// ---------------------------------------------------------------------------
+function qa_paypal_base(): string { return qa_settings()['paypalMode'] === 'sandbox' ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com'; }
+
+function qa_paypal(string $method, string $path, ?array $body = null): array {
+    $s = qa_settings();
+    if (!$s['paypalClientId'] || !$s['paypalSecret']) throw new QaUserError('Card payments are not set up yet. Please contact us.');
+    static $token = null;
+    if ($token === null) {
+        $ch = curl_init(qa_paypal_base() . '/v1/oauth2/token');
+        curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 25, CURLOPT_POST => true,
+            CURLOPT_USERPWD => $s['paypalClientId'] . ':' . $s['paypalSecret'], CURLOPT_POSTFIELDS => 'grant_type=client_credentials',
+            CURLOPT_HTTPHEADER => ['Accept: application/json', 'Content-Type: application/x-www-form-urlencoded']]);
+        $res = json_decode((string)curl_exec($ch), true);
+        $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ($code !== 200 || empty($res['access_token'])) {
+            error_log('PayPal auth error ' . $code . ': ' . substr(json_encode($res), 0, 300));
+            throw new QaUserError('We could not start the secure payment just now. Please try again, or contact us.');
+        }
+        $token = $res['access_token'];
+    }
+    $ch = curl_init(qa_paypal_base() . $path);
+    $headers = ['Authorization: Bearer ' . $token, 'Content-Type: application/json', 'Accept: application/json'];
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 30, CURLOPT_CUSTOMREQUEST => $method, CURLOPT_HTTPHEADER => $headers]);
+    if ($body !== null) curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    elseif ($method === 'POST') curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+    $raw = (string)curl_exec($ch);
+    $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    $json = json_decode($raw, true);
+    if ($code < 200 || $code >= 300 || !is_array($json)) {
+        error_log('PayPal error ' . $code . ' ' . $path . ': ' . substr($raw, 0, 500));
+        throw new QaUserError(is_array($json) && ($json['details'][0]['issue'] ?? '') === 'ORDER_ALREADY_CAPTURED' ? 'ALREADY_CAPTURED' : 'We could not complete the secure payment just now. Please try again, or contact us.');
+    }
+    return $json;
+}
+
+/** Create a PayPal order for a priced submission. Returns ['id' => PayPal order id, 'url' => page to send the customer to]. */
+function qa_paypal_start(array $priced, string $ref, string $cancelUrl): array {
+    $value = number_format($priced['totalCents'] / 100, 2, '.', '');
+    $o = qa_paypal('POST', '/v2/checkout/orders', [
+        'intent' => 'CAPTURE',
+        'purchase_units' => [[
+            'reference_id' => $ref, 'custom_id' => $ref, 'invoice_id' => $ref,
+            'description' => mb_substr($priced['title'], 0, 120),
+            'amount' => ['currency_code' => strtoupper($priced['currency']), 'value' => $value],
+        ]],
+        'payment_source' => ['paypal' => ['experience_context' => [
+            'brand_name' => 'Qalb-E-Abbas', 'user_action' => 'PAY_NOW', 'shipping_preference' => 'NO_SHIPPING', 'landing_page' => 'GUEST_CHECKOUT',
+            'return_url' => QA_SITE . '/api/paypal-return.php?ref=' . rawurlencode($ref), 'cancel_url' => $cancelUrl,
+        ]]],
+    ]);
+    $url = '';
+    foreach ((array)($o['links'] ?? []) as $l) if (in_array($l['rel'] ?? '', ['payer-action', 'approve'], true)) $url = (string)$l['href'];
+    if (!$url || empty($o['id'])) throw new QaUserError('We could not start the secure payment just now. Please try again, or contact us.');
+    return ['id' => (string)$o['id'], 'url' => $url];
 }
 
 /** Text summary of an order, used in emails. */

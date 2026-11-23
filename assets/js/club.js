@@ -37,7 +37,7 @@
   }).catch(function () {});
   fetch(API + "/checkout-options.php", { headers: { Accept: "application/json" } }).then(function (r) { return r.ok ? r.json() : null; }).then(function (o) {
     gateways = (o && o.gateways) || [];
-    if (gateways.length && gateways.indexOf("STRIPE") < 0) {
+    if (gateways.length && gateways.indexOf("STRIPE") < 0 && gateways.indexOf("PAYPAL") < 0) {
       form.querySelector("[data-pay-label]").textContent = "Sign up, we'll email a payment link";
       form.querySelector(".club-secure").hidden = true;
     }
@@ -58,7 +58,7 @@
       !data.country ? "Please choose your country." :
       !data.acceptTerms ? "Please accept the terms to continue." : "";
     if (problem) { err.textContent = problem; err.hidden = false; return; }
-    if (gateways.indexOf("STRIPE") >= 0) data.gateway = "STRIPE";
+    if (gateways.indexOf("STRIPE") >= 0) data.gateway = "STRIPE"; else if (gateways.indexOf("PAYPAL") >= 0) data.gateway = "PAYPAL";
     btn.disabled = true; btn.classList.add("is-loading");
     try { sessionStorage.setItem("qa-club-email", data.email); } catch (x) { /* private mode */ }
     fetch(API + "/membership.php", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(data) })

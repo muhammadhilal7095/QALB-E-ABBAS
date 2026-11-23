@@ -575,6 +575,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
             flash('Payment settings saved.' . ($sk !== '' ? ' Press "Test connection" to check the key.' : '')); go('tab=payments');
 
+        case 'paypal_save':
+            $cid = preg_replace('/\s+/', '', (string)($_POST['paypalClientId'] ?? ''));
+            $sec = preg_replace('/\s+/', '', (string)($_POST['paypalSecret'] ?? ''));
+            $mode = ($_POST['paypalMode'] ?? 'live') === 'sandbox' ? 'sandbox' : 'live';
+            if (($cid !== '' && !preg_match('/^[A-Za-z0-9_-]{40,128}$/', $cid)) || ($sec !== '' && !preg_match('/^[A-Za-z0-9_-]{40,128}$/', $sec))) {
+                flash('That does not look like a PayPal Client ID / Secret. Copy them again from developer.paypal.com → Apps & Credentials.', 'err'); go('tab=payments');
+            }
+            qa_update('settings', function (array $s) use ($cid, $sec, $mode) {
+                if ($cid !== '') $s['paypalClientId'] = $cid;
+                if ($sec !== '') $s['paypalSecret'] = $sec;
+                $s['paypalMode'] = $mode;
+                if (!empty($_POST['clearPaypal'])) { $s['paypalClientId'] = ''; $s['paypalSecret'] = ''; }
+                return $s;
+            });
+            flash('PayPal settings saved. Press "Test PayPal connection" to check them.'); go('tab=payments');
+
+        case 'paypal_test':
+            $s0 = qa_settings();
+            if (!$s0['paypalClientId'] || !$s0['paypalSecret']) { flash('Add the PayPal Client ID and Secret first.', 'err'); go('tab=payments'); }
+            $ch = curl_init(qa_paypal_base() . '/v1/oauth2/token');
+            curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 20, CURLOPT_POST => true, CURLOPT_USERPWD => $s0['paypalClientId'] . ':' . $s0['paypalSecret'], CURLOPT_POSTFIELDS => 'grant_type=client_credentials', CURLOPT_HTTPHEADER => ['Accept: application/json']]);
+            $res = json_decode((string)curl_exec($ch), true); $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+            if ($code === 200 && !empty($res['access_token'])) flash('Connected to PayPal (' . ($s0['paypalMode'] === 'sandbox' ? 'sandbox: test payments only' : 'live: real payments') . '). Card payments are now on.');
+            else flash('PayPal did not accept these details' . ($s0['paypalMode'] === 'live' ? ' in Live mode. If they are Sandbox (test) credentials, choose Sandbox' : ' in Sandbox mode. If they are Live credentials, choose Live') . ', or copy them again.', 'err');
+            go('tab=payments');
+
         case 'payments_test':
             try {
                 $b = qa_stripe('GET', 'balance');
@@ -718,7 +744,7 @@ $flash = $_SESSION['flash'] ?? null; unset($_SESSION['flash']);
 function page_start(string $title, bool $app = true): void {
     echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
        . '<meta name="robots" content="noindex, nofollow"><meta name="qa-build" content="' . ADMIN_BUILD . '"><title>' . h($title) . ' · Qalb-E-Abbas Admin</title>'
-       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=7"></head><body class="' . ($app ? 'app' : 'auth') . '">';
+       . '<link rel="icon" href="/assets/img/favicon.svg"><link rel="stylesheet" href="/admin/admin.css?v=8"></head><body class="' . ($app ? 'app' : 'auth') . '">';
 }
 function flash_html(?array $f): string { return $f ? '<div class="flash flash--' . h($f[1]) . '" role="status">' . icon($f[1] === 'err' ? 'warn' : 'check') . '<span>' . h($f[0]) . '</span></div>' : ''; }
 
@@ -848,8 +874,8 @@ if ($tab === 'dashboard') {
     $todo = [];
     if (is_owner() && using_temp_password()) $todo[] = '<b>You are using the temporary password.</b> <a href="/admin/?tab=settings#login">Choose your own password</a> now.';
     if (!is_owner()) {}
-    elseif (!$settings['stripeSecret']) $todo[] = 'Card payments are off. Add your Stripe API keys in <a href="/admin/?tab=payments">Payments</a> to take payments online' . ($settings['manualPayments'] ? ' (until then, clients can send a request and you email them a payment link).' : '.');
-    elseif (!$settings['stripeWebhook']) $todo[] = 'Add the Stripe webhook signing secret in <a href="/admin/?tab=payments">Payments</a> so payments are confirmed automatically.';
+    elseif (!$settings['stripeSecret'] && !($settings['paypalClientId'] && $settings['paypalSecret'])) $todo[] = 'Card payments are off. Add your Stripe API keys in <a href="/admin/?tab=payments">Payments</a> to take payments online' . ($settings['manualPayments'] ? ' (until then, clients can send a request and you email them a payment link).' : '.');
+    elseif ($settings['stripeSecret'] && !$settings['stripeWebhook']) $todo[] = 'Add the Stripe webhook signing secret in <a href="/admin/?tab=payments">Payments</a> so payments are confirmed automatically.';
     if ($awaiting && can('orders')) $todo[] = "$awaiting order" . ($awaiting > 1 ? 's are' : ' is') . ' waiting for payment — <a href="/admin/?tab=orders&f=awaiting">send payment links</a>.';
     if ($todo) echo '<div class="notice">' . icon('warn') . '<ul><li>' . implode('</li><li>', $todo) . '</li></ul></div>';
 
@@ -1534,9 +1560,9 @@ if ($tab === 'payments' && is_owner()) {
     $sk = (string)$settings['stripeSecret']; $pk = (string)($settings['stripePublishable'] ?? ''); $wh = (string)$settings['stripeWebhook'];
     $mode = $sk === '' ? null : (str_contains($sk, '_live_') ? 'live' : 'test');
     $hook = QA_SITE . '/api/stripe-webhook.php';
-    echo '<header class="head"><div><h1>Payments</h1><p class="muted">Connect Stripe to take card payments on bookings, the cart and course enrolments.</p></div><div class="head__badges">'
-       . ($mode === 'live' ? '<span class="badge badge--green">Stripe connected · Live</span>' : ($mode === 'test' ? '<span class="badge badge--amber">Stripe connected · Test mode</span>' : '<span class="badge badge--grey">Card payments off</span>')) . '</div></header>';
-    echo '<div class="grid2 grid2--wide"><form method="post" class="card stack">' . csrf_field() . '<input type="hidden" name="do" value="payments_save"><h2>Stripe API keys</h2>'
+    echo '<header class="head"><div><h1>Payments</h1><p class="muted">Connect Stripe or PayPal to take card payments on bookings, the cart, course enrolments and club sign-ups.</p></div><div class="head__badges">'
+       . ($mode === 'live' ? '<span class="badge badge--green">Stripe connected · Live</span>' : ($mode === 'test' ? '<span class="badge badge--amber">Stripe connected · Test mode</span>' : '')) . (!empty($settings['paypalClientId']) && !empty($settings['paypalSecret']) ? '<span class="badge badge--green">PayPal connected · ' . (($settings['paypalMode'] ?? 'live') === 'sandbox' ? 'Sandbox' : 'Live') . '</span>' : '') . (!$mode && (empty($settings['paypalClientId']) || empty($settings['paypalSecret'])) ? '<span class="badge badge--grey">Card payments off</span>' : '') . '</div></header>';
+    echo '<div class="grid2 grid2--wide"><form method="post" class="card stack">' . csrf_field() . '<input type="hidden" name="do" value="payments_save"><h2>Stripe</h2><p class="muted">Keys start with <code>pk_live_</code> and <code>sk_live_</code>. Skip this if you use PayPal.</p>'
        . '<label>Publishable key <small>' . ($pk ? 'saved: ' . h($mask($pk)) : 'optional · starts with pk_live_') . '</small><input name="stripePublishable" placeholder="' . ($pk ? 'Leave empty to keep the saved key' : 'pk_live_…') . '" autocomplete="off" spellcheck="false"></label>'
        . '<label>Secret key <small' . ($sk ? ' class="ok">saved: ' . h($mask($sk)) : '>required for card payments · starts with sk_live_') . '</small><input type="password" name="stripeSecret" placeholder="' . ($sk ? 'Leave empty to keep the saved key' : 'sk_live_…') . '" autocomplete="off" spellcheck="false"></label>'
        . '<label>Webhook signing secret <small' . ($wh ? ' class="ok">saved: ' . h($mask($wh)) : '>confirms payments automatically · starts with whsec_') . '</small><input type="password" name="stripeWebhook" placeholder="' . ($wh ? 'Leave empty to keep the saved secret' : 'whsec_…') . '" autocomplete="off" spellcheck="false"></label>'
@@ -1544,8 +1570,19 @@ if ($tab === 'payments' && is_owner()) {
        . '<label class="check"><input type="checkbox" name="manualPayments" value="1"' . ($settings['manualPayments'] ? ' checked' : '') . '> Also offer “Request now, pay by link” (you email the client a payment link)</label>'
        . ($sk ? '<label class="check"><input type="checkbox" name="clearStripe" value="1"> Remove all saved Stripe keys (turns card payments off)</label>' : '')
        . '<div class="btn-row"><button class="btn btn--primary">Save payment settings</button></div></form>';
-    echo '<section class="card stack"><h2>Status</h2><ul class="checks">'
-       . '<li class="' . ($sk ? 'is-ok' : 'is-no') . '"><b>Secret key</b> — <small class="muted">' . ($sk ? ($mode === 'live' ? 'Live: real payments' : 'Test: no real money') : 'Not added yet') . '</small></li>'
+    $pc = (string)($settings['paypalClientId'] ?? ''); $ps = (string)($settings['paypalSecret'] ?? ''); $pm = (string)($settings['paypalMode'] ?? 'live');
+    echo '<form method="post" class="card stack" style="grid-column:1">' . csrf_field() . '<input type="hidden" name="do" value="paypal_save"><div class="card__head"><h2>PayPal (card or PayPal account)</h2>'
+       . ($pc && $ps ? '<span class="badge badge--green">Connected · ' . ($pm === 'sandbox' ? 'Sandbox' : 'Live') . '</span>' : '<span class="badge badge--grey">Off</span>') . '</div>'
+       . '<p class="muted">Customers pay by debit/credit card or with their PayPal account on PayPal\'s secure page. No PayPal account needed to pay by card.</p>'
+       . '<label>Client ID <small' . ($pc ? ' class="ok">saved: ' . h($mask($pc)) : '>from PayPal → Apps &amp; Credentials') . '</small><input name="paypalClientId" placeholder="' . ($pc ? 'Leave empty to keep the saved Client ID' : 'Client ID') . '" autocomplete="off" spellcheck="false"></label>'
+       . '<label>Secret <small' . ($ps ? ' class="ok">saved: ' . h($mask($ps)) : '>“Secret key 1” in the same app') . '</small><input type="password" name="paypalSecret" placeholder="' . ($ps ? 'Leave empty to keep the saved Secret' : 'Secret') . '" autocomplete="off" spellcheck="false"></label>'
+       . '<label>Mode<select name="paypalMode"><option value="live"' . ($pm === 'live' ? ' selected' : '') . '>Live: real payments</option><option value="sandbox"' . ($pm === 'sandbox' ? ' selected' : '') . '>Sandbox: test payments only</option></select></label>'
+       . ($pc ? '<label class="check"><input type="checkbox" name="clearPaypal" value="1"> Remove the saved PayPal details (turns PayPal off)</label>' : '')
+       . '<div class="btn-row"><button class="btn btn--primary">Save PayPal settings</button></div></form>'
+       . ($pc && $ps ? '<form method="post" class="card" style="grid-column:1">' . csrf_field() . '<input type="hidden" name="do" value="paypal_test"><button class="btn btn--ghost btn--block">Test PayPal connection</button></form>' : '');
+    echo '<section class="card stack pay-status"><h2>Status</h2><ul class="checks">'
+       . '<li class="' . (!empty($settings['paypalClientId']) && !empty($settings['paypalSecret']) ? 'is-ok' : 'is-no') . '"><b>PayPal</b> — <small class="muted">' . (!empty($settings['paypalClientId']) && !empty($settings['paypalSecret']) ? 'Connected (' . (($settings['paypalMode'] ?? 'live') === 'sandbox' ? 'sandbox' : 'live') . ')' : 'Not added') . '</small></li>'
+       . '<li class="' . ($sk ? 'is-ok' : 'is-no') . '"><b>Stripe secret key</b> — <small class="muted">' . ($sk ? ($mode === 'live' ? 'Live: real payments' : 'Test: no real money') : 'Not added yet') . '</small></li>'
        . '<li class="' . ($wh ? 'is-ok' : 'is-no') . '"><b>Webhook</b> — <small class="muted">' . ($wh ? 'Payments are confirmed automatically' : 'Not added: payments are confirmed when the client returns to the site') . '</small></li>'
        . '<li class="' . (function_exists('curl_init') ? 'is-ok' : 'is-no') . '"><b>Server can reach Stripe</b> — <small class="muted">cURL ' . (function_exists('curl_init') ? 'available' : 'missing') . '</small></li>'
        . '<li class="' . ($settings['manualPayments'] ? 'is-ok' : 'is-no') . '"><b>Pay by link</b> — <small class="muted">' . ($settings['manualPayments'] ? 'On' : 'Off') . '</small></li></ul>'

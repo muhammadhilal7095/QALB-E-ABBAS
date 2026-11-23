@@ -113,6 +113,7 @@
   var formState = { name: "", email: "", phone: "", notes: "", gateway: "", terms: false };
   var GATEWAY_LABEL = {
     STRIPE: ["Card payment", "Visa, Mastercard, Amex, Apple Pay & Google Pay, processed securely by Stripe."],
+    PAYPAL: ["Debit / credit card or PayPal", "Pay securely by card or with your PayPal account, processed by PayPal. No PayPal account needed."],
     MANUAL: ["Request now, pay by secure link", "We email you a secure payment link or bank details within one working day."],
     TEST: ["Test payment", "Development only, no real money is taken."]
   };
@@ -220,7 +221,7 @@
           '<button type="submit" class="btn btn--primary btn--block cart-submit"' + (busy || !gateways || !gateways.length ? " disabled" : "") + ">" +
             (busy ? "Please wait…" : "Pay " + money(payTotal, chosenCurrency)) + "</button>" +
           '<p class="cart-error" role="alert" hidden></p>' +
-          '<ul class="cart-assure"><li>' + icon("shield") + "Payments processed by Stripe. We never see your card details.</li>" +
+          '<ul class="cart-assure"><li>' + icon("shield") + "Card payments are processed securely by our payment provider. We never see your card details.</li>" +
             "<li>" + icon("mail") + "Email confirmation with your order reference.</li>" +
             "<li>" + icon("headset") + "Our team contacts you within one working day.</li></ul>" +
         "</aside>" +

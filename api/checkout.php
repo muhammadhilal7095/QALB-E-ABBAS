@@ -1,7 +1,7 @@
 <?php
 /* ==========================================================================
    POST /api/checkout.php — Book a Consultation form or cart → order.
-   Body: { submission: {kind:"booking"|"order", …}, acceptTerms: true, gateway?: "STRIPE"|"MANUAL" }
+   Body: { submission: {kind:"booking"|"order", …}, acceptTerms: true, gateway?: "STRIPE"|"PAYPAL"|"MANUAL" }
 
    STRIPE: creates a Stripe Checkout page and returns its URL. The order is
            marked paid by the Stripe webhook (or when the client returns).
@@ -67,7 +67,7 @@ $gateway = in_array($body['gateway'] ?? '', $gateways, true) ? $body['gateway'] 
 $ref = qa_ref($sub['kind'] === 'booking' ? 'BK' : 'ORD');
 $order = [
     'id' => qa_id(), 'ref' => $ref, 'createdAt' => qa_now(), 'kind' => $sub['kind'], 'status' => 'new',
-    'payment' => $gateway === 'STRIPE' ? 'pending' : 'awaiting', 'gateway' => $gateway,
+    'payment' => in_array($gateway, ['STRIPE', 'PAYPAL'], true) ? 'pending' : 'awaiting', 'gateway' => $gateway,
     'submission' => $sub, 'priced' => $priced, 'note' => '', 'log' => [['at' => qa_now(), 'text' => 'Order created (' . $gateway . ')']],
 ];
 
@@ -95,6 +95,20 @@ if ($gateway === 'STRIPE') {
     $order['stripeSession'] = $session['id'] ?? null;
     qa_insert('orders', $order);
     qa_json(200, ['ok' => true, 'reference' => $ref, 'redirectUrl' => $session['url']]);
+}
+
+if ($gateway === 'PAYPAL') {
+    $cancel = $sub['kind'] === 'booking'
+        ? QA_SITE . '/book-consultation?cancelled=1' . ($sub['topic'] ? '&topic=' . rawurlencode($sub['topic']) : '')
+        : (!empty($sub['enrolment']) ? QA_SITE . '/enroll?cancelled=1&course=' . rawurlencode($sub['enrolment']['course']) : QA_SITE . '/cart?cancelled=1');
+    try {
+        $pp = qa_paypal_start($priced, $ref, $cancel);
+    } catch (QaUserError $e) {
+        qa_json(502, ['ok' => false, 'error' => $e->getMessage()]);
+    }
+    $order['paypalOrder'] = $pp['id'];
+    qa_insert('orders', $order);
+    qa_json(200, ['ok' => true, 'reference' => $ref, 'redirectUrl' => $pp['url']]);
 }
 
 // MANUAL: save the request and tell both sides what happens next.

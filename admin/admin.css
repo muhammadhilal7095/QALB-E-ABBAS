@@ -446,3 +446,4 @@ td.row-actions .linkbtn { font-size: .82rem; }
 .media-item__body input[readonly] { font-size: .76rem; color: var(--muted); background: #F9FAFB; }
 .media-item__actions { display: flex; justify-content: flex-end; }
 .media-item__del { padding: 0 14px 12px; }
+@media (min-width: 901px) { .pay-status { grid-column: 2; grid-row: 1 / span 3; align-self: start; } }
